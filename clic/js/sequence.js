@@ -19,8 +19,9 @@ const release = (frame) => {
 
 // Frames are fetched once and kept compressed; only the ones around the playhead stay decoded.
 // While the playhead moves, neighbouring frames are cross-faded; at rest a single frame is shown.
-export function createSequence(canvas, count) {
+export function createSequence(canvas) {
   const context = canvas.getContext('2d', { alpha: false });
+  let count = 0;
   let blobs = [];
   let decoded = new Map();
   let pending = new Set();
@@ -84,8 +85,9 @@ export function createSequence(canvas, count) {
   }
 
   // Resolves once the first frame has arrived; the others keep loading behind it.
-  async function load(folder, [width, height]) {
+  async function load(folder, [width, height], frames) {
     const run = ++generation;
+    count = frames;
     decoded.forEach(release);
     blobs = new Array(count);
     decoded = new Map();

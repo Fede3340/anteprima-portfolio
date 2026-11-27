@@ -31,13 +31,16 @@
 
   <div class="threshold" id="threshold">
     <div class="cover">
+      <picture>
+        <source media="(max-aspect-ratio: 17/20)" srcset="img/press-portrait.webp">
+        <img class="cover__media threshold__still" src="img/press-landscape.webp" alt="" fetchpriority="high">
+      </picture>
       <video class="cover__media" data-scene="press" muted playsinline preload="none"></video>
-      <span class="threshold__pulse" aria-hidden="true"><i></i><i></i></span>
-      <span class="threshold__loader" aria-hidden="true"></span>
     </div>
     <button class="threshold__enter" type="button" disabled>
-      <span class="cover"><span class="threshold__label">Entra</span></span>
+      <span class="threshold__label">Entra con il suono</span>
     </button>
+    <button class="threshold__quiet" type="button" disabled>Entra senza suono</button>
   </div>
 
   <main id="top">
@@ -66,7 +69,6 @@
           </div>
         </div>
         <span class="land__floor" aria-hidden="true"></span>
-        <span class="land__waterline" aria-hidden="true"></span>
 
         <button class="hold" type="button" data-reveal tabindex="-1">
           <svg class="hold__ring" viewBox="0 0 100 100" aria-hidden="true">
@@ -76,54 +78,68 @@
           <span class="hold__pulse" aria-hidden="true"></span>
           <span class="hold__label">Tieni premuto</span>
         </button>
+      </div>
+      <div class="land__track"></div>
 
-        <section class="chapter chapter--sites" aria-labelledby="sites-label">
-          <div class="chapter__head">
-            <h2 class="chapter__label" id="sites-label" data-reveal>Siti</h2>
-            <span class="chapter__rule" aria-hidden="true"></span>
-          </div>
+      <section class="chapter chapter--night" id="siti" aria-labelledby="sites-label">
+        <div class="chapter__head">
+          <h2 class="chapter__label" id="sites-label">Siti</h2>
+          <span class="chapter__rule" aria-hidden="true"></span>
+        </div>
+        <div class="works">
           <article class="work" data-work="grecale">
-            <h3 class="work__name" data-lines>Grecale</h3>
-            <p class="work__text" data-lines>Sito di una pagina per un olio extravergine. Concept: il marchio non esiste.</p>
-            <a class="work__link" data-reveal href="https://fede3340.github.io/grecale/" target="_blank" rel="noopener">Apri il sito<svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
+            <button class="work__window" type="button" aria-labelledby="grecale-name">
+              <picture>
+                <source media="(max-width: 767px)" data-srcset="img/work/grecale-tall.webp" width="780" height="4788">
+                <img class="work__page" data-src="img/work/grecale-wide.webp" alt="" width="1440" height="2576" decoding="async">
+              </picture>
+              <span class="work__pulse" aria-hidden="true"></span>
+            </button>
+            <div class="work__caption">
+              <h3 class="work__name" id="grecale-name">Grecale</h3>
+              <p class="work__text">Sito di una pagina per un olio extravergine. Concept: il marchio non esiste.</p>
+              <a class="work__link" href="https://fede3340.github.io/grecale/" target="_blank" rel="noopener">Apri il sito<svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
+            </div>
           </article>
           <article class="work" data-work="mirtifolia">
-            <h3 class="work__name" data-lines>Mirtifolia</h3>
-            <p class="work__text" data-lines>Sito di una pagina per un chinotto in bottiglia da 27&nbsp;cl. Concept: il marchio non esiste.</p>
-            <a class="work__link" data-reveal href="https://fede3340.github.io/mirtifolia/" target="_blank" rel="noopener">Apri il sito<svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
+            <button class="work__window" type="button" aria-labelledby="mirtifolia-name">
+              <picture>
+                <source media="(max-width: 767px)" data-srcset="img/work/mirtifolia-tall.webp" width="780" height="4764">
+                <img class="work__page" data-src="img/work/mirtifolia-wide.webp" alt="" width="1440" height="2540" decoding="async">
+              </picture>
+              <span class="work__pulse" aria-hidden="true"></span>
+            </button>
+            <div class="work__caption">
+              <h3 class="work__name" id="mirtifolia-name">Mirtifolia</h3>
+              <p class="work__text">Sito di una pagina per un chinotto in bottiglia da 27&nbsp;cl. Concept: il marchio non esiste.</p>
+              <a class="work__link" href="https://fede3340.github.io/mirtifolia/" target="_blank" rel="noopener">Apri il sito<svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
+            </div>
           </article>
-          <div class="portals" aria-hidden="true">
-            <a class="portal portal--first" data-work="grecale" href="https://fede3340.github.io/grecale/" target="_blank" rel="noopener" tabindex="-1">
-              <svg class="portal__rings" viewBox="-200 -60 400 120"><ellipse rx="92" ry="25" pathLength="1"/><ellipse rx="140" ry="38" pathLength="1"/><ellipse rx="196" ry="54" pathLength="1"/></svg>
-              <span class="portal__clip"><span class="portal__body"><span class="portal__frame"><img class="portal__page" data-src="img/work/grecale.webp" alt="" width="560" height="3438"><span class="portal__shade"></span></span></span></span>
-            </a>
-            <a class="portal portal--second" data-work="mirtifolia" href="https://fede3340.github.io/mirtifolia/" target="_blank" rel="noopener" tabindex="-1">
-              <svg class="portal__rings" viewBox="-200 -60 400 120"><ellipse rx="92" ry="25" pathLength="1"/><ellipse rx="140" ry="38" pathLength="1"/><ellipse rx="196" ry="54" pathLength="1"/></svg>
-              <span class="portal__clip"><span class="portal__body"><span class="portal__frame"><img class="portal__page" data-src="img/work/mirtifolia.webp" alt="" width="560" height="3420"><span class="portal__shade"></span></span></span></span>
-            </a>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <section class="chapter chapter--shops" aria-labelledby="shops-label">
-          <div class="chapter__head">
-            <h2 class="chapter__label" id="shops-label" data-reveal>Negozi online</h2>
-            <span class="chapter__rule" aria-hidden="true"></span>
-          </div>
-          <article class="work" data-work="pippi-store">
-            <h3 class="work__name" data-lines>pippi.store</h3>
-            <p class="work__text" data-lines>Negozio online di un solo prodotto: studio, design e sviluppo. Online dal 16 ottobre 2026.</p>
-            <a class="work__link" data-reveal href="https://pippi.store" target="_blank" rel="noopener">Apri il negozio<svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
+      <section class="chapter chapter--day" id="negozi" aria-labelledby="shops-label">
+        <div class="chapter__head">
+          <h2 class="chapter__label" id="shops-label">Negozi online</h2>
+          <span class="chapter__rule" aria-hidden="true"></span>
+        </div>
+        <div class="works">
+          <article class="work" data-work="pippi-store" data-more="img/work/pippi-store-tall-2.webp">
+            <button class="work__window" type="button" aria-labelledby="pippi-store-name">
+              <picture>
+                <source media="(max-width: 767px)" data-srcset="img/work/pippi-store-tall.webp" width="780" height="6400">
+                <img class="work__page" data-src="img/work/pippi-store-wide.webp" alt="" width="1440" height="6743" decoding="async">
+              </picture>
+              <span class="work__pulse" aria-hidden="true"></span>
+            </button>
+            <div class="work__caption">
+              <h3 class="work__name" id="pippi-store-name">pippi.store</h3>
+              <p class="work__text">Negozio online di un solo prodotto: studio, design e sviluppo. Online dal 16 ottobre 2026.</p>
+              <a class="work__link" href="https://pippi.store" target="_blank" rel="noopener">Apri il negozio<svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
+            </div>
           </article>
-          <div class="portals" aria-hidden="true">
-            <a class="portal portal--single" data-work="pippi-store" href="https://pippi.store" target="_blank" rel="noopener" tabindex="-1">
-              <svg class="portal__rings" viewBox="-200 -60 400 120"><ellipse rx="92" ry="25" pathLength="1"/><ellipse rx="140" ry="38" pathLength="1"/><ellipse rx="196" ry="54" pathLength="1"/></svg>
-              <span class="portal__clip"><span class="portal__body"><span class="portal__frame"><img class="portal__page" data-src="img/work/pippi-store.webp" alt="" width="560" height="4594"><span class="portal__shade"></span></span></span></span>
-            </a>
-          </div>
-        </section>
-      </div>
-      <div class="land__track land__track--sites" id="siti"></div>
-      <div class="land__track land__track--shops" id="negozi"></div>
+        </div>
+      </section>
       <svg class="skirt skirt--night" aria-hidden="true" focusable="false"><use href="#dune-edge"/></svg>
     </div>
 
@@ -148,6 +164,19 @@
     <a href="#negozi" data-chapter="shops">Negozi online</a>
     <a href="#contatti" data-chapter="contact">Contatti</a>
   </nav>
+
+  <button class="sound" type="button" role="switch" aria-checked="false" data-reveal>
+    <span class="sound__dot" aria-hidden="true"></span>Suono
+  </button>
+
+  <div class="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
+    <div class="viewer__bar">
+      <h2 class="viewer__title" id="viewer-title"></h2>
+      <a class="viewer__link" target="_blank" rel="noopener"><span></span><svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
+      <button class="viewer__close" type="button">Chiudi</button>
+    </div>
+    <div class="viewer__scroll" tabindex="-1"></div>
+  </div>
 
   <div class="ripples" aria-hidden="true"></div>
 </body>

@@ -4,7 +4,7 @@ const TAP_TRAVEL = 12;
 
 // A tap on the ground of a scene leaves three flattened rings. `ground` returns the horizon of
 // the scene on screen and the tone that reads on its ground, or nothing where no scene is shown.
-export function createRipples(layer, ground) {
+export function createRipples(layer, ground, onRing) {
   let down;
 
   window.addEventListener('pointerdown', (event) => {
@@ -14,7 +14,7 @@ export function createRipples(layer, ground) {
   window.addEventListener('pointerup', (event) => {
     if (!down || event.timeStamp - down.timeStamp > TAP_TIME) return;
     if (Math.hypot(event.clientX - down.clientX, event.clientY - down.clientY) > TAP_TRAVEL) return;
-    if (event.target.closest('a, button')) return;
+    if (event.target.closest('a, button, .work')) return;
     const surface = ground();
     if (!surface || event.clientY < surface.horizon) return;
     const depth = (event.clientY - surface.horizon) / Math.max(1, window.innerHeight - surface.horizon);
@@ -27,5 +27,6 @@ export function createRipples(layer, ground) {
       element.addEventListener('animationend', () => element.remove());
       layer.append(element);
     }
+    onRing();
   }, { passive: true });
 }

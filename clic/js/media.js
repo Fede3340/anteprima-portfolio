@@ -6,13 +6,17 @@ export const format = () => (portrait.matches ? 'portrait' : 'landscape');
 
 export const onFormatChange = (listener) => portrait.addEventListener('change', listener);
 
-export function assignScenes() {
-  for (const video of document.querySelectorAll('video[data-scene]')) {
-    const name = `${video.dataset.scene}-${format()}`;
-    video.poster = `img/${name}.webp`;
-    video.src = `media/${name}.mp4`;
-  }
-  document.querySelector('[data-sky]').src = `img/day-sky-${format()}.webp`;
+// A scene gets its poster and its file only when it is first asked for, in the cut that fits the screen.
+export function prepare(video) {
+  const name = `${video.dataset.scene}-${format()}`;
+  if (video.dataset.cut === name) return;
+  video.dataset.cut = name;
+  video.poster = `img/${name}.webp`;
+  video.src = `media/${name}.mp4`;
+}
+
+export function recut() {
+  for (const video of document.querySelectorAll('video[data-cut]')) prepare(video);
 }
 
 // One video decodes at a time: the scene asked for last plays, the others rest on their frame.
@@ -31,7 +35,10 @@ export function createPlayback(videos) {
     want(video, on) {
       const index = wanted.indexOf(video);
       if (index >= 0) wanted.splice(index, 1);
-      if (on) wanted.push(video);
+      if (on) {
+        prepare(video);
+        wanted.push(video);
+      }
       sync();
     },
   };
