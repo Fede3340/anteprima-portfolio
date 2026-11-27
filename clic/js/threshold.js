@@ -5,8 +5,8 @@ import { reducedMotion } from './media.js';
 const TOUCH = 0.5;
 const GIVE_WAY = 0.85;
 // The door opens on time even when the press cannot play: tap to opening stays within about 2 s.
-const OPEN_LIMIT = 1200;
-const FADE_LIMIT = 1100;
+const OPEN_LIMIT = 1000;
+const FADE_LIMIT = 950;
 
 export function createThreshold(root, { onEnter, onTouch, onLeave }) {
   const enter = root.querySelector('.threshold__enter');

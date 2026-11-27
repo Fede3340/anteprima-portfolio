@@ -65,7 +65,6 @@
           <canvas class="cover__media land__sequence" width="1280" height="720"></canvas>
           <div class="land__night">
             <video class="cover__media" data-scene="night" muted playsinline loop preload="none"></video>
-            <img class="cover__media land__day" data-sky alt="" decoding="async">
           </div>
         </div>
         <span class="land__floor" aria-hidden="true"></span>
@@ -81,71 +80,38 @@
       </div>
       <div class="land__track"></div>
 
-      <section class="chapter chapter--night" id="siti" aria-labelledby="sites-label">
-        <div class="chapter__head">
-          <h2 class="chapter__label" id="sites-label">Siti</h2>
-          <span class="chapter__rule" aria-hidden="true"></span>
-        </div>
-        <div class="works">
-          <article class="work" data-work="grecale">
-            <button class="work__window" type="button" aria-labelledby="grecale-name">
-              <picture>
-                <source media="(max-width: 767px)" data-srcset="img/work/grecale-tall.webp" width="780" height="4788">
-                <img class="work__page" data-src="img/work/grecale-wide.webp" alt="" width="1440" height="2576" decoding="async">
-              </picture>
-              <span class="work__pulse" aria-hidden="true"></span>
-            </button>
-            <div class="work__caption">
-              <h3 class="work__name" id="grecale-name">Grecale</h3>
-              <p class="work__text">Sito di una pagina per un olio extravergine. Concept: il marchio non esiste.</p>
-              <a class="work__link" href="https://fede3340.github.io/grecale/" target="_blank" rel="noopener">Apri il sito<svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
-            </div>
-          </article>
-          <article class="work" data-work="mirtifolia">
-            <button class="work__window" type="button" aria-labelledby="mirtifolia-name">
-              <picture>
-                <source media="(max-width: 767px)" data-srcset="img/work/mirtifolia-tall.webp" width="780" height="4764">
-                <img class="work__page" data-src="img/work/mirtifolia-wide.webp" alt="" width="1440" height="2540" decoding="async">
-              </picture>
-              <span class="work__pulse" aria-hidden="true"></span>
-            </button>
-            <div class="work__caption">
-              <h3 class="work__name" id="mirtifolia-name">Mirtifolia</h3>
-              <p class="work__text">Sito di una pagina per un chinotto in bottiglia da 27&nbsp;cl. Concept: il marchio non esiste.</p>
-              <a class="work__link" href="https://fede3340.github.io/mirtifolia/" target="_blank" rel="noopener">Apri il sito<svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="chapter chapter--day" id="negozi" aria-labelledby="shops-label">
-        <div class="chapter__head">
-          <h2 class="chapter__label" id="shops-label">Negozi online</h2>
-          <span class="chapter__rule" aria-hidden="true"></span>
-        </div>
-        <div class="works">
-          <article class="work" data-work="pippi-store" data-more="img/work/pippi-store-tall-2.webp">
-            <button class="work__window" type="button" aria-labelledby="pippi-store-name">
-              <picture>
-                <source media="(max-width: 767px)" data-srcset="img/work/pippi-store-tall.webp" width="780" height="6400">
-                <img class="work__page" data-src="img/work/pippi-store-wide.webp" alt="" width="1440" height="6743" decoding="async">
-              </picture>
-              <span class="work__pulse" aria-hidden="true"></span>
-            </button>
-            <div class="work__caption">
-              <h3 class="work__name" id="pippi-store-name">pippi.store</h3>
-              <p class="work__text">Negozio online di un solo prodotto: studio, design e sviluppo. Online dal 16 ottobre 2026.</p>
-              <a class="work__link" href="https://pippi.store" target="_blank" rel="noopener">Apri il negozio<svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
-            </div>
-          </article>
-        </div>
-      </section>
+      <section class="chapter chapter--night" id="siti" aria-labelledby="siti-label"></section>
       <svg class="skirt skirt--night" aria-hidden="true" focusable="false"><use href="#dune-edge"/></svg>
     </div>
 
+    <div class="chapters"></div>
+
+    <section class="chapter chapter--scene chapter--google" id="google" aria-labelledby="google-label">
+      <div class="chapter__backdrop">
+        <div class="chapter__scene">
+          <div class="cover">
+            <video class="cover__media" data-scene="google" muted playsinline loop preload="none"></video>
+          </div>
+        </div>
+      </div>
+      <div class="chapter__head">
+        <h2 class="chapter__label" id="google-label">Google</h2>
+        <span class="chapter__rule" aria-hidden="true"></span>
+      </div>
+      <div class="note">
+        <h3 class="note__title"><button type="button" data-open="pippi-store">pippi.store</button></h3>
+        <ul class="note__facts">
+          <li>Il 16 ottobre pippi.store è passato al sito nuovo, e i 750 indirizzi del negozio di prima portano alle pagine nuove.</li>
+          <li>Cassa in due passi senza registrazione, carta, PayPal e contrassegno.</li>
+          <li>Lo studio della conversione prende nove elementi della pagina, ognuno con la sua fonte, e mette in fila 14 ipotesi da provare, ordinate con un punteggio.</li>
+        </ul>
+      </div>
+      <svg class="skirt skirt--chapter" aria-hidden="true" focusable="false"><use href="#dune-edge"/></svg>
+    </section>
+
     <footer class="contact" id="contatti">
       <div class="cover">
-        <video class="cover__media" data-scene="press" muted playsinline preload="none"></video>
+        <video class="cover__media" data-scene="contact" muted playsinline loop preload="none"></video>
       </div>
       <h2 class="contact__title" data-lines>Scrivimi</h2>
       <ul class="contact__links">
@@ -160,14 +126,24 @@
       <circle class="index__track" cx="10" cy="10" r="8"/>
       <circle class="index__progress" cx="10" cy="10" r="8" pathLength="1"/>
     </svg>
-    <a href="#siti" data-chapter="sites">Siti</a>
-    <a href="#negozi" data-chapter="shops">Negozi online</a>
-    <a href="#contatti" data-chapter="contact">Contatti</a>
+    <span class="index__current" aria-hidden="true"></span>
+    <span class="index__links"></span>
+    <button class="index__all" type="button">Tutti i lavori</button>
   </nav>
 
   <button class="sound" type="button" role="switch" aria-checked="false" data-reveal>
     <span class="sound__dot" aria-hidden="true"></span>Suono
   </button>
+
+  <div class="archive" role="dialog" aria-modal="true" aria-labelledby="archive-title" hidden>
+    <div class="viewer__bar">
+      <h2 class="viewer__title" id="archive-title">Tutti i lavori</h2>
+      <button class="viewer__close" type="button">Chiudi</button>
+    </div>
+    <div class="viewer__scroll archive__scroll" tabindex="-1">
+      <ol class="archive__list"></ol>
+    </div>
+  </div>
 
   <div class="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
     <div class="viewer__bar">
@@ -175,7 +151,21 @@
       <a class="viewer__link" target="_blank" rel="noopener"><span></span><svg aria-hidden="true"><use href="#arrow-out"/></svg></a>
       <button class="viewer__close" type="button">Chiudi</button>
     </div>
-    <div class="viewer__scroll" tabindex="-1"></div>
+    <div class="viewer__scroll" tabindex="-1">
+      <div class="sheet">
+        <div class="sheet__head">
+          <p class="sheet__count"></p>
+          <p class="sheet__line"></p>
+          <p class="sheet__tag"></p>
+          <ul class="sheet__facts"></ul>
+        </div>
+        <div class="sheet__gallery"></div>
+        <div class="sheet__steps">
+          <button class="sheet__step" type="button" data-step="-1"><span>Precedente</span><strong></strong></button>
+          <button class="sheet__step" type="button" data-step="1"><span>Successivo</span><strong></strong></button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="ripples" aria-hidden="true"></div>

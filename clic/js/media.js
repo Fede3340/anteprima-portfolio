@@ -20,7 +20,8 @@ export function recut() {
 }
 
 // One video decodes at a time: the scene asked for last plays, the others rest on their frame.
-export function createPlayback(videos) {
+export function createPlayback() {
+  const videos = new Set();
   const wanted = [];
   const sync = () => {
     const active = reducedMotion.matches ? undefined : wanted.at(-1);
@@ -35,6 +36,7 @@ export function createPlayback(videos) {
     want(video, on) {
       const index = wanted.indexOf(video);
       if (index >= 0) wanted.splice(index, 1);
+      videos.add(video);
       if (on) {
         prepare(video);
         wanted.push(video);

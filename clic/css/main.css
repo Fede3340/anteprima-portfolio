@@ -182,7 +182,7 @@ button {
   overflow: hidden;
   background: var(--sky);
   touch-action: none;
-  transition: opacity 0.9s cubic-bezier(0.45, 0, 0.3, 1), visibility 0s 0.9s;
+  transition: opacity 0.8s cubic-bezier(0.45, 0, 0.3, 1), visibility 0s 0.8s;
 }
 
 @supports (height: 100dvh) {
@@ -302,7 +302,7 @@ button {
 
 .opening {
   position: relative;
-  z-index: 3;
+  z-index: 5;
   height: var(--small-h);
   --stage-h: var(--small-h);
 }
@@ -396,13 +396,18 @@ button {
 
 .land {
   position: relative;
-  z-index: 2;
+  z-index: 4;
   margin-top: calc(var(--small-h) * -1);
-  padding-bottom: clamp(56px, 13vh, 140px);
+}
+
+.chapters {
+  position: relative;
+  z-index: 3;
 }
 
 @supports (height: 100lvh) {
   .land,
+  .chapter--scene,
   .contact {
     --stage-h: 100lvh;
   }
@@ -422,13 +427,10 @@ button {
 }
 
 .skirt--night {
-  top: auto;
-  bottom: 1px;
   color: var(--night-ground);
 }
 
-.land__night,
-.land__day {
+.land__night {
   opacity: 0;
 }
 
@@ -571,6 +573,38 @@ button {
   transform: none;
 }
 
+.chapter--scene {
+  padding-top: 70svh;
+}
+
+/* The scene stays in place while the head and the works of its chapter pass over it. */
+.chapter__backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.chapter__scene {
+  position: sticky;
+  top: 0;
+  height: var(--stage-h);
+  overflow: hidden;
+  background: var(--sky);
+}
+
+.chapter--scene > .chapter__head,
+.chapter--scene > .works,
+.chapter--scene > .note {
+  position: relative;
+}
+
+.chapter--google {
+  z-index: 2;
+}
+
+.skirt--chapter {
+  z-index: 1;
+}
+
 .works {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -578,9 +612,18 @@ button {
   padding: 0 3vw;
 }
 
-.works:has(> .work:only-child) {
+.works[data-count="1"] {
   grid-template-columns: minmax(0, 60vw);
   justify-content: center;
+}
+
+.works[data-count="6"],
+.works[data-count="12"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.works[data-chapter="manifesti"] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 /* A window of paper with depth: the capture of the site above, its caption below. */
@@ -621,7 +664,7 @@ button {
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
   padding: 0;
   border: var(--frame) solid var(--paper);
   border-bottom: 0;
@@ -640,6 +683,27 @@ button {
 
 .work.is-live .work__page {
   animation-play-state: running;
+}
+
+.work__page--fit {
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  animation: none;
+}
+
+.work[data-kind="manifesto"] .work__window {
+  aspect-ratio: 3 / 4;
+}
+
+.work__tag {
+  display: inline-block;
+  margin-top: 0.5em;
+  padding: 2px 10px;
+  border: 1px solid currentColor;
+  border-radius: 12px;
+  font-size: var(--small);
+  font-weight: 500;
 }
 
 @keyframes page {
@@ -741,6 +805,39 @@ button {
   transform: translate(2px, -2px);
 }
 
+.note {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: clamp(20px, 3vw, 36px);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 30px 60px -30px rgb(0 12 48 / 0.55);
+}
+
+.note__title button {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--serif);
+  font-size: var(--title);
+  font-weight: 400;
+  font-variation-settings: "SOFT" 60;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.note__facts {
+  margin-top: 12px;
+  padding-left: 1.1em;
+}
+
+.note__facts li + li {
+  margin-top: 0.6em;
+}
+
 .contact {
   position: sticky;
   z-index: 1;
@@ -804,6 +901,38 @@ button {
   transition: color 0.4s ease;
 }
 
+.index__current {
+  display: none;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
+.index__links {
+  display: flex;
+}
+
+.index__all {
+  height: 44px;
+  margin-left: 4px;
+  padding: 0 12px;
+  border: 0;
+  border-left: 1px solid rgb(0 23 80 / 0.2);
+  background: none;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+@media (max-width: 1099px) {
+  .index__links {
+    display: none;
+  }
+
+  .index__current {
+    display: block;
+  }
+}
+
 .index a[aria-current="true"] {
   color: var(--ink);
   text-decoration: underline;
@@ -859,7 +988,8 @@ button {
   background: currentColor;
 }
 
-.viewer {
+.viewer,
+.archive {
   position: fixed;
   z-index: 80;
   inset: 0;
@@ -869,8 +999,168 @@ button {
   color: var(--ink);
 }
 
-.viewer[hidden] {
+.archive {
+  z-index: 75;
+}
+
+.viewer[hidden],
+.archive[hidden] {
   display: none;
+}
+
+.archive__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(160px, 40vw), 1fr));
+  gap: 16px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px var(--gutter) 48px;
+  list-style: none;
+}
+
+.archive__item {
+  display: grid;
+  width: 100%;
+  padding: 0 0 12px;
+  border: 0;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.archive__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.archive__title {
+  margin: 10px 14px 0;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  line-height: 1.15;
+}
+
+.archive__chapter {
+  margin: 4px 14px 0;
+  font-size: var(--small);
+}
+
+.sheet {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 48px) var(--gutter) 48px;
+  color: var(--light);
+}
+
+.sheet__count {
+  font-size: var(--small);
+  font-weight: 500;
+}
+
+.sheet__line {
+  max-width: 30em;
+  margin-top: 10px;
+  font-family: var(--serif);
+  font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2.25rem);
+  font-weight: 360;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.2;
+  text-wrap: pretty;
+}
+
+.sheet__tag {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 2px 10px;
+  border: 1px solid currentColor;
+  border-radius: 12px;
+  font-size: var(--small);
+  font-weight: 500;
+}
+
+.sheet__tag[hidden] {
+  display: none;
+}
+
+.sheet__facts {
+  max-width: 44em;
+  margin-top: 18px;
+  padding-left: 1.1em;
+}
+
+.sheet__facts li + li {
+  margin-top: 0.5em;
+}
+
+.sheet__gallery {
+  display: grid;
+  gap: clamp(20px, 3vw, 40px);
+  margin-top: clamp(28px, 4vw, 48px);
+}
+
+.sheet__gallery figure {
+  margin: 0;
+  text-align: center;
+}
+
+.sheet__gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.sheet__gallery figcaption {
+  max-width: 44em;
+  margin: 10px auto 0;
+  font-size: var(--small);
+}
+
+.sheet__steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: clamp(32px, 5vw, 64px);
+}
+
+.sheet__step {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  max-width: 48%;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sheet__step[data-step="1"] {
+  margin-left: auto;
+  text-align: right;
+}
+
+.sheet__step[hidden] {
+  display: none;
+}
+
+.sheet__step span {
+  font-size: var(--small);
+}
+
+.sheet__step strong {
+  overflow: hidden;
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .viewer__bar {
@@ -916,12 +1206,6 @@ button {
   outline: none;
 }
 
-.viewer__scroll img {
-  display: block;
-  width: min(100%, 1440px);
-  height: auto;
-  margin: 0 auto;
-}
 
 .ripples {
   position: fixed;
@@ -1009,7 +1293,7 @@ button {
 /* On the phone the works of a chapter are a row, one window at a time. */
 @media (max-width: 767px) {
   .works,
-  .works:has(> .work:only-child) {
+  .works[data-count] {
     display: flex;
     gap: 14px;
     padding: var(--depth) 6vw 24px;
@@ -1031,9 +1315,26 @@ button {
   }
 
   .work__window {
+    aspect-ratio: 4 / 3;
+  }
+
+  .work[data-tall] .work__window {
     aspect-ratio: auto;
     height: 58svh;
     min-height: 300px;
+  }
+
+  .work[data-tall] .work__page--fit {
+    height: auto;
+    animation: page 26s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate paused;
+  }
+
+  .work[data-tall].is-live .work__page--fit {
+    animation-play-state: running;
+  }
+
+  .note {
+    margin: 0 6vw;
   }
 
   .work__pulse {
@@ -1064,7 +1365,8 @@ button {
   .hold__pulse,
   .work__pulse,
   .cue::after,
-  .work__page {
+  .work__page,
+  .work[data-tall] .work__page--fit {
     animation: none;
   }
 

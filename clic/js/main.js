@@ -1,3 +1,4 @@
+import { createArchive } from './archive.js';
 import { createHold } from './hold.js';
 import { createPlayback, format, onFormatChange, prepare, recut, reducedMotion } from './media.js';
 import { hide, show, splitLines } from './reveal.js';
@@ -6,18 +7,18 @@ import { createSequence } from './sequence.js';
 import { createSound } from './sound.js';
 import { createThreshold } from './threshold.js';
 import { createViewer } from './viewer.js';
+import { catalogue, renderArchive, renderChapters } from './works.js';
 
 const FRAMES = { landscape: 96, portrait: 72 };
-const FRAME_SIZE = { landscape: [1280, 720], portrait: [540, 960] };
+const FRAME_SIZE = { landscape: [1600, 900], portrait: [810, 1440] };
 const HOLD_SECONDS = 1.6;
 // Share of the crossing after which the picture behind the hold button is the night.
 const NIGHTFALL = { landscape: 0.68, portrait: 0.655 };
 const PRELOAD_LIMIT = 5000;
-const METADATA_GRACE = 600;
 // Where the ground begins in each scene, as a share of the frame height.
 const HORIZON = {
-  landscape: { opening: 0.79, pale: 0.75, dunes: 0.5, water: 0.65 },
-  portrait: { opening: 0.79, pale: 0.76, dunes: 0.63, water: 0.68 },
+  landscape: { opening: 0.79, pale: 0.75, dunes: 0.5, scene: 0.8 },
+  portrait: { opening: 0.79, pale: 0.76, dunes: 0.63, scene: 0.8 },
 };
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -29,48 +30,43 @@ const index = $('.index');
 const opening = $('.opening');
 const land = $('.land');
 const stage = $('.land__stage');
+const night = $('#siti');
+const chaptersEnd = $('#google');
 const contact = $('.contact');
 const holdButton = $('.hold');
-const chapters = { sites: $('#siti'), shops: $('#negozi') };
 const videos = {
   threshold: $('.threshold video'),
   opening: $('video', opening),
   night: $('video', stage),
   contact: $('video', contact),
 };
-const phone = window.matchMedia('(max-width: 767px)');
 
 const canvas = $('.land__sequence');
 const sequence = createSequence(canvas);
 const sound = createSound($('.sound'));
-const playback = createPlayback([videos.opening, videos.night, videos.contact]);
+const playback = createPlayback();
 const playhead = { frame: 0 };
 
 let open = false;
 let whooshed = false;
 let plan;
 let scene;
+let viewer;
 let shownState = {};
+const sceneState = new Map();
 
 const unit = () => stage.offsetHeight;
 const landTop = () => land.getBoundingClientRect().top + window.scrollY;
 const at = (units) => landTop() + units * unit();
 const docTop = (element) => element.getBoundingClientRect().top + window.scrollY;
 const lastFrame = () => FRAMES[format()] - 1;
+const chapterSections = () => $$('.chapter');
 
-// The first data of a scene, or shortly after its metadata on browsers that load no further before a tap.
-const firstData = (video) => new Promise((done) => {
-  video.addEventListener('loadeddata', done, { once: true });
-  video.addEventListener('loadedmetadata', () => setTimeout(done, METADATA_GRACE), { once: true });
-  video.addEventListener('error', done, { once: true });
-});
-
-function loadDoor() {
-  const waiting = firstData(videos.threshold);
+// The press starts downloading once the door can be used: before that only its cover, the type and the code.
+function loadPress() {
   prepare(videos.threshold);
   videos.threshold.preload = 'auto';
   videos.threshold.load();
-  return [$('.threshold__still').decode(), waiting];
 }
 
 const loadSequence = () => sequence.load(`media/crossing/${format()}`, FRAME_SIZE[format()], FRAMES[format()]);
@@ -94,34 +90,51 @@ const apply = {
   nightfall(on) {
     holdButton.dataset.tone = on ? 'light' : 'ink';
   },
-  press(on) {
-    if (on && videos.contact.readyState) videos.contact.currentTime = 0;
-    playback.want(videos.contact, on);
-  },
+  press: (on) => playback.want(videos.contact, on),
   contact(on) {
     const text = $$('[data-lines], [data-reveal]', contact);
     if (on) show(text);
     else hide(text);
   },
-  chapter(name) {
-    for (const link of $$('a', index)) {
-      if (link.dataset.chapter === name) link.setAttribute('aria-current', 'true');
-      else link.removeAttribute('aria-current');
+  chapter(id) {
+    const link = $(`a[href="#${id}"]`, index);
+    $('.index__current', index).textContent = link?.textContent ?? '';
+    for (const item of $$('a', index)) {
+      if (item === link) item.setAttribute('aria-current', 'true');
+      else item.removeAttribute('aria-current');
     }
   },
 };
 
+function currentChapter(units) {
+  if (units >= plan.end + 0.5) return 'contatti';
+  const middle = window.innerHeight / 2;
+  const reached = chapterSections().filter((section) => section.getBoundingClientRect().top <= middle);
+  return reached.at(-1)?.id ?? '';
+}
+
 const stateAt = (units) => ({
-  opening: open && units < 1,
   sequence: units < plan.arrive,
   whoosh: units > plan.cross + 0.15 && units < plan.arrive - 0.3,
+  opening: open && units < 1,
   hold: units > plan.cross - 0.35 && units < plan.arrive - 0.04,
-  night: units >= plan.arrive - 0.08 && units < plan.day,
+  night: units >= plan.arrive - 0.08 && units < plan.landEnd,
   nightfall: units >= plan.nightfall,
-  press: units >= plan.end + 0.5,
+  press: units >= plan.end,
   contact: units >= plan.end + 0.97,
-  chapter: units < plan.cross - 0.5 ? '' : units < plan.shops - 0.5 ? 'sites' : units < plan.end + 0.5 ? 'shops' : 'contact',
+  chapter: currentChapter(units),
 });
+
+// The scene of a chapter gets its file a screen ahead and plays while the chapter is on screen.
+function renderScenes() {
+  for (const video of $$('.chapter__scene video')) {
+    const box = video.closest('.chapter').getBoundingClientRect();
+    if (box.top < window.innerHeight * 2) prepare(video);
+    const visible = box.top < window.innerHeight && box.bottom > 0;
+    if (sceneState.get(video) !== visible) playback.want(video, visible);
+    sceneState.set(video, visible);
+  }
+}
 
 function render() {
   if (!plan) return;
@@ -130,21 +143,19 @@ function render() {
     if (shownState[key] !== value) apply[key](value);
   }
   shownState = next;
+  if (open) renderScenes();
   $('.index__progress').style.strokeDashoffset = String(1 - window.scrollY / ScrollTrigger.maxScroll(window));
 }
 
 // Positions along the story, in stage heights from the top of the land.
 function measure() {
   const crossing = parseFloat(getComputedStyle(land).getPropertyValue('--crossing'));
-  const shops = (docTop(chapters.shops) - landTop()) / unit();
-  const skirt = $('.skirt--night').getBoundingClientRect().height;
   plan = {
     cross: 1,
     arrive: 1 + crossing,
     nightfall: 1 + crossing * NIGHTFALL[format()],
-    shops,
-    day: shops - 0.25,
-    end: (land.offsetHeight - skirt) / unit() - 1,
+    landEnd: land.offsetHeight / unit(),
+    end: (docTop(chaptersEnd) + chaptersEnd.offsetHeight - landTop()) / unit() - 1,
   };
 }
 
@@ -155,7 +166,7 @@ function buildScene() {
   const progress = $('.hold__progress');
   scene = gsap.timeline({
     defaults: { ease: 'none' },
-    scrollTrigger: { start: () => at(0), end: () => at(plan.end), scrub: reducedMotion.matches ? true : 0.3 },
+    scrollTrigger: { start: () => at(0), end: () => at(plan.arrive), scrub: reducedMotion.matches ? true : 0.3 },
   })
     .to(playhead, {
       frame: lastFrame(),
@@ -165,10 +176,7 @@ function buildScene() {
         progress.style.strokeDashoffset = String(1 - playhead.frame / lastFrame());
       },
     }, plan.cross)
-    .fromTo(['.land__night', '.land__floor'], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.08 }, plan.arrive - 0.08)
-    .fromTo('.land__day', { opacity: 0 }, { opacity: 1, duration: 0.55 }, plan.shops - 1)
-    .to('.land__floor', { autoAlpha: 0, duration: 0.55 }, plan.shops - 1)
-    .set({}, {}, plan.end);
+    .fromTo(['.land__night', '.land__floor'], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.08 }, plan.arrive - 0.08);
   shownState = {};
   render();
 }
@@ -180,7 +188,6 @@ function watchWorks() {
       reveal.unobserve(entry.target);
     }
   }, { rootMargin: '0px 0px -12% 0px' });
-  // Captures are fetched when their window is a screen away.
   const near = new IntersectionObserver((entries) => {
     for (const entry of entries.filter((item) => item.isIntersecting)) {
       for (const element of $$('[data-srcset], [data-src]', entry.target)) {
@@ -190,33 +197,40 @@ function watchWorks() {
       near.unobserve(entry.target);
     }
   }, { rootMargin: '100% 0px' });
+  for (const element of $$('.works, .chapter__backdrop')) near.observe(element);
   const live = new IntersectionObserver((entries) => {
     for (const entry of entries) entry.target.classList.toggle('is-live', entry.isIntersecting);
   });
-  for (const element of $$('.chapter, .work')) reveal.observe(element);
-  for (const work of $$('.work')) {
-    near.observe(work);
-    live.observe(work);
-  }
+  for (const element of $$('.chapter, .work, .note')) reveal.observe(element);
+  for (const work of $$('.work')) live.observe(work);
 }
 
-function findWork(id) {
-  const work = id && $(`.work[data-work="${id}"]`);
-  if (!work) return undefined;
-  const page = $('.work__page', work);
-  const link = $('.work__link', work);
-  return {
-    id,
-    title: $('.work__name', work).textContent,
-    link: link && { href: link.href, label: link.textContent },
-    images: phone.matches ? [$('source', work).dataset.srcset, ...(work.dataset.more?.split(' ') ?? [])] : [page.dataset.src],
-    opener: $('.work__window', work),
-  };
+function renderIndex(data) {
+  const links = [...data.chapters, { id: 'google', title: $('#google-label').textContent }, { id: 'contatti', title: 'Contatti' }]
+    .map(({ id, title }) => Object.assign(document.createElement('a'), { href: `#${id}`, textContent: title }));
+  $('.index__links', index).replaceChildren(...links);
 }
 
-const viewer = createViewer($('.viewer'), findWork);
+function setUp(data) {
+  renderChapters(data, { night, after: $('.chapters') });
+  renderIndex(data);
+  const works = catalogue(data);
+  viewer = createViewer($('.viewer'), works, { onStep: () => sound.play('tap') });
+  const archive = createArchive($('.archive'));
 
-function setUp() {
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-open]');
+    if (!trigger) return;
+    sound.play('tap');
+    viewer.open(trigger.dataset.open, trigger);
+  });
+  $('.index__all').addEventListener('click', (event) => {
+    sound.play('tap');
+    if (!$('.archive__list').children.length) renderArchive(data, $('.archive__list'));
+    archive.show(event.currentTarget);
+  });
+  $('.archive .viewer__close').addEventListener('click', () => sound.play('tap'));
+
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
   splitLines();
@@ -224,7 +238,6 @@ function setUp() {
   ScrollTrigger.create({ start: 0, end: 'max', onUpdate: render, onRefresh: render });
   createHold(holdButton, { range: () => [at(plan.cross), at(plan.arrive)], seconds: HOLD_SECONDS });
   watchWorks();
-  $('[data-sky]').src = `img/day-sky-${format()}.webp`;
   viewer.openFromAddress();
 }
 
@@ -238,11 +251,17 @@ createRipples($('.ripples'), () => {
   const horizon = HORIZON[format()];
   const middle = window.innerHeight / 2;
   if (opening.getBoundingClientRect().bottom > middle) return groundAt(opening, horizon.opening, 'light');
-  if (stage.getBoundingClientRect().bottom < middle) return groundAt(contact, horizon.water, 'light');
-  return playhead.frame < lastFrame() / 2 ? groundAt(stage, horizon.pale, 'ink') : groundAt(stage, horizon.dunes, 'light');
+  if (stage.getBoundingClientRect().bottom > middle) {
+    return playhead.frame < lastFrame() / 2 ? groundAt(stage, horizon.pale, 'ink') : groundAt(stage, horizon.dunes, 'light');
+  }
+  const scene = $$('.chapter__scene').find((element) => {
+    const box = element.getBoundingClientRect();
+    return box.top <= middle && box.bottom > middle;
+  });
+  return groundAt(scene ?? contact, horizon.scene, 'light');
 }, () => sound.play('drop'));
 
-$('.viewer__close').addEventListener('click', () => sound.play('tap'));
+$('.viewer .viewer__close').addEventListener('click', () => sound.play('tap'));
 
 const threshold = createThreshold($('.threshold'), {
   onEnter(withSound) {
@@ -263,20 +282,13 @@ const threshold = createThreshold($('.threshold'), {
   },
 });
 
-for (const work of $$('.work')) {
-  $('.work__window', work).addEventListener('click', () => {
-    sound.play('tap');
-    viewer.open(work.dataset.work);
-  });
-}
-
 index.addEventListener('click', (event) => {
   const link = event.target.closest('a');
   if (!link || !plan) return;
   event.preventDefault();
   sound.play('tap');
-  const chapter = chapters[link.dataset.chapter];
-  const top = chapter ? docTop($('.chapter__head', chapter)) - unit() * 0.12 : ScrollTrigger.maxScroll(window);
+  const target = $(link.getAttribute('href'));
+  const top = target === contact ? ScrollTrigger.maxScroll(window) : docTop($('.chapter__head', target)) - unit() * 0.12;
   window.scrollTo({ top, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
 });
 
@@ -307,10 +319,14 @@ history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);
 main.inert = true;
 
-const tasks = [...loadDoor(), document.fonts.ready.then(setUp)];
+const data = fetch('data/works.json').then((response) => response.json());
+const tasks = [$('.threshold__still').decode(), Promise.all([data, document.fonts.ready]).then(([loaded]) => setUp(loaded))];
 let settled = 0;
 for (const task of tasks) {
   // A scene that fails to load must not keep the door shut: each one falls back to its poster.
   task.catch((error) => console.warn(error)).then(() => threshold.progress(++settled / tasks.length));
 }
-Promise.race([Promise.allSettled(tasks), new Promise((done) => setTimeout(done, PRELOAD_LIMIT))]).then(threshold.ready);
+Promise.race([Promise.allSettled(tasks), new Promise((done) => setTimeout(done, PRELOAD_LIMIT))]).then(() => {
+  threshold.ready();
+  loadPress();
+});

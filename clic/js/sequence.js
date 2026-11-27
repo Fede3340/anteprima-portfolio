@@ -1,5 +1,6 @@
-const REACH = 10;
-const KEEP = 22;
+// At most 15 frames stay decoded around the playhead: big frames add up to hundreds of megabytes otherwise.
+const REACH = 7;
+const KEEP = 7;
 const PARALLEL = 6;
 const REST_DELAY = 140;
 
