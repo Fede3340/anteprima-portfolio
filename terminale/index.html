@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#08090a">
+  <title>Valerio Locci, Jr. Full Stack Web Developer</title>
+  <meta name="description" content="Il terminale di Valerio Locci: 66 repository pubblici, i commit con ora e frase, un campo minato da giocare.">
+  <link rel="preload" href="fonts/CommitMono-VF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="modulepreload" href="js/data.js">
+  <link rel="modulepreload" href="js/dom.js">
+  <link rel="modulepreload" href="js/banner.js">
+  <link rel="modulepreload" href="js/boot.js">
+  <link rel="modulepreload" href="js/calendar.js">
+  <link rel="modulepreload" href="js/glyph-viewer.js">
+  <link rel="modulepreload" href="js/works.js">
+  <link rel="stylesheet" href="css/terminal.css">
+</head>
+<body>
+  <noscript>
+    <p class="noscript">Valerio Locci, Jr. Full Stack Web Developer, Cagliari. Il codice è su <a href="https://github.com/Valee8">github.com/Valee8</a>.</p>
+  </noscript>
+
+  <main class="terminal" id="terminal" data-booting>
+    <header class="hero">
+      <h1 class="visually-hidden">Valerio Locci</h1>
+      <pre class="banner" id="banner" aria-hidden="true"></pre>
+      <p class="role">Jr. Full Stack Web Developer, Cagliari</p>
+    </header>
+
+    <section class="calendar" aria-label="Calendario dei commit">
+      <canvas id="calendar" role="img"></canvas>
+      <p class="readout" id="readout"></p>
+    </section>
+
+    <div class="stream" id="stream" role="log" aria-live="polite" aria-label="Uscita del terminale"></div>
+
+    <div class="dock" id="dock">
+      <form class="prompt-line" id="prompt-form" autocomplete="off">
+        <label class="prompt" for="command"><span class="user">valerio@cagliari</span> <span class="path">~</span> <span class="mark">%</span></label>
+        <span class="field">
+          <input id="command" name="command" type="text" inputmode="text" enterkeyhint="go"
+                 autocapitalize="none" autocorrect="off" spellcheck="false"
+                 aria-describedby="keys-hint">
+          <span class="cursor" id="cursor" aria-hidden="true">&nbsp;</span>
+        </span>
+      </form>
+      <nav class="keys" aria-label="Comandi">
+        <button type="button" data-run="lavori">lavori</button>
+        <button type="button" data-run="storia">storia</button>
+        <button type="button" data-run="gioca">gioca</button>
+        <button type="button" data-run="contatti">contatti</button>
+        <button type="button" data-run="aiuto">aiuto</button>
+      </nav>
+      <p class="visually-hidden" id="keys-hint">Scrivi un comando e premi Invio. Tab completa, le frecce su e giù richiamano i comandi già scritti.</p>
+    </div>
+  </main>
+
+  <aside class="pane" id="pane" aria-labelledby="pane-title" hidden>
+    <header class="pane-bar">
+      <h2 class="pane-title" id="pane-title"></h2>
+      <div class="pane-actions">
+        <button type="button" id="pane-prev" hidden>prima</button>
+        <button type="button" id="pane-next" hidden>dopo</button>
+        <button type="button" id="pane-replay" hidden>rigioca</button>
+        <button type="button" id="pane-close">chiudi</button>
+      </div>
+    </header>
+    <div class="pane-body" id="pane-body"></div>
+    <p class="pane-note" id="pane-note"></p>
+  </aside>
+
+  <canvas class="boot" id="boot" aria-hidden="true" hidden></canvas>
+
+  <script type="module" src="js/terminal.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'Atkinson Hyperlegible Next';
+    src: url('../../../fonts/AtkinsonHyperlegibleNext-Variable.woff2') format('woff2');
+    font-weight: 200 800;
+    font-display: swap;
+}
+
+body,
+select,
+button {
+    font-family: 'Atkinson Hyperlegible Next', sans-serif;
+}
+
+@media (pointer: coarse) {
+    #play,
+    #difficulty,
+    #try-again {
+        min-height: 44px;
+    }
+}
