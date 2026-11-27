@@ -141,6 +141,8 @@ function build(texts, pictures, sprites) {
   const park = createPark({ plan, renderer: world.renderer, pictures, sprites });
   world.add(exhibits);
   world.add(park);
+  world.block([...exhibits.solid, ...park.solid]);
+  anchors.avoid(() => exhibits.inSight());
   world.add(createLight({ plan, sky: world.sky, sun: world.sun, fog: world.scene.fog, park }));
   createSigns({
     plan,

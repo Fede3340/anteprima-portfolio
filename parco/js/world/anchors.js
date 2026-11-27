@@ -10,6 +10,7 @@ export function createAnchors(layer, camera) {
   const items = [];
   let top = 0;
   let bottom = 0;
+  let works = () => [];
 
   const measure = (item) => {
     item.w = item.node.offsetWidth;
@@ -28,12 +29,17 @@ export function createAnchors(layer, camera) {
       items.sort((a, b) => a.rank - b.rank);
       return item;
     },
+    // The rectangles of the works on the screen: a name never falls on one.
+    avoid(fn) {
+      works = fn;
+    },
     // Room kept free at the top and the bottom of the screen for the buttons.
     keep(free) {
       ({ top, bottom } = free);
     },
     update() {
       const placed = [];
+      let pictures;
       for (const item of items) {
         let on = item.visible();
         if (on) {
@@ -67,7 +73,9 @@ export function createAnchors(layer, camera) {
           .find(clear);
         // A box set below its point never climbs back over what it stands under: without room it waits.
         const climbed = item.place === 'below' && box && box.top < above - 1;
-        const covered = (item.rank > 0 && !box) || climbed;
+        pictures ??= item.rank > 0 ? works() : undefined;
+        const onWork = item.rank > 0 && box && pictures.some((r) => box.left < r.left + r.width && box.right > r.left && box.top < r.top + r.height && box.bottom > r.top);
+        const covered = (item.rank > 0 && !box) || climbed || onWork;
         item.node.classList.toggle('is-covered', covered);
         item.box = box ?? { left, top: above, right: left + item.w, bottom: above + item.h };
         if (!covered) placed.push(item);

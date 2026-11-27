@@ -49,6 +49,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   let time = 0;
   let listeners = { island: () => {}, frame: () => {} };
   let shown;
+  let solid = [];
 
   const tangent = new THREE.Vector3();
 
@@ -63,7 +64,8 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     state.pending = 0;
   };
 
-  // Stands at a point of an island at once, looking at its middle.
+  // Stands at a point of an island at once, looking at its works, or, where it has none, along the
+  // way to the path that leaves it and the islands ahead, a little up.
   function place(island, at = island.arrival) {
     stop();
     state.island = island;
@@ -71,9 +73,12 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     state.speed = 0;
     state.x = at.x;
     state.z = at.z;
-    state.heading = Math.atan2(island.centre.z - at.z, island.centre.x - at.x);
+    const works = island.zones.some((zone) => zone.works.length);
+    const toward = works ? island.centre : mouth(plan, island, island.out);
+    state.heading = Math.atan2(toward.z - at.z, toward.x - at.x);
+    state.pitch = works ? -0.1 : 0.06;
   }
-  place(plan.landing);
+  place(plan.landing, plan.landing.start);
 
   const controls = createControls(canvas, {
     onWalk(metres) {
@@ -206,6 +211,19 @@ export function createWorld(canvas, { plan, reducedMotion }) {
         return;
       }
     }
+    // Nothing is walked through: close to a thing one slides round it, and stops if it is in the way.
+    for (const thing of solid) {
+      const dx = x - thing.x;
+      const dz = z - thing.z;
+      const d = Math.hypot(dx, dz);
+      if (d >= thing.r || d === 0) continue;
+      x = thing.x + (dx / d) * thing.r;
+      z = thing.z + (dz / d) * thing.r;
+    }
+    if (Math.hypot(x - state.x, z - state.z) < Math.abs(metres) * 0.2 && Math.abs(state.speed) > 0.3) {
+      state.speed *= 0.5;
+      if (step?.island) state.route = [];
+    }
     // At the edge one stops: no wall, no fall.
     const r = Math.hypot(x - island.centre.x, z - island.centre.z);
     const room = island.radius - EDGE;
@@ -268,6 +286,10 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     sky,
     sun,
     jump,
+    // Things one cannot walk through: [{ x, z, r }].
+    block(things) {
+      solid = solid.concat(things);
+    },
     add(part) {
       parts.push(part);
       if (part.object) scene.add(part.object);

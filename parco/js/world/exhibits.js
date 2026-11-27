@@ -16,6 +16,8 @@ const LIFT = 0.1;
 const SUNK = -2.4;
 const CLOSE = 9;
 const PLATE = 7.5;
+// How far a work is still seen well enough for a name to keep off it.
+const SIGHT = 45;
 const MIDDLE = 1.5;
 const BORDER = 0.06;
 const DEPTH = 0.05;
@@ -63,10 +65,9 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     screen.userData.index = index;
     object.add(screen);
     const work = works[spot.id];
-    // A plate, as under a picture in a museum: the logo and the title.
+    // A plate, as under a picture in a museum: the logo, which already says the name, or the title.
     const plate = element('div', { className: 'work-label' }, [
-      ...(work.logo ? [logo(work.logo, { className: 'work-label__logo' })] : []),
-      element('strong', { textContent: work.title }),
+      work.logo ? logo(work.logo, { className: 'work-label__logo' }) : element('strong', { textContent: work.title }),
     ]);
     // Its turn to rise when its island wakes: one after the other along the arc.
     const order = plan.works.filter((other) => other.island === spot.island).indexOf(spot);
@@ -84,6 +85,23 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
 
   const frames = instances(template.group, plan.works);
   object.add(...frames.drawn);
+
+  const corner = new THREE.Vector3();
+  function rectOf(item) {
+    const xs = [];
+    const ys = [];
+    for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+      corner.set((sx * FRAME.width) / 2, (sy * FRAME.height) / 2, 0).applyMatrix4(item.screen.matrix).project(camera);
+      xs.push((corner.x * 0.5 + 0.5) * innerWidth);
+      ys.push((-corner.y * 0.5 + 0.5) * innerHeight);
+    }
+    return { left: Math.min(...xs), top: Math.min(...ys), width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys) };
+  }
+  const ahead = new THREE.Vector3();
+  const inFront = (item) => {
+    camera.getWorldDirection(ahead);
+    return (item.spot.place.x - camera.position.x) * ahead.x + (item.spot.place.z - camera.position.z) * ahead.z > 0;
+  };
 
   function place(item, index) {
     const { x, y, z } = item.spot.place;
@@ -124,6 +142,8 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
   return {
     object,
     items,
+    // One stops about a metre before a work, its frame in sight.
+    solid: plan.works.map((work) => ({ x: work.x, z: work.z, r: 1.6 })),
     // Covers for the island one is on and the two beside it; the others are let go.
     island(island) {
       const count = plan.islands.length;
@@ -156,22 +176,24 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
         item.height += rise * k;
         place(item, index);
       });
-      // Only the work one stands before shows its plate, and only standing or slow.
-      if (nearest && nearest.distance < PLATE && slow) nearest.plate = true;
+      // Only the work one stands before shows its plate, only standing or slow, and only with its whole
+      // frame on the screen.
+      if (nearest && nearest.distance < PLATE && slow) {
+        const r = rectOf(nearest);
+        nearest.plate = r.left >= 0 && r.top >= 0 && r.left + r.width <= innerWidth && r.top + r.height <= innerHeight;
+      }
       state.nearest = nearest?.spot;
     },
     targets: [...frames.drawn, ...items.map((item) => item.screen)],
     // The work a hit on one of the targets belongs to.
     spotOf: (hit) => items[hit.object.isInstancedMesh ? frames.spotOf(hit) : hit.object.userData.index].spot,
     // The rectangle of a work's picture on the screen, in CSS pixels.
-    rect(id) {
-      const item = items.find((each) => each.spot.id === id);
-      const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([sx, sy]) => new THREE.Vector3(sx * FRAME.width / 2, sy * FRAME.height / 2, 0)
-        .applyMatrix4(item.screen.matrix).project(camera));
-      const xs = corners.map((c) => (c.x * 0.5 + 0.5) * innerWidth);
-      const ys = corners.map((c) => (-c.y * 0.5 + 0.5) * innerHeight);
-      return { left: Math.min(...xs), top: Math.min(...ys), width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys) };
-    },
+    rect: (id) => rectOf(items.find((each) => each.spot.id === id)),
+    // The rectangles of the works in sight, their frames and plates included.
+    inSight: () => items.filter((item) => item.risen > 0.1 && item.distance < SIGHT && inFront(item)).map((item) => {
+      const r = rectOf(item);
+      return { left: r.left - 12, top: r.top - 12, width: r.width + 24, height: r.height + 90 };
+    }),
     // Where the eyes stand to look at a work: in front of it, as it faces now.
     standing(spot) {
       const item = items.find((each) => each.spot === spot);

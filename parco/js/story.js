@@ -77,7 +77,11 @@ function plan(work, next, stacked, row) {
   };
   const cover = coverOf(work);
   const boards = [{ phase: 'copertina', cover: true, texts: [], visual: { kind: 'pics', items: [cover], extra: partner(work, cover) } }];
-  for (const section of phases(work)) {
+  // The page scrolling on the phone stands with the phone screens of the same work.
+  const sections = phases(work);
+  const shown = sections.flatMap((section) => section.blocks).filter((block) => block.kind === 'images');
+  const scrolling = shown.find((block) => block.items.some((index) => gallery[index] && portrait(gallery[index]))) ?? shown[0];
+  for (const section of sections) {
     const own = [];
     let pending = [];
     const add = (visual) => {
@@ -103,8 +107,9 @@ function plan(work, next, stacked, row) {
       flush();
       if (block.kind === 'images') {
         const items = block.items.map((index) => gallery[index]).filter(Boolean);
-        if (TALL[work.id] && section.phase === 'progettazione' && !own.some((board) => board.visual.kind === 'pics')) {
-          items.unshift({ tall: true, src: `img/work/${work.id}-tall.webp`, w: TALL[work.id], h: Math.round(TALL[work.id] * 2.1667), alt: '' });
+        if (TALL[work.id] && block === scrolling) {
+          const at = items.findIndex(portrait);
+          items.splice(at < 0 ? items.length : at, 0, { tall: true, src: `img/work/${work.id}-tall.webp`, w: TALL[work.id], h: Math.round(TALL[work.id] * 2.1667), alt: '' });
         }
         groups(items, stacked, row, pending.length > 0).forEach(add);
       } else if (block.kind === 'values' || block.kind === 'list') {
@@ -142,7 +147,8 @@ function groups(items, stacked, row, withWords) {
   const out = [];
   for (const item of items) {
     const last = out.at(-1);
-    const joins = last && !(withWords && out.length === 1 && !(stacked && portrait(item))) && last.items.length < (portrait(item) ? row : 3)
+    const words = withWords && out.length === 1;
+    const joins = last && !(words && !portrait(item)) && last.items.length < (portrait(item) ? (words ? Math.min(row, 2) : row) : 3)
       && last.items.every((each) => portrait(each) === portrait(item)) && (portrait(item) || stacked);
     if (joins) last.items.push(item);
     else out.push({ kind: 'pics', items: [item] });
@@ -477,13 +483,35 @@ export function createStory(root, { works, sound, onClose, onEnd }) {
       node.dataset.layout = 'beside';
       const textW = Math.round(Math.min(560, Math.max(480, W * 0.4)));
       if (upright) {
-        // An upright picture whole at full height; under the words, a close look at the same picture.
-        draw(boxes[0], { w: W - textW, h: H });
-        const wide = W - boxes[0].offsetWidth;
-        text.style.width = `${wide}px`;
+        // Upright pictures whole, side by side at full height. A close look at the first fills the room
+        // left: beside them when it is wide, under the words when it is high.
+        const caption = shown.querySelector('.case-caption');
+        const sum = board.visual.items.reduce((total, image) => total + image.w / image.h, 0);
+        const gaps = 12 * (boxes.length - 1);
+        const place = (high) => {
+          const h = Math.min(H - high, (W - textW - gaps) / sum);
+          boxes.forEach((box) => draw(box, { w: h * (box.image.w / box.image.h), h }));
+          return h;
+        };
+        let h = place(caption ? 44 : 0);
+        let wide = boxes.reduce((total, box) => total + box.offsetWidth, gaps);
+        const spare = W - textW - wide - 12;
+        if (more && spare > 160) {
+          if (caption) caption.before(more);
+          else shown.append(more);
+          draw(more, { w: spare, h, fit: 'detail', focus: [0.5, 0.3] });
+          wide += 12 + more.offsetWidth;
+          kept = true;
+        }
+        shown.style.width = `${wide}px`;
+        if (caption && caption.offsetHeight > 44) {
+          h = place(caption.offsetHeight);
+          if (kept) draw(more, { w: spare, h, fit: 'detail', focus: [0.5, 0.3] });
+        }
+        text.style.width = `${W - wide}px`;
         const room = H - text.offsetHeight;
-        if (more && room > 160) {
-          draw(more, { w: wide, h: room, fit: 'detail', focus: [0.5, 0.3] });
+        if (more && !kept && room > 160) {
+          draw(more, { w: W - wide, h: room, fit: 'detail', focus: [0.5, 0.3] });
           kept = true;
         }
       } else {

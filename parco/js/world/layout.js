@@ -3,7 +3,7 @@
 // the first. On each island its works stand in an arc in a clearing, facing whoever arrives.
 import * as THREE from 'three';
 
-const LOOP = 78;
+const LOOP = 64;
 const STONE_EVERY = 1.25;
 // 16:10 like the covers, the middle of the picture at about eye height.
 export const FRAME = { width: 2, height: 1.25 };
@@ -25,16 +25,16 @@ const MOODS = {
 
 // The islands in the order of the loop: the places they hold, their size, height and light.
 const ISLANDS = [
-  { id: 'ingresso', zones: ['apertura', 'chi', 'servizi'], radius: 17, height: 0, mood: 'morning' },
-  { id: 'siti', zones: ['siti'], radius: 15, height: 4, mood: 'shade' },
-  { id: 'negozi', zones: ['negozi'], radius: 15, height: -1, mood: 'noon' },
-  { id: 'programmi', zones: ['programmi'], radius: 13, height: 5, mood: 'clear' },
-  { id: 'app', zones: ['app'], radius: 14, height: 1, mood: 'calm' },
-  { id: 'videogioco', zones: ['videogioco'], radius: 14, height: 6, mood: 'dusk' },
-  { id: 'marchi', zones: ['marchi'], radius: 17, height: 0, mood: 'morning' },
-  { id: 'manifesti', zones: ['manifesti'], radius: 18, height: 3, mood: 'noon' },
-  { id: 'google', zones: ['google'], radius: 12, height: 11, mood: 'far' },
-  { id: 'contatti', zones: ['contatti'], radius: 13, height: 2, mood: 'dusk' },
+  { id: 'ingresso', zones: ['apertura', 'chi', 'servizi'], radius: 16, height: 0, mood: 'morning' },
+  { id: 'siti', zones: ['siti'], radius: 15, height: 7, mood: 'shade' },
+  { id: 'negozi', zones: ['negozi'], radius: 15, height: 2, mood: 'noon' },
+  { id: 'programmi', zones: ['programmi'], radius: 13, height: 10, mood: 'clear' },
+  { id: 'app', zones: ['app'], radius: 14, height: 4, mood: 'calm' },
+  { id: 'videogioco', zones: ['videogioco'], radius: 14, height: 12, mood: 'dusk' },
+  { id: 'marchi', zones: ['marchi'], radius: 16, height: 3, mood: 'morning' },
+  { id: 'manifesti', zones: ['manifesti'], radius: 17, height: 9, mood: 'noon' },
+  { id: 'google', zones: ['google'], radius: 12, height: 15, mood: 'far' },
+  { id: 'contatti', zones: ['contatti'], radius: 13, height: 5, mood: 'dusk' },
 ];
 
 const NAMES = { apertura: 'Apertura', google: 'Google', contatti: 'Contatti' };
@@ -72,7 +72,12 @@ export function planPark(data, texts) {
     island.in = paths[(island.index - 1 + count) % count];
     arrange(island);
   }
-  return { islands, zones, works, paths, landing: islands[0], firstStop: islands[0] };
+  // Where the visit begins: on the first island, a few steps from the path to the second, so that
+  // walking straight ahead leads onto its stones.
+  const first = islands[0];
+  const leave = first.out.curve.getPoint(0);
+  first.start = first.centre.clone().lerp(leave, 0.4);
+  return { islands, zones, works, paths, landing: first };
 }
 
 // A path of stones from the edge of one island to the edge of the next, bending to one side and
@@ -124,11 +129,14 @@ function arrange(island) {
     work.place = { x, y: island.centre.y, z, fx: f.x, fz: f.z, cy: island.centre.y + 1.5 };
     Object.assign(work, { x, z });
   });
+  // The side of the way in away from the path that leaves: the great cursor stands there, aside.
+  const leave = island.out.curve.getPoint(0);
+  const away = Math.sign(Math.cos(ahead) * (leave.z - focal.z) - Math.sin(ahead) * (leave.x - focal.x)) || 1;
   island.zones.forEach((zone, index) => {
     // The sculptures at the ends of the arc, or either side of the way in where there are no works.
     const side = index % 2 ? 1 : -1;
-    const turn = zone.id === 'apertura' ? ahead : ahead + side * (all.length ? widest + 0.55 : 0.85);
-    const distance = zone.id === 'apertura' ? island.radius * 0.95 : 6.5;
+    const turn = zone.id === 'apertura' ? ahead - away * 0.9 : ahead + side * (all.length ? widest + 0.55 : 1.15);
+    const distance = zone.id === 'apertura' ? island.radius * 0.95 : all.length ? 6.5 : 9;
     zone.mark = { x: focal.x + Math.cos(turn) * distance, y: island.centre.y, z: focal.z + Math.sin(turn) * distance };
   });
 }

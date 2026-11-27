@@ -326,7 +326,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
 }
 
 .case-words > * {
-  max-width: 38rem;
+  max-width: 33rem;
 }
 
 .case-words > :not(.case-p) {

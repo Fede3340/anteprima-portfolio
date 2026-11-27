@@ -95,6 +95,11 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     }
     // The ground in front of the way in stays open, so that the works are seen on arrival.
     taken.push({ x: island.arrival.x, z: island.arrival.z, r: 2.6 });
+    // The way across the island, from where one arrives to where the next path leaves, stays free.
+    const leave = mouth(plan, island, island.out);
+    for (let k = 0; k <= 10; k++) {
+      taken.push({ x: island.arrival.x + (leave.x - island.arrival.x) * (k / 10), z: island.arrival.z + (leave.z - island.arrival.z) * (k / 10), r: 2 });
+    }
   }
   function freeSpot(island, size) {
     for (let tries = 0; tries < 40; tries++) {
@@ -122,10 +127,17 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
       }
     }
   }
+  // Things one cannot walk through, and how near one may come: about a metre from their edge.
+  const solid = [];
+  const SOFT = /^(ciuffo|nuvola-a-terra|sbuffo|erba-alta|canne|fiore|aiuola|cespuglio|sasso)/;
   for (const [name, spots] of Object.entries(gardens)) {
     sprite(name, spots);
     const entry = picture(name);
-    spots.forEach((spot) => shadows.push({ x: spot.x, z: spot.z, size: Math.max(1, spot.height * (entry.w / entry.h) * 1.1) }));
+    spots.forEach((spot) => {
+      const width = spot.height * (entry.w / entry.h);
+      shadows.push({ x: spot.x, z: spot.z, size: Math.max(1, width * 1.1) });
+      if (!SOFT.test(name)) solid.push({ x: spot.x, z: spot.z, r: 0.8 + width * 0.35 });
+    });
   }
 
   // The sculpture of each place; the great cursor stands in the middle of the first island.
@@ -136,6 +148,8 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     drawn.spots[0].y += picture(zone.id).lift ?? 0;
     statues.push(drawn);
     shadows.push({ x: zone.mark.x, z: zone.mark.z, size: 3 });
+    // A sculpture is seen whole from a few metres; the great cursor from further.
+    solid.push({ x: zone.mark.x, z: zone.mark.z, r: zone.id === 'apertura' ? 5.5 : 3 });
     const ring = sprite(`${zone.id}-cerchio`, [zone.mark], { later: true });
     if (ring) statues.push(ring);
   }
@@ -150,7 +164,10 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   }));
   const lit = sprite('lampione', lampSpots);
   const dark = sprite('lampione-spento', lampSpots);
-  lampSpots.forEach((spot) => shadows.push({ x: spot.x, z: spot.z, size: 1.1 }));
+  lampSpots.forEach((spot) => {
+    shadows.push({ x: spot.x, z: spot.z, size: 1.1 });
+    solid.push({ x: spot.x, z: spot.z, r: 0.9 });
+  });
 
   // The swing hangs from its cloud on the island of the games.
   const game = plan.islands.find((island) => island.id === 'videogioco');
@@ -161,29 +178,42 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   const seat = sprite('altalena-sedile', [{ x: swingAt.x, z: swingAt.z, y: swingGround + seatBottom + pictures['altalena-sedile'].metres * (1 - pivot[1]) }], { anchor: [pivot[0], 1 - pivot[1]] });
   const swing = { angle: 0, spin: 0 };
   shadows.push({ x: swingAt.x, z: swingAt.z, size: 1.6 });
+  solid.push({ x: swingAt.x, z: swingAt.z, r: 1.6 });
 
   // Clouds: the rims and undersides of the islands, the sea far below, the sky around.
   const rims = [];
   const unders = [];
   for (const island of plan.islands) {
+    // The paths come in at the edge, some from below: no billow stands in their way.
+    const mouths = [island.in, island.out].map((path) => mouth(plan, island, path));
+    const clear = (x, z, room) => mouths.every((at) => Math.hypot(x - at.x, z - at.z) > room);
+    const push = (list, a, r, height, y, room) => {
+      const x = island.centre.x + Math.cos(a) * r;
+      const z = island.centre.z + Math.sin(a) * r;
+      if (clear(x, z, room)) list.push({ x, z, y, height });
+    };
     const many = Math.round((Math.PI * 2 * island.radius) / RIM_EVERY);
     for (let i = 0; i < many; i++) {
-      const a = (i / many) * Math.PI * 2 + roll() * 0.2;
       // Over the edge of the floor, so that the island ends in billows, not in a line.
-      const r = island.radius - 1.3 + roll() * 0.6;
       const height = (1 + roll() * 0.5) * (1.3 + roll());
-      rims.push({ x: island.centre.x + Math.cos(a) * r, z: island.centre.z + Math.sin(a) * r, y: island.centre.y - height * 0.45, height });
+      push(rims, (i / many) * Math.PI * 2 + roll() * 0.2, island.radius - 1.3 + roll() * 0.6, height, island.centre.y - height * 0.45, 2.8);
     }
-    for (let i = 0; i < 3; i++) {
-      const a = roll() * Math.PI * 2;
-      const height = island.radius * (0.3 + roll() * 0.15);
-      unders.push({ x: island.centre.x + Math.cos(a) * island.radius * 0.3, z: island.centre.z + Math.sin(a) * island.radius * 0.3, y: island.centre.y - height * 1.1, height });
+    // A second ring of billows lower down, and big ones underneath: the island has the thickness of
+    // a cloud seen from below and from the side.
+    const lower = Math.round(many * 0.6);
+    for (let i = 0; i < lower; i++) {
+      const height = 2 + roll() * 1.4;
+      push(unders, ((i + 0.5) / lower) * Math.PI * 2 + roll() * 0.2, island.radius * (0.82 + roll() * 0.12), height, island.centre.y - 1.8 - height * 0.6, 4 + height * 1.4);
+    }
+    for (let i = 0; i < 5; i++) {
+      const height = island.radius * (0.22 + roll() * 0.12);
+      push(unders, roll() * Math.PI * 2, island.radius * (0.15 + roll() * 0.35), height, island.centre.y - 2.5 - height * (0.6 + roll() * 0.5), 3 + height * 1.4);
     }
   }
   sprite('sbuffo-2', rims.filter((_, i) => i % 3 === 0));
   sprite('sbuffo-1', rims.filter((_, i) => i % 3 === 1));
   sprite('sbuffo-3', rims.filter((_, i) => i % 3 === 2));
-  sprite('sbuffo-3', unders);
+  sprite('sbuffo-2', unders);
   // Grass of cloud, in little tufts all over the floors.
   const tufts = [];
   for (const island of plan.islands) {
@@ -223,6 +253,7 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
 
   return {
     object,
+    solid,
     tappable: [lit?.mesh, dark?.mesh, seat?.mesh, swingCloud?.mesh].filter(Boolean),
     set lamps(level) {
       lampLevel = level;

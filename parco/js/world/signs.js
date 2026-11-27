@@ -34,7 +34,8 @@ export function createSigns({ plan, texts, works, anchors, rig, state, camera, o
   const away = (point) => Math.hypot(camera.position.x - point.x, camera.position.z - point.z);
   for (const island of plan.islands) {
     const [first] = island.zones;
-    const over = island.centre.clone().setY(island.centre.y + 7);
+    // High in the sky over the island, clear of what stands on it.
+    const over = island.centre.clone().setY(island.centre.y + 11);
     // Seen from another island or from the path, the name floats over the island; on it, it goes.
     name(first.title, first.id, over, () => rig.mode === 'walk' && state.island !== island && away(over) < NAME_NEAR);
     name(first.title, first.id, island.centre, () => rig.mode === 'above', 'zone-name zone-name--above');
