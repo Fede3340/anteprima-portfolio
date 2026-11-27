@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <style>
+    .fixed { fill: #0b6b4d; }
+    .other { fill: #0c2b20; }
+    @media (prefers-color-scheme: dark) {
+      .other { fill: #7ee08a; }
+    }
+  </style>
+  <path class="fixed" d="M0 0h11v8H5v8H0z"/>
+  <path class="other" d="M11 0h5v16H5V8h6z"/>
+</svg>

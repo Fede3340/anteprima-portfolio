@@ -1,0 +1,260 @@
+@font-face {
+  font-family: "Mattone";
+  src: url("../fonts/mattone-black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Literata";
+  src: url("../fonts/literata.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mattone Fallback";
+  src: local("Arial Black");
+  font-weight: 900;
+  size-adjust: 120.4%;
+}
+
+@font-face {
+  font-family: "Literata Fallback";
+  src: local("Georgia");
+  font-weight: 400;
+  size-adjust: 107.6%;
+}
+
+@font-face {
+  font-family: "Literata Fallback";
+  src: local("Georgia Bold");
+  font-weight: 700;
+  size-adjust: 98.5%;
+}
+
+:root {
+  --color-forest: #0c2b20;
+  --color-emerald: #0b6b4d;
+  --color-sprout: #7ee08a;
+  --color-mint: #cff5dd;
+
+  --font-display: "Mattone", "Mattone Fallback", "Arial Black", sans-serif;
+  --font-text: "Literata", "Literata Fallback", Georgia, serif;
+
+  --text-size: 22px;
+  --text-line: 33px;
+  --command-size: 20px;
+  --command-line: 30px;
+  --title-size: 38px;
+  --display-line: 1.1;
+
+  --display-cap-top: 0.175;
+  --text-cap-top: 10.6px;
+
+  --space-1: 11px;
+  --space-2: 22px;
+  --space-3: 33px;
+  --space-6: 66px;
+  --space-12: 132px;
+
+  --gutter: 16px;
+  --phone-column: 375px;
+  --column-gap: 48px;
+  --band: 12px;
+  --row-height: 52px;
+  --sign-size: 28px;
+  --sign-wide-step: 19px;
+  --sign-narrow-step: 9px;
+
+  --ease: cubic-bezier(0.45, 0, 0.15, 1);
+  --duration-state: 180ms;
+  --duration-view: 520ms;
+  --duration-cover: 700ms;
+}
+
+@media (min-width: 360px) {
+  :root {
+    --title-size: 40px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+    --band: 16px;
+  }
+}
+
+@media (min-width: 900px) {
+  :root {
+    --row-height: 64px;
+    --sign-size: 32px;
+    --sign-wide-step: 22px;
+    --sign-narrow-step: 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --text-size: 24px;
+    --text-line: 36px;
+    --command-size: 22px;
+    --command-line: 33px;
+    --title-size: 64px;
+    --text-cap-top: 11.6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --title-size: 88px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-forest);
+  color: var(--color-forest);
+  font-family: var(--font-text);
+  font-size: var(--text-size);
+  font-weight: 400;
+  line-height: var(--text-line);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+p,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  transition: background-color var(--duration-state) var(--ease), color var(--duration-state) var(--ease);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-mint);
+  outline-offset: 0;
+  box-shadow: 0 0 0 5px var(--color-forest);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--title-size);
+  font-weight: 900;
+  line-height: var(--display-line);
+}
+
+.command {
+  font-size: var(--command-size);
+  font-weight: 700;
+  line-height: var(--command-line);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: var(--gutter);
+  padding: var(--space-1) var(--gutter);
+  background: var(--color-forest);
+  color: var(--color-mint);
+  font-size: var(--command-size);
+  font-weight: 700;
+  line-height: var(--command-line);
+  transform: translateY(-100%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.sign {
+  display: block;
+  width: var(--sign-size);
+  height: var(--sign-size);
+  background-color: var(--color-sprout);
+  background-image:
+    linear-gradient(var(--color-emerald), var(--color-emerald)),
+    linear-gradient(var(--color-emerald), var(--color-emerald));
+  background-repeat: no-repeat;
+  background-position: 0 0, 0 100%;
+  background-size: var(--sign-wide-step) 50%, var(--sign-narrow-step) 50%;
+}
+
+.logotype {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: var(--display-line);
+}
+
+.logotype__line {
+  display: block;
+  margin-left: -0.046875em;
+  white-space: nowrap;
+}
+
+.logotype__line--first {
+  font-size: calc(var(--logotype-width) / 5.804625);
+}
+
+.logotype__line--last {
+  font-size: calc(var(--logotype-width) / 4.558125);
+}
+
+@media (hover: hover) {
+  .on-light a:hover {
+    background-color: var(--color-sprout);
+  }
+
+  .on-sprout a:hover,
+  .on-dark a:hover {
+    background-color: var(--color-mint);
+    color: var(--color-forest);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a {
+    transition: none;
+  }
+}
