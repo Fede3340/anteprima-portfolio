@@ -1,0 +1,379 @@
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("../fonts/InstrumentSans-Variable.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --paper: #f2eee6;
+  --ink: #1c1a17;
+  --soft: #5c564d;
+  --blue: #113598;
+  --plaster: #d6c5b3;
+  --bar-h: 52px;
+  --band-h: 108px;
+  --gutter: 28px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--plaster);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+p,
+figure {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+/* Bar */
+
+.bar {
+  position: fixed;
+  z-index: 3;
+  inset: 0 0 auto 0;
+  display: flex;
+  justify-content: space-between;
+  height: var(--bar-h);
+  background: var(--paper);
+}
+
+.bar__name,
+.bar__nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 var(--gutter);
+  white-space: nowrap;
+}
+
+.bar__name {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.bar__nav {
+  gap: 28px;
+}
+
+.bar__nav a {
+  position: relative;
+  padding: 6px 0;
+}
+
+.bar__nav a::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 2px 0;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ease);
+}
+
+.bar__nav a:hover::after,
+.bar__nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Viewer */
+
+.viewer {
+  position: fixed;
+  inset: 0;
+}
+
+.stage {
+  position: absolute;
+  inset: var(--bar-h) 0 0 0;
+  overflow: hidden;
+  background: var(--plaster);
+}
+
+.scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  aspect-ratio: 3840 / 1648;
+  transform-origin: 0 0;
+}
+
+.scene__wall {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.work {
+  position: absolute;
+  overflow: hidden;
+}
+
+.work img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.work__art {
+  object-fit: cover;
+}
+
+[data-surface="f1"] { left: 30.599%; top: 18.811%; width: 13.464%; height: 43.204%; }
+[data-surface="f2"] { left: 48.802%; top: 5.097%; width: 12.422%; height: 38.228%; }
+[data-surface="f3"] { left: 66.797%; top: 10.376%; width: 7.839%; height: 25.243%; }
+[data-surface="f4"] { left: 64.922%; top: 42.961%; width: 10.729%; height: 34.587%; }
+[data-surface="f5"] { left: 80.495%; top: 14.624%; width: 14.010%; height: 44.660%; }
+[data-surface="small"] { left: 48.802%; top: 50.850%; width: 7.734%; height: 10.862%; }
+[data-surface="monitor"] { left: 39.635%; top: 68.386%; width: 16.953%; height: 21.723%; }
+[data-surface="ph1"] { left: 82.448%; top: 71.966%; width: 2.266%; height: 10.498%; }
+[data-surface="ph2"] { left: 86.432%; top: 71.966%; width: 2.240%; height: 10.498%; }
+
+.work--mark .work__art {
+  inset: -14% 0;
+  width: 100%;
+  height: 128%;
+  object-fit: contain;
+}
+
+.work--screen .work__art {
+  object-position: 50% 0;
+}
+
+.work--phone {
+  border-radius: 15% / 7.5%;
+}
+
+.work--phone .work__art {
+  height: auto;
+  object-fit: fill;
+}
+
+.work--grecale { background: #e4e6dc; }
+.work--mirtifolia { background: #f96111; }
+
+/* Notes */
+
+.notes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.note {
+  position: absolute;
+  background: var(--paper);
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity 0.25s linear, transform 0.25s var(--ease);
+}
+
+.note.is-on {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.45s linear 0.2s, transform 0.6s var(--ease) 0.2s;
+}
+
+.note--intro {
+  left: 0;
+  bottom: 124px;
+  width: min(560px, 40vw);
+  padding: 36px 44px 30px var(--gutter);
+}
+
+.note__lead {
+  font-size: clamp(28px, 2.3vw, 36px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.018em;
+  text-wrap: pretty;
+}
+
+.note__hint {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+  color: var(--soft);
+}
+
+.note__tick {
+  display: block;
+  width: 1.5px;
+  height: 22px;
+  background: var(--ink);
+  transform-origin: top;
+  animation: tick 2.2s var(--ease) infinite;
+}
+
+@keyframes tick {
+  0% { transform: scaleY(0); }
+  55% { transform: scaleY(1); }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+.note--work {
+  inset: auto 0 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr);
+  align-items: baseline;
+  column-gap: 40px;
+  height: var(--band-h);
+  padding: 30px var(--gutter) 0;
+}
+
+.note__title {
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.note__text {
+  font-size: 20px;
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+
+.note__status {
+  position: relative;
+  justify-self: end;
+  padding-left: 20px;
+  color: var(--blue);
+  font-weight: 500;
+}
+
+.note__status::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.48em;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Track */
+
+.track {
+  position: relative;
+  height: 640vh;
+}
+
+.track__mark {
+  position: absolute;
+  left: 0;
+  top: 40.5%;
+}
+
+/* Small screens: the camera window sits above a text panel */
+
+@media (max-width: 760px) {
+  :root {
+    --bar-h: 50px;
+    --gutter: 20px;
+    --panel-h: 268px;
+  }
+
+  .bar__name {
+    font-size: 17px;
+  }
+
+  .bar__nav {
+    gap: 16px;
+    font-size: 15px;
+  }
+
+  .stage {
+    inset: var(--bar-h) 0 var(--panel-h) 0;
+  }
+
+  .notes {
+    inset: auto 0 0 0;
+    height: var(--panel-h);
+    background: var(--paper);
+  }
+
+  .note,
+  .note--intro,
+  .note--work {
+    inset: 0;
+    display: block;
+    width: auto;
+    height: auto;
+    padding: 26px var(--gutter) 0;
+  }
+
+  .note__lead {
+    font-size: 28px;
+  }
+
+  .note__hint {
+    margin-top: 20px;
+  }
+
+  .note__title {
+    font-size: 30px;
+  }
+
+  .note__text {
+    margin-top: 12px;
+  }
+
+  .note__status {
+    display: inline-block;
+    margin-top: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .note,
+  .note.is-on,
+  .bar__nav a::after {
+    transition: none;
+  }
+
+  .note {
+    transform: none;
+  }
+
+  .note__tick {
+    animation: none;
+  }
+}

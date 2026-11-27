@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta name="robots" content="noindex, nofollow">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Federico Mascia. Graphic e web designer, Cagliari</title>
+  <meta name="description" content="Progetto e costruisco siti, negozi online e programmi. Curo marchi, etichette, pieghevoli, foto e video.">
+  <link rel="preload" href="fonts/InstrumentSans-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="img/scene/studio-wall.webp" as="image">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <header class="bar">
+    <a class="bar__name" href="#top">Federico Mascia</a>
+    <nav class="bar__nav" aria-label="Sezioni">
+      <a href="#works">Lavori</a>
+      <a href="#about">Chi sono</a>
+      <a href="#contact">Contatti</a>
+    </nav>
+  </header>
+
+  <div class="viewer">
+    <div class="stage" aria-hidden="true">
+      <div class="scene">
+        <img class="scene__wall" src="img/scene/studio-wall.webp" alt="" width="3840" height="1648" decoding="async">
+
+        <figure class="work work--print" data-surface="f1">
+          <img class="work__art" src="img/works/poster-wine.webp" alt="">
+          <img class="work__light" src="img/scene/light-f1.webp" alt="">
+        </figure>
+        <figure class="work work--print" data-surface="f2">
+          <img class="work__art" src="img/works/poster-fish.webp" alt="">
+          <img class="work__light" src="img/scene/light-f2.webp" alt="">
+        </figure>
+        <figure class="work work--print" data-surface="f3">
+          <img class="work__art" src="img/works/poster-honey.webp" alt="">
+          <img class="work__light" src="img/scene/light-f3.webp" alt="">
+        </figure>
+        <figure class="work work--print" data-surface="f4">
+          <img class="work__art" src="img/works/poster-chestnuts.webp" alt="">
+          <img class="work__light" src="img/scene/light-f4.webp" alt="">
+        </figure>
+        <figure class="work work--print" data-surface="f5">
+          <img class="work__art" src="img/works/poster-5km.webp" alt="">
+          <img class="work__light" src="img/scene/light-f5.webp" alt="">
+        </figure>
+        <figure class="work work--mark" data-surface="small">
+          <img class="work__art" src="img/works/soryn-logo.svg" alt="">
+        </figure>
+        <figure class="work work--screen" data-surface="monitor">
+          <img class="work__art" src="img/works/pippi-store-1920.webp" alt="">
+        </figure>
+        <figure class="work work--phone work--grecale" data-surface="ph1">
+          <img class="work__art" src="img/works/grecale-390.webp" alt="">
+        </figure>
+        <figure class="work work--phone work--mirtifolia" data-surface="ph2">
+          <img class="work__art" src="img/works/mirtifolia-390.webp" alt="">
+        </figure>
+      </div>
+    </div>
+
+    <div class="notes">
+      <section class="note note--intro is-on" data-note="intro">
+        <h1 class="note__lead">Progetto e costruisco siti, negozi online e programmi. Curo marchi, etichette, pieghevoli, foto e video.</h1>
+        <p class="note__hint"><span class="note__tick"></span>Scorri</p>
+      </section>
+
+      <section class="note note--work" data-note="pippi">
+        <h2 class="note__title">pippi.store</h2>
+        <p class="note__text">Negozio online di un solo prodotto, in 27 varianti e cinque lingue.</p>
+        <p class="note__status">Online dal 16 ottobre 2026.</p>
+      </section>
+
+      <section class="note note--work" data-note="wine">
+        <h2 class="note__title">Sagra del vino</h2>
+        <p class="note__text">Manifesto.</p>
+      </section>
+    </div>
+  </div>
+
+  <main class="track" id="top">
+    <span class="track__mark" id="works" data-mark="pippi"></span>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.1/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.1/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
