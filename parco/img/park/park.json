@@ -1,0 +1,145 @@
+{
+ "panchina": {
+  "metres": 0.95,
+  "w": 1404,
+  "h": 901,
+  "large": {
+   "file": "img/park/panchina-large.webp",
+   "w": 1402,
+   "h": 900
+  },
+  "small": {
+   "file": "img/park/panchina-small.webp",
+   "w": 467,
+   "h": 300
+  }
+ },
+ "lampione": {
+  "metres": 3.6,
+  "w": 335,
+  "h": 1989,
+  "large": {
+   "file": "img/park/lampione-large.webp",
+   "w": 236,
+   "h": 1400
+  },
+  "small": {
+   "file": "img/park/lampione-small.webp",
+   "w": 78,
+   "h": 466
+  }
+ },
+ "lampione-spento": {
+  "metres": 3.6,
+  "w": 335,
+  "h": 1989,
+  "large": {
+   "file": "img/park/lampione-spento-large.webp",
+   "w": 236,
+   "h": 1400
+  },
+  "small": {
+   "file": "img/park/lampione-spento-small.webp",
+   "w": 78,
+   "h": 466
+  }
+ },
+ "albero": {
+  "metres": 3.2,
+  "w": 642,
+  "h": 1075,
+  "large": {
+   "file": "img/park/albero-large.webp",
+   "w": 633,
+   "h": 1060
+  },
+  "small": {
+   "file": "img/park/albero-small.webp",
+   "w": 211,
+   "h": 353
+  }
+ },
+ "nuvola-1": {
+  "metres": 1,
+  "w": 1702,
+  "h": 563,
+  "large": {
+   "file": "img/park/nuvola-1-large.webp",
+   "w": 1657,
+   "h": 548
+  },
+  "small": {
+   "file": "img/park/nuvola-1-small.webp",
+   "w": 550,
+   "h": 182
+  }
+ },
+ "nuvola-2": {
+  "metres": 1,
+  "w": 1398,
+  "h": 1134,
+  "large": {
+   "file": "img/park/nuvola-2-large.webp",
+   "w": 1381,
+   "h": 1120
+  },
+  "small": {
+   "file": "img/park/nuvola-2-small.webp",
+   "w": 460,
+   "h": 373
+  }
+ },
+ "nuvola-3": {
+  "metres": 1,
+  "w": 501,
+  "h": 170,
+  "large": {
+   "file": "img/park/nuvola-3-large.webp",
+   "w": 457,
+   "h": 155
+  },
+  "small": {
+   "file": "img/park/nuvola-3-small.webp",
+   "w": 189,
+   "h": 64
+  }
+ },
+ "altalena-nuvola": {
+  "metres": 1.374,
+  "w": 781,
+  "h": 489,
+  "large": {
+   "file": "img/park/altalena-nuvola-large.webp",
+   "w": 781,
+   "h": 489
+  },
+  "small": {
+   "file": "img/park/altalena-nuvola-small.webp",
+   "w": 260,
+   "h": 163
+  }
+ },
+ "altalena-sedile": {
+  "metres": 2.795,
+  "w": 781,
+  "h": 995,
+  "large": {
+   "file": "img/park/altalena-sedile-large.webp",
+   "w": 781,
+   "h": 995
+  },
+  "small": {
+   "file": "img/park/altalena-sedile-small.webp",
+   "w": 260,
+   "h": 331
+  }
+ },
+ "altalena": {
+  "pivot": [
+   0.49167733674775926,
+   0.03015075376884422
+  ],
+  "seatBottom": 0.45,
+  "cloudBottom": 3.076
+ }
+}

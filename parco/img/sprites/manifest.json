@@ -1,0 +1,174 @@
+{
+  "apertura": {
+    "file": "apertura.webp",
+    "larghezza": 1038,
+    "altezza": 1573,
+    "file_1024": "apertura-1024.webp",
+    "larghezza_1024": 519,
+    "altezza_1024": 786,
+    "altezza_m": 9.0,
+    "appoggio": {
+      "x": 0.6561,
+      "y": 0.9943
+    }
+  },
+  "negozi": {
+    "file": "negozi.webp",
+    "larghezza": 1355,
+    "altezza": 1421,
+    "file_1024": "negozi-1024.webp",
+    "larghezza_1024": 678,
+    "altezza_1024": 710,
+    "altezza_m": 3.5,
+    "appoggio": {
+      "x": 0.5446,
+      "y": 0.9944
+    }
+  },
+  "chi": {
+    "file": "chi.webp",
+    "larghezza": 1406,
+    "altezza": 899,
+    "file_1024": "chi-1024.webp",
+    "larghezza_1024": 703,
+    "altezza_1024": 450,
+    "altezza_m": 3.0,
+    "appoggio": {
+      "x": 0.4989,
+      "y": 0.99
+    }
+  },
+  "servizi": {
+    "file": "servizi.webp",
+    "larghezza": 777,
+    "altezza": 1840,
+    "file_1024": "servizi-1024.webp",
+    "larghezza_1024": 388,
+    "altezza_1024": 920,
+    "altezza_m": 4.0,
+    "appoggio": {
+      "x": 0.5058,
+      "y": 0.9951
+    }
+  },
+  "programmi": {
+    "file": "programmi.webp",
+    "larghezza": 1214,
+    "altezza": 1051,
+    "file_1024": "programmi-1024.webp",
+    "larghezza_1024": 607,
+    "altezza_1024": 526,
+    "altezza_m": 3.5,
+    "appoggio": {
+      "x": 0.4843,
+      "y": 0.9924
+    }
+  },
+  "app": {
+    "file": "app.webp",
+    "larghezza": 721,
+    "altezza": 1290,
+    "file_1024": "app-1024.webp",
+    "larghezza_1024": 360,
+    "altezza_1024": 645,
+    "altezza_m": 4.0,
+    "appoggio": {
+      "x": 0.5028,
+      "y": 0.9938
+    }
+  },
+  "videogioco": {
+    "file": "videogioco.webp",
+    "larghezza": 1319,
+    "altezza": 922,
+    "file_1024": "videogioco-1024.webp",
+    "larghezza_1024": 660,
+    "altezza_1024": 461,
+    "altezza_m": 3.0,
+    "appoggio": {
+      "x": 0.5034,
+      "y": 0.9913
+    }
+  },
+  "marchi": {
+    "file": "marchi.webp",
+    "larghezza": 1009,
+    "altezza": 1230,
+    "file_1024": "marchi-1024.webp",
+    "larghezza_1024": 504,
+    "altezza_1024": 615,
+    "altezza_m": 3.5,
+    "appoggio": {
+      "x": 0.5015,
+      "y": 0.9927
+    },
+    "sospesa_m": 0.8
+  },
+  "marchi-cerchio": {
+    "file": "marchi-cerchio.webp",
+    "larghezza": 1259,
+    "altezza": 341,
+    "file_1024": "marchi-cerchio-1024.webp",
+    "larghezza_1024": 630,
+    "altezza_1024": 170,
+    "altezza_m": 0.81,
+    "appoggio": {
+      "x": 0.4936,
+      "y": 0.9765
+    },
+    "larghezza_m": 3.0
+  },
+  "manifesti": {
+    "file": "manifesti.webp",
+    "larghezza": 953,
+    "altezza": 1698,
+    "file_1024": "manifesti-1024.webp",
+    "larghezza_1024": 476,
+    "altezza_1024": 849,
+    "altezza_m": 4.0,
+    "appoggio": {
+      "x": 0.5063,
+      "y": 0.9953
+    }
+  },
+  "contatti": {
+    "file": "contatti.webp",
+    "larghezza": 1070,
+    "altezza": 571,
+    "file_1024": "contatti-1024.webp",
+    "larghezza_1024": 535,
+    "altezza_1024": 286,
+    "altezza_m": 1.2,
+    "appoggio": {
+      "x": 0.4995,
+      "y": 0.986
+    },
+    "sospesa_m": 2.0
+  },
+  "siti": {
+    "file": "siti.webp",
+    "larghezza": 733,
+    "altezza": 1304,
+    "file_1024": "siti-1024.webp",
+    "larghezza_1024": 366,
+    "altezza_1024": 652,
+    "altezza_m": 4.0,
+    "appoggio": {
+      "x": 0.4993,
+      "y": 0.9939
+    }
+  },
+  "google": {
+    "file": "google.webp",
+    "larghezza": 434,
+    "altezza": 1919,
+    "file_1024": "google-1024.webp",
+    "larghezza_1024": 217,
+    "altezza_1024": 960,
+    "altezza_m": 4.0,
+    "appoggio": {
+      "x": 0.4942,
+      "y": 0.9953
+    }
+  }
+}

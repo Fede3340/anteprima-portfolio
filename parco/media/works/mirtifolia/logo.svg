@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="4 4 112 112">
+  <defs><clipPath id="m-cup"><circle cx="60" cy="60" r="46"/></clipPath></defs>
+  <circle cx="60" cy="60" r="56" fill="#2a0e07"/>
+  <g clip-path="url(#m-cup)">
+    <rect x="0" y="0" width="120" height="120" fill="#2a0e07"/>
+    <path d="M14 58 C28 48 40 48 54 58 S80 68 106 56 L106 0 L14 0 Z" fill="#f76012"/>
+  </g>
+  <circle cx="46" cy="40" r="5.5" fill="#2a0e07"/>
+  <circle cx="64" cy="30" r="4" fill="#2a0e07"/>
+  <circle cx="76" cy="42" r="3" fill="#2a0e07"/>
+</svg>

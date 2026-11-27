@@ -1,0 +1,60 @@
+{
+  "opening": [],
+  "lines": [],
+  "who": {
+    "title": "Chi sono",
+    "text": "Sono Federico Mascia, designer a Cagliari. Disegno e costruisco siti, negozi online, programmi e app."
+  },
+  "services": {
+    "title": "Che cosa faccio",
+    "items": [
+      {
+        "title": "Siti",
+        "stage": "siti"
+      },
+      {
+        "title": "Negozi online",
+        "stage": "negozi"
+      },
+      {
+        "title": "Programmi e app",
+        "stage": "programmi"
+      },
+      {
+        "title": "Marchi e grafica",
+        "stage": "marchi"
+      },
+      {
+        "title": "Campagne",
+        "stage": "manifesti"
+      },
+      {
+        "title": "Google",
+        "line": "Più in alto nelle ricerche, più vendite dalle stesse visite.",
+        "stage": "google"
+      }
+    ]
+  },
+  "hint": "Trascina per camminare",
+  "google": {
+    "work": "pippi-store",
+    "facts": [
+      "Il 16 ottobre pippi.store è passato al sito nuovo, e i 750 indirizzi del negozio di prima portano alle pagine nuove.",
+      "Cassa in due passi senza registrazione, carta, PayPal e contrassegno.",
+      "Lo studio della conversione prende nove elementi della pagina, ognuno con la sua fonte, e mette in fila 14 ipotesi da provare, ordinate con un punteggio."
+    ]
+  },
+  "contact": {
+    "title": "Scrivimi",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com/in/federicomascia"
+      },
+      {
+        "label": "Instagram",
+        "href": "https://www.instagram.com/federico__mascia"
+      }
+    ]
+  }
+}

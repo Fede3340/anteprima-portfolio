@@ -1,0 +1,870 @@
+@font-face {
+  font-family: "Grandstander";
+  src: url("../fonts/grandstander-latin.woff2?v=1") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/nunito-latin.woff2?v=1") format("woff2");
+  font-weight: 200 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --sky: #95c8ee;
+  --dune: #2a5082;
+  --night: #00184d;
+  --paper: #eef0f3;
+  --ink: #001750;
+  --light: #f6f8fb;
+
+  --gutter: clamp(16px, 4.4vw, 64px);
+  --top: max(10px, env(safe-area-inset-top));
+  --bottom: max(14px, env(safe-area-inset-bottom));
+  --frame: 6px;
+
+  --font-display: "Grandstander", "Trebuchet MS", sans-serif;
+  --font-text: "Nunito", "Segoe UI", Arial, sans-serif;
+  --display: clamp(1.75rem, 1rem + 3.6vw, 3.5rem);
+  --title: clamp(1.375rem, 1.2rem + 0.8vw, 2rem);
+  --body: 1.0625rem;
+  --small: 1rem;
+  --ease: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--sky);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--body);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  word-spacing: 0.1em;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+/* The park fills the screen; everything written sits over it in HTML. */
+.park {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.park:active {
+  cursor: grabbing;
+}
+
+.pill,
+.brand,
+.sound,
+.above,
+.threshold__enter,
+.hint {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--small);
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.45);
+}
+
+.brand {
+  position: fixed;
+  z-index: 60;
+  top: var(--top);
+  left: calc(var(--gutter) - 6px);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: 1.1875rem;
+}
+
+.hud {
+  position: fixed;
+  z-index: 60;
+  top: var(--top);
+  right: calc(var(--gutter) - 6px);
+  display: flex;
+  gap: 8px;
+}
+
+.sound,
+.above {
+  gap: 8px;
+  cursor: pointer;
+}
+
+.sound:disabled {
+  cursor: default;
+}
+
+.sound__dot {
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.sound__state {
+  margin-left: -4px;
+  font-weight: 500;
+}
+
+.sound[aria-checked="true"] .sound__dot {
+  background: currentColor;
+}
+
+.above[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--light);
+}
+
+body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
+  display: none;
+}
+
+/* On a phone the two buttons stand one above the other, and the switch shows its dot and its name
+   (its state is in aria-checked for screen readers). */
+@media (max-width: 560px) {
+  .hud {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .sound__state {
+    display: none;
+  }
+}
+
+.hint {
+  position: fixed;
+  z-index: 40;
+  left: 50%;
+  bottom: calc(var(--bottom) + 18px);
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+.hint[hidden] {
+  display: none;
+}
+
+.hint.is-gone {
+  opacity: 0;
+}
+
+/* The door: the name and the ways in over the island seen from far. */
+.threshold {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(var(--top) + clamp(28px, 8vh, 90px)) var(--gutter) calc(var(--bottom) + 20px);
+  touch-action: none;
+  transition: opacity 0.9s ease;
+}
+
+.no-js .threshold,
+.threshold[hidden] {
+  display: none;
+}
+
+.threshold.is-entered {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.threshold__name {
+  max-width: 9em;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: clamp(2.75rem, 1.5rem + 6vw, 6rem);
+  line-height: 1.1;
+  animation: rise 1.2s 0.2s var(--ease) backwards;
+}
+
+.threshold__ways {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 22px;
+}
+
+.threshold__enter {
+  min-height: 56px;
+  padding: 0 26px;
+  border-radius: 28px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: 1.375rem;
+  cursor: pointer;
+}
+
+.threshold__quiet {
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--light);
+  font-size: var(--small);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  cursor: pointer;
+}
+
+.threshold__ways > * {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.threshold.is-ready .threshold__ways > * {
+  opacity: 1;
+}
+
+.threshold button:disabled {
+  cursor: progress;
+}
+
+/* Words held to points of the park: names of the zones, labels of the works, the cards. */
+.anchors {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  overflow: hidden;
+  overflow: clip;
+  pointer-events: none;
+}
+
+.anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.35s ease, visibility 0s 0.35s;
+  will-change: transform;
+}
+
+.anchor.is-on {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.anchor.is-on.is-covered {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease, visibility 0s 0.2s;
+}
+
+.zone-name {
+  padding: 4px 18px 6px;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: var(--title);
+  line-height: 1.25;
+  white-space: nowrap;
+  box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.45);
+}
+
+.zone-name--above {
+  padding: 2px 12px 4px;
+  font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+  .zone-name--above {
+    font-size: 1.25rem;
+  }
+}
+
+.anchor.zone-name.is-on {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.work-label,
+.card {
+  width: max-content;
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 14px 18px 16px;
+  border-radius: 18px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 16px 40px -18px rgb(0 23 80 / 0.5);
+}
+
+.work-label {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 14px;
+  align-items: center;
+}
+
+.work-label strong,
+.card h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+
+.work-label span {
+  grid-column: 1;
+  text-wrap: pretty;
+}
+
+.work-label__logo {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+}
+
+/* Logos go by height: 40 px, as wide as they come up to 240 px, never past their own pixels. */
+.work-label__logo,
+.story__logo {
+  width: auto;
+  height: 40px;
+  max-width: min(240px, var(--max-w, 240px));
+  max-height: var(--max-h, 40px);
+  object-fit: contain;
+}
+
+.anchor.card.is-on,
+.anchor.work-label.is-on {
+  pointer-events: auto;
+}
+
+.card {
+  max-width: min(360px, calc(100vw - 32px));
+}
+
+.card h2 {
+  margin-bottom: 8px;
+  font-size: var(--title);
+}
+
+.card ul {
+  list-style: none;
+}
+
+.card li + li {
+  margin-top: 8px;
+}
+
+.card__facts {
+  padding-left: 1.1em !important;
+  list-style: disc !important;
+}
+
+.card__go {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 0 16px;
+  border: 1.5px solid currentColor;
+  border-radius: 22px;
+  background: none;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.card__links .card__go {
+  margin-top: 0;
+}
+
+/* Every work as a plain link, for keys and screen readers; shown when a key brings focus into it. */
+.list {
+  position: fixed;
+  z-index: 65;
+  top: calc(var(--top) + 54px);
+  left: 10px;
+  width: min(420px, calc(100vw - 20px));
+  max-height: calc(100% - var(--top) - 70px);
+  overflow: auto;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--paper);
+  color: var(--ink);
+  clip-path: inset(50%);
+  opacity: 0;
+}
+
+.list:focus-within {
+  clip-path: none;
+  opacity: 1;
+}
+
+.list h2 {
+  margin: 14px 0 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: 1.25rem;
+}
+
+.list h2:first-child {
+  margin-top: 0;
+}
+
+.list ul {
+  list-style: none;
+}
+
+.list a {
+  display: inline-block;
+  padding: 6px 0;
+}
+
+/* Without WebGL the list is the page. */
+.no-webgl .park,
+.no-webgl .anchors,
+.no-webgl .hud .above,
+.no-webgl .threshold {
+  display: none;
+}
+
+.no-webgl body {
+  overflow: auto;
+}
+
+.no-webgl .list {
+  position: static;
+  width: auto;
+  max-width: 44rem;
+  max-height: none;
+  margin: calc(var(--top) + 70px) auto 40px;
+  clip-path: none;
+  opacity: 1;
+}
+
+.no-webgl,
+.no-webgl body {
+  height: auto;
+  overflow: auto;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* Side buttons: the name of the next place on the land, a mark alone inside places and works. */
+.step {
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 48px;
+  height: 48px;
+  margin-top: -24px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--small);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.step[hidden] {
+  display: none;
+}
+
+.step--prev {
+  left: calc(var(--gutter) - 8px);
+}
+
+.step--next {
+  right: calc(var(--gutter) - 8px);
+}
+
+.step__mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  transform: translateY(-2px);
+}
+
+.step:not(:has(.step__name)) {
+  justify-content: center;
+  padding: 0;
+}
+
+@media (max-width: 767px) {
+  .step {
+    min-width: 44px;
+    height: 44px;
+    margin-top: -22px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .step__name {
+    display: none;
+  }
+}
+
+/* A work seen closely: it comes forward over the park, which stays behind, dimmed. */
+.story {
+  position: fixed;
+  z-index: 70;
+  inset: 0;
+  overflow: hidden;
+  overflow: clip;
+  background: rgb(0 12 48 / 0.5);
+}
+
+.story__panel {
+  --field: var(--night);
+  --text: var(--light);
+  position: absolute;
+  inset: calc(max(10px, env(safe-area-inset-top)) + 54px) 10px max(10px, env(safe-area-inset-bottom));
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--field);
+  color: var(--text);
+  box-shadow: 0 40px 80px -30px rgb(0 0 0 / 0.6);
+}
+
+@media (min-width: 768px) {
+  .story__panel {
+    inset: 76px 7vw 40px;
+  }
+}
+
+.story__panel[data-field="sky"] {
+  --field: var(--sky);
+  --text: var(--ink);
+}
+
+.story__close {
+  position: absolute;
+  z-index: 3;
+  top: calc(max(10px, env(safe-area-inset-top)) + 62px);
+  right: 18px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--small);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .story__close {
+    top: 86px;
+    right: calc(7vw + 12px);
+  }
+}
+
+.story__stack,
+.screen {
+  position: absolute;
+  inset: 0;
+}
+
+.screen {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(14px, 2.4svh, 28px);
+  padding: calc(var(--head-h, 32px) + 40px) 18px 64px;
+  background: var(--field);
+  cursor: pointer;
+}
+
+.screen--choice {
+  grid-template-rows: 1fr auto;
+}
+
+.story__head {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  right: 110px;
+  pointer-events: none;
+}
+
+.story__title {
+  display: inline;
+  margin-right: 0.6em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1875rem;
+  line-height: 1.25;
+}
+
+.story__where {
+  display: inline;
+  font-size: var(--small);
+  font-weight: 600;
+}
+
+.story__progress {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  font-size: var(--small);
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.screen__text {
+  max-width: 40rem;
+}
+
+.screen__lead {
+  max-width: 34em;
+  font-size: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);
+  font-weight: 600;
+  line-height: 1.5;
+  animation: rise 0.8s 0.2s var(--ease) backwards;
+}
+
+.screen__stage {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+}
+
+.screen__picture,
+.screen__mark,
+.frame {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(100%, var(--max-w, 100%));
+  max-height: min(100%, var(--max-h, 100%));
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.screen--idea .screen__picture {
+  animation: rise 0.8s var(--ease) backwards;
+}
+
+.frame {
+  border: var(--frame) solid var(--paper);
+  background: var(--paper);
+}
+
+.frame--phone {
+  border-width: 9px;
+  border-radius: 30px;
+}
+
+.frame--tall {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-bottom: 0;
+  container-type: size;
+}
+
+.frame__scroll {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: page 30s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+.screen__caption {
+  max-width: 40rem;
+}
+
+.screen__note {
+  text-wrap: pretty;
+}
+
+.screen--where {
+  grid-template-rows: 1fr;
+  align-items: center;
+}
+
+.screen__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: var(--display);
+  line-height: 1.2;
+}
+
+.screen__meta {
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.screen__facts {
+  margin: 16px 0 0;
+  padding-left: 1.1em;
+}
+
+.screen__facts li + li {
+  margin-top: 0.5em;
+}
+
+.screen--where .screen__note {
+  margin-top: 16px;
+}
+
+.screen__link,
+.screen__next {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  margin: 22px 12px 0 0;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.screen__next {
+  border: 1px solid currentColor;
+  background: none;
+  color: inherit;
+}
+
+@keyframes page {
+  0%,
+  8% {
+    transform: translateY(0);
+  }
+
+  92%,
+  100% {
+    transform: translateY(calc(100cqh - 100%));
+  }
+}
+
+/* In a work seen closely the arrows sit at the foot, clear of the words. */
+.story__step {
+  top: auto;
+  bottom: 8px;
+  margin-top: 0;
+}
+
+.story__step.step--prev {
+  left: auto;
+  right: 66px;
+}
+
+.story__step.step--next {
+  right: 12px;
+}
+
+.story__logo {
+  display: inline-block;
+  margin-right: 0.6em;
+  vertical-align: middle;
+  object-fit: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame__scroll,
+  .screen__lead,
+  .screen__picture,
+  .threshold__name {
+    animation: none;
+  }
+}

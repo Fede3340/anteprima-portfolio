@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="it" class="no-js" data-version="1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#95c8ee">
+  <meta name="description" content="Sono Federico Mascia, designer a Cagliari. Disegno e costruisco siti, negozi online, programmi e app.">
+  <title>Federico Mascia</title>
+  <script>document.documentElement.className = 'js';</script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.min.js",
+        "three/addons/": "./vendor/three/addons/",
+        "./js/circle.js": "./js/circle.js?v=1",
+        "./js/drag.js": "./js/drag.js?v=1",
+        "./js/media.js": "./js/media.js?v=1",
+        "./js/sound.js": "./js/sound.js?v=1",
+        "./js/story.js": "./js/story.js?v=1",
+        "./js/threshold.js": "./js/threshold.js?v=1",
+        "./js/works.js": "./js/works.js?v=1",
+        "./js/list.js": "./js/list.js?v=1",
+        "./js/world/anchors.js": "./js/world/anchors.js?v=1",
+        "./js/world/camera.js": "./js/world/camera.js?v=1",
+        "./js/world/controls.js": "./js/world/controls.js?v=1",
+        "./js/world/exhibits.js": "./js/world/exhibits.js?v=1",
+        "./js/world/land.js": "./js/world/land.js?v=1",
+        "./js/world/layout.js": "./js/world/layout.js?v=1",
+        "./js/world/instances.js": "./js/world/instances.js?v=1",
+        "./js/world/light.js": "./js/world/light.js?v=1",
+        "./js/world/park.js": "./js/world/park.js?v=1",
+        "./js/world/signs.js": "./js/world/signs.js?v=1",
+        "./js/world/world.js": "./js/world/world.js?v=1",
+        "./js/world/sprites.js": "./js/world/sprites.js?v=1",
+        "./js/world/textures.js": "./js/world/textures.js?v=1"
+      }
+    }
+  </script>
+  <link rel="preload" href="fonts/grandstander-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/nunito-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
+  <link rel="modulepreload" href="vendor/three/three.core.min.js">
+  <link rel="stylesheet" href="css/main.css?v=1">
+  <script type="module" src="js/main.js?v=1"></script>
+</head>
+<body>
+  <canvas class="park" aria-hidden="true"></canvas>
+  <div class="anchors" aria-hidden="true"></div>
+
+  <a class="brand" href="./">Federico Mascia</a>
+
+  <div class="threshold" id="threshold">
+    <h1 class="threshold__name">Federico Mascia</h1>
+    <div class="threshold__ways">
+      <button class="threshold__enter" type="button" disabled>Entra con il suono</button>
+      <button class="threshold__quiet" type="button" disabled>Entra senza suono</button>
+    </div>
+  </div>
+
+  <div class="hud">
+    <button class="sound" type="button" role="switch" aria-checked="false">
+      <span class="sound__dot" aria-hidden="true"></span><span class="sound__label">Suono</span><span class="sound__state">spento</span>
+    </button>
+    <button class="above" type="button" aria-pressed="false" aria-keyshortcuts="M">Dall’alto</button>
+  </div>
+  <p class="hint" hidden></p>
+
+  <nav class="list" aria-label="Tutti i lavori"></nav>
+
+  <section class="story" role="dialog" aria-modal="true" aria-label="Lavoro da vicino" hidden></section>
+</body>
+</html>
