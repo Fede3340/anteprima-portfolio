@@ -1,0 +1,1325 @@
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces-latin.woff2?v=7") format("woff2");
+  font-weight: 300 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Host Grotesk";
+  src: url("../fonts/host-grotesk-latin.woff2?v=7") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --sky: #95c8ee;
+  --dune: #2a5082;
+  --night: #00184d;
+  --night-ground: #07265e;
+  --paper: #eef0f3;
+  --ink: #001750;
+  --light: #f6f8fb;
+
+  --ratio: 1.7778;
+  --gutter: clamp(20px, 4.4vw, 64px);
+  --head: clamp(76px, 12vh, 120px);
+  --frame: 6px;
+  --bottom: max(14px, env(safe-area-inset-bottom));
+  --ember: #1c100b;
+
+  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --sans: "Host Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --display: clamp(1.75rem, min(1rem + 3.6vw, 6.4vh), 3.5rem);
+  --title: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  --body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --stage-h: 100vh;
+  --ease: cubic-bezier(0.65, 0, 0.35, 1);
+
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --stage-h: 100dvh;
+  }
+}
+
+@supports (height: 100svh) {
+  :root {
+    --head: clamp(76px, 12svh, 120px);
+    --display: clamp(1.75rem, min(1rem + 3.6vw, 6.4svh), 3.5rem);
+  }
+}
+
+@media (max-aspect-ratio: 17/20) {
+  :root {
+    --sky: #90cbf5;
+    --dune: #1c477d;
+    --night: #001750;
+    --night-ground: #072259;
+    --ratio: 0.5625;
+        }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--sky);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--body);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  color: inherit;
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+/* A box with the proportions of the footage, scaled to cover the stage: whatever is placed in it
+   by percentage lands on the same point of the picture at every screen size. */
+.cover {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100vw, calc(var(--stage-h) * var(--ratio)));
+  height: max(var(--stage-h), calc(100vw / var(--ratio)));
+  transform: translate(-50%, -50%);
+}
+
+.cover__media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.brand {
+  position: fixed;
+  z-index: 60;
+  top: max(10px, env(safe-area-inset-top));
+  left: calc(var(--gutter) - 8px);
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(1.375rem, 1.24rem + 0.3vw, 1.5rem);
+  font-weight: 500;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.threshold {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  overflow: hidden;
+  background: var(--sky);
+  touch-action: none;
+  transition: opacity 0.8s cubic-bezier(0.45, 0, 0.3, 1), visibility 0s 0.8s;
+}
+
+.no-js .threshold,
+.threshold[hidden] {
+  display: none;
+}
+
+.threshold.is-leaving {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.threshold__enter {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.threshold__enter:disabled {
+  cursor: progress;
+}
+
+.threshold__enter:focus-visible {
+  outline: none;
+}
+
+/* The two ways in sit in the low band of the scene, clear of whatever stands in its middle. */
+.threshold__label,
+.threshold__quiet {
+  position: absolute;
+  left: var(--gutter);
+  color: var(--light);
+  white-space: nowrap;
+  transition: opacity 0.6s ease;
+}
+
+.threshold__label {
+  bottom: calc(max(20px, env(safe-area-inset-bottom)) + 52px);
+  padding-bottom: 8px;
+  font-family: var(--serif);
+  font-size: clamp(1.375rem, 1.1rem + 1vw, 2rem);
+  font-weight: 400;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  opacity: 0.6;
+}
+
+/* A line under the way in that fills while the door loads. */
+.threshold__label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(var(--loaded, 0));
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+.threshold__enter:focus-visible .threshold__label {
+  outline: 2px solid currentColor;
+  outline-offset: 6px;
+}
+
+.threshold__quiet {
+  bottom: max(20px, env(safe-area-inset-bottom));
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--small);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.threshold.is-ready .threshold__label,
+.threshold.is-ready .threshold__quiet {
+  opacity: 1;
+}
+
+.threshold.is-entered .threshold__label,
+.threshold.is-entered .threshold__quiet {
+  opacity: 0;
+  transition-duration: 0.2s;
+}
+
+
+/* Controls that stay on screen at every level. */
+.dock,
+.sound {
+  position: fixed;
+  z-index: 60;
+  bottom: var(--bottom);
+  display: flex;
+  gap: 6px;
+}
+
+.dock {
+  left: calc(var(--gutter) - 8px);
+}
+
+.dock button,
+.sound {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--small);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dock button[hidden] {
+  display: none;
+}
+
+.sound {
+  right: calc(var(--gutter) - 8px);
+  gap: 8px;
+  padding: 0 16px 0 14px;
+}
+
+.sound:disabled {
+  cursor: default;
+}
+
+.sound__dot {
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.sound__state {
+  margin-left: -4px;
+  color: rgb(0 23 80 / 0.72);
+}
+
+.sound[aria-checked="true"] .sound__dot {
+  background: currentColor;
+}
+
+.sound[aria-checked="true"] .sound__state {
+  color: var(--ink);
+}
+
+.world {
+  position: fixed;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  overflow: clip;
+  background: var(--sky);
+  touch-action: pinch-zoom;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Level 1: the land. Each place is one screen; neighbours overlap where their dunes fade together. */
+.land,
+.land__view,
+.spot,
+.spot__scene {
+  position: absolute;
+  inset: 0;
+}
+
+.land {
+  z-index: 0;
+  overflow: hidden;
+  overflow: clip;
+  cursor: grab;
+}
+
+.spot {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%);
+  mask-image: linear-gradient(90deg, transparent, #000 14%);
+  will-change: transform;
+}
+
+.spot:first-child {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.spot__scene {
+  will-change: transform;
+}
+
+.spot__object {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  border-radius: 24px;
+  background: none;
+  cursor: pointer;
+}
+
+.spot__label {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  color: var(--ink);
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.spot__label strong {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  font-weight: 400;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.spot__label span {
+  font-size: var(--body);
+  font-weight: 500;
+}
+
+.statement,
+.land__hint {
+  z-index: 20;
+}
+
+.statement {
+  position: absolute;
+  top: var(--head);
+  left: var(--gutter);
+  right: var(--gutter);
+  max-width: 15.6em;
+  font-family: var(--serif);
+  font-size: var(--display);
+  font-weight: 360;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.16;
+  letter-spacing: -0.015em;
+  pointer-events: none;
+  animation: rise 0.8s 0.15s var(--ease) backwards;
+}
+
+.statement__part {
+  display: block;
+  text-wrap: balance;
+}
+
+.statement__part + .statement__part {
+  margin-top: 0.42em;
+}
+
+.land__hint {
+  position: absolute;
+  left: var(--gutter);
+  bottom: calc(var(--bottom) + 60px);
+  color: var(--light);
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.land__hint-pointer {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .land__hint-touch {
+    display: none;
+  }
+
+  .land__hint-pointer {
+    display: inline;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* Side buttons: the name of the next place on the land, a mark alone inside places and works. */
+.step {
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 48px;
+  height: 48px;
+  margin-top: -24px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--small);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.step[hidden] {
+  display: none;
+}
+
+.step--prev {
+  left: calc(var(--gutter) - 8px);
+}
+
+.step--next {
+  right: calc(var(--gutter) - 8px);
+}
+
+.step__mark {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  line-height: 1;
+  transform: translateY(-2px);
+}
+
+.step:not(:has(.step__name)) {
+  justify-content: center;
+  padding: 0;
+}
+
+@media (max-width: 767px) {
+  .step {
+    min-width: 44px;
+    height: 44px;
+    margin-top: -22px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .step__name {
+    display: none;
+  }
+}
+
+/* Level 2: a place, opened by a circle from the touched object. */
+.place {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  overflow: hidden;
+  overflow: clip;
+  background: var(--night);
+  color: var(--light);
+}
+
+.place[hidden],
+.story[hidden] {
+  display: none;
+}
+
+.crossing {
+  position: absolute;
+  z-index: 11;
+  left: 50%;
+  top: 50%;
+  width: max(100vw, calc(var(--stage-h) * var(--ratio)));
+  height: max(var(--stage-h), calc(100vw / var(--ratio)));
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.caption {
+  display: grid;
+  gap: 4px;
+}
+
+.caption__title {
+  font-family: var(--serif);
+  font-size: var(--title);
+  font-weight: 400;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.caption__title button {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+.caption__meta {
+  margin-left: 0.7em;
+  font-family: var(--sans);
+  font-size: var(--small);
+  font-weight: 500;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.caption__line {
+  max-width: 34em;
+  text-wrap: pretty;
+}
+
+/* Sites and shops: portals of chalk planted in the dunes. */
+.place[data-light="day"] {
+  background: var(--sky);
+}
+
+.portals__scene {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.8s var(--ease);
+}
+
+.portals {
+  --portal-w: 88vw;
+  --portal-h: max(58svh, 360px);
+  --ground: calc(12svh + var(--portal-h));
+  --reach: 60vw;
+  --side: 0.46;
+  position: absolute;
+  inset: 0;
+}
+
+.portal {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--ground) - var(--portal-h));
+  width: var(--portal-w);
+  height: var(--portal-h);
+  transform-origin: 50% 100%;
+  transition: transform 0.8s var(--ease), opacity 0.8s var(--ease);
+}
+
+.portal__clip {
+  position: absolute;
+  inset: 0 -2px 0;
+  overflow: hidden;
+}
+
+.portal__body {
+  position: absolute;
+  inset: 0 2px;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.8s var(--ease);
+}
+
+.portal__frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: var(--frame) solid var(--paper);
+  border-bottom: 0;
+  background: var(--night);
+  container-type: size;
+}
+
+.portal__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--night);
+  opacity: 0.5;
+  transition: opacity 0.8s ease;
+}
+
+.portal__page {
+  display: block;
+  animation: page 30s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate paused;
+}
+
+.portal__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.portal[data-slot="current"] .portal__page {
+  animation-play-state: running;
+}
+
+.portal[data-slot="current"] .portal__frame::after {
+  opacity: 0;
+}
+
+.portal[data-slot="current"] {
+  transform: translateX(-50%);
+}
+
+.portal[data-slot="previous"] {
+  transform: translateX(calc(-50% - var(--reach))) scale(var(--side));
+}
+
+.portal[data-slot="next"] {
+  transform: translateX(calc(-50% + var(--reach))) scale(var(--side));
+}
+
+.portal[data-slot="before"] {
+  transform: translateX(calc(-50% - var(--reach) * 2)) scale(var(--side));
+  opacity: 0;
+}
+
+.portal[data-slot="after"] {
+  transform: translateX(calc(-50% + var(--reach) * 2)) scale(var(--side));
+  opacity: 0;
+}
+
+.portal[data-slot="under"] {
+  transform: translateX(-50%);
+}
+
+.portal[data-slot="previous"] .portal__body,
+.portal[data-slot="next"] .portal__body {
+  transform: translateY(36%);
+}
+
+.portal[data-slot="before"] .portal__body,
+.portal[data-slot="after"] .portal__body,
+.portal[data-slot="under"] .portal__body {
+  transform: translateY(101%);
+}
+
+@keyframes page {
+  0%,
+  8% {
+    transform: translateY(0);
+  }
+
+  92%,
+  100% {
+    transform: translateY(calc(100cqh - 100%));
+  }
+}
+
+.place[data-light="day"] .portals::before {
+  content: "";
+  position: absolute;
+  inset: var(--ground) 0 0;
+  background: linear-gradient(rgb(28 71 125 / 0), rgb(28 71 125 / 0.9) 56px);
+}
+
+.portals__caption {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  top: calc(12svh + max(58svh, 360px) + 14px);
+}
+
+@media (min-width: 768px) {
+  .portals {
+    --portal-w: min(30vw, 430px);
+    --portal-h: min(62svh, 620px);
+    --ground: calc(14svh + var(--portal-h));
+    --reach: 31vw;
+    --side: 0.62;
+  }
+
+  .portals__caption {
+    top: calc(14svh + min(62svh, 620px) + 14px);
+    left: 50%;
+    right: auto;
+    width: min(560px, 44vw);
+    text-align: center;
+    transform: translateX(-50%);
+  }
+
+  .portals__caption .caption__line {
+    margin: 0 auto;
+  }
+}
+
+/* Brands and the other places: one work at a time on a ground of its own. */
+.field__stack,
+.field {
+  position: absolute;
+  inset: 0;
+}
+
+.field {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  justify-items: center;
+  gap: 18px;
+  padding: calc(var(--head) - 10px) var(--gutter) calc(var(--bottom) + 64px);
+  background: var(--field, var(--paper));
+  color: var(--text, var(--ink));
+}
+
+.field[data-field="sky"] {
+  --field: var(--sky);
+}
+
+.field[data-field="night"] {
+  --field: var(--night);
+  --text: var(--light);
+}
+
+.field[data-field="ember"] {
+  --field: var(--ember);
+  --text: var(--light);
+}
+
+.field__open {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.field__mark,
+.field__work {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(100%, var(--max-w, 100%));
+  max-height: min(100%, var(--max-h, 100%));
+  min-height: 0;
+  object-fit: contain;
+}
+
+.field__work {
+  border: var(--frame) solid var(--paper);
+  box-shadow: 0 30px 60px -30px rgb(0 12 48 / 0.5);
+}
+
+.field .caption {
+  justify-self: stretch;
+}
+
+@media (min-width: 768px) {
+  .field .caption {
+    justify-self: center;
+    text-align: center;
+  }
+
+  .field .caption__line {
+    margin: 0 auto;
+  }
+}
+
+/* Google: the tower, one fact per floor. */
+.place[data-place="google"],
+.place[data-place="contatti"] {
+  background: var(--sky);
+  color: var(--ink);
+}
+
+.tower__scene,
+.contact__scene {
+  position: absolute;
+  inset: 0;
+}
+
+.tower {
+  position: absolute;
+  top: calc(var(--head) - 10px);
+  left: var(--gutter);
+  width: min(30rem, 40vw);
+}
+
+.tower__open {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--serif);
+  font-size: var(--display);
+  font-weight: 360;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.1;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+  cursor: pointer;
+}
+
+.tower__floors {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.floor {
+  padding: 14px 18px;
+  background: var(--paper);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.8s var(--ease);
+}
+
+.floor.is-up {
+  opacity: 1;
+  transform: none;
+}
+
+.floor__count {
+  display: block;
+  margin-bottom: 4px;
+  font-size: var(--small);
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .tower {
+    width: calc(100vw - var(--gutter) * 2);
+  }
+
+  .floor:not(:last-child).is-up {
+    display: none;
+  }
+
+  .floor.is-up:has(+ .floor:not(.is-up)) {
+    display: block;
+  }
+}
+
+.contact {
+  position: absolute;
+  top: var(--head);
+  left: var(--gutter);
+}
+
+.contact__title {
+  font-family: var(--serif);
+  font-size: var(--display);
+  font-weight: 360;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.1;
+}
+
+.contact__links {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact__links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: var(--title);
+  font-family: var(--serif);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+/* Level 3: a work told in full screens. */
+.story {
+  --field: var(--night);
+  --text: var(--light);
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  overflow: hidden;
+  overflow: clip;
+  background: var(--field);
+  color: var(--text);
+}
+
+.story[data-field="sky"] {
+  --field: var(--sky);
+  --text: var(--ink);
+}
+
+.story[data-field="ember"] {
+  --field: var(--ember);
+}
+
+.story__stack,
+.screen {
+  position: absolute;
+  inset: 0;
+}
+
+.screen {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(14px, 2.4svh, 28px);
+  padding: calc(var(--head) + 12px) var(--gutter) calc(var(--bottom) + 62px);
+  background: var(--field);
+  cursor: pointer;
+}
+
+.screen--choice {
+  grid-template-rows: 1fr auto;
+}
+
+.story__head {
+  position: absolute;
+  top: calc(max(10px, env(safe-area-inset-top)) + 54px);
+  left: var(--gutter);
+  right: calc(var(--gutter) + 120px);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+  pointer-events: none;
+}
+
+.story__title {
+  overflow: hidden;
+  font-family: var(--serif);
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  font-weight: 400;
+  font-variation-settings: "SOFT" 60;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.story__where {
+  flex: none;
+  font-size: var(--small);
+  font-weight: 500;
+}
+
+.story__progress {
+  position: absolute;
+  top: calc(max(10px, env(safe-area-inset-top)) + 54px);
+  right: var(--gutter);
+  font-size: var(--small);
+  font-weight: 500;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .story__head,
+  .story__progress {
+    top: calc(max(10px, env(safe-area-inset-top)) + 12px);
+  }
+
+  .story__head {
+    left: 50%;
+    right: auto;
+    max-width: 44vw;
+    transform: translateX(-50%);
+  }
+}
+
+.screen__text {
+  max-width: 40rem;
+}
+
+.screen__lead.screen__lead--long {
+  font-size: clamp(1.25rem, 1.05rem + 1vw, 2rem);
+  line-height: 1.24;
+}
+
+.screen__lead {
+  font-family: var(--serif);
+  font-size: clamp(1.625rem, 1.2rem + 2.2vw, 3.25rem);
+  font-weight: 360;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.16;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  animation: rise 0.8s 0.2s var(--ease) backwards;
+}
+
+.screen__stage {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+}
+
+.screen__picture,
+.screen__mark,
+.frame {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(100%, var(--max-w, 100%));
+  max-height: min(100%, var(--max-h, 100%));
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.screen--idea .screen__picture {
+  animation: rise 0.8s var(--ease) backwards;
+}
+
+.frame {
+  border: var(--frame) solid var(--paper);
+  background: var(--paper);
+}
+
+.frame--phone {
+  border-width: 9px;
+  border-radius: 30px;
+}
+
+.frame--tall {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-bottom: 0;
+  container-type: size;
+}
+
+.frame__scroll {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: page 30s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+.screen__caption {
+  max-width: 40rem;
+}
+
+.screen__note {
+  text-wrap: pretty;
+}
+
+.screen--where {
+  grid-template-rows: 1fr;
+  align-items: center;
+}
+
+.screen__title {
+  font-family: var(--serif);
+  font-size: var(--display);
+  font-weight: 360;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+
+.screen__meta {
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.screen__facts {
+  margin: 16px 0 0;
+  padding-left: 1.1em;
+}
+
+.screen__facts li + li {
+  margin-top: 0.5em;
+}
+
+.screen--where .screen__note {
+  margin-top: 16px;
+}
+
+.screen__link,
+.screen__next {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  margin: 22px 12px 0 0;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.screen__next {
+  border: 1px solid currentColor;
+  background: none;
+  color: inherit;
+}
+
+/* The list of every work. */
+.archive {
+  position: fixed;
+  z-index: 75;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--night);
+}
+
+.archive[hidden] {
+  display: none;
+}
+
+.archive__bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 16px;
+  padding: max(6px, env(safe-area-inset-top)) var(--gutter) 6px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.archive__title {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.625rem);
+  font-weight: 400;
+}
+
+.archive__close {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid currentColor;
+  border-radius: 22px;
+  background: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.archive__scroll {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+.archive__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(160px, 40vw), 1fr));
+  gap: 16px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px var(--gutter) 48px;
+  list-style: none;
+}
+
+.archive__item {
+  display: grid;
+  width: 100%;
+  padding: 0 0 12px;
+  border: 0;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.archive__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.archive__name {
+  margin: 10px 14px 0;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  line-height: 1.15;
+}
+
+.archive__chapter {
+  margin: 4px 14px 0;
+  font-size: var(--small);
+}
+
+@media (max-width: 359px) {
+  .brand {
+    font-size: 1.125rem;
+  }
+
+  .sound {
+    top: max(10px, env(safe-area-inset-top));
+    bottom: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal,
+  .portal__body,
+  .portals__scene,
+  .floor {
+    transition-duration: 0.01s;
+  }
+
+  .portal__page,
+  .frame__scroll,
+  .statement,
+  .screen__lead,
+  .screen__picture {
+    animation: none;
+  }
+}
+
+.ripples {
+  position: fixed;
+  z-index: 55;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.ripple {
+  position: absolute;
+  width: var(--size);
+  height: calc(var(--size) * 0.3);
+  margin: calc(var(--size) * -0.15) 0 0 calc(var(--size) * -0.5);
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  color: var(--light);
+  opacity: 0;
+  animation: ripple 1.9s cubic-bezier(0.2, 0.6, 0.3, 1) both;
+}
+
+.ripple[data-tone="ink"] {
+  color: var(--dune);
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.06);
+    opacity: 0.95;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+

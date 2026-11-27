@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="it" class="no-js" data-version="7">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#95c8ee">
+  <meta name="description" content="Progetto e costruisco siti, negozi online, programmi e app. Poi li porto in alto su Google e li faccio vendere di più.">
+  <title>Federico Mascia</title>
+  <script>document.documentElement.className = 'js';</script>
+  <script type="importmap">
+    {
+      "imports": {
+        "./js/archive.js": "./js/archive.js?v=7",
+        "./js/browse.js": "./js/browse.js?v=7",
+        "./js/circle.js": "./js/circle.js?v=7",
+        "./js/drag.js": "./js/drag.js?v=7",
+        "./js/land.js": "./js/land.js?v=7",
+        "./js/media.js": "./js/media.js?v=7",
+        "./js/places.js": "./js/places.js?v=7",
+        "./js/ripples.js": "./js/ripples.js?v=7",
+        "./js/router.js": "./js/router.js?v=7",
+        "./js/sequence.js": "./js/sequence.js?v=7",
+        "./js/sound.js": "./js/sound.js?v=7",
+        "./js/story.js": "./js/story.js?v=7",
+        "./js/threshold.js": "./js/threshold.js?v=7",
+        "./js/works.js": "./js/works.js?v=7",
+        "./js/places/contact.js": "./js/places/contact.js?v=7",
+        "./js/places/field.js": "./js/places/field.js?v=7",
+        "./js/places/google.js": "./js/places/google.js?v=7",
+        "./js/places/portals.js": "./js/places/portals.js?v=7"
+      }
+    }
+  </script>
+  <link rel="preload" href="fonts/fraunces-latin.woff2?v=7" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/host-grotesk-latin.woff2?v=7" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/main.css?v=7">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.1/gsap.min.js" integrity="sha512-VMHB/Dy1/3d+djJPdMhxbplbZgbfPNHy+yWCxB1MSrwUEcNE+gnviL/DwlGsh9wwobnRTiQc6ChK2ZoJamshXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="module" src="js/main.js?v=7"></script>
+</head>
+<body>
+  <a class="brand" href="./">Federico Mascia</a>
+
+  <div class="threshold" id="threshold">
+    <div class="cover">
+      <picture>
+        <source media="(max-aspect-ratio: 17/20)" srcset="img/press-portrait.webp?v=7">
+        <img class="cover__media threshold__still" src="img/press-landscape.webp?v=7" alt="" fetchpriority="high">
+      </picture>
+      <video class="cover__media" data-scene="press" muted playsinline preload="none"></video>
+    </div>
+    <button class="threshold__enter" type="button" disabled>
+      <span class="threshold__label">Entra con il suono</span>
+    </button>
+    <button class="threshold__quiet" type="button" disabled>Entra senza suono</button>
+  </div>
+
+  <main class="world" inert>
+    <section class="land" aria-roledescription="paesaggio" aria-label="I capitoli">
+      <div class="land__view"></div>
+      <h1 class="statement">
+        <span class="statement__part">Progetto e costruisco siti, negozi online, programmi e app.</span>
+        <span class="statement__part">Poi li porto in alto su Google e li faccio vendere di più.</span>
+      </h1>
+      <p class="land__hint"><span class="land__hint-touch">Trascina di lato</span><span class="land__hint-pointer">Usa le frecce o la rotella</span></p>
+      <button class="step step--prev" type="button" data-step="-1"><span class="step__mark" aria-hidden="true">‹</span><span class="step__name"></span></button>
+      <button class="step step--next" type="button" data-step="1"><span class="step__name"></span><span class="step__mark" aria-hidden="true">›</span></button>
+    </section>
+    <section class="place" hidden></section>
+    <section class="story" role="dialog" aria-modal="true" aria-label="Lavoro" hidden></section>
+  </main>
+
+  <nav class="dock" aria-label="Comandi">
+    <button class="dock__exit" type="button" hidden>Esci</button>
+    <button class="dock__all" type="button">Tutti i lavori</button>
+  </nav>
+
+  <button class="sound" type="button" role="switch" aria-checked="false">
+    <span class="sound__dot" aria-hidden="true"></span><span class="sound__label">Suono</span><span class="sound__state">spento</span>
+  </button>
+
+  <div class="archive" role="dialog" aria-modal="true" aria-labelledby="archive-title" hidden>
+    <div class="archive__bar">
+      <h2 class="archive__title" id="archive-title">Tutti i lavori</h2>
+      <button class="archive__close" type="button">Chiudi</button>
+    </div>
+    <div class="archive__scroll" tabindex="-1">
+      <ol class="archive__list"></ol>
+    </div>
+  </div>
+
+  <div class="ripples" aria-hidden="true"></div>
+</body>
+</html>
