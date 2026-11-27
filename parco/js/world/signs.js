@@ -1,12 +1,11 @@
-// The written things of the park: the name of each zone over the path where it begins, and the cards of Chi sono,
-// Che cosa faccio, Google and Contatti held beside the path. From above, the names become the way down.
+// The written things of the park: the name of each island floating over it when seen from elsewhere,
+// and the cards of Chi sono, Che cosa faccio, Google and Contatti over their sculptures. From above, the
+// names become the way to the islands.
 import * as THREE from 'three';
 import { element } from '../media.js';
-import { along, ringPoint } from './layout.js';
 
-const NAME_NEAR = 24;
-const CARD_NEAR = 8;
-const CARD_AHEAD = 5;
+const NAME_NEAR = 120;
+const CARD_NEAR = 11;
 
 function card(zone, texts, works, { onZone, onWork }) {
   const title = element('h2', { textContent: texts[zone.card].title ?? zone.title });
@@ -26,34 +25,25 @@ function card(zone, texts, works, { onZone, onWork }) {
   return [title, element('p', { className: 'card__links' }, texts.contact.links.map(({ label, href }) => element('a', { className: 'card__go', href, target: '_blank', rel: 'noopener', textContent: label })))];
 }
 
-export function createSigns({ plan, texts, works, anchors, rig, state, onZone, onWork }) {
-  const name = (zone, position, visible, className = 'zone-name') => {
-    const node = element('button', { className, type: 'button', textContent: zone.title, tabIndex: -1 });
-    node.addEventListener('click', () => onZone(zone.id));
+export function createSigns({ plan, texts, works, anchors, rig, state, camera, onZone, onWork }) {
+  const name = (title, id, position, visible, className = 'zone-name') => {
+    const node = element('button', { className, type: 'button', textContent: title, tabIndex: -1 });
+    node.addEventListener('click', () => onZone(id));
     anchors.add(node, position, { visible, rank: 1 });
   };
-  plan.zones.forEach((zone, index) => {
-    const at = zone.start + 3;
-    const p = ringPoint(plan, at, 0);
-    name(zone, new THREE.Vector3(p.x, 3.4, p.z), () => {
-      const gap = along(state.s, at, plan.length);
-      return rig.mode === 'walk' && gap < NAME_NEAR && gap > 1;
-    });
-    // From above, by the middle of each zone, one name inside the ring and the next outside, so
-    // that short zones side by side do not cover each other.
-    const middle = ringPoint(plan, zone.start + zone.length / 2, index % 2 ? 9 : -11);
-    name(zone, new THREE.Vector3(middle.x, 0, middle.z), () => rig.mode === 'above', 'zone-name zone-name--above');
-  });
+  const away = (point) => Math.hypot(camera.position.x - point.x, camera.position.z - point.z);
+  for (const island of plan.islands) {
+    const [first] = island.zones;
+    const over = island.centre.clone().setY(island.centre.y + 7);
+    // Seen from another island or from the path, the name floats over the island; on it, it goes.
+    name(first.title, first.id, over, () => rig.mode === 'walk' && state.island !== island && away(over) < NAME_NEAR);
+    name(first.title, first.id, island.centre, () => rig.mode === 'above', 'zone-name zone-name--above');
+  }
   for (const zone of plan.zones.filter((each) => each.card)) {
-    // Held over the path a few steps ahead of the middle of the zone, so that it is in sight while
-    // one comes to it and goes away once one is under it.
-    const s = zone.start + zone.length / 2;
-    const p = ringPoint(plan, s + CARD_AHEAD, 0);
-    anchors.add(element('div', { className: 'card' }, card(zone, texts, works, { onZone, onWork })), new THREE.Vector3(p.x, 2.4, p.z), {
-      visible: () => {
-        const gap = along(state.s, s, plan.length);
-        return rig.mode === 'walk' && gap < CARD_NEAR && gap > -3;
-      },
+    // Held over the sculpture of the place, in sight while one stands on its island near it.
+    const over = new THREE.Vector3(zone.mark.x, zone.mark.y + 3.6, zone.mark.z);
+    anchors.add(element('div', { className: 'card' }, card(zone, texts, works, { onZone, onWork })), over, {
+      visible: () => rig.mode === 'walk' && state.island === zone.island && away(over) < CARD_NEAR,
     });
   }
 }

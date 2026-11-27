@@ -15,6 +15,8 @@ import { createWorld } from './world/world.js';
 const WORK = /^#lavoro\/([\w-]+)$/;
 const ZONE = /^#([\w-]+)$/;
 const DESCENT = 1.7;
+// Closer than this to a work, a tap on it opens it; further, it walks there.
+const NEAR_ENOUGH = 6.5;
 const FLIGHT = 1.4;
 
 const $ = (selector) => document.querySelector(selector);
@@ -40,13 +42,20 @@ const read = () => {
   return plan.zones.some((each) => each.id === zone) ? { zone } : {};
 };
 
+// Opening a work: the eyes go to stand in front of it, then the work opens over the park, which stays
+// alive around it. Closing: the work goes, and the walk goes on from where it was.
 async function apply({ work }, point) {
   if (story.work && story.work !== work) {
     await story.close(point ?? centre());
-    world?.pause(false);
+    document.dispatchEvent(new CustomEvent('park:work', { detail: { id: undefined } }));
+    if (world?.rig.mode === 'hold') await world.rig.go('walk', reducedMotion.matches ? 0 : 0.5);
   }
   if (work && story.work !== work) {
-    world?.pause(true);
+    if (world) {
+      world.stop();
+      await world.rig.go('hold', reducedMotion.matches ? 0 : 0.6, exhibits.standing(workSpot(work)));
+    }
+    document.dispatchEvent(new CustomEvent('park:work', { detail: { id: work, rect: world ? exhibits.rect(work) : undefined } }));
     await story.open(work, point ?? centre());
   }
 }
@@ -75,14 +84,13 @@ function close() {
 }
 
 // A few steps before a zone, with its name and its sculpture in sight ahead.
-const zoneStart = (id) => plan.zones.find((zone) => zone.id === id).start - 5;
 const workSpot = (id) => plan.works.find((spot) => spot.id === id);
 
 addEventListener('popstate', () => {
   const target = read();
   const closing = Boolean(story.work);
   run(target).then(() => {
-    if (target.zone && !closing) world?.stepTo(zoneStart(target.zone));
+    if (target.zone && !closing) world?.goIsland(target.zone);
   });
 });
 
@@ -107,20 +115,33 @@ async function fly(up, zone) {
   flying = true;
   sound.play('whoosh');
   above.setAttribute('aria-pressed', String(up));
-  if (zone) world.place(zoneStart(zone));
+  if (zone) world.place(zone);
   await world.rig.go(up ? 'above' : 'walk', reducedMotion.matches ? 0 : FLIGHT);
   flying = false;
 }
 above.addEventListener('click', () => fly(world?.rig.mode !== 'above'));
 
-function build(texts, pictures, sculptures) {
+// The path and the metres along it of a point on its stones.
+function stoneAt(point) {
+  let best;
+  for (const path of plan.paths) {
+    for (let i = 0; i <= 80; i++) {
+      const at = path.curve.getPointAt(i / 80);
+      const gap = at.distanceTo(point);
+      if (!best || gap < best.gap) best = { gap, path, t: (i / 80) * path.length };
+    }
+  }
+  return [best.path, best.t];
+}
+
+function build(texts, pictures, sprites) {
   world = createWorld($('.park'), { plan, reducedMotion });
   const anchors = createAnchors($('.anchors'), world.camera);
-  exhibits = createExhibits({ plan, works, renderer: world.renderer, anchors, rig: world.rig });
-  const park = createPark({ plan, renderer: world.renderer, pictures, sculptures });
+  exhibits = createExhibits({ plan, works, renderer: world.renderer, anchors, rig: world.rig, camera: world.camera });
+  const park = createPark({ plan, renderer: world.renderer, pictures, sprites });
   world.add(exhibits);
   world.add(park);
-  world.add(createLight({ plan, sky: world.sky, sun: world.sun, park }));
+  world.add(createLight({ plan, sky: world.sky, sun: world.sun, fog: world.scene.fog, park }));
   createSigns({
     plan,
     texts,
@@ -128,9 +149,10 @@ function build(texts, pictures, sculptures) {
     anchors,
     rig: world.rig,
     state: world.state,
+    camera: world.camera,
     onZone(id) {
       if (world.rig.mode === 'above') fly(false, id);
-      else world.stepTo(zoneStart(id));
+      else world.goIsland(id);
     },
     onWork: (id) => open(id),
   });
@@ -140,30 +162,51 @@ function build(texts, pictures, sculptures) {
     keep();
     anchors.remeasure();
   });
-  hint.textContent = texts.hint;
-  unveil = () => park.zone(here);
+  hint.textContent = matchMedia('(pointer: coarse)').matches
+    ? 'Tocca dove vuoi andare. Trascina per guardarti attorno.'
+    : 'W A S D per camminare, trascina per guardarti attorno.';
+  unveil = () => {
+    exhibits.island(here);
+    park.island(here);
+  };
   world.on({
-    zone(zone) {
-      exhibits.zone(zone);
-      here = zone;
-      if ($('.threshold').hidden) park.zone(zone);
+    // Pictures are fetched for the island one is on and its neighbours, once past the door.
+    island(island) {
+      here = island;
+      if ($('.threshold').hidden) unveil();
       if (story.work || !$('.threshold').hidden) return;
-      history.replaceState(null, '', zone.id === 'apertura' ? location.pathname + location.search : `#${zone.id}`);
+      history.replaceState(null, '', island.index === 0 ? location.pathname + location.search : `#${island.zones[0].id}`);
     },
     walk() {
       hint.classList.add('is-gone');
     },
+    // A tap while walking stops; otherwise a near work opens, a far one is walked to, a thing of the
+    // park answers, and a place of the ground is walked to, with rings where it was touched.
     tap(x, y) {
       if (world.rig.mode !== 'walk') return;
-      const hit = world.hit(x, y, [...exhibits.targets, ...park.tappable, world.land.ground]);
+      if (world.moving()) {
+        world.stop();
+        return;
+      }
+      const hit = world.hit(x, y, [...exhibits.targets, ...park.tappable, ...world.land.floors, ...world.land.stones]);
       if (!hit) return;
+      hint.classList.add('is-gone');
       if (exhibits.targets.includes(hit.object)) {
+        const spot = exhibits.spotOf(hit);
         sound.play('tap');
-        open(exhibits.spotOf(hit).id, { x, y });
+        if (Math.hypot(world.camera.position.x - spot.x, world.camera.position.z - spot.z) < NEAR_ENOUGH) open(spot.id, { x, y });
+        else {
+          const { x: wx, z: wz, fx, fz } = exhibits.standing(spot);
+          world.goTo(plan.islands[spot.island], wx + fx * 3, wz + fz * 3);
+        }
       } else if (park.touch(hit)) sound.play('tap');
-      else if (hit.object === world.land.ground && world.land.isPond(hit.point.x, hit.point.z)) {
+      else if (world.land.stones.includes(hit.object)) {
+        sound.play('drop');
+        world.goAlong(...stoneAt(hit.point));
+      } else {
         world.land.ripple(hit.point.x, hit.point.z);
         sound.play('drop');
+        world.goTo(hit.object.userData.island, hit.point.x, hit.point.z);
       }
     },
   });
@@ -186,7 +229,11 @@ addEventListener('keydown', (event) => {
     return;
   }
   if (event.target.closest?.('a, button, .list') || world.rig.mode !== 'walk') return;
-  if (world.controls.key(event, true)) event.preventDefault();
+  if (world.controls.key(event, true)) {
+    event.preventDefault();
+    world.stop();
+    hint.classList.add('is-gone');
+  }
   else if (event.key === 'Enter' && world.state.nearest) open(world.state.nearest.id);
   else if (event.key === ' ') {
     event.preventDefault();
@@ -199,7 +246,7 @@ $('.brand').addEventListener('click', (event) => {
   event.preventDefault();
   if (!world || !$('.threshold').hidden) return;
   close();
-  chain.then(() => world.stepTo(plan.landing));
+  chain.then(() => world.goIsland(plan.landing));
 });
 
 const threshold = createThreshold($('.threshold'), {
@@ -207,19 +254,16 @@ const threshold = createThreshold($('.threshold'), {
     sound.begin(withSound);
     sound.play('drop');
     const target = read();
-    if (target.work) world.place(workSpot(target.work).s - 1.5);
-    else if (target.zone) world.place(zoneStart(target.zone));
+    if (target.work) world.place(plan.islands[workSpot(target.work).island]);
+    else if (target.zone) world.place(target.zone);
     await world.rig.go('walk', reducedMotion.matches ? 0 : DESCENT);
   },
   onLeave() {
-    setTimeout(() => sound.allowBeds(), 1500);
     const target = read();
     if (target.work) {
       history.replaceState(null, '', `#${works[target.work].chapter}`);
       history.pushState({ work: target.work }, '', `#lavoro/${target.work}`);
       run(target);
-    } else if (!target.zone) {
-      world.walkTo(plan.firstStop);
     }
     hint.hidden = false;
     keep();
@@ -227,8 +271,8 @@ const threshold = createThreshold($('.threshold'), {
   },
 });
 
-// The sculptures of the zones, as listed by img/sprites/manifest.json, in the shape the park reads.
-const statues = (manifest) => Object.fromEntries(Object.entries(manifest).map(([id, entry]) => [id, {
+// The pictures listed by img/sprites/manifest.json, in the shape the park reads.
+const library = (manifest) => Object.fromEntries(Object.entries(manifest).map(([id, entry]) => [id, {
   w: entry.larghezza,
   h: entry.altezza,
   metres: entry.altezza_m,
@@ -241,7 +285,7 @@ const statues = (manifest) => Object.fromEntries(Object.entries(manifest).map(([
 const [data, texts, pictures, manifest] = await Promise.all([json('data/works.json'), json('data/racconto.json'), json('img/park/park.json'), json('img/sprites/manifest.json'), document.fonts.ready]);
 setUp(data, texts);
 try {
-  build(texts, pictures, statues(manifest));
+  build(texts, pictures, library(manifest));
 } catch (error) {
   // Without WebGL the list of works is the page, and every work still opens closely.
   console.warn(error);

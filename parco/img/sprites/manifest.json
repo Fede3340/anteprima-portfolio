@@ -170,5 +170,438 @@
       "x": 0.4942,
       "y": 0.9953
     }
+  },
+  "albero-grande": {
+    "file": "albero-grande.webp",
+    "larghezza": 1107,
+    "altezza": 1677,
+    "file_1024": "albero-grande-1024.webp",
+    "larghezza_1024": 554,
+    "altezza_1024": 838,
+    "altezza_m": 6.0,
+    "appoggio": {
+      "x": 0.5059,
+      "y": 0.9952
+    }
+  },
+  "albero-medio": {
+    "file": "albero-medio.webp",
+    "larghezza": 907,
+    "altezza": 1476,
+    "file_1024": "albero-medio-1024.webp",
+    "larghezza_1024": 454,
+    "altezza_1024": 738,
+    "altezza_m": 4.0,
+    "appoggio": {
+      "x": 0.516,
+      "y": 0.9939
+    }
+  },
+  "albero-piccolo": {
+    "file": "albero-piccolo.webp",
+    "larghezza": 634,
+    "altezza": 1097,
+    "file_1024": "albero-piccolo-1024.webp",
+    "larghezza_1024": 317,
+    "altezza_1024": 548,
+    "altezza_m": 2.2,
+    "appoggio": {
+      "x": 0.4708,
+      "y": 0.9918
+    }
+  },
+  "quadro": {
+    "file": "quadro.webp",
+    "larghezza": 794,
+    "altezza": 1690,
+    "file_1024": "quadro-1024.webp",
+    "larghezza_1024": 397,
+    "altezza_1024": 845,
+    "altezza_m": 2.4,
+    "appoggio": {
+      "x": 0.505,
+      "y": 0.9953
+    }
+  },
+  "cespuglio-1": {
+    "file": "cespuglio-1.webp",
+    "larghezza": 1009,
+    "altezza": 628,
+    "file_1024": "cespuglio-1-1024.webp",
+    "larghezza_1024": 504,
+    "altezza_1024": 314,
+    "altezza_m": 0.93,
+    "appoggio": {
+      "x": 0.4851,
+      "y": 0.9873
+    },
+    "larghezza_m": 1.5
+  },
+  "cespuglio-2": {
+    "file": "cespuglio-2.webp",
+    "larghezza": 1173,
+    "altezza": 702,
+    "file_1024": "cespuglio-2-1024.webp",
+    "larghezza_1024": 586,
+    "altezza_1024": 351,
+    "altezza_m": 1.5,
+    "appoggio": {
+      "x": 0.5085,
+      "y": 0.9886
+    },
+    "larghezza_m": 2.5
+  },
+  "nuvola-a-terra": {
+    "file": "nuvola-a-terra.webp",
+    "larghezza": 1180,
+    "altezza": 672,
+    "file_1024": "nuvola-a-terra-1024.webp",
+    "larghezza_1024": 590,
+    "altezza_1024": 336,
+    "altezza_m": 1.14,
+    "appoggio": {
+      "x": 0.4992,
+      "y": 0.9881
+    },
+    "larghezza_m": 2.0
+  },
+  "sasso": {
+    "file": "sasso.webp",
+    "larghezza": 1334,
+    "altezza": 657,
+    "file_1024": "sasso-1024.webp",
+    "larghezza_1024": 667,
+    "altezza_1024": 328,
+    "altezza_m": 0.39,
+    "appoggio": {
+      "x": 0.4858,
+      "y": 0.9878
+    },
+    "larghezza_m": 0.8
+  },
+  "tronco-alto": {
+    "file": "tronco-alto.webp",
+    "larghezza": 293,
+    "altezza": 2048,
+    "file_1024": "tronco-alto-1024.webp",
+    "larghezza_1024": 146,
+    "altezza_1024": 1024,
+    "altezza_m": 8.0,
+    "appoggio": {
+      "x": 0.4983,
+      "y": 0.9971
+    },
+    "zona": "siti"
+  },
+  "albero-frutti": {
+    "file": "albero-frutti.webp",
+    "larghezza": 1095,
+    "altezza": 1552,
+    "file_1024": "albero-frutti-1024.webp",
+    "larghezza_1024": 548,
+    "altezza_1024": 776,
+    "altezza_m": 3.0,
+    "appoggio": {
+      "x": 0.4785,
+      "y": 0.9948
+    },
+    "zona": "negozi"
+  },
+  "cassette": {
+    "file": "cassette.webp",
+    "larghezza": 1153,
+    "altezza": 1312,
+    "file_1024": "cassette-1024.webp",
+    "larghezza_1024": 576,
+    "altezza_1024": 656,
+    "altezza_m": 1.37,
+    "appoggio": {
+      "x": 0.5022,
+      "y": 0.9931
+    },
+    "larghezza_m": 1.2,
+    "zona": "negozi"
+  },
+  "siepe-squadrata": {
+    "file": "siepe-squadrata.webp",
+    "larghezza": 1726,
+    "altezza": 668,
+    "file_1024": "siepe-squadrata-1024.webp",
+    "larghezza_1024": 863,
+    "altezza_1024": 334,
+    "altezza_m": 1.16,
+    "appoggio": {
+      "x": 0.4983,
+      "y": 0.988
+    },
+    "larghezza_m": 3.0,
+    "zona": "programmi"
+  },
+  "gradini": {
+    "file": "gradini.webp",
+    "larghezza": 1309,
+    "altezza": 743,
+    "file_1024": "gradini-1024.webp",
+    "larghezza_1024": 654,
+    "altezza_1024": 372,
+    "altezza_m": 1.42,
+    "appoggio": {
+      "x": 0.5011,
+      "y": 0.9892
+    },
+    "larghezza_m": 2.5,
+    "zona": "programmi"
+  },
+  "canne": {
+    "file": "canne.webp",
+    "larghezza": 754,
+    "altezza": 1462,
+    "file_1024": "canne-1024.webp",
+    "larghezza_1024": 377,
+    "altezza_1024": 731,
+    "altezza_m": 2.0,
+    "appoggio": {
+      "x": 0.4947,
+      "y": 0.9945
+    },
+    "zona": "app"
+  },
+  "scivolo": {
+    "file": "scivolo.webp",
+    "larghezza": 1592,
+    "altezza": 1323,
+    "file_1024": "scivolo-1024.webp",
+    "larghezza_1024": 796,
+    "altezza_1024": 662,
+    "altezza_m": 2.5,
+    "appoggio": {
+      "x": 0.4997,
+      "y": 0.994
+    },
+    "zona": "videogioco"
+  },
+  "aquilone": {
+    "file": "aquilone.webp",
+    "larghezza": 675,
+    "altezza": 1769,
+    "file_1024": "aquilone-1024.webp",
+    "larghezza_1024": 338,
+    "altezza_1024": 884,
+    "altezza_m": 4.0,
+    "appoggio": {
+      "x": 0.2437,
+      "y": 0.9949
+    },
+    "zona": "videogioco"
+  },
+  "fiore-1": {
+    "file": "fiore-1.webp",
+    "larghezza": 765,
+    "altezza": 1629,
+    "file_1024": "fiore-1-1024.webp",
+    "larghezza_1024": 382,
+    "altezza_1024": 814,
+    "altezza_m": 1.8,
+    "appoggio": {
+      "x": 0.5092,
+      "y": 0.9951
+    },
+    "zona": "marchi"
+  },
+  "fiore-2": {
+    "file": "fiore-2.webp",
+    "larghezza": 669,
+    "altezza": 1219,
+    "file_1024": "fiore-2-1024.webp",
+    "larghezza_1024": 334,
+    "altezza_1024": 610,
+    "altezza_m": 1.2,
+    "appoggio": {
+      "x": 0.4694,
+      "y": 0.9934
+    },
+    "zona": "marchi"
+  },
+  "aiuola": {
+    "file": "aiuola.webp",
+    "larghezza": 1377,
+    "altezza": 842,
+    "file_1024": "aiuola-1024.webp",
+    "larghezza_1024": 688,
+    "altezza_1024": 421,
+    "altezza_m": 1.53,
+    "appoggio": {
+      "x": 0.4982,
+      "y": 0.9905
+    },
+    "larghezza_m": 2.5,
+    "zona": "marchi"
+  },
+  "erba-alta": {
+    "file": "erba-alta.webp",
+    "larghezza": 1219,
+    "altezza": 1206,
+    "file_1024": "erba-alta-1024.webp",
+    "larghezza_1024": 610,
+    "altezza_1024": 603,
+    "altezza_m": 1.0,
+    "appoggio": {
+      "x": 0.1985,
+      "y": 0.9934
+    },
+    "zona": "manifesti"
+  },
+  "bandiera": {
+    "file": "bandiera.webp",
+    "larghezza": 604,
+    "altezza": 1675,
+    "file_1024": "bandiera-1024.webp",
+    "larghezza_1024": 302,
+    "altezza_1024": 838,
+    "altezza_m": 4.0,
+    "appoggio": {
+      "x": 0.1126,
+      "y": 0.9946
+    },
+    "zona": "manifesti"
+  },
+  "pontile": {
+    "file": "pontile.webp",
+    "larghezza": 1739,
+    "altezza": 1091,
+    "file_1024": "pontile-1024.webp",
+    "larghezza_1024": 870,
+    "altezza_1024": 546,
+    "altezza_m": 2.51,
+    "appoggio": {
+      "x": 0.4954,
+      "y": 0.9918
+    },
+    "larghezza_m": 4.0,
+    "zona": "contatti"
+  },
+  "cassetta-posta": {
+    "file": "cassetta-posta.webp",
+    "larghezza": 757,
+    "altezza": 1478,
+    "file_1024": "cassetta-posta-1024.webp",
+    "larghezza_1024": 378,
+    "altezza_1024": 739,
+    "altezza_m": 1.3,
+    "appoggio": {
+      "x": 0.4901,
+      "y": 0.9946
+    },
+    "zona": "contatti"
+  },
+  "ciuffo-1": {
+    "file": "ciuffo-1.webp",
+    "larghezza": 959,
+    "altezza": 630,
+    "file_1024": "ciuffo-1-1024.webp",
+    "larghezza_1024": 480,
+    "altezza_1024": 315,
+    "altezza_m": 0.4,
+    "appoggio": {
+      "x": 0.4891,
+      "y": 0.9857
+    }
+  },
+  "ciuffo-2": {
+    "file": "ciuffo-2.webp",
+    "larghezza": 1162,
+    "altezza": 1207,
+    "file_1024": "ciuffo-2-1024.webp",
+    "larghezza_1024": 581,
+    "altezza_1024": 604,
+    "altezza_m": 0.7,
+    "appoggio": {
+      "x": 0.4557,
+      "y": 0.9925
+    }
+  },
+  "sbuffo-1": {
+    "file": "sbuffo-1.webp",
+    "larghezza": 1341,
+    "altezza": 687,
+    "file_1024": "sbuffo-1-1024.webp",
+    "larghezza_1024": 670,
+    "altezza_1024": 344,
+    "altezza_m": 1.02,
+    "appoggio": {
+      "x": 0.5011,
+      "y": 0.9723
+    },
+    "larghezza_m": 2.0
+  },
+  "sbuffo-2": {
+    "file": "sbuffo-2.webp",
+    "larghezza": 1937,
+    "altezza": 759,
+    "file_1024": "sbuffo-2-1024.webp",
+    "larghezza_1024": 968,
+    "altezza_1024": 380,
+    "altezza_m": 1.37,
+    "appoggio": {
+      "x": 0.4956,
+      "y": 0.975
+    },
+    "larghezza_m": 3.5
+  },
+  "sbuffo-3": {
+    "file": "sbuffo-3.webp",
+    "larghezza": 2048,
+    "altezza": 412,
+    "file_1024": "sbuffo-3-1024.webp",
+    "larghezza_1024": 1024,
+    "altezza_1024": 206,
+    "altezza_m": 1.21,
+    "appoggio": {
+      "x": 0.4988,
+      "y": 0.9636
+    },
+    "larghezza_m": 6.0
+  },
+  "isola-lontana-1": {
+    "file": "isola-lontana-1.webp",
+    "larghezza": 1427,
+    "altezza": 996,
+    "file_1024": "isola-lontana-1-1024.webp",
+    "larghezza_1024": 714,
+    "altezza_1024": 498,
+    "altezza_m": 13.96,
+    "appoggio": {
+      "x": 0.4891,
+      "y": 0.9809
+    },
+    "larghezza_m": 20.0
+  },
+  "isola-lontana-2": {
+    "file": "isola-lontana-2.webp",
+    "larghezza": 1707,
+    "altezza": 942,
+    "file_1024": "isola-lontana-2-1024.webp",
+    "larghezza_1024": 854,
+    "altezza_1024": 471,
+    "altezza_m": 11.04,
+    "appoggio": {
+      "x": 0.4979,
+      "y": 0.9798
+    },
+    "larghezza_m": 20.0
+  },
+  "mare-di-nuvole": {
+    "file": "mare-di-nuvole.webp",
+    "larghezza": 2048,
+    "altezza": 466,
+    "file_1024": "mare-di-nuvole-1024.webp",
+    "larghezza_1024": 1024,
+    "altezza_1024": 233,
+    "altezza_m": null,
+    "appoggio": {
+      "x": 0.4998,
+      "y": 0.9657
+    },
+    "uso": "fondo: fascia da stendere sotto le isole, misura libera; le valli tra le nuvole sono semitrasparenti e vanno sul celeste del cielo"
   }
 }

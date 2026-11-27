@@ -1,30 +1,32 @@
-// Sky and ground. The ground is a sea of soft blue dunes running to the horizon, flat where the path,
-// the pond and the sculptures are; its shader draws thin white lines on it, rings around the middle
-// and around each sculpture, one or two pixels wide at any distance.
+// Sky, the sea of clouds far below, the islands' ground and the stones of the paths between them. The
+// ground of an island is a soft white floor, a little uneven, with a very fine felt; its rim and its
+// underside are clouds (see park.js). The stones are flat round plaster discs hanging in the sky.
 import * as THREE from 'three';
-import { PATH_HALF } from './layout.js';
+import { instances } from './instances.js';
 
+// The haze far away, light blue, and the sea of clouds under it.
+export const HAZE = '#cfe3f6';
 const RIPPLES = 6;
-const MARKS = 16;
-// Colours measured on the pictures of the sculptures: the dunes far away and near.
-export const HAZE = '#6d98cf';
-const DUNE = '#1e3f74';
 
 const smooth = (a, b, x) => {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
 };
 
-// Height of the ground at a point: flat by the path, the pond and the middle, dunes growing outwards.
+// The island under a point, if any.
+export function islandAt(plan, x, z) {
+  return plan.islands.find((island) => Math.hypot(x - island.centre.x, z - island.centre.z) < island.radius);
+}
+
+// Low soft billows of the cloud floor.
+const bump = (x, z) => 0.28 * Math.sin(x * 0.45 + 1.3) * Math.cos(z * 0.38) + 0.12 * Math.sin(x * 1.1 + z * 0.9) + 0.06 * Math.cos(x * 2.3 - z * 1.9);
+
+// The height of the floor of the nearest island at a point: a little uneven, curving down at the rim.
 export function heightAt(plan, x, z) {
-  const r = Math.hypot(x, z);
-  const fromPath = Math.abs(r - plan.radius);
-  const flat = smooth(3, 13, fromPath) * smooth(plan.pond + 1, plan.pond + 9, r);
-  const amount = 0.9 + Math.min(3, Math.max(0, r - plan.radius - 10) * 0.035);
-  const waves = 0.55 * Math.sin(0.11 * x + 0.7) * Math.cos(0.09 * z)
-    + 0.35 * Math.sin(0.05 * (x + z) + 1.3)
-    + 0.25 * Math.sin(0.17 * x - 0.13 * z);
-  return flat * amount * waves;
+  const island = islandAt(plan, x, z) ?? plan.islands.reduce((a, b) => (Math.hypot(x - a.centre.x, z - a.centre.z) < Math.hypot(x - b.centre.x, z - b.centre.z) ? a : b));
+  const r = Math.hypot(x - island.centre.x, z - island.centre.z);
+  const edge = Math.max(0, r - (island.radius - 2));
+  return island.centre.y + bump(x, z) * (1 - smooth(island.radius - 3, island.radius, r)) - edge * edge * 0.25;
 }
 
 export function createSky() {
@@ -32,7 +34,7 @@ export function createSky() {
     side: THREE.BackSide,
     depthWrite: false,
     fog: false,
-    uniforms: { top: { value: new THREE.Color('#8cc6f3') }, horizon: { value: new THREE.Color('#a3d3f7') } },
+    uniforms: { top: { value: new THREE.Color('#7fbdf1') }, horizon: { value: new THREE.Color(HAZE) } },
     vertexShader: `
       varying vec3 vDirection;
       void main() {
@@ -44,7 +46,7 @@ export function createSky() {
       uniform vec3 horizon;
       varying vec3 vDirection;
       void main() {
-        gl_FragColor = vec4(mix(horizon, top, smoothstep(0.0, 0.35, vDirection.y)), 1.0);
+        gl_FragColor = vec4(mix(horizon, top, smoothstep(-0.05, 0.4, vDirection.y)), 1.0);
         #include <colorspace_fragment>
       }`,
   });
@@ -54,46 +56,84 @@ export function createSky() {
   return sky;
 }
 
-// A disc of rings, close together near the park and further apart towards the horizon.
-function groundGeometry(plan) {
-  const radii = [0];
-  for (let r = 0.8; r < plan.island + 6; r += 0.8) radii.push(r);
-  for (let r = radii.at(-1), step = 0.8; r < 620; step *= 1.07) radii.push((r += step));
-  const around = 320;
+const NOISE = `
+  float hash(vec2 p) {
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+  }
+  float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+  }`;
+
+// The sea of clouds far below: white billows with patches of blue between them, drifting.
+function createSea() {
+  const material = new THREE.ShaderMaterial({
+    fog: true,
+    uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib.fog, {
+      uTime: { value: 0 },
+      uCloud: { value: new THREE.Color('#f4f8fd') },
+      uGap: { value: new THREE.Color('#5f93d3') },
+    }]),
+    vertexShader: `
+      varying vec2 vAt;
+      #include <fog_pars_vertex>
+      void main() {
+        vAt = position.xy;
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+        gl_Position = projectionMatrix * mvPosition;
+        #include <fog_vertex>
+      }`,
+    fragmentShader: `
+      uniform float uTime;
+      uniform vec3 uCloud, uGap;
+      varying vec2 vAt;
+      #include <fog_pars_fragment>
+      ${NOISE}
+      void main() {
+        vec2 at = vAt * 0.012 + vec2(uTime * 0.004, 0.0);
+        float n = noise(at) * 0.6 + noise(at * 2.7) * 0.3 + noise(at * 7.0) * 0.1;
+        float cloud = smoothstep(0.38, 0.62, n);
+        gl_FragColor = vec4(mix(uGap, uCloud, cloud) * mix(0.86, 1.0, noise(at * 9.0)), 1.0);
+        #include <colorspace_fragment>
+        #include <fog_fragment>
+      }`,
+  });
+  const sea = new THREE.Mesh(new THREE.CircleGeometry(1500, 64), material);
+  sea.rotation.x = -Math.PI / 2;
+  sea.position.y = -46;
+  return sea;
+}
+
+// The floor of an island, as a disc of rings so that the rim can curve down.
+function createFloor(plan, island) {
   const positions = [];
   const index = [];
-  radii.forEach((r, ring) => {
+  const rings = 22;
+  const around = 96;
+  for (let ring = 0; ring <= rings; ring++) {
+    const r = (ring / rings) * island.radius;
     for (let i = 0; i < around; i++) {
       const a = (i / around) * Math.PI * 2;
-      const x = Math.cos(a) * r;
-      const z = Math.sin(a) * r;
+      const x = island.centre.x + Math.cos(a) * r;
+      const z = island.centre.z + Math.sin(a) * r;
       positions.push(x, heightAt(plan, x, z), z);
       if (!ring) continue;
       const here = ring * around + i;
       const next = ring * around + ((i + 1) % around);
       index.push(here - around, next, here, here - around, next - around, next);
     }
-  });
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-  geometry.setIndex(index);
-  geometry.computeVertexNormals();
-  return geometry;
+  }
+  const floor = new THREE.BufferGeometry();
+  floor.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  floor.setIndex(index);
+  floor.computeVertexNormals();
+  return floor;
 }
 
-// marks: the points with rings of their own around them (the sculptures).
-export function createGround(plan, marks) {
-  const uniforms = {
-    uTime: { value: 0 },
-    uPath: { value: plan.radius },
-    uPond: { value: plan.pond },
-    uLine: { value: new THREE.Color('#e8f0fa') },
-    uWay: { value: new THREE.Color('#3c6aa8') },
-    uWater: { value: new THREE.Color('#5f8fcb') },
-    uMarks: { value: Array.from({ length: MARKS }, (_, i) => new THREE.Vector2(...(marks[i] ?? [9999, 9999]))) },
-    uRipples: { value: Array.from({ length: RIPPLES }, () => new THREE.Vector4(0, 0, -99, 0)) },
-  };
-  const material = new THREE.MeshLambertMaterial({ color: DUNE });
+function floorMaterial(uniforms) {
+  const material = new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#2f3e58' });
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, uniforms);
     shader.vertexShader = shader.vertexShader
@@ -102,66 +142,76 @@ export function createGround(plan, marks) {
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGround;
-        uniform float uTime, uPath, uPond;
-        uniform vec3 uLine, uWay, uWater;
-        uniform vec2 uMarks[${MARKS}];
+        uniform float uTime;
+        uniform vec3 uLine;
         uniform vec4 uRipples[${RIPPLES}];
-        // A line where d is zero, as wide on the screen as the given pixels at any distance and any
-        // slope, with soft edges: drawn on the dunes, it follows them like a pen line.
-        float edge(float distance, float change, float pixels) {
-          return 1.0 - smoothstep(pixels * 0.5, pixels * 0.5 + 1.0, abs(distance) / max(change, 1e-5));
-        }
+        ${NOISE}
         float line(float d, float pixels) {
-          return edge(d, fwidth(d), pixels);
-        }
-        // Lines every 'gap' along a value, faded where they would crowd together. The change across a
-        // pixel is read on the value itself, which has no jump where one line hands over to the next.
-        float lines(float v, float gap, float pixels) {
-          float change = fwidth(v);
-          return edge((fract(v / gap + 0.5) - 0.5) * gap, change, pixels) * (1.0 - smoothstep(0.08, 0.3, change / gap));
+          return 1.0 - smoothstep(pixels * 0.5, pixels * 0.5 + 1.0, abs(d) / max(fwidth(d), 1e-5));
         }`)
       .replace('#include <color_fragment>', `#include <color_fragment>
         vec2 at = vGround.xz;
-        float r = length(at);
-        float fw = fwidth(r);
-        // Rings around the middle, wider apart going out; on the dunes they rise and fall with them.
-        float drawn = lines(r, 1.6 + r * 0.03, 1.2);
-        float near = 0.0;
-        for (int i = 0; i < ${MARKS}; i++) {
-          float d = distance(at, uMarks[i]);
-          float fade = 1.0 - smoothstep(4.0, 9.0, d);
-          if (fade > 0.0) near = max(near, lines(d, 0.55, 1.1) * fade * step(1.2, d));
-        }
-        drawn = max(drawn * (1.0 - near), near);
-        float way = abs(r - uPath);
-        // No ring runs inside the path: one under the feet would read as a stray line across the way.
-        drawn *= smoothstep(${PATH_HALF.toFixed(2)}, ${PATH_HALF.toFixed(2)} + 0.8, way);
-        vec3 colour = mix(diffuseColor.rgb, uLine, drawn * 0.7);
-        colour = mix(colour, uWay, (1.0 - smoothstep(${PATH_HALF.toFixed(2)} - 0.4, ${PATH_HALF.toFixed(2)} + 0.3, way)) * 0.85);
-        float water = 1.0 - smoothstep(uPond - fw, uPond + fw, r);
-        float wave = lines(r - uTime * 0.25, 3.5, 1.4) * 0.5;
+        // A very fine felt, only where its grain is larger than a pixel; soft billows of light and shade.
+        float felt = noise(at * 16.0) * 0.6 + noise(at * 45.0) * 0.4;
+        float grain = 1.0 - smoothstep(0.015, 0.06, fwidth(at.x));
+        vec3 colour = diffuseColor.rgb * (1.0 + (felt - 0.5) * 0.08 * grain) * mix(0.93, 1.04, noise(at * 0.35));
+        // Shadows of the clouds going by.
+        float cloud = noise(at * 0.045 + vec2(uTime * 0.015, uTime * 0.007));
+        colour *= 1.0 - smoothstep(0.6, 0.74, cloud) * 0.16;
+        // Rings spreading from where the visitor touched.
+        float touched = 0.0;
         for (int i = 0; i < ${RIPPLES}; i++) {
           float age = uTime - uRipples[i].z;
-          wave += line(distance(at, uRipples[i].xy) - age * 3.2, 2.5) * max(0.0, 1.0 - age / 3.5);
+          touched += line(distance(at, uRipples[i].xy) - age * 2.6, 2.5) * max(0.0, 1.0 - age / 2.2);
         }
-        colour = mix(colour, mix(uWater, uLine, clamp(wave, 0.0, 1.0) * 0.85), water);
-        colour = mix(colour, uLine, line(r - uPond, 2.0));
-        diffuseColor.rgb = colour;`);
+        diffuseColor.rgb = mix(colour, uLine, clamp(touched, 0.0, 1.0) * 0.8);`);
   };
-  const ground = new THREE.Mesh(groundGeometry(plan), material);
-  ground.frustumCulled = false;
+  return material;
+}
 
+// The stones of every path: flat round plaster discs with a soft edge, a little uneven.
+function createStones(plan) {
+  // From the foot up to the middle of the top, so that the faces look outwards.
+  const profile = [[0.92, -0.06], [0.98, -0.02], [1, 0.03], [0.97, 0.07], [0.9, 0.085], [0, 0.085]].map(([x, y]) => new THREE.Vector2(x, y));
+  const template = new THREE.Mesh(new THREE.LatheGeometry(profile, 28), new THREE.MeshLambertMaterial({ color: '#dfe7f2' }));
+  const q = new THREE.Quaternion();
+  const up = new THREE.Vector3(0, 1, 0);
+  const spots = plan.paths.flatMap((path) => Array.from({ length: path.stones + 1 }, (_, i) => {
+    const f = Math.abs(Math.sin((path.index * 31 + i) * 12.9898) * 43758.5453) % 1;
+    const at = path.curve.getPointAt(i / path.stones);
+    const size = 0.5 + f * 0.14;
+    return { x: at.x, z: at.z, matrix: new THREE.Matrix4().compose(at, q.setFromAxisAngle(up, f * 6.28), new THREE.Vector3(size, 1, size)) };
+  }));
+  return instances(template, spots, { slices: 16 }).drawn;
+}
+
+export function createGround(plan) {
+  const uniforms = {
+    uTime: { value: 0 },
+    uLine: { value: new THREE.Color('#9cb6db') },
+    uRipples: { value: Array.from({ length: RIPPLES }, () => new THREE.Vector4(0, 0, -99, 0)) },
+  };
+  const material = floorMaterial(uniforms);
+  const floors = plan.islands.map((island) => {
+    const floor = new THREE.Mesh(createFloor(plan, island), material);
+    floor.userData.island = island;
+    return floor;
+  });
+  const sea = createSea();
+  const stones = createStones(plan);
   let next = 0;
   return {
-    ground,
+    floors,
+    stones,
+    sea,
     update(time) {
       uniforms.uTime.value = time;
+      sea.material.uniforms.uTime.value = time;
     },
-    // Rings start where the pond was touched.
+    // Rings start where the ground was touched.
     ripple(x, z) {
       uniforms.uRipples.value[next].set(x, z, uniforms.uTime.value, 0);
       next = (next + 1) % RIPPLES;
     },
-    isPond: (x, z) => Math.hypot(x, z) < plan.pond,
   };
 }

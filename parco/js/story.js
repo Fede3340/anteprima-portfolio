@@ -1,239 +1,805 @@
-import { circle } from './circle.js';
-import { createDrag, turn } from './drag.js';
-import { asset, element, groundColour, limit, logo, picture, sharp } from './media.js';
+import { asset, element, logo, reducedMotion, srcset } from './media.js';
 import { TALL } from './works.js';
 
-const TIMES = ['L’idea', 'Studi e ricerche', 'Le scelte', 'Dove si vede'];
-const FIELDS = { negozi: 'sky', manifesti: 'sky', app: 'sky' };
+// A work seen closely stays in the park: the picture that was touched grows into a large plaster frame
+// standing on two legs, and the project is told inside it in boards, phase after phase, the way a
+// project is actually made. Around the frame the park is still there.
+
+const PHASES = { copertina: 'Copertina', studio: 'Studio', ideazione: 'Ideazione', progettazione: 'Progettazione', risultato: 'Risultato' };
+const ORDER = Object.keys(PHASES);
+const TEXTS = new Set(['text', 'sources', 'facts']);
+const FOCUS = [[0.5, 0.35], [0.25, 0.6], [0.75, 0.45], [0.5, 0.8], [0.3, 0.2]];
 const WHEEL_STEP = 60;
+const BASE = [248, 250, 252];
+const INK = [0, 23, 80];
 
-const upright = (image) => image.h > image.w;
-
-const frame = (image) => sharp(image, picture(image, { className: `frame frame--${upright(image) ? 'phone' : 'window'}`, eager: true }));
-
-function tall(work) {
-  const frameNode = element('div', { className: 'frame frame--window frame--tall' }, [
-    element('img', { className: 'frame__scroll', src: asset(`img/work/${work.id}-tall.webp`), alt: '', decoding: 'async' }),
-  ]);
-  frameNode.style.setProperty('--max-w', limit(TALL[work.id]));
-  return frameNode;
-}
-
-const framed = new Set(['siti', 'negozi', 'programmi', 'app']);
-
-function choices(work) {
-  const screens = work.gallery.map((image) => ({
-    node: framed.has(work.chapter) ? frame(image) : sharp(image, picture(image, { className: 'screen__picture' })),
-    caption: image.caption,
-  }));
-  if (TALL[work.id]) screens.unshift({ node: tall(work) });
-  return screens;
-}
-
-// A page of the studies: what was looked at, with the palette and the typefaces shown as samples.
-function study(page) {
-  const parts = [element('h2', { className: 'screen__title', textContent: page.title })];
-  if (page.p) parts.push(element('p', { className: 'screen__note', textContent: page.p }));
-  if (page.palette?.length) {
-    parts.push(element('ul', { className: 'swatches' }, page.palette.map(({ name, hex }) => {
-      const swatch = element('li', { className: 'swatch' }, [element('span', { className: 'swatch__name', textContent: name }), element('span', { textContent: hex })]);
-      swatch.style.setProperty('--swatch', hex);
-      return swatch;
-    })));
-  }
-  if (page.type?.length) {
-    parts.push(element('ul', { className: 'types' }, page.type.map(({ role, family, note }) => {
-      const sample = element('span', { className: 'type__sample', textContent: family });
-      sample.style.fontFamily = `"${family}", var(--font-display)`;
-      return element('li', { className: 'type' }, [element('span', { className: 'type__role', textContent: role }), sample, ...(note ? [element('span', { textContent: note })] : [])]);
-    })));
-  }
-  if (page.list?.length) parts.push(element('ul', { className: 'screen__facts' }, page.list.map((entry) => element('li', { textContent: entry }))));
-  if (page.sources?.length) {
-    parts.push(element('p', { className: 'sources' }, page.sources.map(({ label, href }) => element('a', { href, target: '_blank', rel: 'noopener', textContent: label }))));
-  }
-  return { time: 1, className: 'screen--study', children: [element('div', { className: 'screen__text' }, parts)] };
-}
-
-function screens(work) {
+// The phases of a work, from `process` when the data has it, otherwise read from the fields of today:
+// the studies go to Studio, or to Progettazione when they hold colours or typefaces; the first part
+// of the story to Ideazione; the second and the pictures to Progettazione; the third and the facts
+// to Risultato. A phase with nothing in it is left out.
+export function phases(work) {
+  if (work.process?.length) return work.process;
   const [idea, choice, where] = work.story ?? [];
-  const hero = work.chapter === 'marchi' ? work.gallery[0] : { ...work.cover, srcset: `${work.cover.srcMobile} 960w, ${work.cover.src} 1920w` };
-  const list = [{
-    time: 0,
-    className: 'screen--idea',
-    children: [
-      element('div', { className: 'screen__text' }, [
-        element('p', { className: 'screen__lead', textContent: idea?.p ?? work.line }),
-      ]),
-      element('div', { className: 'screen__stage' }, [sharp(hero, picture(hero, { className: 'screen__picture', eager: true }))]),
-    ],
-  }];
-  list.push(...(work.study ?? []).slice(0, 2).map(study));
-  choices(work).forEach(({ node, caption }, index) => {
-    const text = index === 0 && choice ? [element('p', { className: 'screen__note', textContent: choice.p })]
-      : caption ? [element('p', { className: 'screen__note', textContent: caption })] : [];
-    list.push({
-      time: 2,
-      className: `screen--choice${index === 0 && work.chapter === 'marchi' ? ' screen--mark' : ''}`,
-      children: [element('div', { className: 'screen__stage' }, [node]), ...(text.length ? [element('div', { className: 'screen__caption' }, text)] : [])],
-    });
-  });
-  const facts = where ? [element('p', { className: 'screen__note', textContent: where.p })]
-    : (work.facts ?? []).length ? [element('ul', { className: 'screen__facts' }, work.facts.map((fact) => element('li', { textContent: fact })))] : [];
-  list.push({
-    time: 3,
-    className: 'screen--where',
-    children: [element('div', { className: 'screen__text' }, [
-      element('h2', { className: 'screen__title', textContent: work.title }),
-      element('p', { className: 'screen__meta', textContent: [work.place, work.year, work.count].filter(Boolean).join(', ') }),
-      ...facts,
-      ...(work.link ? [element('a', { className: 'screen__link', href: work.link.href, target: '_blank', rel: 'noopener', textContent: work.link.label })] : []),
-    ])],
-  });
-  return list;
+  const studies = work.study ?? [];
+  const system = (page) => Boolean(page.palette?.length || page.type?.length);
+  const blocks = (page) => [
+    page.p && { kind: 'text', title: page.title, p: page.p },
+    page.palette?.length && { kind: 'palette', items: page.palette },
+    page.type?.length && { kind: 'type', items: page.type },
+    page.list?.length && { kind: 'list', items: page.list },
+    page.sources?.length && { kind: 'sources', items: page.sources },
+  ].filter(Boolean);
+  const pictures = (work.gallery ?? []).map((_, index) => index);
+  return [
+    ...studies.filter((page) => !system(page)).map((page) => ({ phase: 'studio', title: page.title, blocks: blocks(page) })),
+    idea && { phase: 'ideazione', title: idea.h, blocks: [{ kind: 'text', p: idea.p }] },
+    ...studies.filter(system).map((page) => ({ phase: 'progettazione', title: page.title, blocks: blocks(page) })),
+    (choice || pictures.length) && {
+      phase: 'progettazione',
+      title: choice?.h,
+      blocks: [choice && { kind: 'text', p: choice.p }, pictures.length && { kind: 'images', items: pictures }].filter(Boolean),
+    },
+    (where || work.facts?.length) && {
+      phase: 'risultato',
+      title: where?.h,
+      blocks: [where && { kind: 'text', p: where.p }, work.facts?.length && { kind: 'facts', items: work.facts }].filter(Boolean),
+    },
+  ].filter((section) => section && section.blocks.length);
 }
 
-// A work seen closely: it comes forward over the park, which stays behind, dimmed. Its story goes
-// by in full screens with the same gestures as the walk. Going past the last screen, touching
-// outside the work, Esc, Back and "Chiudi" all lead back to the path, where the visitor was.
-export function createStory(root, { works, sound, onClose, onEnd }) {
-  const head = element('div', { className: 'story__head' }, [
-    element('h2', { className: 'story__title' }),
-    element('p', { className: 'story__where' }),
+const portrait = (image) => image.h > image.w;
+const coverOf = (work) => ({ ...work.cover, srcset: `${work.cover.srcMobile} 960w, ${work.cover.src} 1920w` });
+// The pictures of a work other than its cover, which for a mark is often the same picture again.
+const others = (work) => {
+  const gallery = work.gallery ?? [];
+  const different = gallery.filter((image) => image.alt !== work.cover.alt);
+  return different.length ? different : gallery;
+};
+// A second picture for a narrow screen, where one landscape picture alone is too low for its board.
+const partner = (work, main) => others(work).find((image) => image.src !== main.src && !portrait(image));
+
+// The boards, in order. Words go with the visual thing that follows them in their phase; words left
+// at the end of a phase join the board before when there is room, or get a close-up of the work, so
+// that no board is words alone.
+const ROOM = 650;
+const length = (texts) => texts.reduce((total, block) => total + (block.p?.length ?? 0) + (block.items?.length ?? 0) * 60, 0);
+
+function plan(work, next, stacked, row) {
+  const gallery = work.gallery ?? [];
+  const close = others(work);
+  let borrowed = 0;
+  const detail = () => {
+    const image = close[borrowed % close.length] ?? coverOf(work);
+    const second = close.find((each) => each.src !== image.src);
+    const focus = FOCUS[borrowed % FOCUS.length];
+    borrowed += 1;
+    return { kind: 'detail', image, focus, ...(second ? { extra: second } : {}) };
+  };
+  const cover = coverOf(work);
+  const boards = [{ phase: 'copertina', cover: true, texts: [], visual: { kind: 'pics', items: [cover], extra: partner(work, cover) } }];
+  for (const section of phases(work)) {
+    const own = [];
+    let pending = [];
+    const add = (visual) => {
+      own.push({ phase: section.phase, texts: pending, visual });
+      pending = [];
+    };
+    // Words that would make a board too long are split, each part with its own close-up.
+    const flush = () => {
+      while (length(pending) > ROOM) {
+        let cut = 1;
+        while (cut < pending.length && length(pending.slice(0, cut + 1)) <= ROOM) cut += 1;
+        const rest = pending.slice(cut);
+        pending = pending.slice(0, cut);
+        add(detail());
+        pending = rest;
+      }
+    };
+    for (const block of section.blocks) {
+      if (TEXTS.has(block.kind)) {
+        pending.push(block);
+        continue;
+      }
+      flush();
+      if (block.kind === 'images') {
+        const items = block.items.map((index) => gallery[index]).filter(Boolean);
+        if (TALL[work.id] && section.phase === 'progettazione' && !own.some((board) => board.visual.kind === 'pics')) {
+          items.unshift({ tall: true, src: `img/work/${work.id}-tall.webp`, w: TALL[work.id], h: Math.round(TALL[work.id] * 2.1667), alt: '' });
+        }
+        groups(items, stacked, row, pending.length > 0).forEach(add);
+      } else if (block.kind === 'values' || block.kind === 'list') {
+        add({ kind: 'tiles', title: block.title ?? (block.kind === 'values' ? 'I valori' : undefined), items: block.items });
+      } else if (block.kind === 'type' && !pending.length && own.at(-1)?.visual.kind === 'palette' && !own.at(-1).visual.type) {
+        own.at(-1).visual.type = block.items;
+      } else {
+        add({ kind: block.kind, items: block.items });
+      }
+    }
+    const last = own.at(-1);
+    if (pending.length && last && length(last.texts) + length(pending) <= ROOM && !(last.visual.kind === 'pics' && last.visual.items.length > 1)) {
+      last.texts = last.texts.concat(pending);
+      pending = [];
+    }
+    if (pending.length && section.phase === 'risultato' && !stacked && length(pending) <= ROOM) add({ kind: 'next', work: next });
+    flush();
+    if (pending.length) add(detail());
+    for (const { visual: first } of own) {
+      if (first.kind === 'pics' && first.items.length === 1 && !portrait(first.items[0])) first.extra = partner(work, first.items[0]);
+    }
+    if (section.phase === 'risultato' && own.length) own[0].link = true;
+    boards.push(...own);
+  }
+  if (boards.at(-1).visual.kind !== 'next') {
+    boards.push({ phase: boards.at(-1).phase === 'risultato' ? 'risultato' : undefined, texts: [], visual: { kind: 'next', work: next, extra: partner(next, coverOf(next)) } });
+  }
+  return boards;
+}
+
+// Pictures go together as they fit the frame: upright ones side by side, as many as `row`; landscapes
+// alone on a wide frame and up to three one under the other on a narrow one. The first picture of a
+// part shares its board with the words, alone.
+function groups(items, stacked, row, withWords) {
+  const out = [];
+  for (const item of items) {
+    const last = out.at(-1);
+    const joins = last && !(withWords && out.length === 1 && !(stacked && portrait(item))) && last.items.length < (portrait(item) ? row : 3)
+      && last.items.every((each) => portrait(each) === portrait(item)) && (portrait(item) || stacked);
+    if (joins) last.items.push(item);
+    else out.push({ kind: 'pics', items: [item] });
+  }
+  return out;
+}
+
+const mix = (colour, share, base = BASE) => base.map((channel, index) => Math.round(channel + (colour[index] - channel) * share));
+const rgb = (colour) => `rgb(${colour.join(' ')})`;
+const hexRgb = (hex) => [1, 3, 5].map((start) => parseInt(hex.slice(start, start + 2), 16));
+const luminance = (colour) => {
+  const [r, g, b] = colour.map((value) => {
+    const share = value / 255;
+    return share <= 0.04045 ? share / 12.92 : ((share + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a, b) => {
+  const [high, low] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (high + 0.05) / (low + 0.05);
+};
+const saturation = (colour) => {
+  const max = Math.max(...colour) / 255;
+  const min = Math.min(...colour) / 255;
+  return max === min ? 0 : (max - min) / (1 - Math.abs(max + min - 1));
+};
+
+// The words on a colour sample: ink, white or black, whichever reads best on it.
+const label = (colour) => [INK, [255, 255, 255], [0, 0, 0]].sort((a, b) => contrast(b, colour) - contrast(a, colour))[0];
+
+// The light tint of a work: its liveliest colour where it has a palette, the average of its cover
+// otherwise.
+async function tintOf(work) {
+  const colours = phases(work).flatMap((section) => section.blocks).filter((block) => block.kind === 'palette')
+    .flatMap((block) => block.items.map((item) => hexRgb(item.hex)))
+    .filter((colour) => { const l = luminance(colour); return l > 0.02 && l < 0.85; });
+  if (colours.length) return colours.sort((a, b) => saturation(b) - saturation(a))[0];
+  return new Promise((done) => {
+    const image = new Image();
+    image.onload = () => {
+      const canvas = Object.assign(document.createElement('canvas'), { width: 8, height: 8 });
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      context.drawImage(image, 0, 0, 8, 8);
+      const data = context.getImageData(0, 0, 8, 8).data;
+      const sum = [0, 0, 0];
+      for (let at = 0; at < data.length; at += 4) for (let c = 0; c < 3; c++) sum[c] += data[at + c];
+      done(sum.map((value) => Math.round(value / 64)));
+    };
+    image.onerror = () => done(INK);
+    image.src = asset(work.cover.srcMobile);
+  });
+}
+
+const rise = (node, order) => {
+  node.classList.add('case-rise');
+  node.style.setProperty('--i', order);
+  return node;
+};
+
+function words(board, work) {
+  const nodes = [];
+  if (board.cover) {
+    const where = [work.place, work.year].filter(Boolean).join(', ');
+    nodes.push(element('div', { className: 'case-heading' }, [
+      ...(work.logo ? [logo(work.logo, { className: 'case-logo' })] : []),
+      element('h2', { className: 'case-name', textContent: work.title }),
+    ]));
+    nodes.push(element('div', { className: 'case-about' }, [
+      ...(work.line ? [element('p', { className: 'case-line', textContent: work.line })] : []),
+      ...(where || work.tag ? [element('p', { className: 'case-meta' }, [
+        ...(where ? [element('span', { textContent: where })] : []),
+        ...(work.tag ? [element('span', { className: 'case-tag', textContent: work.tag })] : []),
+      ])] : []),
+      ...(work.link ? [element('a', { className: 'case-link', href: work.link.href, target: '_blank', rel: 'noopener', textContent: work.link.label })] : []),
+    ]));
+  }
+  for (const block of board.texts) {
+    if (block.kind === 'text') {
+      if (block.title) nodes.push(element('h3', { className: 'case-subtitle', textContent: block.title }));
+      nodes.push(element('p', { className: 'case-p', textContent: block.p }));
+    } else if (block.kind === 'facts') {
+      nodes.push(element('ul', { className: 'case-facts' }, block.items.map((fact) => element('li', { textContent: fact }))));
+    } else if (block.kind === 'sources') {
+      nodes.push(element('p', { className: 'case-sources' }, [
+        element('span', { textContent: block.items.length > 1 ? 'Fonti' : 'Fonte' }),
+        ...block.items.map(({ label: text, href }) => element('a', { href, target: '_blank', rel: 'noopener', textContent: text })),
+      ]));
+    }
+  }
+  if (work.link && board.link) {
+    nodes.push(element('a', { className: 'case-link', href: work.link.href, target: '_blank', rel: 'noopener', textContent: work.link.label }));
+  }
+  return nodes.map((node, index) => rise(node, index + 1));
+}
+
+// A picture in its box; a touch shows it whole, unless it is part of a link or a moving page.
+function pic(image, zoom, className = '') {
+  const still = !zoom || image.tall;
+  const box = element(still ? 'span' : 'button', { className: `case-pic${image.tall ? ' case-pic--tall' : ''} ${className}`.trim() });
+  const img = element('img', { src: asset(image.src), alt: image.alt ?? '', decoding: 'async', draggable: false });
+  if (image.srcset) img.srcset = srcset(image.srcset);
+  box.append(img);
+  box.image = image;
+  if (!still) {
+    box.type = 'button';
+    box.setAttribute('aria-label', image.alt ? `Ingrandisci: ${image.alt}` : 'Ingrandisci');
+    box.addEventListener('click', () => zoom(image));
+  }
+  return box;
+}
+
+function visual(board, work, zoom) {
+  const { kind } = board.visual;
+  if (kind === 'pics') {
+    const holder = element('div', { className: 'case-pics' }, board.visual.items.map((image) => pic(image, zoom)));
+    if (board.visual.extra) holder.append(pic(board.visual.extra, zoom, 'case-extra'));
+    const captions = [...new Set(board.visual.items.map((image) => image.caption).filter(Boolean))];
+    if (captions.length === 1 && !board.cover) holder.append(element('p', { className: 'case-caption', textContent: captions[0] }));
+    return holder;
+  }
+  if (kind === 'detail') {
+    return element('div', { className: 'case-detail' }, [
+      pic(board.visual.image, zoom),
+      ...(board.visual.extra ? [pic(board.visual.extra, zoom, 'case-extra')] : []),
+    ]);
+  }
+  if (kind === 'palette') {
+    const { length } = board.visual.items;
+    const swatches = element('ul', { className: 'case-swatches' }, board.visual.items.map((item) => {
+      const colour = hexRgb(item.hex);
+      const chip = element('li', { className: 'case-swatch' }, [
+        element('span', { className: 'case-swatch__name', textContent: item.name }),
+        element('span', { className: 'case-swatch__hex', textContent: item.hex.toLowerCase() }),
+        ...(item.role ? [element('span', { className: 'case-swatch__role', textContent: item.role })] : []),
+      ]);
+      chip.style.background = item.hex;
+      chip.style.color = rgb(label(colour));
+      return chip;
+    }));
+    swatches.style.setProperty('--cols', length <= 4 ? length : Math.ceil(length / 2));
+    swatches.style.setProperty('--cols-narrow', length <= 2 ? length : 2);
+    return board.visual.type ? element('div', { className: 'case-system' }, [swatches, types(board.visual.type)]) : swatches;
+  }
+  if (kind === 'type') return types(board.visual.items);
+  if (kind === 'tiles') {
+    const { title, items } = board.visual;
+    const words = items.every((item) => item.length < 24);
+    return element('ul', { className: `case-tiles${words ? ' case-tiles--words' : ''}` }, [
+      ...(title ? [element('li', { className: 'case-tiles__title', textContent: title })] : []),
+      ...items.map((item, index) => {
+        const split = /^([^:]{2,28}):\s+(.+)$/.exec(item);
+        return rise(element('li', { className: 'case-tile' }, split
+          ? [element('span', { className: 'case-tile__label', textContent: split[1] }), element('span', { className: 'case-tile__value', textContent: split[2] })]
+          : [element('span', { className: `case-tile__value${words ? '' : ' case-tile__value--plain'}`, textContent: item })]), index + 1);
+      }),
+    ]);
+  }
+  if (kind === 'directions') {
+    return element('ul', { className: 'case-directions' }, board.visual.items.map((item, index) => rise(element('li', { className: `case-direction${item.chosen ? ' is-chosen' : ''}` }, [
+      ...(item.chosen ? [element('span', { className: 'case-direction__mark', textContent: 'La scelta' })] : []),
+      element('span', { className: 'case-direction__name', textContent: item.name }),
+      ...(item.p ? [element('span', { className: 'case-direction__p', textContent: item.p })] : []),
+    ]), index + 1)));
+  }
+  // The next work, at the end of every story.
+  const other = board.visual.work;
+  const card = element('a', { className: 'case-next', href: `#lavoro/${other.id}` }, [
+    pic(coverOf(other)),
+    ...(board.visual.extra ? [pic(board.visual.extra, null, 'case-extra')] : []),
+    element('span', { className: 'case-next__label' }, [
+      element('span', { className: 'case-next__kicker', textContent: 'Il lavoro dopo' }),
+      element('span', { className: 'case-next__title', textContent: other.title }),
+    ]),
   ]);
-  const progress = element('p', { className: 'story__progress' });
-  const previous = element('button', { className: 'step step--prev story__step', type: 'button' }, [element('span', { className: 'step__mark', textContent: '‹' })]);
-  const next = element('button', { className: 'step step--next story__step', type: 'button' }, [element('span', { className: 'step__mark', textContent: '›' })]);
-  const close = element('button', { className: 'story__close', type: 'button', textContent: 'Chiudi' });
-  previous.setAttribute('aria-label', 'Indietro');
-  next.setAttribute('aria-label', 'Avanti');
-  const stack = element('div', { className: 'story__stack' });
-  const panel = element('div', { className: 'story__panel' }, [stack, head, progress, previous, next]);
-  root.append(panel, close);
+  return card;
+}
+
+// Typefaces as a set sample: each name as large as the board allows, its role above it.
+function types(items) {
+  return element('ul', { className: 'case-types' }, items.map((item, index) => {
+    const sample = element('span', { className: 'case-type__name', textContent: item.family });
+    sample.style.fontFamily = `"${item.family}", ${/mono/i.test(item.family) ? 'ui-monospace, Consolas, monospace' : 'var(--font-display)'}`;
+    return rise(element('li', { className: 'case-type' }, [
+      element('span', { className: 'case-type__role', textContent: item.role }),
+      sample,
+      ...(item.note ? [element('span', { className: 'case-type__note', textContent: item.note })] : []),
+    ]), index + 1);
+  }));
+}
+
+// Draws a picture in a box of the given size, never larger than its own pixels allow (10% at most).
+function draw(box, { w, h, fit = 'contain', focus = [0.5, 0] }) {
+  const { image } = box;
+  const most = 1.1 / devicePixelRatio;
+  let scale = fit === 'contain' ? Math.min(w / image.w, h / image.h, most) : Math.min(Math.max(w / image.w, h / image.h), most);
+  if (fit === 'detail') scale = 1 / devicePixelRatio;
+  const boxW = fit === 'contain' ? image.w * scale : Math.min(w, image.w * scale);
+  const boxH = fit === 'contain' ? image.h * scale : Math.min(h, image.h * scale);
+  box.style.width = `${Math.floor(boxW)}px`;
+  box.style.height = `${Math.floor(boxH)}px`;
+  const img = box.querySelector('img');
+  const drawnW = image.w * scale;
+  if (image.tall) {
+    img.style.width = '100%';
+    return boxW * boxH;
+  }
+  img.style.width = `${Math.floor(drawnW)}px`;
+  img.style.height = `${Math.floor(image.h * scale)}px`;
+  img.style.left = `${-Math.round((drawnW - boxW) * focus[0])}px`;
+  img.style.top = `${-Math.round((image.h * scale - boxH) * focus[1])}px`;
+  if (img.srcset) img.sizes = `${Math.ceil(drawnW)}px`;
+  return boxW * boxH;
+}
+
+export function createStory(root, { works, sound, onClose, onEnd }) {
+  const sheet = element('link', { rel: 'stylesheet', href: asset('css/story.css') });
+  const styled = new Promise((done) => { sheet.onload = done; sheet.onerror = done; });
+  document.head.append(sheet);
+
+  root.classList.add('case');
+  const index = element('nav', { className: 'case-phases' });
+  index.setAttribute('aria-label', 'Fasi del progetto');
+  const close = element('button', { className: 'case-button case-close', type: 'button', textContent: 'Chiudi' });
+  const previous = element('button', { className: 'case-button case-step', type: 'button', textContent: '‹' });
+  const next = element('button', { className: 'case-button case-step', type: 'button', textContent: '›' });
+  const count = element('p', { className: 'case-count' });
+  count.setAttribute('aria-live', 'polite');
+  previous.setAttribute('aria-label', 'Tavola prima');
+  const strip = element('div', { className: 'case-strip' });
+  const view = element('div', { className: 'case-window' }, [strip]);
+  const frame = element('div', { className: 'case-frame' }, [view]);
+  // The colours of a work also stand on the ground at the foot of the frame, as plaster tiles.
+  const ground = element('div', { className: 'case-ground' });
+  ground.setAttribute('aria-hidden', 'true');
+  const stand = element('div', { className: 'case-stand' }, [
+    element('div', { className: 'case-shadow' }), element('div', { className: 'case-leg case-leg--left' }), element('div', { className: 'case-leg case-leg--right' }), ground, frame,
+  ]);
+  const zoomed = element('div', { className: 'case-zoom', hidden: true });
+  zoomed.setAttribute('role', 'dialog');
+  zoomed.setAttribute('aria-label', 'Immagine intera');
+  root.replaceChildren(
+    element('div', { className: 'case-top' }, [index, close]),
+    stand,
+    element('div', { className: 'case-foot' }, [previous, count, next]),
+    zoomed,
+  );
   root.addEventListener('dragstart', (event) => event.preventDefault());
 
   let work;
-  let list = [];
-  let index = 0;
-  let busy = false;
-  let wheel = 0;
+  let boards = [];
+  let at = 0;
+  let mode;
 
-  const label = () => {
-    const times = [...new Set(list.map((screen) => screen.time))];
-    const { time } = list[index];
-    progress.textContent = `${TIMES[time]}, ${times.indexOf(time) + 1} di ${times.length}`;
-    previous.hidden = index === 0;
-    next.setAttribute('aria-label', index === list.length - 1 ? 'Torna al sentiero' : 'Avanti');
+  // The picture at full size, over everything, until touched again.
+  function zoom(image) {
+    const most = 1.1 / devicePixelRatio;
+    const fit = Math.min((innerWidth - 32) / image.w, (innerHeight - 112) / image.h, most);
+    const img = element('img', { src: asset(image.src), alt: image.alt ?? '', decoding: 'async' });
+    if (image.srcset) {
+      img.srcset = srcset(image.srcset);
+      img.sizes = `${Math.ceil(image.w * fit)}px`;
+    }
+    img.style.width = `${Math.floor(image.w * fit)}px`;
+    img.style.height = `${Math.floor(image.h * fit)}px`;
+    const shut = element('button', { className: 'case-button case-zoom__close', type: 'button', textContent: 'Chiudi' });
+    zoomed.replaceChildren(img, shut);
+    zoomed.hidden = false;
+    shut.focus({ preventScroll: true });
+    sound.play('tap');
+  }
+  const unzoom = () => {
+    zoomed.hidden = true;
+    zoomed.replaceChildren();
   };
+  zoomed.addEventListener('click', (event) => {
+    event.stopPropagation();
+    unzoom();
+  });
+  addEventListener('keydown', (event) => {
+    if (zoomed.hidden || event.key !== 'Escape') return;
+    event.stopImmediatePropagation();
+    event.preventDefault();
+    unzoom();
+  }, true);
 
-  const build = (screen) => element('section', { className: `screen ${screen.className}` }, screen.children);
+  // Sizes every board for the frame at hand: the words take the room they need, the visual thing the
+  // rest, and never less than half of the board.
+  function fit(node, board) {
+    const W = view.clientWidth;
+    const H = view.clientHeight;
+    const text = node.querySelector('.case-words');
+    const shown = node.querySelector('.case-visual');
+    const boxes = [...shown.querySelectorAll('.case-pic:not(.case-extra, .case-more)')];
+    const extra = shown.querySelector('.case-extra');
+    const more = node.querySelector('.case-more');
+    const { kind } = board.visual;
+    const first = boxes[0]?.image;
+    const upright = kind === 'pics' && portrait(first);
+    const tall = Math.round(H * 0.56);
+    let used = false;
+    let kept = false;
 
-  async function show(target, point) {
-    if (busy || target === index || target < 0) return;
-    if (target >= list.length) {
+    if (mode === 'side' && !text && kind !== 'next') {
+      node.dataset.layout = 'full';
+      if (kind === 'pics') {
+        const caption = shown.querySelector('.case-caption') ? 44 : 0;
+        const sum = board.visual.items.reduce((total, image) => total + image.w / image.h, 0);
+        const h = Math.min(H - 48 - caption, (W - 48 - 20 * (boxes.length - 1)) / sum);
+        boxes.forEach((box) => draw(box, { w: h * (box.image.w / box.image.h), h }));
+        const rest = W - 48 - boxes.reduce((total, box) => total + box.offsetWidth + 20, 0);
+        if (more && rest > W * 0.3) {
+          draw(more, { w: rest, h, fit: 'detail', focus: [0.5, 0.3] });
+          kept = true;
+        }
+      } else if (kind === 'detail') {
+        draw(boxes[0], { w: W, h: H, fit: 'detail', focus: board.visual.focus });
+      }
+    } else if (mode === 'side' && kind === 'next') {
+      // Words above, the next work below them.
+      node.dataset.layout = 'under';
+      if (text) text.style.width = `${W}px`;
+      const room = H - (text?.offsetHeight ?? 0) - shown.querySelector('.case-next__label').offsetHeight;
+      draw(boxes[0], { w: W, h: room, fit: 'cover', focus: [0.5, 0.5] });
+    } else if (mode === 'side' && kind === 'pics' && !upright) {
+      // A landscape picture above, whole when it fills half of the board, cut at its foot otherwise.
+      node.dataset.layout = 'over';
+      text.style.width = `${W}px`;
+      const room = H - text.offsetHeight - (shown.querySelector('.case-caption')?.offsetHeight ?? 0);
+      const whole = draw(boxes[0], { w: W, h: room });
+      if (whole < W * H * 0.52) draw(boxes[0], { w: W, h: room, fit: 'cover', focus: [0.5, 0] });
+    } else if (mode === 'side') {
+      node.dataset.layout = 'beside';
+      const textW = Math.round(Math.min(560, Math.max(480, W * 0.4)));
+      if (upright) {
+        // An upright picture whole at full height; under the words, a close look at the same picture.
+        draw(boxes[0], { w: W - textW, h: H });
+        const wide = W - boxes[0].offsetWidth;
+        text.style.width = `${wide}px`;
+        const room = H - text.offsetHeight;
+        if (more && room > 160) {
+          draw(more, { w: wide, h: room, fit: 'detail', focus: [0.5, 0.3] });
+          kept = true;
+        }
+      } else {
+        text.style.width = `${textW}px`;
+        shown.style.width = `${W - textW}px`;
+        shown.style.minHeight = `${H}px`;
+        if (kind === 'detail') draw(boxes[0], { w: W - textW, h: H, fit: 'detail', focus: board.visual.focus });
+      }
+    } else {
+      // One above the other: the visual thing first, at least just over half of the board high.
+      node.dataset.layout = text ? 'stack' : 'full';
+      const pair = (box) => {
+        const high = box.image.h * (W / box.image.w);
+        if (!extra || high >= tall * 0.8) return false;
+        const below = Math.min(extra.image.h * (W / extra.image.w), Math.max(tall - high, H * 0.3));
+        if (high + below < H * 0.52) return false;
+        draw(box, { w: W, h: high });
+        draw(extra, { w: W, h: below });
+        return true;
+      };
+      if (kind === 'pics' && upright) {
+        // Upright pictures side by side, whole; where there is room left, a close look at the first.
+        const caption = shown.querySelector('.case-caption') ? 44 : 0;
+        const sum = board.visual.items.reduce((total, image) => total + image.w / image.h, 0);
+        const h = Math.min(H * (text ? 0.82 : 0.92) - caption, (W - 24 - 12 * (boxes.length - 1)) / sum);
+        boxes.forEach((box) => draw(box, { w: h * (box.image.w / box.image.h), h }));
+        shown.style.flexDirection = 'row';
+        const rest = W - 24 - boxes.reduce((total, box) => total + box.offsetWidth + 12, 0);
+        if (more && rest > W * 0.3) {
+          shown.querySelector('.case-caption')?.before(more);
+          if (!shown.contains(more)) shown.append(more);
+          draw(more, { w: rest, h: boxes[0].offsetHeight, fit: 'detail', focus: [0.5, 0.3] });
+          kept = true;
+        }
+      } else if (kind === 'pics' && text) {
+        for (const box of boxes) {
+          if (pair(box)) used = true;
+          else draw(box, { w: W, h: Math.max(W * (box.image.h / box.image.w), tall), fit: 'cover', focus: [0.5, 0] });
+        }
+      } else if (kind === 'pics') {
+        used = boxes.length === 1 && pair(boxes[0]);
+        const h = (H - 48 - 12 * (boxes.length - 1)) / boxes.length;
+        if (!used) boxes.forEach((box) => draw(box, { w: W - 24, h }));
+        // A low picture alone: under it, a close look at the same picture.
+        const room = H - 60 - boxes[0].offsetHeight;
+        if (!used && more && boxes.length === 1 && room > H * 0.3) {
+          draw(more, { w: W - 24, h: room, fit: 'detail', focus: [0.5, 0.5] });
+          kept = true;
+        }
+      } else if (kind === 'next') {
+        used = pair(boxes[0]);
+        if (!used) draw(boxes[0], { w: W, h: H - shown.querySelector('.case-next__label').offsetHeight, fit: 'cover', focus: [0.5, 0.5] });
+      } else if (kind === 'detail') {
+        draw(boxes[0], { w: W, h: tall, fit: 'detail', focus: board.visual.focus });
+        const high = boxes[0].offsetHeight;
+        if (extra && high < tall * 0.9) {
+          draw(extra, { w: W, h: tall - high, fit: 'detail', focus: [0.5, 0.4] });
+          used = true;
+        }
+      } else {
+        shown.style.minHeight = `${tall}px`;
+      }
+    }
+    if (!used) extra?.remove();
+    if (!kept) more?.remove();
+  }
+
+  function build(board, order) {
+    const texts = words(board, work);
+    const shown = visual(board, work, zoom);
+    shown.classList.add('case-visual');
+    const parts = [rise(shown, 0)];
+    if (texts.length) {
+      const column = element('div', { className: 'case-words' }, texts);
+      if (board.visual.kind === 'pics' && board.visual.items.length === 1 && portrait(board.visual.items[0]) && !board.visual.items[0].tall) {
+        column.append(rise(pic(board.visual.items[0], zoom, 'case-more'), texts.length + 1));
+      }
+      parts.push(column);
+    } else if (board.visual.kind === 'pics' && board.visual.items.every((image) => !image.tall) && (board.visual.items.length === 1 || board.visual.items.every(portrait))) {
+      shown.querySelector('.case-caption')?.before(pic(board.visual.items[0], zoom, 'case-more'));
+      if (!shown.querySelector('.case-more')) shown.append(pic(board.visual.items[0], zoom, 'case-more'));
+    }
+    const node = element('section', { className: `case-board case-board--${board.cover ? 'cover' : board.visual.kind}` }, parts);
+    node.setAttribute('aria-label', `${PHASES[board.phase] ?? 'Il lavoro dopo'}, tavola ${order + 1} di ${boards.length}`);
+    return node;
+  }
+
+  function label() {
+    const board = boards[at];
+    count.textContent = `${at + 1} di ${boards.length}`;
+    previous.disabled = at === 0;
+    next.setAttribute('aria-label', at === boards.length - 1 ? 'Torna al sentiero' : 'Tavola dopo');
+    for (const button of index.children) {
+      const here = button.dataset.phase === board.phase;
+      button.classList.toggle('is-here', here);
+      if (here) button.setAttribute('aria-current', 'step');
+      else button.removeAttribute('aria-current');
+    }
+    strip.children[at].classList.add('is-seen');
+    const colours = board.visual.kind === 'palette' ? board.visual.items : [];
+    if (ground.dataset.work !== `${work.id}-${at}`) {
+      ground.dataset.work = `${work.id}-${at}`;
+      ground.replaceChildren(...colours.slice(0, 5).map((item, order) => {
+        const tile = element('span', { className: 'case-ground__tile' });
+        tile.style.background = item.hex;
+        tile.style.setProperty('--i', order);
+        return tile;
+      }));
+    }
+  }
+
+  function layout(keep = 0) {
+    const W = view.clientWidth;
+    const H = view.clientHeight;
+    mode = W >= 900 && W / H >= 1.3 ? 'side' : 'stack';
+    const following = works[work.next] ?? Object.values(works)[0];
+    boards = plan(work, following, mode === 'stack', mode === 'side' ? 3 : W >= 600 ? 2 : 1);
+    root.dataset.mode = mode;
+    const present = ORDER.filter((phase) => boards.some((board) => board.phase === phase));
+    index.replaceChildren(...present.map((phase) => {
+      const button = element('button', { className: 'case-phase', type: 'button' }, [
+        element('span', { className: 'case-phase__long', textContent: PHASES[phase] }),
+        element('span', { className: 'case-phase__short', textContent: PHASES[phase][0] }),
+      ]);
+      button.setAttribute('aria-label', PHASES[phase]);
+      button.dataset.phase = phase;
+      button.addEventListener('click', () => show(boards.findIndex((board) => board.phase === phase)));
+      return button;
+    }));
+    strip.replaceChildren(...boards.map((board, order) => build(board, order)));
+    [...strip.children].forEach((node, order) => fit(node, boards[order]));
+    fitTypes();
+    at = Math.min(keep, boards.length - 1);
+    strip.scrollLeft = at * strip.clientWidth;
+    label();
+  }
+
+  // The name of a typeface is set as large as its board allows.
+  function fitTypes() {
+    for (const list of strip.querySelectorAll('.case-types')) {
+      const names = [...list.querySelectorAll('.case-type__name')];
+      const room = list.clientWidth - 64;
+      const tallest = list.parentElement.classList.contains('case-system') ? 110 : (list.clientHeight - 48) / names.length;
+      for (const name of names) {
+        name.style.fontSize = '100px';
+        name.style.whiteSpace = 'nowrap';
+        const size = Math.min(200, tallest * 0.55, (100 * room) / name.scrollWidth);
+        name.style.whiteSpace = '';
+        name.style.fontSize = `${Math.max(28, Math.floor(size))}px`;
+      }
+    }
+  }
+
+  // Turning a board: the strip slides; past the last one the visitor is back on the path.
+  function show(target) {
+    if (target < 0 || target === at) return;
+    if (target >= boards.length) {
       onEnd(work.id);
       return;
     }
-    busy = true;
     sound.play('tap');
-    const old = stack.lastElementChild;
-    const node = build(list[target]);
-    stack.append(node);
-    index = target;
+    at = target;
+    steering = target;
     label();
-    await circle(node, point);
-    old?.remove();
-    busy = false;
+    strip.scrollTo({ left: target * strip.clientWidth, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
   }
 
-  async function paint(id) {
-    work = works[id];
-    panel.dataset.field = FIELDS[work.chapter] ?? 'night';
-    panel.style.removeProperty('--field');
-    panel.style.removeProperty('--text');
-    if (work.chapter === 'marchi') {
-      const { colour, text } = await groundColour(work.gallery[0].src);
-      panel.style.setProperty('--field', colour);
-      panel.style.setProperty('--text', text);
-      panel.dataset.field = 'brand';
-    }
-    head.querySelector('.story__logo')?.remove();
-    if (work.logo) head.prepend(logo(work.logo, { className: 'story__logo', dark: panel.dataset.field === 'night' }));
-    head.querySelector('.story__title').textContent = work.title;
-    head.querySelector('.story__where').textContent = [work.place, work.year].filter(Boolean).join(', ');
-    list = screens(work);
-    index = 0;
-    stack.replaceChildren(build(list[0]));
-    label();
-  }
+  // A slide started by the arrows, the keys or the wheel is not undone by the boards it passes.
+  let steering;
+  let settle;
+  strip.addEventListener('scroll', () => {
+    cancelAnimationFrame(settle);
+    settle = requestAnimationFrame(() => {
+      const near = Math.round(strip.scrollLeft / strip.clientWidth);
+      const still = Math.abs(strip.scrollLeft - near * strip.clientWidth) < 4;
+      if (steering !== undefined) {
+        if (still && near === steering) steering = undefined;
+        return;
+      }
+      if (near !== at && still) {
+        at = near;
+        label();
+      }
+    });
+  }, { passive: true });
 
-  const side = (direction) => ({ x: direction > 0 ? innerWidth * 0.85 : innerWidth * 0.15, y: innerHeight / 2 });
+  previous.addEventListener('click', () => show(at - 1));
+  next.addEventListener('click', () => show(at + 1));
+  close.addEventListener('click', () => onClose());
 
-  createDrag(panel, {
-    move() {},
-    end(dx, velocity) {
-      const direction = turn(dx, velocity, innerWidth);
-      if (direction) show(index + direction, side(direction));
-    },
+  // Touching the park around the frame puts the work back.
+  root.addEventListener('click', (event) => {
+    if (event.target.closest('.case-frame, .case-top, .case-foot, .case-zoom')) return;
+    onClose();
   });
 
-  // Pulling the work down puts it back.
-  let pull;
-  panel.addEventListener('pointerdown', (event) => {
-    pull = { x: event.clientX, y: event.clientY };
-  });
-  panel.addEventListener('pointerup', (event) => {
-    if (!pull) return;
-    const dy = event.clientY - pull.y;
-    if (dy > 90 && dy > Math.abs(event.clientX - pull.x) * 1.5) onClose();
-    pull = undefined;
-  });
-
-  panel.addEventListener('wheel', (event) => {
+  // Wheel: a board that scrolls scrolls first, then the wheel turns the boards.
+  let wheel = 0;
+  let quiet = 0;
+  strip.addEventListener('wheel', (event) => {
+    if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+    const board = strip.children[at];
+    const down = event.deltaY > 0;
+    const room = down ? board.scrollHeight - board.clientHeight - board.scrollTop > 1 : board.scrollTop > 0;
+    if (room && board.contains(event.target)) return;
     event.preventDefault();
-    if (busy) return;
-    wheel += event.deltaX + event.deltaY;
+    if (event.timeStamp < quiet) return;
+    wheel += event.deltaY;
     if (Math.abs(wheel) < WHEEL_STEP) return;
-    const direction = Math.sign(wheel);
+    show(at + Math.sign(wheel));
     wheel = 0;
-    show(index + direction, side(direction));
+    quiet = event.timeStamp + 450;
   }, { passive: false });
 
-  stack.addEventListener('click', (event) => {
-    if (event.target.closest('a, button')) return;
-    show(index + 1, { x: event.clientX, y: event.clientY });
+  // Dragging with the mouse: sideways turns the boards, downwards puts the work back. The finger
+  // has the strip's own sliding, and pulls down from the top of a board to put it back.
+  let drag;
+  strip.addEventListener('pointerdown', (event) => {
+    if (event.pointerType !== 'mouse' || event.button) return;
+    drag = { x: event.clientX, y: event.clientY, left: strip.scrollLeft, moved: false };
   });
-  previous.addEventListener('click', (event) => show(index - 1, { x: event.clientX, y: event.clientY }));
-  next.addEventListener('click', (event) => show(index + 1, { x: event.clientX, y: event.clientY }));
-  close.addEventListener('click', () => onClose());
-  root.addEventListener('click', (event) => {
-    if (!panel.contains(event.target) && event.target !== close) onClose();
+  addEventListener('pointermove', (event) => {
+    if (!drag) return;
+    const dx = event.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) < 8) return;
+    if (!drag.moved && Math.abs(dx) < Math.abs(event.clientY - drag.y)) return;
+    drag.moved = true;
+    strip.classList.add('is-dragged');
+    strip.scrollLeft = drag.left - dx;
   });
+  addEventListener('pointerup', (event) => {
+    if (!drag) return;
+    const dx = event.clientX - drag.x;
+    const dy = event.clientY - drag.y;
+    strip.classList.remove('is-dragged');
+    if (drag.moved) {
+      const turn = Math.abs(dx) > strip.clientWidth * 0.15 ? -Math.sign(dx) : 0;
+      strip.scrollLeft = drag.left;
+      if (turn) show(at + turn);
+      else strip.scrollTo({ left: at * strip.clientWidth });
+      strip.addEventListener('click', (click) => { click.stopPropagation(); click.preventDefault(); }, { capture: true, once: true });
+    } else if (dy > 90 && dy > Math.abs(dx) * 1.5) {
+      onClose();
+    }
+    drag = undefined;
+  });
+
+  let pull;
+  root.addEventListener('touchstart', (event) => {
+    const board = event.target.closest?.('.case-board');
+    pull = event.touches.length === 1 && (!board || board.scrollTop <= 0)
+      ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : undefined;
+  }, { passive: true });
+  root.addEventListener('touchend', (event) => {
+    if (!pull) return;
+    const touch = event.changedTouches[0];
+    const dy = touch.clientY - pull.y;
+    if (dy > 90 && dy > Math.abs(touch.clientX - pull.x) * 1.5) onClose();
+    pull = undefined;
+  }, { passive: true });
+
+  let resized;
+  addEventListener('resize', () => {
+    if (!work) return;
+    clearTimeout(resized);
+    resized = setTimeout(() => layout(at), 150);
+  });
+
+  // The frame grows from the point that was touched, and goes back into it.
+  const grow = (point, open) => {
+    if (reducedMotion.matches) {
+      return root.animate([{ opacity: open ? 0 : 1 }, { opacity: open ? 1 : 0 }], { duration: 250, fill: 'forwards' }).finished.catch(() => {});
+    }
+    const box = stand.getBoundingClientRect();
+    const dx = (point?.x ?? innerWidth / 2) - (box.left + box.width / 2);
+    const dy = (point?.y ?? innerHeight / 2) - (box.top + box.height / 2);
+    const small = { transform: `translate(${dx}px, ${dy}px) scale(0.1)`, opacity: 0 };
+    const full = { transform: 'none', opacity: 1 };
+    const chrome = [...root.querySelectorAll('.case-top, .case-foot')];
+    chrome.forEach((part) => part.animate([{ opacity: open ? 0 : 1 }, { opacity: open ? 1 : 0 }], { duration: open ? 300 : 200, delay: open ? 450 : 0, fill: 'both' }));
+    return stand.animate(open ? [small, full] : [full, small], { duration: open ? 700 : 450, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }).finished.catch(() => {});
+  };
 
   return {
     get work() {
       return work?.id;
     },
     async open(id, point) {
-      await paint(id);
+      await styled;
+      await document.fonts.load('700 100px Grandstander').catch(() => {});
+      unzoom();
+      work = works[id];
+      const tint = await tintOf(work);
+      root.style.setProperty('--board', rgb(mix(tint, 0.07)));
+      root.style.setProperty('--panel', rgb(mix(tint, 0.16)));
       root.hidden = false;
-      // The screens start under the title, however many lines it takes.
-      panel.style.setProperty('--head-h', `${head.offsetHeight}px`);
+      root.getAnimations({ subtree: true }).forEach((animation) => animation.cancel());
+      layout(0);
       sound.play('whoosh');
       close.focus({ preventScroll: true });
-      await circle(root, point);
+      await grow(point, true);
     },
     async close(point) {
       if (root.hidden) return;
+      unzoom();
       sound.play('whoosh');
-      await circle(root, { ...point, open: false });
+      await grow(point, false);
       root.hidden = true;
-      stack.replaceChildren();
+      strip.replaceChildren();
+      root.getAnimations({ subtree: true }).forEach((animation) => animation.cancel());
       work = undefined;
     },
     key(event) {
-      if (event.key === 'ArrowRight') show(index + 1, side(1));
-      else if (event.key === 'ArrowLeft') show(index - 1, side(-1));
+      if (!zoomed.hidden) return false;
+      if (event.key === 'ArrowRight') show(at + 1);
+      else if (event.key === 'ArrowLeft') show(at - 1);
       else return false;
       return true;
     },

@@ -1,13 +1,27 @@
-// Everything that stands in the park besides the works, as cut-out pictures: the great cursor in the
-// pond, a sculpture for each zone, lamps, benches, trees, the swing and clouds at three distances,
-// with soft shadows on the ground and a pool of light under each lit lamp.
+// Everything that stands on the islands besides the works, as cut-out pictures: the clouds of their
+// rims and undersides, the clouds of the sky and of the sea below, the sculpture of each place, and
+// each island's own piece of park (a wood, an orchard, a stone garden, a pond...), with soft shadows
+// on the ground and a pool of light under each lit lamp.
 import * as THREE from 'three';
 import { placed } from './instances.js';
 import { heightAt } from './land.js';
-import { WORK_SIDE, along, ringPoint } from './layout.js';
+import { mouth } from './layout.js';
 import { createSprite } from './sprites.js';
 
-const LAMP_EVERY = 15;
+// What grows on each island, as [picture, how many]; spread over the island away from the works.
+const GARDENS = {
+  ingresso: [['albero-grande', 2], ['albero-medio', 4], ['albero-piccolo', 4], ['cespuglio-1', 6], ['cespuglio-2', 3], ['nuvola-a-terra', 9], ['panchina', 1]],
+  siti: [['albero-grande', 9], ['albero-medio', 9], ['albero-piccolo', 5], ['tronco-alto', 3], ['cespuglio-2', 5], ['cespuglio-1', 4], ['nuvola-a-terra', 7]],
+  negozi: [['albero-frutti', 9], ['cassette', 4], ['cespuglio-1', 3], ['nuvola-a-terra', 4]],
+  programmi: [['siepe-squadrata', 6], ['gradini', 2], ['sasso', 8], ['albero-piccolo', 2]],
+  app: [['canne', 8], ['albero-medio', 3], ['cespuglio-1', 4], ['nuvola-a-terra', 4]],
+  videogioco: [['scivolo', 1], ['aquilone', 3], ['nuvola-a-terra', 8], ['cespuglio-2', 3]],
+  marchi: [['fiore-1', 7], ['fiore-2', 8], ['aiuola', 4], ['cespuglio-1', 3]],
+  manifesti: [['erba-alta', 16], ['bandiera', 4], ['nuvola-a-terra', 3]],
+  google: [['albero-piccolo', 3], ['panchina', 1], ['sasso', 4], ['nuvola-a-terra', 3]],
+  contatti: [['cassetta-posta', 1], ['albero-medio', 2], ['nuvola-a-terra', 5], ['cespuglio-1', 3]],
+};
+const RIM_EVERY = 4.2;
 
 function random(seed) {
   let a = seed >>> 0;
@@ -51,157 +65,197 @@ function createPatches(spots, { colour, strength, falloff, light }) {
   return { mesh, level };
 }
 
-// pictures: img/park/park.json; sculptures: img/sprites/manifest.json, by zone (missing ones are left out).
-export function createPark({ plan, renderer, pictures, sculptures = {} }) {
+// pictures: img/park/park.json; sprites: img/sprites/manifest.json (missing pictures are left out).
+export function createPark({ plan, renderer, pictures, sprites: library = {} }) {
   const object = new THREE.Group();
   const roll = random(7);
-  const sprites = [];
-  const sprite = (entry, count, options = {}) => {
-    const made = createSprite(entry, count, { renderer, ...options });
-    sprites.push(made);
-    object.add(made.mesh);
-    return made;
+  const made = [];
+  const shadows = [];
+  const picture = (name) => library[name] ?? pictures[name];
+  // One picture drawn at many spots: [{ x, y, z, height }], each on the ground unless y is given.
+  // Behind the door only the clouds of the islands and the sky are fetched, the rest once one goes in.
+  const cloudy = /^(sbuffo|nuvola)/;
+  const sprite = (name, spots, options = {}) => {
+    const entry = picture(name);
+    if (!entry || !spots.length) return undefined;
+    const drawn = createSprite(entry, spots.length, { renderer, later: !cloudy.test(name), ...options });
+    spots.forEach((spot, index) => Object.assign(drawn.spots[index], { x: spot.x, z: spot.z, y: spot.y ?? heightAt(plan, spot.x, spot.z), ...(spot.height ? { height: spot.height } : {}) }));
+    made.push(drawn);
+    object.add(drawn.mesh);
+    return drawn;
   };
-  const stand = (made, index, x, z, height) => Object.assign(made.spots[index], { x, y: heightAt(plan, x, z), z, ...(height ? { height } : {}) });
 
-  // A sculpture for each zone just inside the path, and the great cursor in the middle of the pond.
-  const statues = [];
-  for (const zone of plan.zones) {
-    const entry = sculptures[zone.id];
-    if (!entry) continue;
-    // The sculptures are fetched once the door is passed: the door itself stays light.
-    const made = sprite(entry, 1, { later: true });
-    if (zone.mark) stand(made, 0, zone.mark.x, zone.mark.z);
-    else stand(made, 0, 0, 0);
-    made.spots[0].y += entry.lift ?? 0;
-    statues.push({ zone, made });
-    // The stamp of Marchi hangs over the ring it has printed on the ground.
-    const ring = sculptures[`${zone.id}-cerchio`];
-    if (ring && zone.mark) {
-      const printed = sprite(ring, 1, { later: true });
-      stand(printed, 0, zone.mark.x, zone.mark.z);
-      statues.push({ zone, made: printed });
+  // A free spot on an island: away from its works, its sculptures, its paths and its rim.
+  const taken = plan.works.map((work) => ({ x: work.x, z: work.z, r: 2.2 }));
+  for (const island of plan.islands) {
+    for (const zone of island.zones) taken.push({ x: zone.mark.x, z: zone.mark.z, r: 2.6 });
+    for (const path of [island.in, island.out]) {
+      const at = mouth(plan, island, path);
+      taken.push({ x: at.x, z: at.z, r: 2.5 });
+    }
+    // The ground in front of the way in stays open, so that the works are seen on arrival.
+    taken.push({ x: island.arrival.x, z: island.arrival.z, r: 2.6 });
+  }
+  function freeSpot(island, size) {
+    for (let tries = 0; tries < 40; tries++) {
+      const a = roll() * Math.PI * 2;
+      const r = Math.sqrt(roll()) * (island.radius - 2.2);
+      const x = island.centre.x + Math.cos(a) * r;
+      const z = island.centre.z + Math.sin(a) * r;
+      if (taken.some((other) => Math.hypot(other.x - x, other.z - z) < other.r + size)) continue;
+      taken.push({ x, z, r: size });
+      return { x, z };
+    }
+    return undefined;
+  }
+
+  // Each island's garden.
+  const gardens = {};
+  for (const island of plan.islands) {
+    for (const [name, many] of GARDENS[island.id] ?? []) {
+      const entry = picture(name);
+      if (!entry) continue;
+      const width = (entry.metres ?? 1) * (entry.w / entry.h);
+      for (let i = 0; i < many; i++) {
+        const spot = freeSpot(island, Math.max(0.6, width * 0.45));
+        if (spot) (gardens[name] ??= []).push({ ...spot, height: (entry.metres ?? 1) * (0.8 + roll() * 0.4) });
+      }
     }
   }
-
-  // Lamps line the outer edge of the path, moved off any work to the middle of the gap beside it, so
-  // that none stands between a work and the eyes turned to it.
-  const lampSpots = [];
-  for (let s = LAMP_EVERY / 2; s < plan.length; s += LAMP_EVERY) {
-    const work = plan.works.find((spot) => Math.abs(along(s, spot.s, plan.length)) < spot.reach);
-    const p = ringPoint(plan, work ? work.s + work.reach : s, 2.1);
-    lampSpots.push({ x: p.x, z: p.z, on: undefined, level: 0 });
+  for (const [name, spots] of Object.entries(gardens)) {
+    sprite(name, spots);
+    const entry = picture(name);
+    spots.forEach((spot) => shadows.push({ x: spot.x, z: spot.z, size: Math.max(1, spot.height * (entry.w / entry.h) * 1.1) }));
   }
-  const lit = sprite(pictures.lampione, lampSpots.length);
-  const dark = sprite(pictures['lampione-spento'], lampSpots.length);
-  lampSpots.forEach((spot, index) => {
-    stand(lit, index, spot.x, spot.z);
-    stand(dark, index, spot.x, spot.z);
-  });
 
-  const benches = sprite(pictures.panchina, plan.zones.length);
-  const benchSpots = plan.zones.map((zone, index) => {
-    const p = ringPoint(plan, zone.start + zone.length * 0.55 + 3, -3.1);
-    stand(benches, index, p.x, p.z);
-    return p;
-  });
-
-  const treeSpots = [];
-  for (let s = 4; s < plan.length; s += 9) {
-    const p = ringPoint(plan, s + roll() * 4, WORK_SIDE + 5 + roll() * 14);
-    treeSpots.push({ x: p.x, z: p.z, height: pictures.albero.metres * (0.85 + roll() * 0.5) });
+  // The sculpture of each place; the great cursor stands in the middle of the first island.
+  const statues = [];
+  for (const zone of plan.zones) {
+    const drawn = sprite(zone.id, [zone.mark], { later: true });
+    if (!drawn) continue;
+    drawn.spots[0].y += picture(zone.id).lift ?? 0;
+    statues.push(drawn);
+    shadows.push({ x: zone.mark.x, z: zone.mark.z, size: 3 });
+    const ring = sprite(`${zone.id}-cerchio`, [zone.mark], { later: true });
+    if (ring) statues.push(ring);
   }
-  const trees = sprite(pictures.albero, treeSpots.length);
-  treeSpots.forEach((spot, index) => stand(trees, index, spot.x, spot.z, spot.height));
+  const statueOf = new Map(statues.map((drawn) => [drawn, plan.zones.find((zone) => zone.mark.x === drawn.spots[0].x && zone.mark.z === drawn.spots[0].z).island]));
 
-  // The swing: the cloud stays, the seat swings on the point where its ropes hang.
-  const swingAt = ringPoint(plan, plan.zones.find((zone) => zone.id === 'videogioco').start + 7, -6);
-  const swingCloud = sprite(pictures['altalena-nuvola'], 1);
-  const seat = sprite(pictures['altalena-sedile'], 1, { anchor: [pictures.altalena.pivot[0], 1 - pictures.altalena.pivot[1]] });
+  // Lamps by the mouths of the paths.
+  const lampSpots = plan.islands.flatMap((island) => [island.in, island.out].map((path) => {
+    const at = mouth(plan, island, path);
+    const toward = Math.atan2(at.z - island.centre.z, at.x - island.centre.x) + 0.5;
+    const r = island.radius - 3.2;
+    return { x: island.centre.x + Math.cos(toward) * r, z: island.centre.z + Math.sin(toward) * r, on: undefined, level: 0 };
+  }));
+  const lit = sprite('lampione', lampSpots);
+  const dark = sprite('lampione-spento', lampSpots);
+  lampSpots.forEach((spot) => shadows.push({ x: spot.x, z: spot.z, size: 1.1 }));
+
+  // The swing hangs from its cloud on the island of the games.
+  const game = plan.islands.find((island) => island.id === 'videogioco');
+  const swingAt = freeSpot(game, 1.6) ?? game.centre;
+  const swingGround = heightAt(plan, swingAt.x, swingAt.z);
   const { pivot, seatBottom, cloudBottom } = pictures.altalena;
-  const pivotHeight = seatBottom + pictures['altalena-sedile'].metres * (1 - pivot[1]);
-  Object.assign(swingCloud.spots[0], { x: swingAt.x, y: cloudBottom, z: swingAt.z });
-  Object.assign(seat.spots[0], { x: swingAt.x, y: pivotHeight, z: swingAt.z });
+  const swingCloud = sprite('altalena-nuvola', [{ x: swingAt.x, z: swingAt.z, y: swingGround + cloudBottom }]);
+  const seat = sprite('altalena-sedile', [{ x: swingAt.x, z: swingAt.z, y: swingGround + seatBottom + pictures['altalena-sedile'].metres * (1 - pivot[1]) }], { anchor: [pivot[0], 1 - pivot[1]] });
   const swing = { angle: 0, spin: 0 };
+  shadows.push({ x: swingAt.x, z: swingAt.z, size: 1.6 });
 
-  // Clouds: big and far around the park, middling over it, small and low across the path.
-  const clouds = [];
-  for (let i = 0; i < 10; i++) clouds.push({ layer: 'far', angle: (i / 10) * 6.28 + roll() * 0.4, radius: 170 + roll() * 150, y: 8 + roll() * 40, size: 18 + roll() * 22 });
-  for (let i = 0; i < 7; i++) clouds.push({ layer: 'middle', angle: roll() * 6.28, radius: plan.pond * 0.5 + roll() * (plan.island - plan.pond * 0.5), y: 16 + roll() * 10, size: 5 + roll() * 4 });
-  for (let i = 0; i < 7; i++) clouds.push({ layer: 'low', angle: ((i + roll() * 0.5) / 7) * 6.28, radius: plan.radius + (roll() - 0.5) * 7, y: 2.9 + roll() * 0.8, size: 1.1 + roll() * 0.6 });
-  const kinds = ['nuvola-1', 'nuvola-2', 'nuvola-3'].map((name, k) => {
-    const members = clouds.filter((_, index) => index % 3 === k);
-    members.forEach((cloud, slot) => Object.assign(cloud, { kind: k, slot, bounce: 0, kick: 0 }));
-    return { made: sprite(pictures[name], members.length, { fog: false }), members };
+  // Clouds: the rims and undersides of the islands, the sea far below, the sky around.
+  const rims = [];
+  const unders = [];
+  for (const island of plan.islands) {
+    const many = Math.round((Math.PI * 2 * island.radius) / RIM_EVERY);
+    for (let i = 0; i < many; i++) {
+      const a = (i / many) * Math.PI * 2 + roll() * 0.2;
+      // Over the edge of the floor, so that the island ends in billows, not in a line.
+      const r = island.radius - 1.3 + roll() * 0.6;
+      const height = (1 + roll() * 0.5) * (1.3 + roll());
+      rims.push({ x: island.centre.x + Math.cos(a) * r, z: island.centre.z + Math.sin(a) * r, y: island.centre.y - height * 0.45, height });
+    }
+    for (let i = 0; i < 3; i++) {
+      const a = roll() * Math.PI * 2;
+      const height = island.radius * (0.3 + roll() * 0.15);
+      unders.push({ x: island.centre.x + Math.cos(a) * island.radius * 0.3, z: island.centre.z + Math.sin(a) * island.radius * 0.3, y: island.centre.y - height * 1.1, height });
+    }
+  }
+  sprite('sbuffo-2', rims.filter((_, i) => i % 3 === 0));
+  sprite('sbuffo-1', rims.filter((_, i) => i % 3 === 1));
+  sprite('sbuffo-3', rims.filter((_, i) => i % 3 === 2));
+  sprite('sbuffo-3', unders);
+  // Grass of cloud, in little tufts all over the floors.
+  const tufts = [];
+  for (const island of plan.islands) {
+    for (let i = 0; i < island.radius * 5; i++) {
+      const spot = freeSpot(island, 0.25);
+      if (spot) tufts.push({ ...spot, height: 0.3 + roll() * 0.5 });
+    }
+  }
+  sprite('ciuffo-1', tufts.filter((_, i) => i % 2));
+  sprite('ciuffo-2', tufts.filter((_, i) => !(i % 2)));
+  const sky = [];
+  for (let i = 0; i < 12; i++) {
+    const a = roll() * Math.PI * 2;
+    const r = 120 + roll() * 260;
+    sky.push({ x: Math.cos(a) * r, z: Math.sin(a) * r, y: 15 + roll() * 45, height: 8 + roll() * 12, angle: a, r });
+  }
+  // The sea of clouds as a band all round far below, and other islands far away, out of reach.
+  const sea = Array.from({ length: 14 }, (_, i) => {
+    const a = (i / 14) * Math.PI * 2;
+    return { x: Math.cos(a) * 330, z: Math.sin(a) * 330, y: -58, height: 70 };
   });
-  const speed = { far: 0.004, middle: 0.01, low: 0.016 };
+  const distant = Array.from({ length: 6 }, (_, i) => {
+    const a = (i / 6) * Math.PI * 2 + 0.4;
+    const r = 190 + roll() * 90;
+    return { x: Math.cos(a) * r, z: Math.sin(a) * r, y: -6 + roll() * 22, height: 11 + roll() * 6 };
+  });
+  const high = sprite('nuvola-1', sky, { fog: false });
+  sprite('mare-di-nuvole', sea);
+  sprite('isola-lontana-1', distant.filter((_, i) => i % 2));
+  sprite('isola-lontana-2', distant.filter((_, i) => !(i % 2)));
 
-  const shadows = createPatches([
-    ...lampSpots.map((spot) => ({ ...spot, size: 1.1 })),
-    ...benchSpots.map((spot) => ({ x: spot.x, z: spot.z, size: 2.4 })),
-    ...treeSpots.map((spot) => ({ x: spot.x, z: spot.z, y: heightAt(plan, spot.x, spot.z), size: spot.height * 0.7 })),
-    ...statues.filter(({ zone }) => zone.mark).map(({ zone }) => ({ x: zone.mark.x, z: zone.mark.z, size: 3 })),
-    ...plan.works.map(({ place }) => ({ x: place.x, z: place.z, size: 3.2 })),
-    { x: swingAt.x, z: swingAt.z, size: 1.6 },
-  ], { colour: '#0b2350', strength: 0.32, falloff: 0.15 });
-  const pools = createPatches(lampSpots.map((spot) => ({ ...spot, size: 7 })), { colour: '#ffffff', strength: 0.3, falloff: 0, light: true });
-  object.add(shadows.mesh, pools.mesh);
+  const ground = createPatches(shadows.map((spot) => ({ ...spot, y: heightAt(plan, spot.x, spot.z) })), { colour: '#5f7fb3', strength: 0.34, falloff: 0.1 });
+  const pools = createPatches(lampSpots.map((spot) => ({ x: spot.x, z: spot.z, y: heightAt(plan, spot.x, spot.z), size: 6 })), { colour: '#ffffff', strength: 0.3, falloff: 0, light: true });
+  object.add(ground.mesh, pools.mesh);
 
   let lampLevel = 0;
 
   return {
     object,
-    tappable: [lit.mesh, dark.mesh, seat.mesh, swingCloud.mesh, ...kinds.map((kind) => kind.made.mesh)],
+    tappable: [lit?.mesh, dark?.mesh, seat?.mesh, swingCloud?.mesh].filter(Boolean),
     set lamps(level) {
       lampLevel = level;
     },
-    // After the door: the large pictures of what is everywhere, and of the sculptures close by.
-    zone(zone) {
-      const total = plan.zones.length;
-      for (const made of sprites) if (!statues.some((statue) => statue.made === made)) made.use('large');
-      for (const { zone: own, made } of statues) {
-        const gap = Math.min(Math.abs(own.index - zone.index), total - Math.abs(own.index - zone.index));
-        made.use(gap <= 1 || !own.mark ? 'large' : 'small');
-      }
+    // After the door: the large pictures of what is everywhere, and of the sculptures on the island
+    // one is on and those beside it; the small ones of the others.
+    island(island) {
+      const count = plan.islands.length;
+      const near = (other) => Math.min(Math.abs(other.index - island.index), count - Math.abs(other.index - island.index)) <= 1;
+      for (const drawn of made) drawn.use(statueOf.has(drawn) && !near(statueOf.get(drawn)) ? 'small' : 'large');
     },
-    // Something of the park was touched: a lamp switches, a low cloud bounces, the swing is pushed.
+    // Something of the park was touched: a lamp switches, the swing is pushed.
     touch(hit) {
-      if (hit.object === lit.mesh || hit.object === dark.mesh) {
+      if (hit.object === lit?.mesh || hit.object === dark?.mesh) {
         const spot = lampSpots[hit.instanceId];
         spot.on = !(spot.on ?? lampLevel > 0.5);
         return 'lamp';
       }
-      const kind = kinds.find((each) => each.made.mesh === hit.object);
-      if (kind) {
-        const cloud = kind.members[hit.instanceId];
-        if (cloud.layer !== 'low') return undefined;
-        cloud.kick += 3;
-        return 'cloud';
-      }
-      if (hit.object === seat.mesh || hit.object === swingCloud.mesh) {
+      if (hit.object === seat?.mesh || hit.object === swingCloud?.mesh) {
         swing.spin += 1.1;
         return 'swing';
       }
       return undefined;
     },
     update(dt, time, state, camera) {
-      clouds.forEach((cloud, index) => {
-        if (cloud.layer === 'low') {
-          cloud.kick += (-cloud.bounce * 40 - cloud.kick * 3.2) * dt;
-          cloud.bounce += cloud.kick * dt;
-        }
-        const angle = cloud.angle + time * speed[cloud.layer] * (cloud.layer === 'middle' ? -1 : 1);
-        Object.assign(kinds[cloud.kind].made.spots[cloud.slot], {
-          x: Math.cos(angle) * cloud.radius,
-          z: Math.sin(angle) * cloud.radius,
-          y: cloud.y + Math.sin(time * 0.4 + index) * (cloud.layer === 'far' ? 1.5 : 0.2) + cloud.bounce * cloud.size * 0.3,
-          height: cloud.size * (1 + cloud.bounce * 0.1),
-        });
+      sky.forEach((cloud, index) => {
+        const a = cloud.angle + time * 0.003;
+        Object.assign(high.spots[index], { x: Math.cos(a) * cloud.r, z: Math.sin(a) * cloud.r, y: cloud.y + Math.sin(time * 0.3 + index) * 1.2 });
       });
       swing.spin += (-(9.8 / 2.4) * Math.sin(swing.angle) - 0.25 * swing.spin) * dt;
       swing.angle += swing.spin * dt;
-      seat.spots[0].roll = swing.angle;
-      swingCloud.spots[0].y = cloudBottom + 0.04 * Math.sin(time * 0.8);
+      if (seat) seat.spots[0].roll = swing.angle;
+      if (swingCloud) swingCloud.spots[0].y = swingGround + cloudBottom + 0.04 * Math.sin(time * 0.8);
       lampSpots.forEach((spot, index) => {
         spot.level += ((spot.on === undefined ? lampLevel : Number(spot.on)) - spot.level) * Math.min(1, dt * 3);
         pools.level.array[index] = spot.level;
@@ -209,7 +263,7 @@ export function createPark({ plan, renderer, pictures, sculptures = {} }) {
         dark.spots[index].hidden = spot.level >= 0.5;
       });
       pools.level.needsUpdate = true;
-      for (const made of sprites) made.face(camera);
+      for (const drawn of made) drawn.face(camera);
     },
   };
 }

@@ -205,6 +205,11 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   z-index: 40;
   left: 50%;
   bottom: calc(var(--bottom) + 18px);
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding-block: 8px;
+  white-space: normal;
+  text-align: center;
   transform: translateX(-50%);
   pointer-events: none;
   transition: opacity 0.6s ease;
@@ -370,11 +375,15 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   box-shadow: 0 16px 40px -18px rgb(0 23 80 / 0.5);
 }
 
+/* The plate under a work, as in a museum: logo and title on one line, the sentence under them. */
 .work-label {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 2px 14px;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 4px 10px;
+  width: auto;
+  padding: 10px 14px 12px;
+  border-radius: 12px;
 }
 
 .work-label strong,
@@ -386,14 +395,13 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   line-height: 1.25;
 }
 
-.work-label span {
-  grid-column: 1;
-  text-wrap: pretty;
+.work-label strong {
+  font-size: 1.125rem;
 }
 
-.work-label__logo {
-  grid-row: 1 / span 2;
-  grid-column: 2;
+.work-label .work-label__logo {
+  height: 28px;
+  max-height: var(--max-h, 28px);
 }
 
 /* Logos go by height: 40 px, as wide as they come up to 240 px, never past their own pixels. */
@@ -406,8 +414,7 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   object-fit: contain;
 }
 
-.anchor.card.is-on,
-.anchor.work-label.is-on {
+.anchor.card.is-on {
   pointer-events: auto;
 }
 
@@ -603,7 +610,6 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   inset: 0;
   overflow: hidden;
   overflow: clip;
-  background: rgb(0 12 48 / 0.5);
 }
 
 .story__panel {

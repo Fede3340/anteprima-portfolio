@@ -18,11 +18,12 @@ export function createAnchors(layer, camera) {
 
   return {
     // place: where the box sits from its point, 'above' or 'below'. visible() says when it is wanted.
-    // rank: 0 for cards and labels of works, 1 for names, which give way.
-    add(node, position, { place = 'above', visible, rank = 0 }) {
+    // rank: 0 for cards and labels of works, 1 for names, which give way. width(), if given, is the
+    // widest the box may be, in pixels.
+    add(node, position, { place = 'above', visible, rank = 0, width }) {
       node.classList.add('anchor');
       layer.append(node);
-      const item = { node, position, place, visible, rank, on: false, w: 0, h: 0, box: undefined };
+      const item = { node, position, place, visible, rank, width, on: false, w: 0, h: 0, box: undefined };
       items.push(item);
       items.sort((a, b) => a.rank - b.rank);
       return item;
@@ -45,6 +46,14 @@ export function createAnchors(layer, camera) {
           if (on) measure(item);
         }
         if (!on) continue;
+        if (item.width) {
+          const widest = Math.max(200, Math.round(item.width() / 8) * 8);
+          if (widest !== item.widest) {
+            item.widest = widest;
+            item.node.style.maxWidth = `${widest}px`;
+            measure(item);
+          }
+        }
         const x = (point.x * 0.5 + 0.5) * innerWidth;
         const y = (-point.y * 0.5 + 0.5) * innerHeight;
         const left = Math.min(innerWidth - MARGIN - item.w, Math.max(MARGIN, x - item.w / 2));
@@ -56,7 +65,9 @@ export function createAnchors(layer, camera) {
           .map((shift) => Math.min(innerHeight - bottom - item.h, Math.max(top, above + shift)))
           .map((y) => ({ left, top: y, right: left + item.w, bottom: y + item.h }))
           .find(clear);
-        const covered = item.rank > 0 && !box;
+        // A box set below its point never climbs back over what it stands under: without room it waits.
+        const climbed = item.place === 'below' && box && box.top < above - 1;
+        const covered = (item.rank > 0 && !box) || climbed;
         item.node.classList.toggle('is-covered', covered);
         item.box = box ?? { left, top: above, right: left + item.w, bottom: above + item.h };
         if (!covered) placed.push(item);

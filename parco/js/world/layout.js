@@ -1,103 +1,139 @@
-// The plan of the park: the zones in the order they are met along the ring, how long each one is,
-// and where every work, sculpture and card stands. Lengths are metres along the middle of the path.
-const LEAD = 8;
-const TAIL = 3;
-const CARD_ZONE = 16;
-const SPACING = { siti: 6, negozi: 6, programmi: 6, app: 6, videogioco: 6, marchi: 4.6, manifesti: 4.6 };
+// The plan of the park: an archipelago of cloud islands in the sky, one for each place, in a loose
+// loop at different heights, joined by paths of round stones; from the last one the path goes back to
+// the first. On each island its works stand in an arc in a clearing, facing whoever arrives.
+import * as THREE from 'three';
 
-export const PATH_HALF = 1.5;
-// A work stands this far from the middle of the path, on the outer side: the inner side, towards the
-// pond, stays free for the sculptures and for the camera when it turns to a work.
-export const WORK_SIDE = 3.4;
-// 16:10 like the covers; on its easel the middle of the picture is at about eye height.
-export const SCULPTURE_SIDE = -3.9;
-export const FRAME = { width: 2.6, height: 1.625 };
+const LOOP = 78;
+const STONE_EVERY = 1.25;
+// 16:10 like the covers, the middle of the picture at about eye height.
+export const FRAME = { width: 2, height: 1.25 };
 
-// Light of each zone: height of the sun in degrees, strength of sun and sky as shares of the usual
-// light, lamps lit. Colours never change.
+// Light of each island: height of the sun in degrees, strength of sun and sky as shares of the usual
+// light, lamps lit, and how much the haze closes in. Colours never change.
+// Sky and sun are balanced so the white ground gets about the same light on every island, between
+// 0.88 and 0.96 of full white as (2.2 * sky + 1.1 * sunLight * sin(sun)) / PI: a low sun is made up
+// for by the sky, a high one takes from it. The floor is never grey and never burnt out.
 const MOODS = {
-  morning: { sun: 40, sunLight: 1, sky: 1, lamps: 0 },
-  bright: { sun: 60, sunLight: 1.25, sky: 1.06, lamps: 0 },
-  soft: { sun: 24, sunLight: 0.75, sky: 0.92, lamps: 0.4 },
-  evening: { sun: 12, sunLight: 0.45, sky: 0.78, lamps: 1 },
+  morning: { sun: 40, sunLight: 1, sky: 1, lamps: 0, haze: 1 },
+  noon: { sun: 66, sunLight: 1.15, sky: 0.85, lamps: 0, haze: 1.15 },
+  shade: { sun: 30, sunLight: 0.6, sky: 1.13, lamps: 0.3, haze: 0.85 },
+  clear: { sun: 52, sunLight: 1.15, sky: 0.9, lamps: 0, haze: 1.1 },
+  calm: { sun: 22, sunLight: 0.8, sky: 1.15, lamps: 0.2, haze: 0.9 },
+  dusk: { sun: 10, sunLight: 0.45, sky: 1.22, lamps: 1, haze: 0.8 },
+  far: { sun: 58, sunLight: 1.1, sky: 0.9, lamps: 0, haze: 1.3 },
 };
 
-const ZONES = [
-  { id: 'apertura', mood: 'morning' },
-  { id: 'chi', card: 'who', mood: 'morning' },
-  { id: 'servizi', card: 'services', mood: 'bright' },
-  { id: 'siti', mood: 'bright' },
-  { id: 'negozi', mood: 'bright' },
-  { id: 'programmi', mood: 'soft' },
-  { id: 'app', mood: 'bright' },
-  { id: 'videogioco', mood: 'evening' },
-  { id: 'marchi', mood: 'soft' },
-  { id: 'manifesti', mood: 'bright' },
-  { id: 'google', card: 'google', mood: 'morning' },
-  { id: 'contatti', card: 'contact', mood: 'evening' },
+// The islands in the order of the loop: the places they hold, their size, height and light.
+const ISLANDS = [
+  { id: 'ingresso', zones: ['apertura', 'chi', 'servizi'], radius: 17, height: 0, mood: 'morning' },
+  { id: 'siti', zones: ['siti'], radius: 15, height: 4, mood: 'shade' },
+  { id: 'negozi', zones: ['negozi'], radius: 15, height: -1, mood: 'noon' },
+  { id: 'programmi', zones: ['programmi'], radius: 13, height: 5, mood: 'clear' },
+  { id: 'app', zones: ['app'], radius: 14, height: 1, mood: 'calm' },
+  { id: 'videogioco', zones: ['videogioco'], radius: 14, height: 6, mood: 'dusk' },
+  { id: 'marchi', zones: ['marchi'], radius: 17, height: 0, mood: 'morning' },
+  { id: 'manifesti', zones: ['manifesti'], radius: 18, height: 3, mood: 'noon' },
+  { id: 'google', zones: ['google'], radius: 12, height: 11, mood: 'far' },
+  { id: 'contatti', zones: ['contatti'], radius: 13, height: 2, mood: 'dusk' },
 ];
 
 const NAMES = { apertura: 'Apertura', google: 'Google', contatti: 'Contatti' };
+const CARDS = { chi: 'who', servizi: 'services', google: 'google', contatti: 'contact' };
+
+const v = (x, y, z) => new THREE.Vector3(x, y, z);
 
 export function planPark(data, texts) {
   const chapters = Object.fromEntries(data.chapters.map((chapter) => [chapter.id, chapter]));
-  let s = 0;
+  const count = ISLANDS.length;
+  const islands = ISLANDS.map((island, index) => {
+    const angle = (index / count) * Math.PI * 2;
+    // A loop that is not a circle: each island a little in or out, so that others show past it.
+    const reach = LOOP * (1 + 0.12 * Math.sin(index * 2.3));
+    return { ...island, index, centre: v(Math.cos(angle) * reach, island.height, Math.sin(angle) * reach), mood: MOODS[island.mood] };
+  });
   const zones = [];
   const works = [];
-  for (const zone of ZONES) {
-    const chapter = chapters[zone.id];
-    const title = NAMES[zone.id] ?? chapter?.title ?? texts[zone.card]?.title;
-    const start = s;
-    const placed = (chapter?.works ?? []).map((id, index) => {
-      const work = { id, zone: zone.id, s: start + LEAD + SPACING[zone.id] * index, reach: SPACING[zone.id] / 2 };
-      works.push(work);
-      return work;
+  for (const island of islands) {
+    island.zones = island.zones.map((id) => {
+      const chapter = chapters[id];
+      const zone = { id, island, title: NAMES[id] ?? chapter?.title ?? texts[CARDS[id]]?.title, card: CARDS[id], works: [], mood: island.mood, index: zones.length };
+      zones.push(zone);
+      for (const workId of chapter?.works ?? []) {
+        const work = { id: workId, zone: id, island: island.index };
+        zone.works.push(work);
+        works.push(work);
+      }
+      return zone;
     });
-    const length = chapter ? LEAD + SPACING[zone.id] * Math.max(0, placed.length - 1) + TAIL + 4
-      : zone.id === 'apertura' ? 12 : CARD_ZONE;
-    zones.push({ ...zone, title, start, length, mood: MOODS[zone.mood], works: placed, index: zones.length });
-    s += length;
   }
-  const length = s;
-  const radius = length / (2 * Math.PI);
-  // Each zone's sculpture stands just inside the path where the zone begins; the opening has the
-  // great cursor in the middle of the pond instead.
-  for (const zone of zones) {
-    if (zone.id !== 'apertura') zone.mark = ringPoint({ radius }, zone.start + 3, SCULPTURE_SIDE);
+  const paths = islands.map((from, index) => joinIslands(from, islands[(index + 1) % count], index));
+  for (const island of islands) {
+    island.out = paths[island.index];
+    island.in = paths[(island.index - 1 + count) % count];
+    arrange(island);
   }
-  return {
-    zones,
-    works,
-    length,
-    radius,
-    pond: radius - 13,
-    island: radius + 24,
-    // Where the walk begins, and where the first walk on arrival ends.
-    landing: 3,
-    firstStop: zones[1].start + 6,
-  };
+  return { islands, zones, works, paths, landing: islands[0], firstStop: islands[0] };
 }
 
-// Distance from a to b going forward or back along the ring, whichever is shorter (signed).
-export const along = (a, b, length) => {
-  let d = (b - a) % length;
-  if (d > length / 2) d -= length;
-  if (d < -length / 2) d += length;
-  return d;
-};
-
-export const wrap = (s, length) => ((s % length) + length) % length;
-
-export function zoneAt(plan, s) {
-  const point = wrap(s, plan.length);
-  return plan.zones.findLast((zone) => zone.start <= point) ?? plan.zones[0];
+// A path of stones from the edge of one island to the edge of the next, bending to one side and
+// sagging a little in the middle.
+function joinIslands(from, to, index) {
+  const way = to.centre.clone().sub(from.centre).setY(0).normalize();
+  const start = from.centre.clone().addScaledVector(way, from.radius - 1.2);
+  const end = to.centre.clone().addScaledVector(way, -(to.radius - 1.2));
+  const side = new THREE.Vector3(-way.z, 0, way.x).multiplyScalar((index % 2 ? 1 : -1) * 7);
+  const middle = start.clone().lerp(end, 0.5).add(side);
+  middle.y -= 1.5;
+  const curve = new THREE.QuadraticBezierCurve3(start, middle, end);
+  const length = curve.getLength();
+  const stones = Math.max(2, Math.round(length / STONE_EVERY));
+  return { index, from: from.index, to: to.index, curve, length, stones };
 }
 
-// A point on the ring: position, forward direction and the outward side, on the ground.
-export function ringPoint(plan, s, offset = 0) {
-  const angle = s / plan.radius;
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-  const r = plan.radius + offset;
-  return { x: cos * r, z: sin * r, tx: -sin, tz: cos, nx: cos, nz: sin, angle };
+// The works of an island in an arc a few steps in front of where one arrives, facing that point, as
+// pictures in a clearing; with many works, a second arc behind the first. The sculpture of each place
+// stands at an end of the arc; cards stand by their sculptures.
+const ROWS = [7, 10];
+const GAP = 2.7;
+function arrange(island) {
+  const arrive = island.in.curve.getPoint(1).clone().sub(island.centre).setY(0).normalize();
+  island.arrival = island.centre.clone().addScaledVector(arrive, island.radius * 0.5);
+  const focal = island.arrival;
+  const ahead = Math.atan2(-arrive.z, -arrive.x);
+  const all = island.zones.flatMap((zone) => zone.works);
+  const rows = all.length > 7 ? 2 : 1;
+  const perRow = Math.ceil(all.length / rows);
+  let widest = 0;
+  all.forEach((work, index) => {
+    const row = rows === 2 ? index % 2 : 0;
+    const inRow = rows === 2 ? Math.floor(index / 2) : index;
+    const distance = ROWS[row];
+    const step = GAP / distance;
+    const angle = ahead + (inRow - (perRow - 1) / 2) * step + row * step * 0.5;
+    widest = Math.max(widest, Math.abs(angle - ahead));
+    let x = focal.x + Math.cos(angle) * distance;
+    let z = focal.z + Math.sin(angle) * distance;
+    // Kept on the island, clear of its rim.
+    const off = Math.hypot(x - island.centre.x, z - island.centre.z);
+    const room = island.radius - 2.5;
+    if (off > room) {
+      x = island.centre.x + ((x - island.centre.x) / off) * room;
+      z = island.centre.z + ((z - island.centre.z) / off) * room;
+    }
+    const f = v(focal.x - x, 0, focal.z - z).normalize();
+    work.place = { x, y: island.centre.y, z, fx: f.x, fz: f.z, cy: island.centre.y + 1.5 };
+    Object.assign(work, { x, z });
+  });
+  island.zones.forEach((zone, index) => {
+    // The sculptures at the ends of the arc, or either side of the way in where there are no works.
+    const side = index % 2 ? 1 : -1;
+    const turn = zone.id === 'apertura' ? ahead : ahead + side * (all.length ? widest + 0.55 : 0.85);
+    const distance = zone.id === 'apertura' ? island.radius * 0.95 : 6.5;
+    zone.mark = { x: focal.x + Math.cos(turn) * distance, y: island.centre.y, z: focal.z + Math.sin(turn) * distance };
+  });
 }
+
+// Where an island's path enters or leaves it, on its edge.
+export const mouth = (plan, island, path) => path.curve.getPoint(path.from === island.index ? 0 : 1);
+
+export const islandOf = (plan, id) => plan.islands.find((island) => island.id === id || island.zones.some((zone) => zone.id === id));

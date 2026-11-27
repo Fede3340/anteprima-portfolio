@@ -1,19 +1,15 @@
-const [MUSIC, NATURE] = ['musica-1', 'natura-1'];
-const FILES = {
-  drop: 'media/sound/drop.mp3',
-  tap: 'media/sound/tap.mp3',
-  whoosh: 'media/sound/whoosh.mp3',
-  music: `media/sound/${MUSIC}.mp3`,
-  nature: `media/sound/${NATURE}.mp3`,
-};
+import { asset } from './media.js';
+
+// Short sounds, decoded ahead so they play at once.
+const SHORT = { drop: 'media/sound/drop.mp3', tap: 'media/sound/tap.mp3', whoosh: 'media/sound/whoosh.mp3' };
+// The music and the sound of nature, played as they arrive: they start inside the tap that lets
+// sound in, with no wait for the whole file.
+const BEDS = { music: 'media/sound/musica-3.mp3', nature: 'media/sound/natura-1.mp3' };
 const LEVEL = { drop: 0.7, tap: 0.6, whoosh: 0.7, music: 0.3, nature: 0.18 };
-const BEDS = ['music', 'nature'];
 const MASTER = 0.35;
-const SWITCH_FADE = 0.5;
-const BED_RISE = 2;
+const SWITCH_FADE = 0.4;
+const BED_RISE = 0.4;
 const ATTACK = 0.012;
-// Each bed has a quarter of a second of margin at each end, left out of the loop.
-const BED_EDGE = 0.25;
 const DROP_GAP = 0.15;
 const KEY = 'sound';
 
@@ -33,26 +29,15 @@ const remember = (value) => {
   }
 };
 
-// Quiet sounds that accompany the visit. Nothing is downloaded until sound is turned on, and the
-// page works the same where Web Audio is missing.
+// Quiet sounds that accompany the visit. The page works the same where Web Audio is missing.
 export function createSound(button) {
   const Context = window.AudioContext || window.webkitAudioContext;
-  const buffers = {};
   const decoded = {};
+  const beds = {};
   let context;
   let master;
-  const beds = new Set();
-  let bedsAllowed = false;
   let on = false;
   let lastDrop = -Infinity;
-
-  const load = (name) => (buffers[name] ??= fetch(FILES[name])
-    .then((response) => response.arrayBuffer())
-    .then((data) => new Promise((done, fail) => context.decodeAudioData(data, done, fail)))
-    .then((buffer) => {
-      decoded[name] = buffer;
-      return buffer;
-    }));
 
   function ramp(param, value, seconds) {
     const now = context.currentTime;
@@ -61,25 +46,7 @@ export function createSound(button) {
     param.linearRampToValueAtTime(value, now + seconds);
   }
 
-  // The two beds, music and nature, loop under everything and rise in over two seconds.
-  async function startBed(name) {
-    if (beds.has(name) || !bedsAllowed || !on) return;
-    beds.add(name);
-    const buffer = await load(name);
-    const gain = context.createGain();
-    gain.gain.value = 0;
-    gain.connect(master);
-    const source = context.createBufferSource();
-    source.buffer = buffer;
-    source.loop = true;
-    source.loopStart = BED_EDGE;
-    source.loopEnd = buffer.duration - BED_EDGE;
-    source.connect(gain);
-    source.start(0, BED_EDGE);
-    ramp(gain.gain, LEVEL[name], BED_RISE);
-  }
-
-  // Called inside a tap: browsers only let a sound context start from one.
+  // Called inside a tap: browsers only let sound start from one.
   function wake() {
     if (!context) {
       try {
@@ -91,11 +58,28 @@ export function createSound(button) {
       master = context.createGain();
       master.gain.value = 0;
       master.connect(context.destination);
-      Object.keys(FILES).filter((name) => !BEDS.includes(name)).forEach((name) => load(name).catch((error) => console.warn(error)));
+      for (const [name, file] of Object.entries(SHORT)) {
+        fetch(asset(file))
+          .then((response) => response.arrayBuffer())
+          .then((data) => new Promise((done, fail) => context.decodeAudioData(data, done, fail)))
+          .then((buffer) => { decoded[name] = buffer; })
+          .catch((error) => console.warn(error));
+      }
+      // The beds are audio elements fed into the same volume as everything else, asked for in this
+      // tap and played as they arrive.
+      for (const [name, file] of Object.entries(BEDS)) {
+        const bed = { audio: new Audio(asset(file)) };
+        bed.audio.loop = true;
+        beds[name] = bed;
+        bed.gain = context.createGain();
+        bed.gain.gain.value = LEVEL[name];
+        context.createMediaElementSource(bed.audio).connect(bed.gain);
+        bed.gain.connect(master);
+      }
     }
     context.resume();
-    BEDS.forEach((name) => startBed(name).catch((error) => console.warn(error)));
-    ramp(master.gain, MASTER, SWITCH_FADE);
+    for (const bed of Object.values(beds)) bed.audio.play().catch((error) => console.warn(error));
+    ramp(master.gain, MASTER, BED_RISE);
   }
 
   function set(value) {
@@ -104,26 +88,29 @@ export function createSound(button) {
     button.querySelector('.sound__state').textContent = on ? 'acceso' : 'spento';
     remember(on ? 'on' : 'off');
     if (on) wake();
-    else if (context) ramp(master.gain, 0, SWITCH_FADE);
+    else if (context) {
+      ramp(master.gain, 0, SWITCH_FADE);
+      setTimeout(() => { if (!on) Object.values(beds).forEach((bed) => bed.audio.pause()); }, SWITCH_FADE * 1000);
+    }
   }
 
   button.disabled = !Context;
   button.addEventListener('click', () => set(!on));
   document.addEventListener('visibilitychange', () => {
     if (!context || !on) return;
-    if (document.hidden) context.suspend();
-    else context.resume();
+    if (document.hidden) {
+      context.suspend();
+      Object.values(beds).forEach((bed) => bed.audio.pause());
+    } else {
+      context.resume();
+      Object.values(beds).forEach((bed) => bed.audio.play().catch(() => {}));
+    }
   });
 
   return {
     // The choice made at the door; sound switched off earlier in this visit stays off.
     begin(wanted) {
       set(wanted && remembered() !== 'off');
-    },
-    // The beds weigh some megabytes: they are fetched once the path can be used, and only with sound on.
-    allowBeds() {
-      bedsAllowed = true;
-      if (on) BEDS.forEach((name) => startBed(name).catch((error) => console.warn(error)));
     },
     play(name) {
       if (!on || !decoded[name] || context.state !== 'running') return false;
