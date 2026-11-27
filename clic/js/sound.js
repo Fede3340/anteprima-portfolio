@@ -2,8 +2,7 @@ const FILES = {
   drop: 'media/sound/drop.mp3',
   tap: 'media/sound/tap.mp3',
   whoosh: 'media/sound/whoosh.mp3',
-  // The bed waits for a file: with none, the visit has only the short sounds.
-  bed: '',
+  bed: 'media/sound/bed.mp3',
 };
 const LEVEL = { drop: 0.7, tap: 0.6, whoosh: 0.7, bed: 0.3 };
 const MASTER = 0.35;
