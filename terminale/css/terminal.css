@@ -511,7 +511,8 @@ canvas { display: block; }
 @media (min-width: 768px) {
   .keys {
     display: flex;
-    gap: 2ch;
+    flex-wrap: wrap;
+    gap: 0 2ch;
     padding-top: 6px;
   }
   .keys button,
@@ -520,7 +521,7 @@ canvas { display: block; }
 
 @media (min-width: 1000px) {
   .terminal,
-  .boot { width: 60%; }
+  .boot { width: 44%; }
 
   .hero { padding-top: 28px; }
 
@@ -529,7 +530,7 @@ canvas { display: block; }
     flex-direction: column;
     position: fixed;
     inset: 0 0 auto auto;
-    width: 40%;
+    width: 56%;
     height: 100dvh;
     padding: 28px 32px 24px 24px;
   }
@@ -542,19 +543,13 @@ canvas { display: block; }
 
   .dock { padding: 12px var(--gutter) 20px; }
 
-  /* The demo takes the whole column; an image opens as a card over the quiet months of the calendar. */
+  /* Images and the demo take the whole column in place of the calendar. */
+  body:has(.pane:not([hidden])) .calendar { visibility: hidden; }
   .pane {
     inset: 0 0 auto auto;
-    width: 40%;
+    width: 56%;
     height: 100dvh;
     padding: 24px 32px 24px 24px;
-  }
-
-  .pane:not(.demo) {
-    inset: calc(28px + var(--band-top)) 32px auto auto;
-    width: calc(40% - 56px);
-    height: var(--band-height);
-    padding: 0;
   }
 
   .pane-bar { padding: 0; }

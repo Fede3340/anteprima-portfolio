@@ -9,13 +9,12 @@ const FADE_MS = 560;
 const WAVE_MS = 760;
 const WAVE_SLANT = 1.7;
 const PLAYHEAD_MS = 130;
-const QUIET_DAYS = 3;
 
 const density = (count) => (count === 0 ? 0 : count < 10 ? 1 : count < 30 ? 2 : 3);
 
 // One character per day, one row per month. Cells light up and fade back; only cells whose
 // brightness changed are drawn again.
-export function createCalendar({ canvas, days, onHover, onLayout, onPick }) {
+export function createCalendar({ canvas, days, onHover, onPick }) {
   const colors = themeColors();
   const [firstYear, firstMonth] = days[0].date.split('-').map(Number);
   const cells = days.map(({ date, count }) => {
@@ -32,16 +31,6 @@ export function createCalendar({ canvas, days, onHover, onLayout, onPick }) {
   const waveOrder = cells.map((_, index) => index)
     .sort((a, b) => cells[a].column + cells[a].row * WAVE_SLANT - (cells[b].column + cells[b].row * WAVE_SLANT));
   const waveSpan = DAYS_IN_ROW + rows * WAVE_SLANT;
-
-  // The longest run of months with almost no commits: the room where a work's image opens.
-  let quiet = { first: 0, count: 0 };
-  for (let row = 0, start = 0; row <= rows; row++) {
-    const busy = row === rows
-      || cells.filter((cell) => cell.row === row && cell.level).length > QUIET_DAYS;
-    if (!busy) continue;
-    if (row - start > quiet.count) quiet = { first: start, count: row - start };
-    start = row + 1;
-  }
 
   const glow = new Float32Array(cells.length);
   const held = new Uint8Array(cells.length);
@@ -72,7 +61,6 @@ export function createCalendar({ canvas, days, onHover, onLayout, onPick }) {
     context.clearRect(0, 0, width, height);
     labels.forEach((_, row) => drawLabel(row));
     cells.forEach((_, index) => drawCell(index));
-    onLayout({ rowHeight, quiet });
   }
 
   // A month is named once its first day is on screen.

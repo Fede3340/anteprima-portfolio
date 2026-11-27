@@ -15,7 +15,7 @@ export const details = {
   'vite-boolflix': {
     stack: 'Vue, Vite, Sass e axios',
     notes: [
-      'ricerca di film e serie dall’API di TMDB: fotografata senza chiave, senza risultati',
+      'ricerca di film e serie dall’API di TMDB: senza chiave la pagina resta vuota',
       replica('dell’interfaccia di Netflix'),
     ],
   },
@@ -79,6 +79,14 @@ export const details = {
   'vue-slider': {
     stack: 'HTML, CSS e Vue',
     notes: ['lo stesso carosello rifatto in Vue; immagini di videogiochi, dei loro proprietari'],
+  },
+  'html-css-12bool': {
+    stack: 'HTML e CSS',
+    notes: ['griglia a dodici colonne scritta a mano, con colonne annidate e spostamenti'],
+  },
+  'htmlcss-responsive-layout': {
+    stack: 'HTML e CSS',
+    notes: ['impaginazione responsive con testi segnaposto'],
   },
   'vue-email-list': {
     stack: 'HTML, JavaScript, Vue e axios',

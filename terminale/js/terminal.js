@@ -19,7 +19,6 @@ const NARROW_DEMO = `@media (max-width: 700px) {
 }`;
 const NAME = ['VALERIO', 'LOCCI'];
 const PAGE_SIZE = 40;
-const CARD_HEIGHT = 392;
 const COMMANDS = ['aiuto', 'chi', 'lavori', 'apri', 'storia', 'giorno', 'gioca', 'contatti', 'pulisci'];
 
 const byName = new Map(works.map((work) => [work.name, work]));
@@ -386,12 +385,6 @@ const calendar = createCalendar({
   canvas: calendarCanvas,
   days,
   onHover: showDay,
-  // Beside the terminal an image opens over the quiet months, as many rows as the card needs.
-  onLayout({ rowHeight, quiet }) {
-    const rows = Math.min(quiet.count, Math.ceil(CARD_HEIGHT / rowHeight));
-    pane.style.setProperty('--band-top', `${quiet.first * rowHeight}px`);
-    pane.style.setProperty('--band-height', `${rows * rowHeight}px`);
-  },
   onPick(day) {
     if ('booting' in terminal.dataset) return;
     showDay(day);
