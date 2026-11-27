@@ -17,50 +17,53 @@
   section { border-top: 1px solid rgba(12, 42, 82, .25); padding: 20px 0 22px; }
   h2 { font-size: 1.2rem; margin: 0 0 4px; }
   section p { margin: 0 0 14px; }
+  .riga { display: grid; grid-template-columns: 7.5rem 1fr; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .riga span { font-size: .95rem; }
   .tasti { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   button { font: inherit; font-size: 1.5rem; font-weight: 700; color: var(--blu); background: var(--carta); border: 2px solid transparent; border-radius: 18px; min-height: 76px; cursor: pointer; touch-action: manipulation; transition: transform .08s, background .2s; }
+  .riga button { font-size: 1.05rem; min-height: 56px; }
   button:active { transform: scale(.96); }
   button:focus-visible { outline: 3px solid var(--blu); outline-offset: 2px; }
   button[aria-pressed="true"] { background: var(--blu); color: var(--carta); }
-  .ferma { grid-column: 1 / -1; min-height: 56px; font-size: 1.1rem; background: transparent; border-color: var(--blu-chiaro); }
+  .ferma { min-height: 76px; font-size: 1.1rem; background: transparent; border-color: var(--blu-chiaro); }
+  .legenda { margin: 14px 0 0; padding: 0; list-style: none; font-size: .95rem; }
   .nota { font-size: .9rem; margin-top: 18px; }
 </style>
 </head>
 <body>
 <main>
   <h1>Suoni da scegliere</h1>
-  <p class="intro">Quattro famiglie, tre proposte per ciascuna. Tocca un numero per ascoltarlo e scegli il preferito di ogni famiglia. Meglio con le cuffie.</p>
-  <label class="volume">Volume <input id="volume" type="range" min="0" max="1" step="0.01" value="0.25"></label>
+  <p class="intro">Goccia, tocco e soffio sono scelti. Manca il tappeto: qui ci sono cinque proposte nuove, diverse tra loro. Meglio con le cuffie.</p>
+  <label class="volume">Volume <input id="volume" type="range" min="0" max="1" step="0.01" value="0.18"></label>
 
   <section>
-    <h2>Goccia</h2>
-    <p>Il clic, e il momento in cui il dito preme un disco.</p>
-    <div class="tasti"><button data-suono="goccia-1">1</button><button data-suono="goccia-2">2</button><button data-suono="goccia-3">3</button></div>
-  </section>
-  <section>
-    <h2>Tocco</h2>
-    <p>I comandi: più sordo e discreto della goccia.</p>
-    <div class="tasti"><button data-suono="tocco-1">1</button><button data-suono="tocco-2">2</button><button data-suono="tocco-3">3</button></div>
-  </section>
-  <section>
-    <h2>Soffio</h2>
-    <p>Il passaggio attraverso la finestra, verso la notte.</p>
-    <div class="tasti"><button data-suono="soffio-1">1</button><button data-suono="soffio-2">2</button><button data-suono="soffio-3">3</button></div>
+    <h2>Già scelti</h2>
+    <div class="riga"><button data-suono="goccia-2">Goccia</button><span>il clic, e il dito che preme un disco</span></div>
+    <div class="riga"><button data-suono="tocco-2">Tocco</button><span>i comandi</span></div>
+    <div class="riga"><button data-suono="soffio-1">Soffio</button><span>il passaggio attraverso la finestra</span></div>
   </section>
   <section>
     <h2>Tappeto</h2>
     <p>Il sottofondo continuo: gira finché non lo fermi.</p>
     <div class="tasti">
-      <button data-suono="tappeto-1" aria-pressed="false">1</button><button data-suono="tappeto-2" aria-pressed="false">2</button><button data-suono="tappeto-3" aria-pressed="false">3</button>
+      <button data-suono="tappeto-4" aria-pressed="false">4</button><button data-suono="tappeto-5" aria-pressed="false">5</button><button data-suono="tappeto-6" aria-pressed="false">6</button>
+      <button data-suono="tappeto-7" aria-pressed="false">7</button><button data-suono="tappeto-8" aria-pressed="false">8</button>
       <button class="ferma" id="ferma">Ferma</button>
     </div>
+    <ul class="legenda">
+      <li>4: arioso e luminoso, fermo</li>
+      <li>5: accordi lenti di pianoforte, con pause</li>
+      <li>6: note rade di kalimba su un fondo morbido</li>
+      <li>7: ruscello leggero, lontano</li>
+      <li>8: suono caldo che si muove piano, come un respiro</li>
+    </ul>
   </section>
   <p class="nota">Su iPhone, se non senti nulla, controlla che il telefono non sia in silenzioso.</p>
 </main>
 <script>
   // Durata del tratto che si ripete, in secondi; il file ha 0,25 s di margine prima e dopo.
   const MARGINE = 0.25;
-  const CICLO = { 'tappeto-1': 42, 'tappeto-2': 41, 'tappeto-3': 22.7 };
+  const CICLO = { 'tappeto-4': 26, 'tappeto-5': 46, 'tappeto-6': 48, 'tappeto-7': 47.991, 'tappeto-8': 48 };
   const nomi = [...document.querySelectorAll('[data-suono]')].map((b) => b.dataset.suono);
   const cursore = document.getElementById('volume');
   const buffer = {};
