@@ -1,15 +1,18 @@
+const [MUSIC, NATURE] = ['musica-1', 'natura-1'];
 const FILES = {
   drop: 'media/sound/drop.mp3',
   tap: 'media/sound/tap.mp3',
   whoosh: 'media/sound/whoosh.mp3',
-  bed: '',
+  music: `media/sound/${MUSIC}.mp3`,
+  nature: `media/sound/${NATURE}.mp3`,
 };
-const LEVEL = { drop: 0.7, tap: 0.6, whoosh: 0.7, bed: 0.3 };
+const LEVEL = { drop: 0.7, tap: 0.6, whoosh: 0.7, music: 0.3, nature: 0.18 };
+const BEDS = ['music', 'nature'];
 const MASTER = 0.35;
 const SWITCH_FADE = 0.5;
 const BED_RISE = 2;
 const ATTACK = 0.012;
-// The bed has a quarter of a second of margin at each end, left out of the loop.
+// Each bed has a quarter of a second of margin at each end, left out of the loop.
 const BED_EDGE = 0.25;
 const DROP_GAP = 0.15;
 const KEY = 'sound';
@@ -38,7 +41,8 @@ export function createSound(button) {
   const decoded = {};
   let context;
   let master;
-  let bed;
+  const beds = new Set();
+  let bedsAllowed = false;
   let on = false;
   let lastDrop = -Infinity;
 
@@ -57,10 +61,11 @@ export function createSound(button) {
     param.linearRampToValueAtTime(value, now + seconds);
   }
 
-  async function startBed() {
-    if (bed || !FILES.bed) return;
-    bed = true;
-    const buffer = await load('bed');
+  // The two beds, music and nature, loop under everything and rise in over two seconds.
+  async function startBed(name) {
+    if (beds.has(name) || !bedsAllowed || !on) return;
+    beds.add(name);
+    const buffer = await load(name);
     const gain = context.createGain();
     gain.gain.value = 0;
     gain.connect(master);
@@ -71,7 +76,7 @@ export function createSound(button) {
     source.loopEnd = buffer.duration - BED_EDGE;
     source.connect(gain);
     source.start(0, BED_EDGE);
-    ramp(gain.gain, LEVEL.bed, BED_RISE);
+    ramp(gain.gain, LEVEL[name], BED_RISE);
   }
 
   // Called inside a tap: browsers only let a sound context start from one.
@@ -86,10 +91,10 @@ export function createSound(button) {
       master = context.createGain();
       master.gain.value = 0;
       master.connect(context.destination);
-      Object.keys(FILES).filter((name) => FILES[name]).forEach((name) => load(name).catch((error) => console.warn(error)));
+      Object.keys(FILES).filter((name) => !BEDS.includes(name)).forEach((name) => load(name).catch((error) => console.warn(error)));
     }
     context.resume();
-    startBed().catch((error) => console.warn(error));
+    BEDS.forEach((name) => startBed(name).catch((error) => console.warn(error)));
     ramp(master.gain, MASTER, SWITCH_FADE);
   }
 
@@ -114,6 +119,11 @@ export function createSound(button) {
     // The choice made at the door; sound switched off earlier in this visit stays off.
     begin(wanted) {
       set(wanted && remembered() !== 'off');
+    },
+    // The beds weigh some megabytes: they are fetched once the path can be used, and only with sound on.
+    allowBeds() {
+      bedsAllowed = true;
+      if (on) BEDS.forEach((name) => startBed(name).catch((error) => console.warn(error)));
     },
     play(name) {
       if (!on || !decoded[name] || context.state !== 'running') return false;

@@ -44,6 +44,41 @@ export function picture(image, { className = '', sizes, eager = false } = {}) {
   });
 }
 
+const colours = new Map();
+const INK = '#001750';
+const LIGHT = '#f6f8fb';
+
+const luminance = (r, g, b) => {
+  const channel = (value) => {
+    const share = value / 255;
+    return share <= 0.04045 ? share / 12.92 : ((share + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+};
+
+// The colour of the corner of a picture, and the text that reads better on it, ink or light.
+export function groundColour(src) {
+  if (!colours.has(src)) {
+    colours.set(src, new Promise((done) => {
+      const image = new Image();
+      image.crossOrigin = 'anonymous';
+      image.onload = () => {
+        const canvas = Object.assign(document.createElement('canvas'), { width: 1, height: 1 });
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+        context.drawImage(image, 4, 4, 1, 1, 0, 0, 1, 1);
+        const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
+        const ground = luminance(r, g, b) + 0.05;
+        const onInk = ground / (luminance(0, 23, 80) + 0.05);
+        const onLight = (luminance(246, 248, 251) + 0.05) / ground;
+        done({ colour: `rgb(${r} ${g} ${b})`, text: onInk >= onLight ? INK : LIGHT });
+      };
+      image.onerror = () => done({ colour: INK, text: LIGHT });
+      image.src = asset(src);
+    }));
+  }
+  return colours.get(src);
+}
+
 // A scene gets its poster and its file only when it is first asked for, in the cut that fits the screen.
 export function prepare(video) {
   const name = `${video.dataset.scene}-${format()}`;

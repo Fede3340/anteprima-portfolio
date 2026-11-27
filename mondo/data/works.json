@@ -1,5 +1,5 @@
 {
-  "count": 41,
+  "count": 40,
   "chapters": [
     {
       "id": "siti",
@@ -7,7 +7,6 @@
       "works": [
         "grecale",
         "mirtifolia",
-        "classifiche-giochi",
         "operazione-africa"
       ]
     },
@@ -254,92 +253,8 @@
         }
       ]
     },
-    "classifiche-giochi": {
-      "index": 3,
-      "title": "Quattro classifiche di giochi",
-      "kind": "personale",
-      "tag": "",
-      "year": "2026",
-      "place": "Cagliari",
-      "line": "Una pagina sola che mette in fila 757 videogiochi in quattro classifiche, da votare uno per uno.",
-      "facts": [
-        "Ogni gioco si vota da 0 a 11, e lo 0 lo toglie dalla lista.",
-        "Si filtra per tipo, per esempio «Leggeri per staccare» o «Sfida impegnativa».",
-        "I voti restano nel browser di chi vota."
-      ],
-      "story": [
-        {
-          "h": "L'idea",
-          "p": "La pagina è fatta per una persona sola e le parla col tu: lei vota i giochi, poi copia i voti e me li manda. Dentro ci sono 757 videogiochi in quattro classifiche: Switch e Switch 2, Solo PC, I più belli, Mancanti 77+. I giochi che possiede già portano la fascia «Già tuo»."
-        },
-        {
-          "h": "Le scelte",
-          "p": "Tanti dati, una gerarchia sola: carattere Georgia, testo largo 640 px, due colori e un rosso d’accento, bordi netti. Ogni scheda ha copertina, voti della critica, tre schermate e sei livelli da 1 a 5, da Leggerezza ad Arte. Si vota da 0 a 11, e lo 0 toglie il gioco dalla lista."
-        },
-        {
-          "h": "Dove si vede",
-          "p": "La pagina è online, all’indirizzo fede3340.github.io/classifiche-giochi, ma chiede ai motori di ricerca di non comparire: è uno strumento privato. I voti restano nel browser di chi vota. Copertine e schermate dei giochi sono di chi li ha pubblicati."
-        }
-      ],
-      "link": {
-        "label": "Apri il sito",
-        "href": "https://fede3340.github.io/classifiche-giochi/",
-        "confirm": true
-      },
-      "cover": {
-        "src": "media/works/classifiche-giochi/cover-1280.webp",
-        "srcMobile": "media/works/classifiche-giochi/cover-640.webp",
-        "w": 1280,
-        "h": 800,
-        "alt": "Apertura della pagina: titolo, istruzioni, le quattro schede e i primi filtri, col tema scuro"
-      },
-      "gallery": [
-        {
-          "src": "media/works/classifiche-giochi/01-1440.webp",
-          "w": 1440,
-          "h": 900,
-          "alt": "Apertura della pagina col tema scuro: titolo, istruzioni, le quattro schede",
-          "caption": ""
-        },
-        {
-          "src": "media/works/classifiche-giochi/02-1440.webp",
-          "w": 1440,
-          "h": 900,
-          "alt": "La scheda di un gioco: copertina, voti, tre schermate e sei livelli da 1 a 5",
-          "caption": ""
-        },
-        {
-          "src": "media/works/classifiche-giochi/03-1440.webp",
-          "w": 1440,
-          "h": 900,
-          "alt": "Schede, filtri, ordinamento e ricerca",
-          "caption": ""
-        },
-        {
-          "src": "media/works/classifiche-giochi/04-1440.webp",
-          "w": 1440,
-          "h": 900,
-          "alt": "La stessa apertura col tema chiaro",
-          "caption": ""
-        },
-        {
-          "src": "media/works/classifiche-giochi/05-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "Apertura della pagina sul telefono",
-          "caption": ""
-        },
-        {
-          "src": "media/works/classifiche-giochi/06-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "La scheda di un gioco sul telefono",
-          "caption": ""
-        }
-      ]
-    },
     "operazione-africa": {
-      "index": 4,
+      "index": 3,
       "title": "Operazione Africa",
       "kind": "personale",
       "tag": "Prototipo",
@@ -393,7 +308,7 @@
       ]
     },
     "pippi-store": {
-      "index": 5,
+      "index": 4,
       "title": "pippi.store",
       "kind": "cliente",
       "tag": "",
@@ -476,7 +391,7 @@
       ]
     },
     "bianchipro": {
-      "index": 6,
+      "index": 5,
       "title": "BianchiPro",
       "kind": "cliente",
       "tag": "Prototipo",
@@ -532,10 +447,10 @@
       ]
     },
     "spedizione-facile": {
-      "index": 7,
+      "index": 6,
       "title": "SpediamoFacile",
       "kind": "cliente",
-      "tag": "Non online",
+      "tag": "",
       "year": "2026",
       "place": "",
       "line": "Sito dove calcoli il prezzo di una spedizione, paghi, e il corriere passa a ritirare il pacco.",
@@ -555,9 +470,13 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Non è online: gira solo in locale, e le schermate sono prese lì, con persone e indirizzi inventati. Il marchio non è definitivo e il nome è ancora da decidere. Per chi non è tecnico ho scritto tre guide: come funziona il sito, il manuale del pannello, la messa online."
+          "p": "È online: oggi si chiama SpediamoFacile e risponde su spediamoveloce.it, e il nome del marchio non è ancora definitivo. Le schermate dei passi sono prese in locale, con persone e indirizzi inventati. Per chi non è tecnico ho scritto tre guide: come funziona il sito, il manuale del pannello, la messa online."
         }
       ],
+      "link": {
+        "label": "Apri il sito",
+        "href": "https://spediamoveloce.it/"
+      },
       "cover": {
         "src": "media/works/spedizione-facile/cover-1280.webp",
         "srcMobile": "media/works/spedizione-facile/cover-640.webp",
@@ -604,7 +523,7 @@
       ]
     },
     "zanzanext": {
-      "index": 8,
+      "index": 7,
       "title": "ZanzaNext",
       "kind": "cliente",
       "tag": "",
@@ -669,7 +588,7 @@
       ]
     },
     "interlingua": {
-      "index": 9,
+      "index": 8,
       "title": "Interlingua",
       "kind": "personale",
       "tag": "",
@@ -741,7 +660,7 @@
       ]
     },
     "massforge": {
-      "index": 10,
+      "index": 9,
       "title": "MassForge",
       "kind": "personale",
       "tag": "",
@@ -751,7 +670,7 @@
       "facts": [
         "I dati restano sul telefono, senza server.",
         "Quattro schede: Oggi, Programma, Profilo e Coach.",
-        "Un solo colore d’accento, l’arancio, su grigi scuri."
+        "Arancione mentre si lavora, blu mentre si riposa: la fase si capisce dal colore."
       ],
       "story": [
         {
@@ -760,11 +679,11 @@
         },
         {
           "h": "Le scelte",
-          "p": "Grigi scuri e un solo accento, l’arancio, per l’azione; il grigio acciaio per quello che è fatto, il rosso solo per il pericolo. Archivo per i titoli, Hanken Grotesk per i testi, JetBrains Mono per i numeri, tutti dentro l’app. Le foto passano dallo stesso filtro, che le scurisce."
+          "p": "Il progetto grafico nuovo parte dal nome, la forgia: caldo e freddo. Mentre si registra una serie lo schermo è tutto arancione, mentre corre il riposo è tutto blu, sul fondo nero del ferro: dalla panca la fase si capisce dal colore, senza leggere. Ogni schermata si apre con una fotografia di pesi nella stessa luce, e i numeri, alti e stretti, fanno da titolo."
         },
         {
           "h": "Dove si vede",
-          "p": "Non è pubblicata. Funziona senza rete e i dati restano sul telefono, senza server; è costruita per Android con Capacitor ed è alla versione 1.4.0. Le schermate sono dell’app vera, con un profilo di prova e una serie registrata per l’occasione."
+          "p": "Non è pubblicata. Funziona senza rete e i dati restano sul telefono, senza server; è costruita per Android con Capacitor ed è alla versione 1.4.0. Le quattro immagini sono il progetto grafico nuovo, da portare nell’app, con i dati di un profilo di prova."
         }
       ],
       "cover": {
@@ -772,34 +691,45 @@
         "srcMobile": "media/works/massforge/cover-640.webp",
         "w": 1280,
         "h": 800,
-        "alt": "Tre schermate di MassForge affiancate: la scheda Oggi, un esercizio della seduta e il programma della settimana"
+        "alt": "Tre design di MassForge affiancati: la seduta di oggi su fondo nero, la serie da registrare in arancione e il riposo in blu"
       },
       "gallery": [
         {
-          "src": "media/works/massforge/01-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "La scheda Oggi: la seduta «Spinta» da 35 minuti, la prontezza e il primo esercizio",
-          "caption": "Schermata"
+          "src": "media/works/massforge/01-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "La seduta di oggi: due manubri in luce arancione, poi «Spinta», 35 minuti e sei esercizi, la Readiness a 74 e il bottone «Inizia seduta»",
+          "caption": "Design",
+          "srcset": "media/works/massforge/01-800.webp 800w, media/works/massforge/01-1600.webp 1600w"
         },
         {
-          "src": "media/works/massforge/02-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "Un esercizio della seduta: chili, ripetizioni e il bottone per salvare la serie",
-          "caption": "Schermata"
+          "src": "media/works/massforge/02-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "La serie da registrare, tutta in arancione: due manubri sulla panca, 40 chili, 15 ripetizioni e il bottone «Salva serie 1»",
+          "caption": "Design",
+          "srcset": "media/works/massforge/02-800.webp 800w, media/works/massforge/02-1600.webp 1600w"
         },
         {
-          "src": "media/works/massforge/03-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "La scheda Programma: la settimana 1 di 12, i giorni e le serie per muscolo",
-          "caption": "Schermata"
+          "src": "media/works/massforge/03-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "Il riposo, tutto in blu: il conto alla rovescia a 1:29, un bilanciere sul rack e la serie appena salvata",
+          "caption": "Design",
+          "srcset": "media/works/massforge/03-800.webp 800w, media/works/massforge/03-1600.webp 1600w"
+        },
+        {
+          "src": "media/works/massforge/04-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "La seduta chiusa: una rastrelliera di manubri, sei esercizi su sei, il record di 40 chili per 15 e la prossima seduta",
+          "caption": "Design",
+          "srcset": "media/works/massforge/04-800.webp 800w, media/works/massforge/04-1600.webp 1600w"
         }
       ]
     },
     "skillaudit": {
-      "index": 11,
+      "index": 10,
       "title": "SkillAudit",
       "kind": "personale",
       "tag": "",
@@ -818,11 +748,11 @@
         },
         {
           "h": "Le scelte",
-          "p": "Niente veli trasparenti: sei superfici opache, dalla più scura alla più chiara. Ogni sezione ha il suo colore: blu per Percorso, verde per Palestra, ambra per Test, rosa per Profilo. Space Grotesk per i titoli, Manrope per i testi. Il punteggio non si gonfia ripetendo lo stesso esercizio."
+          "p": "Il progetto grafico nuovo tratta l’app come una revisione del codice fatta su carta: fondo chiaro, righe sottili, testo a spaziatura fissa. La risposta scelta è passata col pennarello giallo, come su un foglio stampato, e il percorso è un ramo con quattro nodi, uno per ogni passo dell’unità. Un solo verde per bottoni e avanzamento."
         },
         {
           "h": "Dove si vede",
-          "p": "Non è pubblicata: l’app gira, ma il servizio per gli account non è configurato, e lo scrive lei stessa nel Profilo. Le schermate vengono dalla versione per browser, con lo stato segnato come «diagnostico completato» per arrivare alle quattro sezioni."
+          "p": "Non è pubblicata: l’app gira, ma il servizio per gli account non è configurato, e lo scrive lei stessa nel Profilo. Le quattro immagini sono il progetto grafico nuovo, da portare nell’app; domande, esercizi e percentuali vengono dall’app."
         }
       ],
       "cover": {
@@ -830,55 +760,45 @@
         "srcMobile": "media/works/skillaudit/cover-640.webp",
         "w": 1280,
         "h": 800,
-        "alt": "Tre schermate di SkillAudit affiancate: l’avvio, il percorso e un esercizio in corso"
+        "alt": "Tre design di SkillAudit affiancati: una domanda iniziale, il percorso e un esercizio in corso"
       },
       "gallery": [
         {
-          "src": "media/works/skillaudit/01-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "L’avvio: il profilo in quattro passi",
-          "caption": "Schermata"
+          "src": "media/works/skillaudit/01-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "Una domanda iniziale, la prima di sei: quattro risposte, quella scelta passata col pennarello giallo",
+          "caption": "Design",
+          "srcset": "media/works/skillaudit/01-800.webp 800w, media/works/skillaudit/01-1600.webp 1600w"
         },
         {
-          "src": "media/works/skillaudit/02-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "Le domande iniziali, la prima di sei",
-          "caption": "Schermata"
+          "src": "media/works/skillaudit/02-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "Il percorso: 36% del corso, 12% del modulo e il prossimo passo come un ramo con quattro nodi",
+          "caption": "Design",
+          "srcset": "media/works/skillaudit/02-800.webp 800w, media/works/skillaudit/02-1600.webp 1600w"
         },
         {
-          "src": "media/works/skillaudit/03-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "La scheda Percorso",
-          "caption": "Schermata"
+          "src": "media/works/skillaudit/03-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "Un esercizio in corso, «Signup sanity check»: le mosse da mettere in ordine",
+          "caption": "Design",
+          "srcset": "media/works/skillaudit/03-800.webp 800w, media/works/skillaudit/03-1600.webp 1600w"
         },
         {
-          "src": "media/works/skillaudit/04-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "La scheda Palestra",
-          "caption": "Schermata"
-        },
-        {
-          "src": "media/works/skillaudit/05-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "Un esercizio in corso",
-          "caption": "Schermata"
-        },
-        {
-          "src": "media/works/skillaudit/06-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "La scheda Test",
-          "caption": "Schermata"
+          "src": "media/works/skillaudit/04-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "La scheda Test: il diagnostico chiuso e la prova ufficiale da fare",
+          "caption": "Design",
+          "srcset": "media/works/skillaudit/04-800.webp 800w, media/works/skillaudit/04-1600.webp 1600w"
         }
       ]
     },
     "carico-glicemico": {
-      "index": 12,
+      "index": 11,
       "title": "Carico Glicemico",
       "kind": "personale",
       "tag": "",
@@ -897,11 +817,11 @@
         },
         {
           "h": "Le scelte",
-          "p": "Tutto è testo, bordi e icone al tratto, senza fotografie. Atkinson Hyperlegible per testi e titoli, JetBrains Mono per cifre ed etichette. Il carico ha tre colori, verde se è basso, ocra se è medio, rosso se è alto. Il fabbisogno è dichiarato come stima, e un test di 28 giorni lo restringe."
+          "p": "Il progetto grafico nuovo fa vedere il cibo: ogni alimento ha la sua fotografia dall’alto, sul colore dell’avena. Il carico sta in un blocco pieno, verde se è basso, ambra se è medio, rosso se è alto, e un righello con le tacche a 10 e 20 mostra le soglie che usa l’app. Così si vede che l’avena, alta per 100 grammi, nella mezza porzione da 40 diventa media."
         },
         {
           "h": "Dove si vede",
-          "p": "Non è pubblicata e gira in locale. Le schermate sono dell’app vera, con un’atleta inventata e una settimana di allenamento di prova: totali e grafici li ha calcolati l’app da quei dati. Sul telefono la navigazione sta in basso, sullo schermo largo in alto."
+          "p": "Non è pubblicata e gira in locale. Le quattro immagini sono il progetto grafico nuovo, da portare nell’app, con una colazione e una giornata di prova: i carichi degli alimenti sono calcolati come li calcola l’app, dal suo catalogo."
         }
       ],
       "cover": {
@@ -909,55 +829,45 @@
         "srcMobile": "media/works/carico-glicemico/cover-640.webp",
         "w": 1280,
         "h": 800,
-        "alt": "Tre schermate di Carico Glicemico affiancate: il diario del giorno, il catalogo degli alimenti e il grafico del peso"
+        "alt": "Tre design di Carico Glicemico affiancati: la ricerca di un alimento, la porzione dei fiocchi d’avena e la colazione composta"
       },
       "gallery": [
         {
-          "src": "media/works/carico-glicemico/01-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "Il catalogo: ricerca, filtri e l’elenco degli alimenti col carico glicemico",
-          "caption": "Schermata"
+          "src": "media/works/carico-glicemico/01-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "La ricerca di «avena» a colazione: tre alimenti con la loro fotografia e il carico per 100 grammi, alto, medio e basso",
+          "caption": "Design",
+          "srcset": "media/works/carico-glicemico/01-800.webp 800w, media/works/carico-glicemico/01-1600.webp 1600w"
         },
         {
-          "src": "media/works/carico-glicemico/02-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "Il diario: i totali della giornata e l’allenamento di oggi",
-          "caption": "Schermata con dati di prova"
+          "src": "media/works/carico-glicemico/02-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "La porzione dei fiocchi d’avena: la ciotola vista dall’alto e, con la mezza porzione da 40 grammi, il carico a 14,7, medio",
+          "caption": "Design",
+          "srcset": "media/works/carico-glicemico/02-800.webp 800w, media/works/carico-glicemico/02-1600.webp 1600w"
         },
         {
-          "src": "media/works/carico-glicemico/03-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "La dieta: i target di ogni giorno della settimana",
-          "caption": "Schermata con dati di prova"
+          "src": "media/works/carico-glicemico/03-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "La colazione composta: porridge, latte e mela visti dall’alto, carico del pasto 25,4 e una barra a tre pezzi",
+          "caption": "Design",
+          "srcset": "media/works/carico-glicemico/03-800.webp 800w, media/works/carico-glicemico/03-1600.webp 1600w"
         },
         {
-          "src": "media/works/carico-glicemico/04-780.webp",
-          "w": 780,
-          "h": 1688,
-          "alt": "Le metriche: l’andamento del peso e lo storico",
-          "caption": "Schermata con dati di prova"
-        },
-        {
-          "src": "media/works/carico-glicemico/05-1440.webp",
-          "w": 1440,
-          "h": 900,
-          "alt": "Il diario su schermo largo",
-          "caption": "Schermata con dati di prova"
-        },
-        {
-          "src": "media/works/carico-glicemico/06-1440.webp",
-          "w": 1440,
-          "h": 900,
-          "alt": "La dieta su schermo largo",
-          "caption": "Schermata con dati di prova"
+          "src": "media/works/carico-glicemico/04-1600.webp",
+          "w": 1600,
+          "h": 2844,
+          "alt": "Il totale della giornata: carico 78, calorie e macronutrienti, e la seduta delle 18:30 con scarpe e borraccia",
+          "caption": "Design",
+          "srcset": "media/works/carico-glicemico/04-800.webp 800w, media/works/carico-glicemico/04-1600.webp 1600w"
         }
       ]
     },
     "cenere": {
-      "index": 13,
+      "index": 12,
       "title": "Cenere",
       "kind": "personale",
       "tag": "Prototipo",
@@ -1058,7 +968,7 @@
       ]
     },
     "soryn": {
-      "index": 14,
+      "index": 13,
       "title": "SORYN",
       "kind": "cliente",
       "tag": "",
@@ -1116,7 +1026,7 @@
       ]
     },
     "campana": {
-      "index": 15,
+      "index": 14,
       "title": "Campana",
       "kind": "concept",
       "tag": "",
@@ -1177,7 +1087,7 @@
       ]
     },
     "ghisa": {
-      "index": 16,
+      "index": 15,
       "title": "Ghisa",
       "kind": "concept",
       "tag": "",
@@ -1238,7 +1148,7 @@
       ]
     },
     "taglio": {
-      "index": 17,
+      "index": 16,
       "title": "Taglio",
       "kind": "concept",
       "tag": "",
@@ -1299,7 +1209,7 @@
       ]
     },
     "il-gatto": {
-      "index": 18,
+      "index": 17,
       "title": "Il Gatto",
       "kind": "concept",
       "tag": "",
@@ -1360,7 +1270,7 @@
       ]
     },
     "officina-tre": {
-      "index": 19,
+      "index": 18,
       "title": "Officina Tre",
       "kind": "concept",
       "tag": "",
@@ -1421,7 +1331,7 @@
       ]
     },
     "cerchi": {
-      "index": 20,
+      "index": 19,
       "title": "Cerchi",
       "kind": "concept",
       "tag": "",
@@ -1482,7 +1392,7 @@
       ]
     },
     "nero-72": {
-      "index": 21,
+      "index": 20,
       "title": "Nero 72",
       "kind": "concept",
       "tag": "",
@@ -1543,7 +1453,7 @@
       ]
     },
     "mandorla": {
-      "index": 22,
+      "index": 21,
       "title": "Mandorla",
       "kind": "concept",
       "tag": "",
@@ -1604,7 +1514,7 @@
       ]
     },
     "sale-grosso": {
-      "index": 23,
+      "index": 22,
       "title": "Sale Grosso",
       "kind": "concept",
       "tag": "",
@@ -1665,7 +1575,7 @@
       ]
     },
     "cornicione": {
-      "index": 24,
+      "index": 23,
       "title": "Cornicione",
       "kind": "concept",
       "tag": "",
@@ -1726,7 +1636,7 @@
       ]
     },
     "kime": {
-      "index": 25,
+      "index": 24,
       "title": "Kime",
       "kind": "concept",
       "tag": "",
@@ -1787,7 +1697,7 @@
       ]
     },
     "sagra-del-pesce": {
-      "index": 26,
+      "index": 25,
       "title": "Sagra del pesce, Porto di Cagliari",
       "kind": "manifesto",
       "tag": "",
@@ -1828,7 +1738,7 @@
       ]
     },
     "su-civraxiu": {
-      "index": 27,
+      "index": 26,
       "title": "Su Civraxiu, Sanluri",
       "kind": "manifesto",
       "tag": "",
@@ -1869,7 +1779,7 @@
       ]
     },
     "su-coccoi": {
-      "index": 28,
+      "index": 27,
       "title": "Su Coccoi",
       "kind": "manifesto",
       "tag": "",
@@ -1910,7 +1820,7 @@
       ]
     },
     "sa-binnenna": {
-      "index": 29,
+      "index": 28,
       "title": "Sa Binnenna, Monserrato",
       "kind": "manifesto",
       "tag": "",
@@ -1951,7 +1861,7 @@
       ]
     },
     "sagra-del-miele": {
-      "index": 30,
+      "index": 29,
       "title": "Sagra del miele, Montevecchio",
       "kind": "manifesto",
       "tag": "",
@@ -1992,7 +1902,7 @@
       ]
     },
     "5-km-del-poetto": {
-      "index": 31,
+      "index": 30,
       "title": "5 km del Poetto, Cagliari",
       "kind": "manifesto",
       "tag": "",
@@ -2033,7 +1943,7 @@
       ]
     },
     "corsa-campestre": {
-      "index": 32,
+      "index": 31,
       "title": "Corsa campestre, Arborea",
       "kind": "manifesto",
       "tag": "",
@@ -2074,7 +1984,7 @@
       ]
     },
     "santa-chiara": {
-      "index": 33,
+      "index": 32,
       "title": "Santa Chiara, Iglesias",
       "kind": "manifesto",
       "tag": "",
@@ -2115,7 +2025,7 @@
       ]
     },
     "castagne": {
-      "index": 34,
+      "index": 33,
       "title": "Castagne, Aritzo",
       "kind": "manifesto",
       "tag": "",
@@ -2156,7 +2066,7 @@
       ]
     },
     "settimana-santa": {
-      "index": 35,
+      "index": 34,
       "title": "Settimana Santa, Iglesias",
       "kind": "manifesto",
       "tag": "",
@@ -2197,7 +2107,7 @@
       ]
     },
     "corteo-storico": {
-      "index": 36,
+      "index": 35,
       "title": "Corteo storico medioevale, Iglesias",
       "kind": "manifesto",
       "tag": "",
@@ -2238,7 +2148,7 @@
       ]
     },
     "candelieri": {
-      "index": 37,
+      "index": 36,
       "title": "Candelieri, Iglesias",
       "kind": "manifesto",
       "tag": "",
@@ -2279,7 +2189,7 @@
       ]
     },
     "corsa-dei-ceri": {
-      "index": 38,
+      "index": 37,
       "title": "Corsa dei Ceri, Gubbio",
       "kind": "manifesto",
       "tag": "",
@@ -2320,7 +2230,7 @@
       ]
     },
     "la-quintana": {
-      "index": 39,
+      "index": 38,
       "title": "La Quintana, Ascoli Piceno",
       "kind": "manifesto",
       "tag": "",
@@ -2361,7 +2271,7 @@
       ]
     },
     "festa-del-redentore": {
-      "index": 40,
+      "index": 39,
       "title": "Festa del Redentore, Venezia",
       "kind": "manifesto",
       "tag": "",
@@ -2402,7 +2312,7 @@
       ]
     },
     "oh-bej-oh-bej": {
-      "index": 41,
+      "index": 40,
       "title": "Oh bej! Oh bej!, Milano",
       "kind": "manifesto",
       "tag": "",

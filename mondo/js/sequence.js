@@ -98,9 +98,13 @@ export function createSequence(canvas) {
     painted = '';
     canvas.width = width;
     canvas.height = height;
-    const fetchFrame = async (index) => {
-      const response = await fetch(asset(`${folder}/${String(index).padStart(3, '0')}.webp`));
-      if (!response.ok) return;
+    // A frame refused by the server is asked for once more; if it fails again its neighbour stands in.
+    const fetchFrame = async (index, retry = true) => {
+      const response = await fetch(asset(`${folder}/${String(index).padStart(3, '0')}.webp`)).catch(() => undefined);
+      if (!response?.ok) {
+        if (retry) await new Promise((done) => { setTimeout(done, 400); }).then(() => fetchFrame(index, false));
+        return;
+      }
       const blob = await response.blob();
       if (run !== generation) return;
       blobs[index] = blob;

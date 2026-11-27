@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Fraunces";
-  src: url("../fonts/fraunces-latin.woff2?v=7") format("woff2");
+  src: url("../fonts/fraunces-latin.woff2?v=8") format("woff2");
   font-weight: 300 600;
   font-style: normal;
   font-display: swap;
@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: "Host Grotesk";
-  src: url("../fonts/host-grotesk-latin.woff2?v=7") format("woff2");
+  src: url("../fonts/host-grotesk-latin.woff2?v=8") format("woff2");
   font-weight: 300 800;
   font-style: normal;
   font-display: swap;
@@ -28,10 +28,9 @@
   --head: clamp(76px, 12vh, 120px);
   --frame: 6px;
   --bottom: max(14px, env(safe-area-inset-bottom));
-  --ember: #1c100b;
 
-  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --sans: "Host Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-text: "Host Grotesk", "Helvetica Neue", Arial, sans-serif;
   --display: clamp(1.75rem, min(1rem + 3.6vw, 6.4vh), 3.5rem);
   --title: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
   --body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
@@ -84,7 +83,7 @@ body {
   margin: 0;
   overflow: hidden;
   color: var(--ink);
-  font-family: var(--sans);
+  font-family: var(--font-text);
   font-size: var(--body);
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
@@ -147,7 +146,7 @@ button {
   border-radius: 22px;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: clamp(1.375rem, 1.24rem + 0.3vw, 1.5rem);
   font-weight: 500;
   font-variation-settings: "SOFT" 60;
@@ -209,7 +208,7 @@ button {
 .threshold__label {
   bottom: calc(max(20px, env(safe-area-inset-bottom)) + 52px);
   padding-bottom: 8px;
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: clamp(1.375rem, 1.1rem + 1vw, 2rem);
   font-weight: 400;
   font-variation-settings: "SOFT" 60;
@@ -264,26 +263,21 @@ button {
 }
 
 
-/* Controls that stay on screen at every level. */
-.dock,
+/* The sound switch, on screen past the door. */
+body:has(.threshold:not([hidden])) .sound {
+  display: none;
+}
+
 .sound {
   position: fixed;
   z-index: 60;
-  bottom: var(--bottom);
-  display: flex;
-  gap: 6px;
-}
-
-.dock {
-  left: calc(var(--gutter) - 8px);
-}
-
-.dock button,
-.sound {
+  top: max(10px, env(safe-area-inset-top));
+  right: calc(var(--gutter) - 8px);
   display: flex;
   align-items: center;
+  gap: 8px;
   height: 44px;
-  padding: 0 16px;
+  padding: 0 16px 0 14px;
   border: 0;
   border-radius: 22px;
   background: var(--paper);
@@ -293,16 +287,6 @@ button {
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-}
-
-.dock button[hidden] {
-  display: none;
-}
-
-.sound {
-  right: calc(var(--gutter) - 8px);
-  gap: 8px;
-  padding: 0 16px 0 14px;
 }
 
 .sound:disabled {
@@ -342,47 +326,36 @@ button {
   -webkit-user-select: none;
 }
 
-/* Level 1: the land. Each place is one screen; neighbours overlap where their dunes fade together. */
-.land,
-.land__view,
-.spot,
-.spot__scene {
+/* The walk: scenes behind that change along the way, and the path with its works in front. */
+.walk,
+.walk__backdrops,
+.walk__view {
   position: absolute;
   inset: 0;
 }
 
-.land {
+.walk {
   z-index: 0;
   overflow: hidden;
   overflow: clip;
   cursor: grab;
 }
 
-.spot {
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%);
-  mask-image: linear-gradient(90deg, transparent, #000 14%);
-  will-change: transform;
+.walk__view {
+  will-change: opacity;
 }
 
-.spot:first-child {
-  -webkit-mask-image: none;
-  mask-image: none;
+.walk__view .cover {
+  will-change: translate;
 }
 
-.spot__scene {
-  will-change: transform;
-}
-
-.spot__object {
+.walk__track {
   position: absolute;
-  padding: 0;
-  border: 0;
-  border-radius: 24px;
-  background: none;
-  cursor: pointer;
+  inset: 0;
+  will-change: transform;
 }
 
-.spot__label {
+.landmark {
   position: absolute;
   display: grid;
   justify-items: center;
@@ -390,11 +363,12 @@ button {
   color: var(--ink);
   text-align: center;
   white-space: nowrap;
+  transform: translateX(-50%);
   pointer-events: none;
 }
 
-.spot__label strong {
-  font-family: var(--serif);
+.landmark strong {
+  font-family: var(--font-display);
   font-size: clamp(2rem, 1.5rem + 2vw, 3.25rem);
   font-weight: 400;
   font-variation-settings: "SOFT" 60;
@@ -402,23 +376,19 @@ button {
   letter-spacing: -0.015em;
 }
 
-.spot__label span {
+.landmark span {
   font-size: var(--body);
   font-weight: 500;
 }
 
-.statement,
-.land__hint {
-  z-index: 20;
-}
-
 .statement {
   position: absolute;
+  z-index: 2;
   top: var(--head);
   left: var(--gutter);
   right: var(--gutter);
   max-width: 15.6em;
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: var(--display);
   font-weight: 360;
   font-variation-settings: "SOFT" 60;
@@ -437,33 +407,354 @@ button {
   margin-top: 0.42em;
 }
 
-.land__hint {
+.walk__hint {
   position: absolute;
-  left: var(--gutter);
-  bottom: calc(var(--bottom) + 60px);
+  z-index: 2;
+  left: 50%;
+  bottom: calc(var(--bottom) + 72px);
   color: var(--light);
   font-weight: 500;
+  transform: translateX(-50%);
   pointer-events: none;
-}
-
-.land__hint-pointer {
-  display: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .land__hint-touch {
-    display: none;
-  }
-
-  .land__hint-pointer {
-    display: inline;
-  }
 }
 
 @keyframes rise {
   from {
     opacity: 0;
     transform: translateY(18px);
+  }
+}
+
+/* A work standing on the path, its base on the ground line. */
+.exhibit {
+  --ground: 80svh;
+  --high: 50svh;
+  position: absolute;
+  top: calc(var(--ground) - var(--high));
+  width: 0;
+  height: var(--high);
+}
+
+.exhibit__object {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  transform: translateX(-50%);
+  transition: translate 0.5s var(--ease);
+}
+
+.exhibit__object:hover {
+  translate: 0 -8px;
+}
+
+.exhibit__frame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: 0 36px 60px -36px rgb(0 12 48 / 0.65);
+}
+
+.exhibit__image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(var(--wide), var(--max-w, 100vw));
+  max-height: min(var(--high), var(--max-h, 100vh));
+}
+
+.exhibit__label {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  width: max-content;
+  max-width: min(80vw, 22rem);
+  color: var(--light);
+  text-align: center;
+  text-shadow: 0 1px 10px rgb(0 12 48 / 0.7);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.exhibit__label strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.625rem);
+  font-weight: 400;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.15;
+}
+
+.exhibit__label span {
+  font-size: var(--small);
+  font-weight: 500;
+}
+
+/* Sites and shops: chalk windows with the page scrolling inside. */
+.exhibit--portal .exhibit__frame {
+  width: var(--portal-w);
+  height: var(--high);
+  border: var(--frame) solid var(--paper);
+  border-bottom: 0;
+  background: var(--night);
+  container-type: size;
+}
+
+.exhibit__page {
+  display: block;
+  animation: page 30s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+.exhibit__page-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@keyframes page {
+  0%,
+  8% {
+    transform: translateY(0);
+  }
+
+  92%,
+  100% {
+    transform: translateY(calc(100cqh - 100%));
+  }
+}
+
+/* Programs: windows with a bar of chalk. */
+.exhibit--window .exhibit__frame {
+  border: var(--frame) solid var(--paper);
+  border-top-width: 24px;
+  border-radius: 12px;
+}
+
+/* Apps: phones of chalk with the designs passing inside. */
+.exhibit--phone .exhibit__frame {
+  width: calc(var(--high) * 0.5625);
+  height: var(--high);
+  border: 10px solid var(--paper);
+  border-radius: 38px;
+  background: var(--night);
+}
+
+.exhibit__designs {
+  display: flex;
+  height: 100%;
+}
+
+.exhibit__design {
+  flex: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Brands: the mark on its own colour, on a plinth. */
+.exhibit--banner .exhibit__frame {
+  border: 10px solid var(--paper);
+  border-bottom-width: 36px;
+}
+
+.exhibit--banner .exhibit__image {
+  max-height: min(calc(var(--high) - 60px), var(--max-h, 100vh));
+}
+
+/* Posters: boards on two posts. */
+.exhibit--billboard .exhibit__frame {
+  overflow: visible;
+  border: 8px solid var(--paper);
+  margin-bottom: 9svh;
+}
+
+.exhibit--billboard .exhibit__frame::before,
+.exhibit--billboard .exhibit__frame::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  width: 7px;
+  height: calc(9svh + 8px);
+  background: var(--paper);
+}
+
+.exhibit--billboard .exhibit__frame::before {
+  left: 18%;
+}
+
+.exhibit--billboard .exhibit__frame::after {
+  right: 18%;
+}
+
+.exhibit--billboard .exhibit__image {
+  max-height: min(calc(var(--high) - 9svh - 16px), var(--max-h, 100vh));
+}
+
+/* The game: a small lit room. */
+.exhibit--room .exhibit__frame {
+  border: 10px solid #3a2418;
+  box-shadow: 0 0 80px 10px rgb(255 170 90 / 0.25), 0 36px 60px -36px rgb(0 0 0 / 0.8);
+}
+
+/* Cards: the facts at the tower and the addresses at the end. */
+.exhibit--card {
+  --high: auto;
+  top: auto;
+  bottom: calc(100svh - var(--ground));
+}
+
+.exhibit__card {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  display: grid;
+  gap: 10px;
+  width: min(80vw, 22rem);
+  padding: 18px 20px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 36px 60px -36px rgb(0 12 48 / 0.65);
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+.exhibit__count {
+  font-size: var(--small);
+  font-weight: 500;
+}
+
+.exhibit__more,
+.exhibit__card a {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-display);
+  font-size: var(--title);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.exhibit__title {
+  font-family: var(--font-display);
+  font-size: var(--display);
+  font-weight: 360;
+  line-height: 1.1;
+}
+
+.exhibit {
+  --wide: 80vw;
+  --portal-w: 72vw;
+}
+
+@media (min-width: 768px) {
+  .exhibit {
+    --ground: 78svh;
+    --high: 52svh;
+    --wide: 30vw;
+    --portal-w: min(22vw, 360px);
+  }
+}
+
+/* The path: its stops by name and a dot where the visitor is. A touch walks there. */
+.path {
+  position: absolute;
+  z-index: 10;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: var(--bottom);
+  height: 44px;
+}
+
+.path__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgb(246 248 251 / 0.6);
+}
+
+.path__dot {
+  position: absolute;
+  top: -5px;
+  width: 11px;
+  height: 11px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: var(--light);
+}
+
+.path__stop {
+  position: absolute;
+  top: 0;
+  height: 44px;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  color: var(--light);
+  font-size: var(--small);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+.path__stop span,
+.path__stop {
+  text-shadow: 0 1px 8px rgb(0 12 48 / 0.6);
+}
+
+.path__stop::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3px 0 0 -3px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.path__stop {
+  padding-bottom: 26px;
+}
+
+.path__stop[aria-current] {
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+@media (max-width: 767px) {
+  .path__stop {
+    width: 30px;
+    padding: 0;
+    color: transparent;
+    text-shadow: none;
+  }
+
+  .path__stop::before {
+    color: var(--light);
+  }
+
+  .path__stop[aria-current] {
+    color: var(--light);
+    width: auto;
+    padding-bottom: 30px;
+    text-decoration: none;
+    text-shadow: 0 1px 8px rgb(0 12 48 / 0.6);
   }
 }
 
@@ -501,7 +792,7 @@ button {
 }
 
 .step__mark {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: 1.75rem;
   line-height: 1;
   transform: translateY(-2px);
@@ -526,447 +817,61 @@ button {
   }
 }
 
-/* Level 2: a place, opened by a circle from the touched object. */
-.place {
-  position: absolute;
-  z-index: 10;
-  inset: 0;
-  overflow: hidden;
-  overflow: clip;
-  background: var(--night);
-  color: var(--light);
-}
-
-.place[hidden],
-.story[hidden] {
-  display: none;
-}
-
-.crossing {
-  position: absolute;
-  z-index: 11;
-  left: 50%;
-  top: 50%;
-  width: max(100vw, calc(var(--stage-h) * var(--ratio)));
-  height: max(var(--stage-h), calc(100vw / var(--ratio)));
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.caption {
-  display: grid;
-  gap: 4px;
-}
-
-.caption__title {
-  font-family: var(--serif);
-  font-size: var(--title);
-  font-weight: 400;
-  font-variation-settings: "SOFT" 60;
-  line-height: 1.1;
-  letter-spacing: -0.015em;
-}
-
-.caption__title button {
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: none;
-  text-align: inherit;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  cursor: pointer;
-}
-
-.caption__meta {
-  margin-left: 0.7em;
-  font-family: var(--sans);
-  font-size: var(--small);
-  font-weight: 500;
-  letter-spacing: 0;
-  white-space: nowrap;
-}
-
-.caption__line {
-  max-width: 34em;
-  text-wrap: pretty;
-}
-
-/* Sites and shops: portals of chalk planted in the dunes. */
-.place[data-light="day"] {
-  background: var(--sky);
-}
-
-.portals__scene {
-  position: absolute;
-  inset: 0;
-  transition: transform 0.8s var(--ease);
-}
-
-.portals {
-  --portal-w: 88vw;
-  --portal-h: max(58svh, 360px);
-  --ground: calc(12svh + var(--portal-h));
-  --reach: 60vw;
-  --side: 0.46;
-  position: absolute;
-  inset: 0;
-}
-
-.portal {
-  position: absolute;
-  left: 50%;
-  top: calc(var(--ground) - var(--portal-h));
-  width: var(--portal-w);
-  height: var(--portal-h);
-  transform-origin: 50% 100%;
-  transition: transform 0.8s var(--ease), opacity 0.8s var(--ease);
-}
-
-.portal__clip {
-  position: absolute;
-  inset: 0 -2px 0;
-  overflow: hidden;
-}
-
-.portal__body {
-  position: absolute;
-  inset: 0 2px;
-  display: block;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  transition: transform 0.8s var(--ease);
-}
-
-.portal__frame {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border: var(--frame) solid var(--paper);
-  border-bottom: 0;
-  background: var(--night);
-  container-type: size;
-}
-
-.portal__frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--night);
-  opacity: 0.5;
-  transition: opacity 0.8s ease;
-}
-
-.portal__page {
-  display: block;
-  animation: page 30s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate paused;
-}
-
-.portal__image {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.portal[data-slot="current"] .portal__page {
-  animation-play-state: running;
-}
-
-.portal[data-slot="current"] .portal__frame::after {
-  opacity: 0;
-}
-
-.portal[data-slot="current"] {
-  transform: translateX(-50%);
-}
-
-.portal[data-slot="previous"] {
-  transform: translateX(calc(-50% - var(--reach))) scale(var(--side));
-}
-
-.portal[data-slot="next"] {
-  transform: translateX(calc(-50% + var(--reach))) scale(var(--side));
-}
-
-.portal[data-slot="before"] {
-  transform: translateX(calc(-50% - var(--reach) * 2)) scale(var(--side));
-  opacity: 0;
-}
-
-.portal[data-slot="after"] {
-  transform: translateX(calc(-50% + var(--reach) * 2)) scale(var(--side));
-  opacity: 0;
-}
-
-.portal[data-slot="under"] {
-  transform: translateX(-50%);
-}
-
-.portal[data-slot="previous"] .portal__body,
-.portal[data-slot="next"] .portal__body {
-  transform: translateY(36%);
-}
-
-.portal[data-slot="before"] .portal__body,
-.portal[data-slot="after"] .portal__body,
-.portal[data-slot="under"] .portal__body {
-  transform: translateY(101%);
-}
-
-@keyframes page {
-  0%,
-  8% {
-    transform: translateY(0);
-  }
-
-  92%,
-  100% {
-    transform: translateY(calc(100cqh - 100%));
-  }
-}
-
-.place[data-light="day"] .portals::before {
-  content: "";
-  position: absolute;
-  inset: var(--ground) 0 0;
-  background: linear-gradient(rgb(28 71 125 / 0), rgb(28 71 125 / 0.9) 56px);
-}
-
-.portals__caption {
-  position: absolute;
-  left: var(--gutter);
-  right: var(--gutter);
-  top: calc(12svh + max(58svh, 360px) + 14px);
-}
-
-@media (min-width: 768px) {
-  .portals {
-    --portal-w: min(30vw, 430px);
-    --portal-h: min(62svh, 620px);
-    --ground: calc(14svh + var(--portal-h));
-    --reach: 31vw;
-    --side: 0.62;
-  }
-
-  .portals__caption {
-    top: calc(14svh + min(62svh, 620px) + 14px);
-    left: 50%;
-    right: auto;
-    width: min(560px, 44vw);
-    text-align: center;
-    transform: translateX(-50%);
-  }
-
-  .portals__caption .caption__line {
-    margin: 0 auto;
-  }
-}
-
-/* Brands and the other places: one work at a time on a ground of its own. */
-.field__stack,
-.field {
-  position: absolute;
-  inset: 0;
-}
-
-.field {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  justify-items: center;
-  gap: 18px;
-  padding: calc(var(--head) - 10px) var(--gutter) calc(var(--bottom) + 64px);
-  background: var(--field, var(--paper));
-  color: var(--text, var(--ink));
-}
-
-.field[data-field="sky"] {
-  --field: var(--sky);
-}
-
-.field[data-field="night"] {
-  --field: var(--night);
-  --text: var(--light);
-}
-
-.field[data-field="ember"] {
-  --field: var(--ember);
-  --text: var(--light);
-}
-
-.field__open {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  min-height: 0;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: zoom-in;
-}
-
-.field__mark,
-.field__work {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: min(100%, var(--max-w, 100%));
-  max-height: min(100%, var(--max-h, 100%));
-  min-height: 0;
-  object-fit: contain;
-}
-
-.field__work {
-  border: var(--frame) solid var(--paper);
-  box-shadow: 0 30px 60px -30px rgb(0 12 48 / 0.5);
-}
-
-.field .caption {
-  justify-self: stretch;
-}
-
-@media (min-width: 768px) {
-  .field .caption {
-    justify-self: center;
-    text-align: center;
-  }
-
-  .field .caption__line {
-    margin: 0 auto;
-  }
-}
-
-/* Google: the tower, one fact per floor. */
-.place[data-place="google"],
-.place[data-place="contatti"] {
-  background: var(--sky);
-  color: var(--ink);
-}
-
-.tower__scene,
-.contact__scene {
-  position: absolute;
-  inset: 0;
-}
-
-.tower {
-  position: absolute;
-  top: calc(var(--head) - 10px);
-  left: var(--gutter);
-  width: min(30rem, 40vw);
-}
-
-.tower__open {
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: none;
-  font-family: var(--serif);
-  font-size: var(--display);
-  font-weight: 360;
-  font-variation-settings: "SOFT" 60;
-  line-height: 1.1;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.16em;
-  cursor: pointer;
-}
-
-.tower__floors {
-  display: grid;
-  gap: 10px;
-  margin: 18px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.floor {
-  padding: 14px 18px;
-  background: var(--paper);
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.8s var(--ease);
-}
-
-.floor.is-up {
-  opacity: 1;
-  transform: none;
-}
-
-.floor__count {
-  display: block;
-  margin-bottom: 4px;
-  font-size: var(--small);
-  font-weight: 500;
-}
-
-@media (max-width: 767px) {
-  .tower {
-    width: calc(100vw - var(--gutter) * 2);
-  }
-
-  .floor:not(:last-child).is-up {
-    display: none;
-  }
-
-  .floor.is-up:has(+ .floor:not(.is-up)) {
-    display: block;
-  }
-}
-
-.contact {
-  position: absolute;
-  top: var(--head);
-  left: var(--gutter);
-}
-
-.contact__title {
-  font-family: var(--serif);
-  font-size: var(--display);
-  font-weight: 360;
-  font-variation-settings: "SOFT" 60;
-  line-height: 1.1;
-}
-
-.contact__links {
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.contact__links a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  font-size: var(--title);
-  font-family: var(--serif);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-}
-
-/* Level 3: a work told in full screens. */
+/* A work seen closely: it comes forward over the park, which stays behind, dimmed. */
 .story {
-  --field: var(--night);
-  --text: var(--light);
   position: absolute;
   z-index: 20;
   inset: 0;
   overflow: hidden;
   overflow: clip;
-  background: var(--field);
-  color: var(--text);
+  background: rgb(0 12 48 / 0.5);
 }
 
-.story[data-field="sky"] {
+.story__panel {
+  --field: var(--night);
+  --text: var(--light);
+  position: absolute;
+  inset: calc(max(10px, env(safe-area-inset-top)) + 54px) 10px max(10px, env(safe-area-inset-bottom));
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--field);
+  color: var(--text);
+  box-shadow: 0 40px 80px -30px rgb(0 0 0 / 0.6);
+}
+
+@media (min-width: 768px) {
+  .story__panel {
+    inset: 76px 7vw 40px;
+  }
+}
+
+.story__panel[data-field="sky"] {
   --field: var(--sky);
   --text: var(--ink);
 }
 
-.story[data-field="ember"] {
-  --field: var(--ember);
+.story__close {
+  position: absolute;
+  z-index: 3;
+  top: calc(max(10px, env(safe-area-inset-top)) + 62px);
+  right: 18px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--small);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .story__close {
+    top: 86px;
+    right: calc(7vw + 12px);
+  }
 }
 
 .story__stack,
@@ -979,7 +884,7 @@ button {
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: clamp(14px, 2.4svh, 28px);
-  padding: calc(var(--head) + 12px) var(--gutter) calc(var(--bottom) + 62px);
+  padding: 64px 18px 52px;
   background: var(--field);
   cursor: pointer;
 }
@@ -990,9 +895,9 @@ button {
 
 .story__head {
   position: absolute;
-  top: calc(max(10px, env(safe-area-inset-top)) + 54px);
-  left: var(--gutter);
-  right: calc(var(--gutter) + 120px);
+  top: 18px;
+  left: 18px;
+  right: 110px;
   display: flex;
   align-items: baseline;
   gap: 12px;
@@ -1002,7 +907,7 @@ button {
 
 .story__title {
   overflow: hidden;
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
   font-weight: 400;
   font-variation-settings: "SOFT" 60;
@@ -1018,25 +923,11 @@ button {
 
 .story__progress {
   position: absolute;
-  top: calc(max(10px, env(safe-area-inset-top)) + 54px);
-  right: var(--gutter);
+  left: 18px;
+  bottom: 16px;
   font-size: var(--small);
   font-weight: 500;
   pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  .story__head,
-  .story__progress {
-    top: calc(max(10px, env(safe-area-inset-top)) + 12px);
-  }
-
-  .story__head {
-    left: 50%;
-    right: auto;
-    max-width: 44vw;
-    transform: translateX(-50%);
-  }
 }
 
 .screen__text {
@@ -1049,7 +940,7 @@ button {
 }
 
 .screen__lead {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: clamp(1.625rem, 1.2rem + 2.2vw, 3.25rem);
   font-weight: 360;
   font-variation-settings: "SOFT" 60;
@@ -1121,7 +1012,7 @@ button {
 }
 
 .screen__title {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-size: var(--display);
   font-weight: 360;
   font-variation-settings: "SOFT" 60;
@@ -1169,123 +1060,6 @@ button {
   color: inherit;
 }
 
-/* The list of every work. */
-.archive {
-  position: fixed;
-  z-index: 75;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  background: var(--night);
-}
-
-.archive[hidden] {
-  display: none;
-}
-
-.archive__bar {
-  display: flex;
-  flex: none;
-  align-items: center;
-  gap: 16px;
-  padding: max(6px, env(safe-area-inset-top)) var(--gutter) 6px;
-  background: var(--paper);
-  color: var(--ink);
-}
-
-.archive__title {
-  flex: 1;
-  font-family: var(--serif);
-  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.625rem);
-  font-weight: 400;
-}
-
-.archive__close {
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid currentColor;
-  border-radius: 22px;
-  background: none;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.archive__scroll {
-  flex: 1;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  touch-action: pan-y;
-}
-
-.archive__list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(160px, 40vw), 1fr));
-  gap: 16px;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 24px var(--gutter) 48px;
-  list-style: none;
-}
-
-.archive__item {
-  display: grid;
-  width: 100%;
-  padding: 0 0 12px;
-  border: 0;
-  background: var(--paper);
-  color: var(--ink);
-  text-align: left;
-  cursor: pointer;
-}
-
-.archive__item img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-}
-
-.archive__name {
-  margin: 10px 14px 0;
-  font-family: var(--serif);
-  font-size: 1.25rem;
-  line-height: 1.15;
-}
-
-.archive__chapter {
-  margin: 4px 14px 0;
-  font-size: var(--small);
-}
-
-@media (max-width: 359px) {
-  .brand {
-    font-size: 1.125rem;
-  }
-
-  .sound {
-    top: max(10px, env(safe-area-inset-top));
-    bottom: auto;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .portal,
-  .portal__body,
-  .portals__scene,
-  .floor {
-    transition-duration: 0.01s;
-  }
-
-  .portal__page,
-  .frame__scroll,
-  .statement,
-  .screen__lead,
-  .screen__picture {
-    animation: none;
-  }
-}
 
 .ripples {
   position: fixed;
@@ -1323,3 +1097,13 @@ button {
   }
 }
 
+
+@media (prefers-reduced-motion: reduce) {
+  .exhibit__page,
+  .frame__scroll,
+  .statement,
+  .screen__lead,
+  .screen__picture {
+    animation: none;
+  }
+}

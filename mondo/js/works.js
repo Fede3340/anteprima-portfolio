@@ -1,5 +1,3 @@
-import { asset, element } from './media.js';
-
 // The places of the land in the order they are met, after the opening. `object` is the box of the
 // sculpted object in each cut of its scene, as shares of the picture; `still` names the cuts with no loop.
 export const PLACES = [
@@ -15,7 +13,9 @@ export const PLACES = [
 ];
 
 // Works with a long capture of their page on the phone, by the width of that capture.
-export const TALL = { grecale: 780, mirtifolia: 780, 'pippi-store': 780 };
+export const TALL = {
+  grecale: 1170, mirtifolia: 780, 'pippi-store': 1170, 'spedizione-facile': 1170,
+};
 
 export const HOME = { id: 'home', scene: 'opening', object: { landscape: [0.41, 0.45, 0.6, 0.88], portrait: [0.33, 0.57, 0.62, 0.85] } };
 
@@ -34,17 +34,4 @@ export function catalogue(data) {
       next: order[position + 1]?.[0],
     }];
   }));
-}
-
-export function renderArchive(data, list) {
-  list.replaceChildren(...data.chapters.flatMap((chapter) => chapter.works.map((id) => {
-    const work = data.works[id];
-    const button = element('button', { className: 'archive__item', type: 'button' }, [
-      element('img', { src: asset(work.cover.srcMobile), alt: '', width: 640, height: 400, loading: 'lazy', decoding: 'async' }),
-      element('span', { className: 'archive__name', textContent: work.title }),
-      element('span', { className: 'archive__chapter', textContent: chapter.title }),
-    ]);
-    button.dataset.open = id;
-    return element('li', {}, [button]);
-  })));
 }

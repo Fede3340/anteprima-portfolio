@@ -19,14 +19,4 @@ export function circle(layer, { x = innerWidth / 2, y = innerHeight / 2, open = 
   return motion.finished.catch(() => {});
 }
 
-// While a layer opens over it, the scene behind comes a little closer, towards the touched point.
-export function approach(scene, { x, y, back = false }) {
-  settle(scene);
-  if (reducedMotion.matches) return;
-  scene.style.transformOrigin = `${x}px ${y}px`;
-  scene.animate([{ transform: back ? 'scale(1.08)' : 'scale(1)' }, { transform: back ? 'scale(1)' : 'scale(1.08)' }], {
-    duration: CIRCLE_TIME, easing: EASE, fill: back ? 'none' : 'forwards',
-  });
-}
-
 export const settle = (layer) => layer.getAnimations().forEach((animation) => animation.cancel());
