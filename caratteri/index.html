@@ -7,91 +7,113 @@
 <title>Caratteri</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300..700;1,300..700&family=DM+Sans:wght@400..700&family=Figtree:wght@400..700&family=Kiwi+Maru:wght@300;400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Playwrite+IT+Trad:wght@100..400&family=Syne:wght@400..800&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@300..700&family=Lexend:wght@300..700&family=Nunito:wght@300..800&family=Playpen+Sans:wght@300..700&family=Quicksand:wght@300..700&display=swap">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body { margin: 0; background: #9fcaf2; color: #0b2a6b; }
-  .intro { padding: 28px 20px; font: 400 18px/1.5 "Figtree", system-ui, sans-serif; background: #f4f8fd; }
-  .intro strong { font-weight: 700; }
 
-  .option { position: relative; min-height: 100svh; padding: 20px; display: grid; grid-template-rows: auto 1fr auto; gap: 20px; overflow: hidden; }
+  /* Regole comuni, prese dalle guide per chi è dislessico:
+     lettere dritte, spazio più largo tra lettere, parole e righe, righe corte, testo a sinistra. */
+  .intro, .option { letter-spacing: .03em; word-spacing: .1em; line-height: 1.5; text-align: left; }
+
+  .intro { padding: 28px 20px; background: #f4f8fd; font: 400 18px/1.5 "Lexend", system-ui, sans-serif; letter-spacing: .03em; word-spacing: .1em; }
+  .intro p { max-width: 38em; margin: 0 0 10px; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro b { font-weight: 600; }
+
+  .option { position: relative; min-height: 100svh; padding: 20px; display: grid; grid-template-rows: auto 1fr auto; gap: 20px; overflow: hidden; font-family: var(--f); font-weight: var(--w, 400); }
   .option::before { content: ""; position: absolute; inset: 0; background: url(img/opening-portrait.webp) center bottom / cover no-repeat; z-index: -1; }
   @media (min-width: 800px) {
     .option { padding: 36px 48px; }
-    .option::before { background-image: url(img/opening-landscape.webp); }
+    .option::before { background-image: url(img/opening-landscape.webp); background-position: right bottom; }
   }
 
   .bar { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
-  .pill { display: inline-block; padding: 9px 18px; border-radius: 999px; background: #f4f8fd; font-family: var(--display); font-size: var(--name-size, 19px); font-weight: var(--name-weight, 400); line-height: 1.2; }
-  .why { max-width: 20rem; padding: 14px 18px; border-radius: 18px; background: #0b2a6b; color: #f4f8fd; font: 400 15px/1.45 "Figtree", system-ui, sans-serif; }
-  .why b { display: block; margin-bottom: 4px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
+  .pill { display: inline-block; padding: 9px 18px; border-radius: 999px; background: #f4f8fd; font-size: 18px; font-weight: var(--strong, 600); line-height: 1.3; }
+  .why { max-width: 21rem; margin: 0; padding: 14px 18px; border-radius: 18px; background: #0b2a6b; color: #f4f8fd; font-size: 16px; }
+  .why b { display: block; margin-bottom: 4px; font-weight: var(--strong, 600); }
 
-  .say { max-width: 15em; margin: 0; align-self: start; font-family: var(--display); font-weight: var(--say-weight, 400); font-style: var(--say-style, normal); font-size: clamp(var(--say-min, 30px), 5.2vw, var(--say-max, 62px)); line-height: var(--say-leading, 1.16); letter-spacing: var(--say-tracking, 0); }
-  .say span { display: block; margin-top: .55em; }
-
-  @media (min-width: 800px) {
-    .option::before { background-position: right bottom; }
-    .say { max-width: 40vw; font-size: clamp(var(--say-min, 30px), var(--say-wide, 3.1vw), var(--say-max, 62px)); }
-  }
+  .say { max-width: 24em; margin: 0; align-self: start; font-size: clamp(23px, 6vw, 30px); font-weight: var(--w, 400); }
+  .say span { display: block; margin-top: .7em; }
+  @media (min-width: 800px) { .say { max-width: 40vw; font-size: clamp(26px, 2.5vw, 40px); } }
 
   .foot { display: grid; gap: 18px; align-items: end; justify-items: start; }
   @media (min-width: 800px) { .foot { grid-template-columns: 1fr auto; } }
-  .stop { margin: 0; padding: 10px 20px 14px; border-radius: 18px; background: rgba(244, 248, 253, .94); font-family: var(--display); font-weight: var(--stop-weight, 400); font-size: clamp(30px, 4.2vw, 52px); line-height: 1.1; }
-  .stop small { display: block; margin-top: 8px; font-family: var(--text); font-size: 16px; font-weight: 500; letter-spacing: .02em; }
-  .card { max-width: 24rem; padding: 18px 20px; border-radius: 18px; background: #f4f8fd; }
-  .card h3 { margin: 0; font-family: var(--display); font-weight: var(--stop-weight, 400); font-size: 26px; line-height: 1.2; }
-  .card h3 small { margin-left: 8px; font-family: var(--text); font-size: 14px; font-weight: 500; }
-  .card p { margin: 8px 0 14px; font-family: var(--text); font-size: 16px; line-height: 1.5; }
+  .stop { margin: 0; padding: 10px 20px 12px; border-radius: 18px; background: rgba(244, 248, 253, .94); font-size: clamp(28px, 3.6vw, 44px); font-weight: var(--strong, 600); line-height: 1.25; }
+  .stop small { display: block; font-size: 16px; font-weight: var(--w, 400); }
+  .card { max-width: 25rem; padding: 18px 20px; border-radius: 18px; background: #f4f8fd; }
+  .card h3 { margin: 0; font-size: 24px; font-weight: var(--strong, 600); line-height: 1.3; }
+  .card h3 small { margin-left: 10px; font-size: 15px; font-weight: var(--w, 400); }
+  .card p { margin: 8px 0 14px; font-size: 17px; }
   .buttons { display: flex; flex-wrap: wrap; gap: 10px; }
-  .button { padding: 12px 20px; border-radius: 999px; border: 1.5px solid #0b2a6b; font-family: var(--text); font-size: 15px; font-weight: 600; line-height: 1; }
+  .button { padding: 13px 20px; border-radius: 999px; border: 1.5px solid #0b2a6b; font-size: 16px; font-weight: var(--strong, 600); line-height: 1; }
   .button--full { background: #0b2a6b; color: #f4f8fd; }
 
-  .o1 { --display: "Playwrite IT Trad", cursive; --text: "Newsreader", Georgia, serif; --say-weight: 300; --say-min: 24px; --say-max: 46px; --say-wide: 2.4vw; --say-leading: 1.75; --stop-weight: 400; --name-size: 16px; }
-  .o1 .stop { line-height: 1.6; }
-  .o1 .card h3 { font-size: 21px; line-height: 1.7; }
-  .o2 { --display: "Kiwi Maru", serif; --text: "Zen Maru Gothic", system-ui, sans-serif; --say-weight: 500; --say-max: 54px; --say-leading: 1.3; --stop-weight: 500; --name-weight: 500; }
-  .o3 { --display: "Cormorant Infant", Georgia, serif; --text: "Figtree", system-ui, sans-serif; --say-weight: 400; --say-min: 34px; --say-max: 74px; --say-wide: 3.9vw; --say-leading: 1.06; --say-tracking: -.01em; --stop-weight: 500; --name-size: 22px; --name-weight: 600; }
-  .o3 .say span { font-style: italic; }
-  .o4 { --display: "Syne", system-ui, sans-serif; --text: "DM Sans", system-ui, sans-serif; --say-weight: 700; --say-max: 56px; --say-leading: 1.1; --say-tracking: -.02em; --stop-weight: 800; --name-weight: 700; }
+  .o1 { --f: "Lexend", system-ui, sans-serif; --w: 300; --strong: 500; }
+  .o2 { --f: "Nunito", system-ui, sans-serif; --w: 500; --strong: 700; }
+  .o3 { --f: "Andika", system-ui, sans-serif; --w: 400; --strong: 700; }
+  .o4 { --f: "Quicksand", system-ui, sans-serif; --w: 500; --strong: 700; }
+  .o5 { --f: "Playpen Sans", system-ui, sans-serif; --w: 300; --strong: 500; }
+  .o6 { --f: "Fredoka", system-ui, sans-serif; --w: 400; --strong: 500; }
 </style>
 </head>
 <body>
-  <p class="intro"><strong>Quattro caratteri per il sito.</strong> Stessa scena e stesse parole, cambia solo il carattere. Nel riquadro blu c'è scritto da quale valore del marchio viene.</p>
+  <div class="intro">
+    <p><b>Sei caratteri che si leggono senza attrito.</b> Stessa scena e stesse parole, cambia solo il carattere.</p>
+    <p>Per tutti valgono le regole delle guide per chi è dislessico: lettere dritte, niente corsivo e niente parole tutte in maiuscolo, più spazio tra lettere, parole e righe, righe corte, blu scuro su un fondo chiaro e colorato.</p>
+  </div>
 
   <section class="option o1">
-    <div class="bar"><span class="pill">Federico Mascia</span><p class="why"><b>1. La mano</b>Il corsivo della scuola elementare italiana: tornare bambini. Una riga sola che si scrive, come le curve del paesaggio.</p></div>
+    <div class="bar"><span class="pill">Federico Mascia</span><p class="why"><b>1. La scorrevolezza</b>Un carattere nato per togliere fatica a chi legge, pensato all'inizio per chi è dislessico. Largo, arioso, tutto curve.</p></div>
     <p class="say">Progetto e costruisco siti, negozi online, programmi e app.<span>Poi li porto in alto su Google e li faccio vendere di più.</span></p>
     <div class="foot">
       <p class="stop">Marchi<small>12 lavori</small></p>
-      <div class="card"><h3>Ghisa<small>Iglesias, 2026</small></h3><p>Il marchio di una palestra di forza: nero su giallo pieno, lettere strette e pesanti.</p><div class="buttons"><span class="button button--full">Guarda da vicino</span><span class="button">Chiudi</span></div></div>
+      <div class="card"><h3>Ghisa<small>Iglesias, 2026</small></h3><p>Il marchio di una palestra di forza. Nero su giallo pieno, lettere strette e pesanti: si legge da lontano, anche su un muro.</p><div class="buttons"><span class="button button--full">Guarda da vicino</span><span class="button">Chiudi</span></div></div>
     </div>
   </section>
 
   <section class="option o2">
-    <div class="bar"><span class="pill">Federico Mascia</span><p class="why"><b>2. Il gesso</b>Lettere senza spigoli, morbide come le sculture del parco: la voglia di toccare.</p></div>
+    <div class="bar"><span class="pill">Federico Mascia</span><p class="why"><b>2. Senza spigoli</b>Ogni tratto finisce tondo, come le sculture di gesso e le dune: morbido, da toccare.</p></div>
     <p class="say">Progetto e costruisco siti, negozi online, programmi e app.<span>Poi li porto in alto su Google e li faccio vendere di più.</span></p>
     <div class="foot">
       <p class="stop">Marchi<small>12 lavori</small></p>
-      <div class="card"><h3>Ghisa<small>Iglesias, 2026</small></h3><p>Il marchio di una palestra di forza: nero su giallo pieno, lettere strette e pesanti.</p><div class="buttons"><span class="button button--full">Guarda da vicino</span><span class="button">Chiudi</span></div></div>
+      <div class="card"><h3>Ghisa<small>Iglesias, 2026</small></h3><p>Il marchio di una palestra di forza. Nero su giallo pieno, lettere strette e pesanti: si legge da lontano, anche su un muro.</p><div class="buttons"><span class="button button--full">Guarda da vicino</span><span class="button">Chiudi</span></div></div>
     </div>
   </section>
 
   <section class="option o3">
-    <div class="bar"><span class="pill">Federico Mascia</span><p class="why"><b>3. La fiaba</b>Un carattere da libro illustrato, sottile ed elegante, col corsivo per la seconda frase: fantasticare.</p></div>
+    <div class="bar"><span class="pill">Federico Mascia</span><p class="why"><b>3. Imparare a leggere</b>Disegnato per chi impara a leggere: ogni lettera ha una forma che non si confonde con le altre. Tornare bambini.</p></div>
     <p class="say">Progetto e costruisco siti, negozi online, programmi e app.<span>Poi li porto in alto su Google e li faccio vendere di più.</span></p>
     <div class="foot">
       <p class="stop">Marchi<small>12 lavori</small></p>
-      <div class="card"><h3>Ghisa<small>Iglesias, 2026</small></h3><p>Il marchio di una palestra di forza: nero su giallo pieno, lettere strette e pesanti.</p><div class="buttons"><span class="button button--full">Guarda da vicino</span><span class="button">Chiudi</span></div></div>
+      <div class="card"><h3>Ghisa<small>Iglesias, 2026</small></h3><p>Il marchio di una palestra di forza. Nero su giallo pieno, lettere strette e pesanti: si legge da lontano, anche su un muro.</p><div class="buttons"><span class="button button--full">Guarda da vicino</span><span class="button">Chiudi</span></div></div>
     </div>
   </section>
 
   <section class="option o4">
-    <div class="bar"><span class="pill">Federico Mascia</span><p class="why"><b>4. La galleria</b>Largo e deciso, disegnato per un centro d'arte: una passeggiata in mezzo ai quadri.</p></div>
+    <div class="bar"><span class="pill">Federico Mascia</span><p class="why"><b>4. Una riga sola</b>Tratto sottile e tondo, sempre dello stesso spessore, come le curve bianche del paesaggio. Leggero, aria tra le lettere.</p></div>
     <p class="say">Progetto e costruisco siti, negozi online, programmi e app.<span>Poi li porto in alto su Google e li faccio vendere di più.</span></p>
     <div class="foot">
       <p class="stop">Marchi<small>12 lavori</small></p>
-      <div class="card"><h3>Ghisa<small>Iglesias, 2026</small></h3><p>Il marchio di una palestra di forza: nero su giallo pieno, lettere strette e pesanti.</p><div class="buttons"><span class="button button--full">Guarda da vicino</span><span class="button">Chiudi</span></div></div>
+      <div class="card"><h3>Ghisa<small>Iglesias, 2026</small></h3><p>Il marchio di una palestra di forza. Nero su giallo pieno, lettere strette e pesanti: si legge da lontano, anche su un muro.</p><div class="buttons"><span class="button button--full">Guarda da vicino</span><span class="button">Chiudi</span></div></div>
+    </div>
+  </section>
+
+  <section class="option o5">
+    <div class="bar"><span class="pill">Federico Mascia</span><p class="why"><b>5. La mano</b>Stampatello scritto a mano, nato da una ricerca su come si insegna a scrivere. La fantasia, senza perdere la lettura.</p></div>
+    <p class="say">Progetto e costruisco siti, negozi online, programmi e app.<span>Poi li porto in alto su Google e li faccio vendere di più.</span></p>
+    <div class="foot">
+      <p class="stop">Marchi<small>12 lavori</small></p>
+      <div class="card"><h3>Ghisa<small>Iglesias, 2026</small></h3><p>Il marchio di una palestra di forza. Nero su giallo pieno, lettere strette e pesanti: si legge da lontano, anche su un muro.</p><div class="buttons"><span class="button button--full">Guarda da vicino</span><span class="button">Chiudi</span></div></div>
+    </div>
+  </section>
+<section class="option o6">
+    <div class="bar"><span class="pill">Federico Mascia</span><p class="why"><b>6. Scolpito</b>Lettere piene e tonde, come gli oggetti di gesso del parco. Giocoso, da toccare, e si legge al primo sguardo.</p></div>
+    <p class="say">Progetto e costruisco siti, negozi online, programmi e app.<span>Poi li porto in alto su Google e li faccio vendere di più.</span></p>
+    <div class="foot">
+      <p class="stop">Marchi<small>12 lavori</small></p>
+      <div class="card"><h3>Ghisa<small>Iglesias, 2026</small></h3><p>Il marchio di una palestra di forza. Nero su giallo pieno, lettere strette e pesanti: si legge da lontano, anche su un muro.</p><div class="buttons"><span class="button button--full">Guarda da vicino</span><span class="button">Chiudi</span></div></div>
     </div>
   </section>
 </body>
