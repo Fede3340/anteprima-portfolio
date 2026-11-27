@@ -7,8 +7,8 @@ import { TALL } from './works.js';
 
 const PHASES = { copertina: 'Copertina', studio: 'Studio', ideazione: 'Ideazione', progettazione: 'Progettazione', risultato: 'Risultato' };
 const ORDER = Object.keys(PHASES);
-const TEXTS = new Set(['text', 'sources', 'facts']);
-const FOCUS = [[0.5, 0.35], [0.25, 0.6], [0.75, 0.45], [0.5, 0.8], [0.3, 0.2]];
+const TEXTS = new Set(['text', 'sources']);
+const FOCUS = [[0.5, 0.3], [0.3, 0.45], [0.7, 0.35], [0.5, 0.5], [0.3, 0.2]];
 const WHEEL_STEP = 60;
 const BASE = [248, 250, 252];
 const INK = [0, 23, 80];
@@ -62,17 +62,22 @@ const partner = (work, main) => others(work).find((image) => image.src !== main.
 // at the end of a phase join the board before when there is room, or get a close-up of the work, so
 // that no board is words alone.
 const ROOM = 650;
+const SHORT = 380;
 const length = (texts) => texts.reduce((total, block) => total + (block.p?.length ?? 0) + (block.items?.length ?? 0) * 60, 0);
 
-function plan(work, next, stacked, row) {
+function plan(work, next, stacked, row, wordsRow) {
   const gallery = work.gallery ?? [];
   const close = others(work);
   let borrowed = 0;
+  // A close look is cut from a picture of a mark, a poster or the game. A screen is shown whole: cut,
+  // its words would look cut by mistake.
+  const screens = !['marchi', 'manifesti', 'videogioco'].includes(work.chapter);
   const detail = () => {
     const image = close[borrowed % close.length] ?? coverOf(work);
     const second = close.find((each) => each.src !== image.src);
     const focus = FOCUS[borrowed % FOCUS.length];
     borrowed += 1;
+    if (screens) return { kind: 'pics', items: [image] };
     return { kind: 'detail', image, focus, ...(second ? { extra: second } : {}) };
   };
   const cover = coverOf(work);
@@ -84,9 +89,17 @@ function plan(work, next, stacked, row) {
   for (const section of sections) {
     const own = [];
     let pending = [];
+    // A landscape picture leaves room for a short text only: the rest goes on to the next board.
     const add = (visual) => {
+      let rest = [];
+      if (visual.kind === 'pics' && !portrait(visual.items[0]) && length(pending) > SHORT) {
+        let cut = 1;
+        while (cut < pending.length && length(pending.slice(0, cut + 1)) <= SHORT) cut += 1;
+        rest = pending.slice(cut);
+        pending = pending.slice(0, cut);
+      }
       own.push({ phase: section.phase, texts: pending, visual });
-      pending = [];
+      pending = rest;
     };
     // Words that would make a board too long are split, each part with its own close-up.
     const flush = () => {
@@ -111,8 +124,8 @@ function plan(work, next, stacked, row) {
           const at = items.findIndex(portrait);
           items.splice(at < 0 ? items.length : at, 0, { tall: true, src: `img/work/${work.id}-tall.webp`, w: TALL[work.id], h: Math.round(TALL[work.id] * 2.1667), alt: '' });
         }
-        groups(items, stacked, row, pending.length > 0).forEach(add);
-      } else if (block.kind === 'values' || block.kind === 'list') {
+        groups(items, stacked, row, pending.length > 0 && wordsRow).forEach(add);
+      } else if (block.kind === 'values' || block.kind === 'list' || block.kind === 'facts') {
         add({ kind: 'tiles', title: block.title ?? (block.kind === 'values' ? 'I valori' : undefined), items: block.items });
       } else if (block.kind === 'type' && !pending.length && own.at(-1)?.visual.kind === 'palette' && !own.at(-1).visual.type) {
         own.at(-1).visual.type = block.items;
@@ -121,16 +134,27 @@ function plan(work, next, stacked, row) {
       }
     }
     const last = own.at(-1);
-    if (pending.length && last && length(last.texts) + length(pending) <= ROOM && !(last.visual.kind === 'pics' && last.visual.items.length > 1)) {
+    const landscape = last?.visual.kind === 'pics' && !portrait(last.visual.items[0]);
+    if (pending.length && last && length(last.texts) + length(pending) <= (landscape ? SHORT : ROOM) && !(last.visual.kind === 'pics' && last.visual.items.length > 1)) {
       last.texts = last.texts.concat(pending);
       pending = [];
     }
-    if (pending.length && section.phase === 'risultato' && !stacked && length(pending) <= ROOM) add({ kind: 'next', work: next });
+    if (pending.length && section.phase === 'risultato' && !stacked && length(pending) <= SHORT) add({ kind: 'next', work: next });
     flush();
     if (pending.length) add(detail());
     for (const { visual: first } of own) {
       if (first.kind === 'pics' && first.items.length === 1 && !portrait(first.items[0])) first.extra = partner(work, first.items[0]);
     }
+    // An upright picture alone after a sample with words, as a poster after its colours: the words
+    // go with the picture, and the sample stands large on its own.
+    own.forEach((board, order) => {
+      const before = own[order - 1];
+      const single = board.visual.kind === 'pics' && board.visual.items.length === 1 && portrait(board.visual.items[0]) && !board.visual.items[0].tall;
+      if (single && !board.texts.length && before?.texts.length && ['palette', 'tiles', 'directions'].includes(before.visual.kind)) {
+        board.texts = before.texts;
+        before.texts = [];
+      }
+    });
     if (section.phase === 'risultato' && own.length) own[0].link = true;
     boards.push(...own);
   }
@@ -141,15 +165,15 @@ function plan(work, next, stacked, row) {
 }
 
 // Pictures go together as they fit the frame: upright ones side by side, as many as `row`; landscapes
-// alone on a wide frame and up to three one under the other on a narrow one. The first picture of a
-// part shares its board with the words, alone.
-function groups(items, stacked, row, withWords) {
+// alone on a wide frame and up to three one under the other on a narrow one. When the first group
+// shares its board with words it holds `words` upright pictures at most, and a landscape alone.
+function groups(items, stacked, row, words) {
   const out = [];
   for (const item of items) {
     const last = out.at(-1);
-    const words = withWords && out.length === 1;
-    const joins = last && !(words && !portrait(item)) && last.items.length < (portrait(item) ? (words ? Math.min(row, 2) : row) : 3)
-      && last.items.every((each) => portrait(each) === portrait(item)) && (portrait(item) || stacked);
+    const first = words && out.length === 1;
+    const most = portrait(item) ? (first ? words : row) : (stacked && !first ? 3 : 1);
+    const joins = last && last.items.length < most && last.items.every((each) => portrait(each) === portrait(item));
     if (joins) last.items.push(item);
     else out.push({ kind: 'pics', items: [item] });
   }
@@ -229,8 +253,6 @@ function words(board, work) {
     if (block.kind === 'text') {
       if (block.title) nodes.push(element('h3', { className: 'case-subtitle', textContent: block.title }));
       nodes.push(element('p', { className: 'case-p', textContent: block.p }));
-    } else if (block.kind === 'facts') {
-      nodes.push(element('ul', { className: 'case-facts' }, block.items.map((fact) => element('li', { textContent: fact }))));
     } else if (block.kind === 'sources') {
       nodes.push(element('p', { className: 'case-sources' }, [
         element('span', { textContent: block.items.length > 1 ? 'Fonti' : 'Fonte' }),
@@ -344,7 +366,8 @@ function draw(box, { w, h, fit = 'contain', focus = [0.5, 0] }) {
   const { image } = box;
   const most = 1.1 / devicePixelRatio;
   let scale = fit === 'contain' ? Math.min(w / image.w, h / image.h, most) : Math.min(Math.max(w / image.w, h / image.h), most);
-  if (fit === 'detail') scale = 1 / devicePixelRatio;
+  // A close look is at the picture's own pixels, or up to the 10% more it may take to fill its box.
+  if (fit === 'detail') scale = Math.min(Math.max(1 / devicePixelRatio, w / image.w, h / image.h), most);
   const boxW = fit === 'contain' ? image.w * scale : Math.min(w, image.w * scale);
   const boxH = fit === 'contain' ? image.h * scale : Math.min(h, image.h * scale);
   box.style.width = `${Math.floor(boxW)}px`;
@@ -353,14 +376,13 @@ function draw(box, { w, h, fit = 'contain', focus = [0.5, 0] }) {
   const drawnW = image.w * scale;
   if (image.tall) {
     img.style.width = '100%';
-    return boxW * boxH;
+    return;
   }
   img.style.width = `${Math.floor(drawnW)}px`;
   img.style.height = `${Math.floor(image.h * scale)}px`;
   img.style.left = `${-Math.round((drawnW - boxW) * focus[0])}px`;
   img.style.top = `${-Math.round((image.h * scale - boxH) * focus[1])}px`;
   if (img.srcset) img.sizes = `${Math.ceil(drawnW)}px`;
-  return boxW * boxH;
 }
 
 export function createStory(root, { works, sound, onClose, onEnd }) {
@@ -380,11 +402,8 @@ export function createStory(root, { works, sound, onClose, onEnd }) {
   const strip = element('div', { className: 'case-strip' });
   const view = element('div', { className: 'case-window' }, [strip]);
   const frame = element('div', { className: 'case-frame' }, [view]);
-  // The colours of a work also stand on the ground at the foot of the frame, as plaster tiles.
-  const ground = element('div', { className: 'case-ground' });
-  ground.setAttribute('aria-hidden', 'true');
   const stand = element('div', { className: 'case-stand' }, [
-    element('div', { className: 'case-shadow' }), element('div', { className: 'case-leg case-leg--left' }), element('div', { className: 'case-leg case-leg--right' }), ground, frame,
+    element('div', { className: 'case-shadow' }), element('div', { className: 'case-leg case-leg--left' }), element('div', { className: 'case-leg case-leg--right' }), frame,
   ]);
   const zoomed = element('div', { className: 'case-zoom', hidden: true });
   zoomed.setAttribute('role', 'dialog');
@@ -450,6 +469,10 @@ export function createStory(root, { works, sound, onClose, onEnd }) {
     const tall = Math.round(H * 0.56);
     let used = false;
     let kept = false;
+    const enough = W * H * 0.53;
+    const area = (box) => box.offsetWidth * box.offsetHeight;
+    // A close look is worth it only when it shows the picture clearly larger than the picture beside it.
+    const closer = (box) => (1.1 / devicePixelRatio) / (box.offsetWidth / box.image.w) >= 1.4;
 
     if (mode === 'side' && !text && kind !== 'next') {
       node.dataset.layout = 'full';
@@ -459,8 +482,12 @@ export function createStory(root, { works, sound, onClose, onEnd }) {
         const h = Math.min(H - 48 - caption, (W - 48 - 20 * (boxes.length - 1)) / sum);
         boxes.forEach((box) => draw(box, { w: h * (box.image.w / box.image.h), h }));
         const rest = W - 48 - boxes.reduce((total, box) => total + box.offsetWidth + 20, 0);
-        if (more && rest > W * 0.3) {
+        const below = H - 48 - caption - 20 - boxes[0].offsetHeight;
+        if (more && upright && rest > W * 0.3 && closer(boxes[0])) {
           draw(more, { w: rest, h, fit: 'detail', focus: [0.5, 0.3] });
+          kept = true;
+        } else if (more && below > H * 0.25 && closer(boxes[0])) {
+          draw(more, { w: W - 48, h: below, fit: 'detail', focus: [0.5, 0.5] });
           kept = true;
         }
       } else if (kind === 'detail') {
@@ -472,42 +499,59 @@ export function createStory(root, { works, sound, onClose, onEnd }) {
       if (text) text.style.width = `${W}px`;
       const room = H - (text?.offsetHeight ?? 0) - shown.querySelector('.case-next__label').offsetHeight;
       draw(boxes[0], { w: W, h: room, fit: 'cover', focus: [0.5, 0.5] });
+    } else if (mode === 'side' && kind === 'detail' && extra && (first.w / devicePixelRatio) * Math.min(H, first.h / devicePixelRatio) < enough) {
+      // A picture too small for a close look on a wide board: it and a second one, whole, above the words.
+      node.dataset.layout = 'over';
+      text.style.width = `${W}px`;
+      shown.style.flexDirection = 'row';
+      const pictures = [boxes[0], extra];
+      const sum = pictures.reduce((total, box) => total + box.image.w / box.image.h, 0);
+      const h = Math.min(H - text.offsetHeight, (W - 36) / sum);
+      pictures.forEach((box) => draw(box, { w: h * (box.image.w / box.image.h), h }));
+      used = true;
     } else if (mode === 'side' && kind === 'pics' && !upright) {
       // A landscape picture above, whole when it fills half of the board, cut at its foot otherwise.
       node.dataset.layout = 'over';
       text.style.width = `${W}px`;
       const room = H - text.offsetHeight - (shown.querySelector('.case-caption')?.offsetHeight ?? 0);
-      const whole = draw(boxes[0], { w: W, h: room });
-      if (whole < W * H * 0.52) draw(boxes[0], { w: W, h: room, fit: 'cover', focus: [0.5, 0] });
+      draw(boxes[0], { w: W, h: room });
+      const textW = Math.round(Math.min(560, Math.max(480, W * 0.4)));
+      if (area(boxes[0]) < enough && extra) {
+        // A picture with few pixels: it and a second one, whole, one above the other beside the words.
+        node.dataset.layout = 'beside';
+        text.style.width = `${textW}px`;
+        shown.style.width = `${W - textW}px`;
+        shown.style.flexDirection = 'column';
+        [boxes[0], extra].forEach((box) => draw(box, { w: W - textW, h: (H - 36) / 2 }));
+        used = area(boxes[0]) + area(extra) >= enough;
+        if (!used) {
+          node.dataset.layout = 'over';
+          text.style.width = `${W}px`;
+          shown.style.cssText = '';
+        }
+      }
+      if (!used && area(boxes[0]) < enough) draw(boxes[0], { w: W, h: room, fit: 'cover', focus: [0.5, 0] });
     } else if (mode === 'side') {
       node.dataset.layout = 'beside';
       const textW = Math.round(Math.min(560, Math.max(480, W * 0.4)));
       if (upright) {
-        // Upright pictures whole, side by side at full height. A close look at the first fills the room
-        // left: beside them when it is wide, under the words when it is high.
+        // Upright pictures whole, side by side at full height, their caption over the words. A close look
+        // at the first fills the room left: beside them when it is wide, under the words when it is high.
         const caption = shown.querySelector('.case-caption');
+        if (caption) text.prepend(caption);
         const sum = board.visual.items.reduce((total, image) => total + image.w / image.h, 0);
         const gaps = 12 * (boxes.length - 1);
-        const place = (high) => {
-          const h = Math.min(H - high, (W - textW - gaps) / sum);
-          boxes.forEach((box) => draw(box, { w: h * (box.image.w / box.image.h), h }));
-          return h;
-        };
-        let h = place(caption ? 44 : 0);
+        const h = Math.min(H, (W - textW - gaps) / sum);
+        boxes.forEach((box) => draw(box, { w: h * (box.image.w / box.image.h), h }));
         let wide = boxes.reduce((total, box) => total + box.offsetWidth, gaps);
         const spare = W - textW - wide - 12;
-        if (more && spare > 160) {
-          if (caption) caption.before(more);
-          else shown.append(more);
+        if (more && spare > 160 && closer(boxes[0])) {
+          shown.append(more);
           draw(more, { w: spare, h, fit: 'detail', focus: [0.5, 0.3] });
           wide += 12 + more.offsetWidth;
           kept = true;
         }
         shown.style.width = `${wide}px`;
-        if (caption && caption.offsetHeight > 44) {
-          h = place(caption.offsetHeight);
-          if (kept) draw(more, { w: spare, h, fit: 'detail', focus: [0.5, 0.3] });
-        }
         text.style.width = `${W - wide}px`;
         const room = H - text.offsetHeight;
         if (more && !kept && room > 160) {
@@ -523,14 +567,14 @@ export function createStory(root, { works, sound, onClose, onEnd }) {
     } else {
       // One above the other: the visual thing first, at least just over half of the board high.
       node.dataset.layout = text ? 'stack' : 'full';
+      // A landscape picture whole when it is enough; with a second one under it when they are enough
+      // together; cut to the height of the board otherwise ('crop').
       const pair = (box) => {
-        const high = box.image.h * (W / box.image.w);
-        if (!extra || high >= tall * 0.8) return false;
-        const below = Math.min(extra.image.h * (W / extra.image.w), Math.max(tall - high, H * 0.3));
-        if (high + below < H * 0.52) return false;
-        draw(box, { w: W, h: high });
-        draw(extra, { w: W, h: below });
-        return true;
+        draw(box, { w: W, h: H * 0.8 });
+        if (area(box) >= enough) return 'whole';
+        if (!extra) return 'crop';
+        draw(extra, { w: W, h: Math.max(tall - box.offsetHeight, H * 0.3) });
+        return area(box) + area(extra) >= enough ? 'pair' : 'crop';
       };
       if (kind === 'pics' && upright) {
         // Upright pictures side by side, whole; where there is room left, a close look at the first.
@@ -540,35 +584,37 @@ export function createStory(root, { works, sound, onClose, onEnd }) {
         boxes.forEach((box) => draw(box, { w: h * (box.image.w / box.image.h), h }));
         shown.style.flexDirection = 'row';
         const rest = W - 24 - boxes.reduce((total, box) => total + box.offsetWidth + 12, 0);
-        if (more && rest > W * 0.3) {
+        if (more && rest > W * 0.3 && closer(boxes[0])) {
           shown.querySelector('.case-caption')?.before(more);
           if (!shown.contains(more)) shown.append(more);
           draw(more, { w: rest, h: boxes[0].offsetHeight, fit: 'detail', focus: [0.5, 0.3] });
           kept = true;
         }
       } else if (kind === 'pics' && text) {
-        for (const box of boxes) {
-          if (pair(box)) used = true;
-          else draw(box, { w: W, h: Math.max(W * (box.image.h / box.image.w), tall), fit: 'cover', focus: [0.5, 0] });
-        }
+        const how = pair(boxes[0]);
+        used = how === 'pair';
+        if (how === 'crop') draw(boxes[0], { w: W, h: Math.max(boxes[0].offsetHeight, tall), fit: 'cover', focus: [0.5, 0] });
       } else if (kind === 'pics') {
-        used = boxes.length === 1 && pair(boxes[0]);
+        used = boxes.length === 1 && pair(boxes[0]) === 'pair';
         const h = (H - 48 - 12 * (boxes.length - 1)) / boxes.length;
         if (!used) boxes.forEach((box) => draw(box, { w: W - 24, h }));
         // A low picture alone: under it, a close look at the same picture.
         const room = H - 60 - boxes[0].offsetHeight;
-        if (!used && more && boxes.length === 1 && room > H * 0.3) {
+        if (!used && more && boxes.length === 1 && room > H * 0.3 && closer(boxes[0])) {
           draw(more, { w: W - 24, h: room, fit: 'detail', focus: [0.5, 0.5] });
           kept = true;
         }
       } else if (kind === 'next') {
-        used = pair(boxes[0]);
-        if (!used) draw(boxes[0], { w: W, h: H - shown.querySelector('.case-next__label').offsetHeight, fit: 'cover', focus: [0.5, 0.5] });
+        const how = pair(boxes[0]);
+        used = how === 'pair';
+        if (how === 'crop') draw(boxes[0], { w: W, h: H - shown.querySelector('.case-next__label').offsetHeight, fit: 'cover', focus: [0.5, 0.5] });
       } else if (kind === 'detail') {
+        // A close look narrower than the board is made taller; a picture too small for that gets a
+        // second close look under it.
         draw(boxes[0], { w: W, h: tall, fit: 'detail', focus: board.visual.focus });
-        const high = boxes[0].offsetHeight;
-        if (extra && high < tall * 0.9) {
-          draw(extra, { w: W, h: tall - high, fit: 'detail', focus: [0.5, 0.4] });
+        if (area(boxes[0]) < enough) draw(boxes[0], { w: W, h: Math.min(enough / boxes[0].offsetWidth, H * 0.8), fit: 'detail', focus: board.visual.focus });
+        if (extra && area(boxes[0]) < enough) {
+          draw(extra, { w: W, h: Math.max(tall - boxes[0].offsetHeight, H * 0.25), fit: 'detail', focus: [0.5, 0.4] });
           used = true;
         }
       } else {
@@ -611,16 +657,6 @@ export function createStory(root, { works, sound, onClose, onEnd }) {
       else button.removeAttribute('aria-current');
     }
     strip.children[at].classList.add('is-seen');
-    const colours = board.visual.kind === 'palette' ? board.visual.items : [];
-    if (ground.dataset.work !== `${work.id}-${at}`) {
-      ground.dataset.work = `${work.id}-${at}`;
-      ground.replaceChildren(...colours.slice(0, 5).map((item, order) => {
-        const tile = element('span', { className: 'case-ground__tile' });
-        tile.style.background = item.hex;
-        tile.style.setProperty('--i', order);
-        return tile;
-      }));
-    }
   }
 
   function layout(keep = 0) {
@@ -628,7 +664,8 @@ export function createStory(root, { works, sound, onClose, onEnd }) {
     const H = view.clientHeight;
     mode = W >= 900 && W / H >= 1.3 ? 'side' : 'stack';
     const following = works[work.next] ?? Object.values(works)[0];
-    boards = plan(work, following, mode === 'stack', mode === 'side' ? 3 : W >= 600 ? 2 : 1);
+    const row = mode === 'side' ? 3 : W >= 600 ? 2 : 1;
+    boards = plan(work, following, mode === 'stack', row, mode === 'side' ? 1 : row);
     root.dataset.mode = mode;
     const present = ORDER.filter((phase) => boards.some((board) => board.phase === phase));
     index.replaceChildren(...present.map((phase) => {
@@ -643,25 +680,29 @@ export function createStory(root, { works, sound, onClose, onEnd }) {
     }));
     strip.replaceChildren(...boards.map((board, order) => build(board, order)));
     [...strip.children].forEach((node, order) => fit(node, boards[order]));
-    fitTypes();
+    fitWords();
     at = Math.min(keep, boards.length - 1);
     strip.scrollLeft = at * strip.clientWidth;
     label();
   }
 
-  // The name of a typeface is set as large as its board allows.
-  function fitTypes() {
+  // Large words are set as large as their room allows, never broken: the name of a typeface, a value.
+  const fitWord = (word, room, most, least) => {
+    word.style.fontSize = '100px';
+    word.style.whiteSpace = 'nowrap';
+    const size = Math.min(most, (100 * room) / word.scrollWidth);
+    word.style.whiteSpace = '';
+    word.style.fontSize = `${Math.max(least, Math.floor(size))}px`;
+  };
+
+  function fitWords() {
     for (const list of strip.querySelectorAll('.case-types')) {
       const names = [...list.querySelectorAll('.case-type__name')];
-      const room = list.clientWidth - 64;
       const tallest = list.parentElement.classList.contains('case-system') ? 110 : (list.clientHeight - 48) / names.length;
-      for (const name of names) {
-        name.style.fontSize = '100px';
-        name.style.whiteSpace = 'nowrap';
-        const size = Math.min(200, tallest * 0.55, (100 * room) / name.scrollWidth);
-        name.style.whiteSpace = '';
-        name.style.fontSize = `${Math.max(28, Math.floor(size))}px`;
-      }
+      names.forEach((name) => fitWord(name, list.clientWidth - 64, Math.min(200, tallest * 0.55), 28));
+    }
+    for (const value of strip.querySelectorAll('.case-tiles--words .case-tile__value')) {
+      fitWord(value, value.parentElement.clientWidth - 40, 48, 16);
     }
   }
 

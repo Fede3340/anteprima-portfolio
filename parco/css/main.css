@@ -114,6 +114,7 @@ button {
 .sound,
 .above,
 .threshold__enter,
+.threshold__quiet,
 .hint {
   display: inline-flex;
   align-items: center;
@@ -219,6 +220,26 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   display: none;
 }
 
+/* The hand while the mouse is captured: a small dot in the middle of the screen. */
+.aim {
+  position: fixed;
+  z-index: 40;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: 0 0 0 1.5px var(--ink);
+  pointer-events: none;
+  opacity: 0;
+}
+
+body.is-locked .aim {
+  opacity: 1;
+}
+
 .hint.is-gone {
   opacity: 0;
 }
@@ -258,10 +279,35 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 }
 
 .threshold__ways {
+  position: absolute;
+  top: 50%;
+  left: var(--gutter);
+  right: var(--gutter);
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
-  gap: 12px 22px;
+  gap: 12px;
+  transform: translateY(-50%);
+}
+
+/* While the park is still arriving: one soft dot breathing where the ways in will be. */
+.threshold:not(.is-ready) .threshold__ways::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px;
+  border-radius: 50%;
+  background: var(--ink);
+  animation: wait 1.4s ease-in-out infinite;
+}
+
+@keyframes wait {
+  50% {
+    opacity: 0.2;
+  }
 }
 
 .threshold__enter {
@@ -276,16 +322,7 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 }
 
 .threshold__quiet {
-  min-height: 44px;
-  padding: 0 4px;
-  border: 0;
-  background: none;
-  color: var(--light);
-  font-size: var(--small);
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.3em;
+  padding: 0 22px;
   cursor: pointer;
 }
 
@@ -397,6 +434,10 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 
 .work-label strong {
   font-size: 1.125rem;
+}
+
+.work-label.has-name strong {
+  display: none;
 }
 
 .work-label .work-label__logo {

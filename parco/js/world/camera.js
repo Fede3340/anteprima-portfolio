@@ -19,7 +19,6 @@ export function createRig(camera, plan) {
   const wantLook = new THREE.Vector3();
   const from = { pos: new THREE.Vector3(), look: new THREE.Vector3() };
   let tween;
-  let snap = false;
   let mode = 'far';
   let held;
   const tanHalf = () => Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
@@ -69,7 +68,6 @@ export function createRig(camera, plan) {
       mode = next;
       held = place ?? held;
       tween = seconds ? { start: performance.now(), seconds } : undefined;
-      snap = !seconds;
       from.pos.copy(pos);
       from.look.copy(look);
       return seconds ? new Promise((done) => { tween.done = done; }) : Promise.resolve();
@@ -87,14 +85,9 @@ export function createRig(camera, plan) {
           tween.done();
           tween = undefined;
         }
-      } else if (mode === 'walk' && !snap) {
-        // Close behind the path, without a lag that would feel like drift.
-        pos.lerp(wantPos, 1 - Math.exp(-dt / 0.08));
-        look.lerp(wantLook, 1 - Math.exp(-dt / 0.08));
       } else {
         pos.copy(wantPos);
         look.copy(wantLook);
-        snap = false;
       }
       camera.position.copy(pos);
       camera.lookAt(look);

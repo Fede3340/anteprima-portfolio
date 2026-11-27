@@ -80,16 +80,17 @@ export function planPark(data, texts) {
   return { islands, zones, works, paths, landing: first };
 }
 
-// A path of stones from the edge of one island to the edge of the next, bending to one side and
-// sagging a little in the middle.
+// A path of stones from the edge of one island to the edge of the next, bending to one side. It
+// leaves and reaches each island level with its floor, never from under its edge: the climb or the
+// descent is in the middle.
 function joinIslands(from, to, index) {
   const way = to.centre.clone().sub(from.centre).setY(0).normalize();
-  const start = from.centre.clone().addScaledVector(way, from.radius - 1.2);
-  const end = to.centre.clone().addScaledVector(way, -(to.radius - 1.2));
-  const side = new THREE.Vector3(-way.z, 0, way.x).multiplyScalar((index % 2 ? 1 : -1) * 7);
-  const middle = start.clone().lerp(end, 0.5).add(side);
-  middle.y -= 1.5;
-  const curve = new THREE.QuadraticBezierCurve3(start, middle, end);
+  const side = new THREE.Vector3(-way.z, 0, way.x).multiplyScalar((index % 2 ? 1 : -1) * 4);
+  const start = from.centre.clone().addScaledVector(way, from.radius - 1.2).setY(from.centre.y + 0.15);
+  const end = to.centre.clone().addScaledVector(way, -(to.radius - 1.2)).setY(to.centre.y + 0.15);
+  const leave = start.clone().addScaledVector(way, 6).add(side);
+  const arrive = end.clone().addScaledVector(way, -6).add(side);
+  const curve = new THREE.CubicBezierCurve3(start, leave, arrive, end);
   const length = curve.getLength();
   const stones = Math.max(2, Math.round(length / STONE_EVERY));
   return { index, from: from.index, to: to.index, curve, length, stones };

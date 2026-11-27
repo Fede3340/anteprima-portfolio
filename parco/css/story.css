@@ -175,33 +175,6 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   background: radial-gradient(closest-side, rgb(0 16 50 / 0.42), rgb(0 16 50 / 0));
 }
 
-.case-ground {
-  position: absolute;
-  left: 3%;
-  top: calc(100% + var(--ground-band) * 0.12);
-  display: flex;
-  align-items: flex-end;
-  pointer-events: none;
-}
-
-.case-ground__tile {
-  width: clamp(26px, 2.6vw, 44px);
-  aspect-ratio: 1;
-  margin-right: -6px;
-  border: 4px solid #f6f8fb;
-  border-radius: 10px;
-  box-shadow: 0 10px 14px -8px rgb(0 16 50 / 0.55), inset 0 -3px 4px rgb(0 0 0 / 0.12);
-  transform: rotate(calc((var(--i) - 2) * 6deg)) translateY(calc(var(--i) * -1px));
-  animation: case-tile 0.6s calc(var(--i) * 90ms) cubic-bezier(0.22, 1, 0.36, 1) backwards;
-}
-
-@keyframes case-tile {
-  from {
-    opacity: 0;
-    transform: translateY(-24px) rotate(0deg);
-  }
-}
-
 /* The ground below the frame: the boards, one after the other. */
 .case-foot {
   position: absolute;
@@ -275,8 +248,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   align-items: stretch;
 }
 
-.case-board[data-layout="under"],
-.case-board[data-layout="stack-under"] {
+.case-board[data-layout="under"] {
   flex-direction: column-reverse;
   justify-content: flex-end;
 }
@@ -383,6 +355,10 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   font-size: 1.25rem;
 }
 
+.case-words > .case-p {
+  max-width: 30rem;
+}
+
 .case-p {
   font-size: clamp(1.0625rem, 1rem + 0.15vw, 1.1875rem);
   text-wrap: pretty;
@@ -415,22 +391,6 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   max-width: min(220px, var(--max-w, 220px));
   object-fit: contain;
   object-position: left center;
-}
-
-.case-facts {
-  list-style: none;
-  display: grid;
-  gap: 12px;
-}
-
-.case-facts li {
-  padding: 14px 18px;
-  border-radius: 16px;
-  background: var(--panel);
-  font-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
-  font-weight: 700;
-  line-height: 1.4;
-  break-inside: avoid;
 }
 
 .case-sources {
@@ -477,8 +437,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   margin-top: 12px;
 }
 
-.case-board[data-layout="stack"] .case-pics,
-.case-pics[data-flow="column"] {
+.case-board[data-layout="stack"] .case-pics {
   flex-direction: column;
 }
 
@@ -494,7 +453,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   cursor: zoom-in;
 }
 
-.case-board:is([data-layout="over"], [data-layout="under"], [data-layout="stack"], [data-layout="stack-under"]) .case-visual > .case-pic,
+.case-board:is([data-layout="over"], [data-layout="under"], [data-layout="stack"]) .case-visual > .case-pic,
 .case-board:is([data-layout="over"], [data-layout="stack"]) .case-pics:has(> .case-pic:only-child) > .case-pic {
   border-radius: 0;
 }
@@ -531,7 +490,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   }
 }
 
-.case-more {
+.case-words > .case-more {
   margin-top: 24px;
 }
 
@@ -540,6 +499,11 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   width: 100%;
   text-align: center;
   font-weight: 700;
+}
+
+.case-words .case-caption {
+  width: auto;
+  text-align: left;
 }
 
 .case-detail {
@@ -664,10 +628,6 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-[data-mode="stack"] .case-tiles--words .case-tile__value {
-  font-size: 1.375rem;
-}
-
 .case-tile__value {
   overflow-wrap: anywhere;
 }
@@ -676,9 +636,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   justify-content: center;
 }
 
-.case-tiles--words .case-tile__value {
-  font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
-}
+
 
 .case-tile__label {
   font-weight: 700;
@@ -794,8 +752,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
     transition: none;
   }
 
-  .case-pic--tall img,
-  .case-ground__tile {
+  .case-pic--tall img {
     animation: none;
   }
 }

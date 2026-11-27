@@ -1,0 +1,67 @@
+/* The door: the park at dawn as a picture, the name above and the two ways in at the centre of the
+   screen, where the picture leaves the sky free. At a tap the picture dissolves into the park. */
+.threshold {
+  transition: opacity 1.1s ease;
+}
+
+.threshold__picture {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #ddb8cf;
+}
+
+.threshold__picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 62%;
+  animation: door-breath 26s ease-in-out infinite alternate;
+}
+
+/* A little morning haze behind the name and the ways in, so they read over the islands too. */
+.threshold__picture::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 36vmax 25vmax at 50% 47%, rgb(246 228 238 / 0.66), rgb(246 228 238 / 0) 72%);
+}
+
+/* The picture breathes: a few pixels of drift, nothing else. */
+@keyframes door-breath {
+  from {
+    transform: scale(1.02) translate3d(-0.4%, 0.3%, 0);
+  }
+  to {
+    transform: scale(1.045) translate3d(0.4%, -0.5%, 0);
+  }
+}
+
+.threshold__name {
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(50% + 84px);
+  left: var(--gutter);
+  max-width: none;
+  font-size: clamp(2.125rem, 1rem + 4.2vw, 4.75rem);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* On a tall screen the free sky lies a little below the middle, between the pond and the cursor. */
+@media (orientation: portrait) {
+  .threshold__ways {
+    top: calc(50% + 30px);
+  }
+
+  .threshold__name {
+    bottom: calc(50% + 40px);
+    font-size: clamp(1.875rem, 9.4vw, 2.75rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .threshold__picture img {
+    animation: none;
+  }
+}

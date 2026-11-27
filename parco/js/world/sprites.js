@@ -23,9 +23,8 @@ export function setTint(value) {
   for (const material of materials) material.color.setScalar(value);
 }
 
-// later: nothing is fetched until use() is called.
-export function createSprite(entry, count, { renderer, fog = true, anchor = entry.anchor ?? [0.5, 0], later = false }) {
-  const material = new THREE.MeshBasicMaterial({ alphaToCoverage: true, fog, color: new THREE.Color().setScalar(tint.value) });
+export function createSprite(entry, count, { renderer, fog = true, anchor = entry.anchor ?? [0.5, 0] }) {
+  const material = new THREE.MeshBasicMaterial({ transparent: true, alphaTest: 0.5, fog, color: new THREE.Color().setScalar(tint.value) });
   materials.add(material);
   const mesh = new THREE.InstancedMesh(plane(...anchor), material, count);
   // Nothing shows until its picture has arrived.
@@ -34,10 +33,11 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
   let size;
   const spots = Array.from({ length: count }, () => ({ x: 0, y: 0, z: 0, height: entry.metres ?? 1, roll: 0, hidden: false }));
 
+  // The picture at the size given, swapped in once decoded; resolves when it is drawn.
   function use(which) {
-    if (size === which || !entry[which]) return;
+    if (size === which || !entry[which]) return Promise.resolve();
     size = which;
-    loadTexture(entry[which].file, renderer).then((texture) => {
+    return loadTexture(entry[which].file, renderer).then((texture) => {
       if (size !== which) return texture.dispose();
       material.map?.dispose();
       material.map = texture;
@@ -45,12 +45,11 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
       mesh.visible = true;
     }, (error) => console.warn(error));
   }
-  if (!later) use('small');
-
   return {
     mesh,
     spots,
     use,
+    ready: use('small'),
     // Every copy turned to the eyes; call once a frame.
     face(camera) {
       spots.forEach((spot, index) => {

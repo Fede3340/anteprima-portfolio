@@ -19,7 +19,7 @@ export function islandAt(plan, x, z) {
 }
 
 // Low soft billows of the cloud floor.
-const bump = (x, z) => 0.28 * Math.sin(x * 0.45 + 1.3) * Math.cos(z * 0.38) + 0.12 * Math.sin(x * 1.1 + z * 0.9) + 0.06 * Math.cos(x * 2.3 - z * 1.9);
+const bump = (x, z) => 0.5 * Math.sin(x * 0.42 + 1.3) * Math.cos(z * 0.36) + 0.22 * Math.sin(x * 0.9 + z * 0.75) + 0.08 * Math.cos(x * 2.1 - z * 1.7);
 
 // The height of the floor of the nearest island at a point: a little uneven, curving down at the rim.
 export function heightAt(plan, x, z) {
@@ -172,8 +172,9 @@ function floorMaterial(uniforms) {
 // The stones of every path: flat round plaster discs with a soft edge, a little uneven.
 function createStones(plan) {
   // From the foot up to the middle of the top, so that the faces look outwards.
-  const profile = [[0.92, -0.06], [0.98, -0.02], [1, 0.03], [0.97, 0.07], [0.9, 0.085], [0, 0.085]].map(([x, y]) => new THREE.Vector2(x, y));
-  const template = new THREE.Mesh(new THREE.LatheGeometry(profile, 28), new THREE.MeshLambertMaterial({ color: '#dfe7f2' }));
+  // Closed underneath, and light there too: a stone overhead is plaster, not a grey disc.
+  const profile = [[0, -0.06], [0.92, -0.06], [0.98, -0.02], [1, 0.03], [0.97, 0.07], [0.9, 0.085], [0, 0.085]].map(([x, y]) => new THREE.Vector2(x, y));
+  const template = new THREE.Mesh(new THREE.LatheGeometry(profile, 28), new THREE.MeshLambertMaterial({ color: '#edf2f9', emissive: '#6f82a3' }));
   const q = new THREE.Quaternion();
   const up = new THREE.Vector3(0, 1, 0);
   const spots = plan.paths.flatMap((path) => Array.from({ length: path.stones + 1 }, (_, i) => {

@@ -11,7 +11,7 @@ import { createSprite } from './sprites.js';
 // What grows on each island, as [picture, how many]; spread over the island away from the works.
 const GARDENS = {
   ingresso: [['albero-grande', 2], ['albero-medio', 4], ['albero-piccolo', 4], ['cespuglio-1', 6], ['cespuglio-2', 3], ['nuvola-a-terra', 9], ['panchina', 1]],
-  siti: [['albero-grande', 9], ['albero-medio', 9], ['albero-piccolo', 5], ['tronco-alto', 3], ['cespuglio-2', 5], ['cespuglio-1', 4], ['nuvola-a-terra', 7]],
+  siti: [['albero-grande', 9], ['albero-medio', 9], ['albero-piccolo', 5], ['cespuglio-2', 5], ['cespuglio-1', 4], ['nuvola-a-terra', 7]],
   negozi: [['albero-frutti', 9], ['cassette', 4], ['cespuglio-1', 3], ['nuvola-a-terra', 4]],
   programmi: [['siepe-squadrata', 6], ['gradini', 2], ['sasso', 8], ['albero-piccolo', 2]],
   app: [['canne', 8], ['albero-medio', 3], ['cespuglio-1', 4], ['nuvola-a-terra', 4]],
@@ -21,7 +21,9 @@ const GARDENS = {
   google: [['albero-piccolo', 3], ['panchina', 1], ['sasso', 4], ['nuvola-a-terra', 3]],
   contatti: [['cassetta-posta', 1], ['albero-medio', 2], ['nuvola-a-terra', 5], ['cespuglio-1', 3]],
 };
-const RIM_EVERY = 4.2;
+const RIM_EVERY = 3.2;
+// The cushions near the way in: [picture, how many, height in metres].
+const CUSHIONS = [['nuvola-a-terra', 5, 0.9], ['cespuglio-1', 3, 0.8], ['ciuffo-2', 6, 0.6]];
 
 function random(seed) {
   let a = seed >>> 0;
@@ -73,12 +75,10 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   const shadows = [];
   const picture = (name) => library[name] ?? pictures[name];
   // One picture drawn at many spots: [{ x, y, z, height }], each on the ground unless y is given.
-  // Behind the door only the clouds of the islands and the sky are fetched, the rest once one goes in.
-  const cloudy = /^(sbuffo|nuvola)/;
   const sprite = (name, spots, options = {}) => {
     const entry = picture(name);
     if (!entry || !spots.length) return undefined;
-    const drawn = createSprite(entry, spots.length, { renderer, later: !cloudy.test(name), ...options });
+    const drawn = createSprite(entry, spots.length, { renderer, ...options });
     spots.forEach((spot, index) => Object.assign(drawn.spots[index], { x: spot.x, z: spot.z, y: spot.y ?? heightAt(plan, spot.x, spot.z), ...(spot.height ? { height: spot.height } : {}) }));
     made.push(drawn);
     object.add(drawn.mesh);
@@ -101,12 +101,23 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
       taken.push({ x: island.arrival.x + (leave.x - island.arrival.x) * (k / 10), z: island.arrival.z + (leave.z - island.arrival.z) * (k / 10), r: 2 });
     }
   }
-  function freeSpot(island, size) {
+  // near: { x, z, from, to } to look only between from and to metres of a point, ahead of it.
+  function freeSpot(island, size, near) {
     for (let tries = 0; tries < 40; tries++) {
-      const a = roll() * Math.PI * 2;
-      const r = Math.sqrt(roll()) * (island.radius - 2.2);
-      const x = island.centre.x + Math.cos(a) * r;
-      const z = island.centre.z + Math.sin(a) * r;
+      let x;
+      let z;
+      if (near) {
+        const a = near.heading + (roll() - 0.5) * 2.6;
+        const r = near.from + roll() * (near.to - near.from);
+        x = near.x + Math.cos(a) * r;
+        z = near.z + Math.sin(a) * r;
+        if (Math.hypot(x - island.centre.x, z - island.centre.z) > island.radius - 2.2) continue;
+      } else {
+        const a = roll() * Math.PI * 2;
+        const r = Math.sqrt(roll()) * (island.radius - 2.2);
+        x = island.centre.x + Math.cos(a) * r;
+        z = island.centre.z + Math.sin(a) * r;
+      }
       if (taken.some((other) => Math.hypot(other.x - x, other.z - z) < other.r + size)) continue;
       taken.push({ x, z, r: size });
       return { x, z };
@@ -114,9 +125,18 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     return undefined;
   }
 
-  // Each island's garden.
+  // Each island's garden, and low cushions of cloud a few steps ahead of where one arrives: on a
+  // phone held upright the lower third of the screen is that ground.
   const gardens = {};
   for (const island of plan.islands) {
+    const start = island.start ?? island.arrival;
+    const near = { x: start.x, z: start.z, heading: Math.atan2(island.centre.z - start.z, island.centre.x - start.x), from: 2.6, to: 7.5 };
+    for (const [name, many, height] of CUSHIONS) {
+      for (let i = 0; i < many; i++) {
+        const spot = freeSpot(island, 0.5, near);
+        if (spot) (gardens[name] ??= []).push({ ...spot, height: height * (0.75 + roll() * 0.5) });
+      }
+    }
     for (const [name, many] of GARDENS[island.id] ?? []) {
       const entry = picture(name);
       if (!entry) continue;
@@ -143,14 +163,14 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   // The sculpture of each place; the great cursor stands in the middle of the first island.
   const statues = [];
   for (const zone of plan.zones) {
-    const drawn = sprite(zone.id, [zone.mark], { later: true });
+    const drawn = sprite(zone.id, [zone.mark]);
     if (!drawn) continue;
     drawn.spots[0].y += picture(zone.id).lift ?? 0;
     statues.push(drawn);
     shadows.push({ x: zone.mark.x, z: zone.mark.z, size: 3 });
     // A sculpture is seen whole from a few metres; the great cursor from further.
     solid.push({ x: zone.mark.x, z: zone.mark.z, r: zone.id === 'apertura' ? 5.5 : 3 });
-    const ring = sprite(`${zone.id}-cerchio`, [zone.mark], { later: true });
+    const ring = sprite(`${zone.id}-cerchio`, [zone.mark]);
     if (ring) statues.push(ring);
   }
   const statueOf = new Map(statues.map((drawn) => [drawn, plan.zones.find((zone) => zone.mark.x === drawn.spots[0].x && zone.mark.z === drawn.spots[0].z).island]));
@@ -200,7 +220,7 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     }
     // A second ring of billows lower down, and big ones underneath: the island has the thickness of
     // a cloud seen from below and from the side.
-    const lower = Math.round(many * 0.6);
+    const lower = many;
     for (let i = 0; i < lower; i++) {
       const height = 2 + roll() * 1.4;
       push(unders, ((i + 0.5) / lower) * Math.PI * 2 + roll() * 0.2, island.radius * (0.82 + roll() * 0.12), height, island.centre.y - 1.8 - height * 0.6, 4 + height * 1.4);
@@ -254,6 +274,8 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   return {
     object,
     solid,
+    // Every picture of the park drawn, at its small size.
+    ready: () => Promise.all(made.map((drawn) => drawn.ready)),
     tappable: [lit?.mesh, dark?.mesh, seat?.mesh, swingCloud?.mesh].filter(Boolean),
     set lamps(level) {
       lampLevel = level;

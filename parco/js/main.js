@@ -14,10 +14,10 @@ import { createWorld } from './world/world.js';
 
 const WORK = /^#lavoro\/([\w-]+)$/;
 const ZONE = /^#([\w-]+)$/;
-const DESCENT = 1.7;
 // Closer than this to a work, a tap on it opens it; further, it walks there.
 const NEAR_ENOUGH = 6.5;
 const FLIGHT = 1.4;
+const RESUME = 'Clic per continuare';
 
 const $ = (selector) => document.querySelector(selector);
 const sound = createSound($('.sound'));
@@ -46,12 +46,15 @@ const read = () => {
 // alive around it. Closing: the work goes, and the walk goes on from where it was.
 async function apply({ work }, point) {
   if (story.work && story.work !== work) {
+    // Back to the park, the mouse is taken again (the click on Chiudi allows it).
+    if (!work) world?.controls.lock();
     await story.close(point ?? centre());
     document.dispatchEvent(new CustomEvent('park:work', { detail: { id: undefined } }));
     if (world?.rig.mode === 'hold') await world.rig.go('walk', reducedMotion.matches ? 0 : 0.5);
   }
   if (work && story.work !== work) {
     if (world) {
+      world.controls.unlock();
       world.stop();
       await world.rig.go('hold', reducedMotion.matches ? 0 : 0.6, exhibits.standing(workSpot(work)));
     }
@@ -113,6 +116,9 @@ let flying = false;
 async function fly(up, zone) {
   if (flying || !world || up === (world.rig.mode === 'above')) return;
   flying = true;
+  // From above the names are clicked with the pointer; back down, the mouse is taken again.
+  if (up) world.controls.unlock();
+  else world.controls.lock();
   sound.play('whoosh');
   above.setAttribute('aria-pressed', String(up));
   if (zone) world.place(zone);
@@ -134,6 +140,8 @@ function stoneAt(point) {
   return [best.path, best.t];
 }
 
+// Builds the park; the promise is kept when every picture of it is decoded and drawn, the large
+// covers of the island one lands on included.
 function build(texts, pictures, sprites) {
   world = createWorld($('.park'), { plan, reducedMotion });
   const anchors = createAnchors($('.anchors'), world.camera);
@@ -164,9 +172,10 @@ function build(texts, pictures, sprites) {
     keep();
     anchors.remeasure();
   });
-  hint.textContent = matchMedia('(pointer: coarse)').matches
+  const welcome = matchMedia('(pointer: coarse)').matches
     ? 'Tocca dove vuoi andare. Trascina per guardarti attorno.'
-    : 'W A S D per camminare, trascina per guardarti attorno.';
+    : 'Muovi il mouse per guardarti attorno, W A S D per camminare.';
+  hint.textContent = welcome;
   unveil = () => {
     exhibits.island(here);
     park.island(here);
@@ -180,38 +189,47 @@ function build(texts, pictures, sprites) {
       history.replaceState(null, '', island.index === 0 ? location.pathname + location.search : `#${island.zones[0].id}`);
     },
     walk() {
-      hint.classList.add('is-gone');
+      if (hint.textContent === welcome) hint.classList.add('is-gone');
+    },
+    // The mouse captured shows the dot; let go with Esc (or refused), a line asks for a click.
+    lock(locked, wanted) {
+      document.body.classList.toggle('is-locked', locked);
+      if (locked && hint.textContent === RESUME) hint.classList.add('is-gone');
+      if (locked || !wanted) return;
+      hint.textContent = RESUME;
+      hint.classList.remove('is-gone');
     },
     // A tap while walking stops; otherwise a near work opens, a far one is walked to, a thing of the
     // park answers, and a place of the ground is walked to, with rings where it was touched.
     tap(x, y) {
       if (world.rig.mode !== 'walk') return;
+      // With the mouse captured the click is the dot's: it goes only where the look already faces.
+      const ahead = world.controls.locked();
       if (world.moving()) {
         world.stop();
         return;
       }
       const hit = world.hit(x, y, [...exhibits.targets, ...park.tappable, ...world.land.floors, ...world.land.stones]);
       if (!hit) return;
-      hint.classList.add('is-gone');
+      if (hint.textContent !== RESUME) hint.classList.add('is-gone');
       if (exhibits.targets.includes(hit.object)) {
         const spot = exhibits.spotOf(hit);
         sound.play('tap');
         if (Math.hypot(world.camera.position.x - spot.x, world.camera.position.z - spot.z) < NEAR_ENOUGH) open(spot.id, { x, y });
         else {
           const { x: wx, z: wz, fx, fz } = exhibits.standing(spot);
-          world.goTo(plan.islands[spot.island], wx + fx * 3, wz + fz * 3);
+          world.goTo(plan.islands[spot.island], wx + fx * 3, wz + fz * 3, ahead);
         }
       } else if (park.touch(hit)) sound.play('tap');
       else if (world.land.stones.includes(hit.object)) {
-        sound.play('drop');
-        world.goAlong(...stoneAt(hit.point));
-      } else {
+        if (world.goAlong(...stoneAt(hit.point), ahead)) sound.play('drop');
+      } else if (world.goTo(hit.object.userData.island, hit.point.x, hit.point.z, ahead)) {
         world.land.ripple(hit.point.x, hit.point.z);
         sound.play('drop');
-        world.goTo(hit.object.userData.island, hit.point.x, hit.point.z);
       }
     },
   });
+  return Promise.all([park.ready(), exhibits.ready(), exhibits.island(plan.landing)]);
 }
 
 addEventListener('keydown', (event) => {
@@ -234,7 +252,7 @@ addEventListener('keydown', (event) => {
   if (world.controls.key(event, true)) {
     event.preventDefault();
     world.stop();
-    hint.classList.add('is-gone');
+    if (hint.textContent !== RESUME) hint.classList.add('is-gone');
   }
   else if (event.key === 'Enter' && world.state.nearest) open(world.state.nearest.id);
   else if (event.key === ' ') {
@@ -253,12 +271,13 @@ $('.brand').addEventListener('click', (event) => {
 
 const threshold = createThreshold($('.threshold'), {
   async onEnter(withSound) {
+    world.controls.lock();
     sound.begin(withSound);
     sound.play('drop');
     const target = read();
     if (target.work) world.place(plan.islands[workSpot(target.work).island]);
     else if (target.zone) world.place(target.zone);
-    await world.rig.go('walk', reducedMotion.matches ? 0 : DESCENT);
+    await world.rig.go('walk');
   },
   onLeave() {
     const target = read();
@@ -286,8 +305,9 @@ const library = (manifest) => Object.fromEntries(Object.entries(manifest).map(([
 
 const [data, texts, pictures, manifest] = await Promise.all([json('data/works.json'), json('data/racconto.json'), json('img/park/park.json'), json('img/sprites/manifest.json'), document.fonts.ready]);
 setUp(data, texts);
+let loaded;
 try {
-  build(texts, pictures, library(manifest));
+  loaded = build(texts, pictures, library(manifest));
 } catch (error) {
   // Without WebGL the list of works is the page, and every work still opens closely.
   console.warn(error);
@@ -296,6 +316,9 @@ try {
 }
 if (world) {
   world.start();
+  // The door opens only on a park that is whole.
+  await loaded;
+  world.renderer.compile(world.scene, world.camera);
   threshold.ready();
 } else {
   const target = read();

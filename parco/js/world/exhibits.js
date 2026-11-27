@@ -1,8 +1,8 @@
 // The works standing on the islands: the cover of the work in a thin white frame on two slim legs, its
-// middle at eye height, in an arc facing the middle of the island. They rise from the floor when their
-// island wakes; close to a visitor a work turns to face them and lifts a little, and its plate shows
-// under it. Frames are drawn as instances; each cover is a texture only
-// while its zone or a zone next to it is in sight, and is let go after.
+// middle at eye height, in an arc facing the middle of the island, standing there from the start.
+// Close to a visitor a work turns to face them and lifts a little, and its plate shows under it.
+// Frames are drawn as instances. Every cover is there small from the start, for the works seen from
+// far; on the island one is on and those beside it the large one takes its place.
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/BufferGeometryUtils.js';
 import { element, logo } from '../media.js';
@@ -12,8 +12,6 @@ import { FRAME } from './layout.js';
 import { loadTexture } from './textures.js';
 
 const LIFT = 0.1;
-// How deep a work waits under the floor before its island wakes.
-const SUNK = -2.4;
 const CLOSE = 9;
 const PLATE = 7.5;
 // How far a work is still seen well enough for a name to keep off it.
@@ -65,14 +63,17 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     screen.userData.index = index;
     object.add(screen);
     const work = works[spot.id];
-    // A plate, as under a picture in a museum: the logo, which already says the name, or the title.
-    const plate = element('div', { className: 'work-label' }, [
-      work.logo ? logo(work.logo, { className: 'work-label__logo' }) : element('strong', { textContent: work.title }),
-    ]);
-    // Its turn to rise when its island wakes: one after the other along the arc.
-    const order = plan.works.filter((other) => other.island === spot.island).indexOf(spot);
-    const item = { spot, work, screen, base: yaw, yaw, height: SUNK, risen: 0, delay: order * 0.12, texture: undefined, close: false, plate: false, distance: Infinity };
-    const under = new THREE.Vector3(p.x, y + SUNK + MIDDLE - FRAME.height / 2 - BORDER - 0.05, p.z);
+    // A plate, as under a picture in a museum: the logo and the title. A wide logo already writes the
+    // name, so the title goes; a square one is a sign, and the title stays beside it.
+    const mark = work.logo && logo(work.logo, { className: 'work-label__logo' });
+    const plate = element('div', { className: 'work-label' }, [...(mark ? [mark] : []), element('strong', { textContent: work.title })]);
+    if (mark) {
+      // Read as laid out, 40 px high: drawings that give only a viewBox have no natural size.
+      const named = () => requestAnimationFrame(() => plate.classList.toggle('has-name', mark.offsetWidth / Math.max(1, mark.offsetHeight) > 1.4));
+      mark.addEventListener('load', named, { once: true });
+    }
+    const item = { spot, work, screen, base: yaw, yaw, height: 0, texture: undefined, close: false, plate: false, distance: Infinity };
+    const under = new THREE.Vector3(p.x, y + MIDDLE - FRAME.height / 2 - BORDER - 0.05, p.z);
     anchors.add(plate, under, {
       place: 'below',
       visible: () => item.plate && rig.mode === 'walk',
@@ -116,9 +117,16 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
   // The cover file with enough pixels for the size the work takes in front of the eyes.
   const wide = () => innerWidth * 0.8 * Math.min(devicePixelRatio, 2) > 960 * 1.1;
 
+  // The small cover, built from the 960 one by tools/build-covers.py.
+  const far = (item) => loadTexture(item.work.cover.srcMobile.replace(/^media\/works\/([^/]+)\/.*$/, 'img/covers/$1.webp'), renderer).then((texture) => {
+    item.far = new THREE.MeshBasicMaterial({ map: texture });
+    if (!item.texture) item.screen.material = item.far;
+  });
+
   function load(item) {
     item.wanted = true;
-    if (item.texture || item.loading) return;
+    if (item.texture) return Promise.resolve();
+    if (item.loading) return item.loading;
     item.loading = loadTexture(wide() ? item.work.cover.src : item.work.cover.srcMobile, renderer).then((texture) => {
       item.loading = undefined;
       if (!item.wanted) return texture.dispose();
@@ -135,7 +143,7 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     if (!item.texture) return;
     item.texture.dispose();
     if (item.screen.material !== blank) item.screen.material.dispose();
-    item.screen.material = blank;
+    item.screen.material = item.far ?? blank;
     item.texture = undefined;
   }
 
@@ -148,17 +156,14 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     island(island) {
       const count = plan.islands.length;
       const near = (index) => Math.min(Math.abs(index - island.index), count - Math.abs(index - island.index)) <= 1;
-      items.forEach((item) => (near(item.spot.island) ? load(item) : release(item)));
+      return Promise.all(items.map((item) => (near(item.spot.island) ? load(item) : release(item))));
     },
+    // Every small cover, drawn.
+    ready: () => Promise.all(items.map(far)),
     update(dt, time, state) {
       let nearest;
       const slow = Math.abs(state.speed) < 0.5;
-      const awake = state.island?.index ?? (state.path ? [state.path.from, state.path.to] : []);
       items.forEach((item, index) => {
-        // An island wakes when one is on it or on a path to it: its works rise from its floor.
-        const up = [awake].flat().includes(item.spot.island);
-        item.wait = up ? (item.wait ?? item.delay) - dt : undefined;
-        item.risen += ((up && item.wait <= 0 ? 1 : 0) - item.risen) * (1 - Math.exp(-dt / 0.45));
         const { x, z } = item.spot.place;
         item.distance = Math.hypot(camera.position.x - x, camera.position.z - z);
         item.close = item.distance < CLOSE;
@@ -169,7 +174,7 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
         // The work turns to the eyes when they are near, and back to the path when they go.
         const aim = item.close ? Math.atan2(camera.position.x - x, camera.position.z - z) : item.base;
         const turn = Math.atan2(Math.sin(aim - item.yaw), Math.cos(aim - item.yaw));
-        const rise = (item.close ? LIFT : 0) + SUNK * (1 - item.risen) - item.height;
+        const rise = (item.close ? LIFT : 0) - item.height;
         if (Math.abs(turn) < 0.0005 && Math.abs(rise) < 0.0005) return;
         const k = 1 - Math.exp(-dt / 0.35);
         item.yaw += turn * k;
@@ -190,7 +195,7 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     // The rectangle of a work's picture on the screen, in CSS pixels.
     rect: (id) => rectOf(items.find((each) => each.spot.id === id)),
     // The rectangles of the works in sight, their frames and plates included.
-    inSight: () => items.filter((item) => item.risen > 0.1 && item.distance < SIGHT && inFront(item)).map((item) => {
+    inSight: () => items.filter((item) => item.distance < SIGHT && inFront(item)).map((item) => {
       const r = rectOf(item);
       return { left: r.left - 12, top: r.top - 12, width: r.width + 24, height: r.height + 90 };
     }),

@@ -1,5 +1,7 @@
-// The door: the name and the two ways in, over the park seen from far among the clouds. A tap
-// brings the camera down to the walker; the door fades while it comes.
+// The door: the park at dawn as a picture, the name and the two ways in. A tap dissolves the picture
+// into the park, already seen from where one walks.
+const FADE = 1100; // the opacity transition of .threshold in css/door.css
+
 export function createThreshold(root, { onEnter, onLeave }) {
   const enter = root.querySelector('.threshold__enter');
   const quiet = root.querySelector('.threshold__quiet');
@@ -7,7 +9,7 @@ export function createThreshold(root, { onEnter, onLeave }) {
   const go = async (withSound) => {
     if (root.classList.contains('is-entered')) return;
     root.classList.add('is-entered');
-    await onEnter(withSound);
+    await Promise.all([onEnter(withSound), new Promise((done) => setTimeout(done, FADE))]);
     root.hidden = true;
     onLeave();
   };
