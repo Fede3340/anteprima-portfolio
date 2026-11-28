@@ -306,6 +306,8 @@ function contatti() {
   return [
     fact('github', link(GITHUB, 'github.com/Valee8')),
     fact('email', mailLink('oirelav95@gmail.com')),
+    fact('telefono', link('tel:+393496824809', '349 682 4809')),
+    fact('linkedin', link('https://www.linkedin.com/in/valeriolocci', 'linkedin.com/in/valeriolocci')),
     fact('dove', 'Cagliari'),
   ];
 }
