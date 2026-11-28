@@ -45,20 +45,22 @@ const read = () => {
 // Opening a work: the eyes go to stand in front of it, then the work opens over the park, which stays
 // alive around it. Closing: the work goes, and the walk goes on from where it was.
 async function apply({ work }, point) {
+  // From the list as a page the park is not there to walk in.
+  const park = world && !leaning() ? world : undefined;
   if (story.work && story.work !== work) {
     // Back to the park, the mouse is taken again (the click on Chiudi allows it).
-    if (!work) world?.controls.lock();
+    if (!work) park?.controls.lock();
     await story.close(point ?? centre());
     document.dispatchEvent(new CustomEvent('park:work', { detail: { id: undefined } }));
-    if (world?.rig.mode === 'hold') await world.rig.go('walk', reducedMotion.matches ? 0 : 0.5);
+    if (park?.rig.mode === 'hold') await park.rig.go('walk', reducedMotion.matches ? 0 : 0.5);
   }
   if (work && story.work !== work) {
-    if (world) {
-      world.controls.unlock();
-      world.stop();
-      await world.rig.go('hold', reducedMotion.matches ? 0 : 0.6, exhibits.standing(workSpot(work)));
+    if (park) {
+      park.controls.unlock();
+      park.stop();
+      await park.rig.go('hold', reducedMotion.matches ? 0 : 0.6, exhibits.standing(workSpot(work)));
     }
-    document.dispatchEvent(new CustomEvent('park:work', { detail: { id: work, rect: world ? exhibits.rect(work) : undefined } }));
+    document.dispatchEvent(new CustomEvent('park:work', { detail: { id: work, rect: park ? exhibits.rect(work) : undefined } }));
     await story.open(work, point ?? centre());
   }
 }
@@ -97,15 +99,28 @@ addEventListener('popstate', () => {
   });
 });
 
-// The line over the list when the park has given way on a slow machine.
-function lean() {
-  const back = element('button', { className: 'pill', type: 'button', textContent: 'Torna al parco' });
-  back.addEventListener('click', () => {
-    document.documentElement.classList.remove('is-lean');
-    world.pause(false);
-    world.controls.lock();
-  });
-  return element('p', { className: 'lean' }, ['Il parco su questo computer va a scatti: ecco tutti i lavori in elenco.', back]);
+// The list of the works as the page: chosen at the door, or when the park has given way on a slow
+// machine. Its small covers are fetched only now. The button goes back to where one was.
+const leaning = () => document.documentElement.classList.contains('is-lean');
+const leanNote = element('span');
+const leanBack = element('button', { className: 'pill', type: 'button' });
+leanBack.addEventListener('click', () => {
+  document.documentElement.classList.remove('is-lean');
+  if (!$('.threshold').hidden) return;
+  world.pause(false);
+  world.controls.lock();
+});
+
+const covers = () => {
+  for (const image of $('.list').querySelectorAll('img[data-src]')) image.src = image.dataset.src;
+};
+
+function showList(slow) {
+  leanNote.textContent = slow ? 'Il parco su questo computer va a scatti: ecco tutti i lavori in elenco.' : '';
+  leanBack.textContent = slow ? 'Torna al parco' : 'Entra nel parco';
+  covers();
+  document.documentElement.classList.add('is-lean');
+  scrollTo(0, 0);
 }
 
 function setUp(data, texts) {
@@ -113,12 +128,11 @@ function setUp(data, texts) {
   plan = planPark(data, texts);
   story = createStory($('.story'), { works, sound, onClose: close, onEnd: close });
   fillList($('.list'), { plan, works, onOpen: (id) => open(id) });
-  $('.list').prepend(lean());
+  $('.list').prepend(element('p', { className: 'lean' }, [leanNote, leanBack]));
+  $('.threshold__list').addEventListener('click', () => showList(false));
 }
 
 const above = $('.above');
-// Room kept free for the buttons at the top and the invitation at the foot, set once the park is built.
-let keep = () => {};
 // The large pictures of the park are fetched once the door has been passed.
 let unveil = () => {};
 let here;
@@ -177,12 +191,24 @@ function build(texts, pictures, sprites) {
     },
     onWork: (id) => open(id),
   });
-  world.add({ update: () => anchors.update() });
-  keep = () => anchors.keep({ top: Math.max($('.hud').getBoundingClientRect().bottom, $('.hint').getBoundingClientRect().bottom) + 8, bottom: 8 });
-  addEventListener('resize', () => {
-    keep();
-    anchors.remeasure();
+  world.add({
+    update() {
+      keep();
+      anchors.update();
+    },
   });
+  // Room kept for the buttons at the top, the invitation under them while it shows, and the travel
+  // bar at the foot; read every frame, as the invitation comes and goes.
+  const keep = () => {
+    const hint = $('.hint');
+    const shown = !hint.hidden && !hint.classList.contains('is-gone');
+    const bar = $('.travel__bar')?.getBoundingClientRect();
+    anchors.keep({
+      top: Math.max($('.hud').getBoundingClientRect().bottom, shown ? hint.getBoundingClientRect().bottom : 0) + 8,
+      bottom: bar?.height ? innerHeight - bar.top + 8 : 8,
+    });
+  };
+  addEventListener('resize', () => anchors.remeasure());
   const welcome = matchMedia('(pointer: coarse)').matches
     ? 'Tocca dove vuoi andare. Trascina per guardarti attorno.'
     : 'Muovi il mouse per guardarti attorno, W A S D per camminare.';
@@ -211,7 +237,7 @@ function build(texts, pictures, sprites) {
     crawl() {
       world.controls.unlock();
       world.pause(true);
-      document.documentElement.classList.add('is-lean');
+      showList(true);
     },
     // The mouse let go with Esc (or refused): a line asks for a click.
     lock(locked, wanted) {
@@ -273,7 +299,7 @@ addEventListener('keydown', (event) => {
   if (!story || (world && !$('.threshold').hidden)) return;
   if (event.key === 'Escape') {
     if (world?.rig.mode === 'above') fly(false);
-    else close();
+    else if (story.work) close();
     return;
   }
   if (story.work) {
@@ -325,7 +351,6 @@ const threshold = createThreshold($('.threshold'), {
       run(target);
     }
     hint.hidden = false;
-    keep();
     unveil();
   },
 });
@@ -352,6 +377,7 @@ try {
   // Without WebGL the list of works is the page, and every work still opens closely.
   console.warn(error);
   document.documentElement.classList.add('no-webgl');
+  covers();
   $('.threshold').hidden = true;
 }
 if (world) {

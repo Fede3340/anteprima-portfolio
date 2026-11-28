@@ -109,9 +109,6 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
   }
   items.forEach(place);
 
-  // The cover file with enough pixels for the size the work takes in front of the eyes.
-  const wide = () => innerWidth * 0.8 * Math.min(devicePixelRatio, 2) > 960 * 1.1;
-
   // The small cover, built from the 960 one by tools/build-covers.py, and the logo of the plate;
   // asked for once, let go when the island is far.
   function far(item) {
@@ -153,11 +150,13 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     item.label.prepend(mark);
   }
 
+  // The 960 cover: the frame takes at most about half the screen's height in the park; the work
+  // opened closely has its own pictures.
   function load(item) {
     item.wanted = true;
     if (item.texture) return Promise.resolve();
     if (item.loading) return item.loading;
-    item.loading = loadTexture(wide() ? item.work.cover.src : item.work.cover.srcMobile, renderer).then((texture) => {
+    item.loading = loadTexture(item.work.cover.srcMobile, renderer).then((texture) => {
       item.loading = undefined;
       if (!item.wanted) return texture.dispose();
       item.texture = texture;

@@ -347,6 +347,7 @@
       "cover": {
         "src": "media/works/grecale/cover-1920.webp",
         "srcMobile": "media/works/grecale/cover-960.webp",
+        "srcThumb": "media/works/grecale/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Apertura del sito Grecale: il titolo e la ciotola piena d’olio dentro una cornice a forma di foglia"
@@ -648,6 +649,7 @@
       "cover": {
         "src": "media/works/mirtifolia/cover-1920.webp",
         "srcMobile": "media/works/mirtifolia/cover-960.webp",
+        "srcThumb": "media/works/mirtifolia/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Apertura del sito Mirtifolia: la bottiglia di chinotto sopra la scritta del marchio, su fondo arancione"
@@ -919,6 +921,7 @@
       "cover": {
         "src": "media/works/operazione-africa/cover-1920.webp",
         "srcMobile": "media/works/operazione-africa/cover-960.webp",
+        "srcThumb": "media/works/operazione-africa/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Apertura della pagina: il titolo «Aiuta un progetto in Africa con la cifra che vuoi.» e un cerchio di punti con 15.600 euro raccolti su 25.000"
@@ -1119,6 +1122,7 @@
       "cover": {
         "src": "media/works/sito-valerio/cover-1920.webp",
         "srcMobile": "media/works/sito-valerio/cover-960.webp",
+        "srcThumb": "media/works/sito-valerio/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Il sito di Valerio Locci: il nome in caratteri a punti verdi su fondo nero, l’elenco dei progetti e il calendario dei commit"
@@ -1287,6 +1291,7 @@
       "cover": {
         "src": "media/works/sito-sara/cover-1920.webp",
         "srcMobile": "media/works/sito-sara/cover-960.webp",
+        "srcThumb": "media/works/sito-sara/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Il sito di Sara Sanna: il nome in lettere ritagliate di tanti colori sopra un muro di manifesti strappati"
@@ -1458,6 +1463,7 @@
       "cover": {
         "src": "media/works/sito-lucio/cover-1920.webp",
         "srcMobile": "media/works/sito-lucio/cover-960.webp",
+        "srcThumb": "media/works/sito-lucio/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Il sito di Lucio Giannottu: il nome in alto a sinistra e una stampa grande al centro, ancora vuota"
@@ -1760,6 +1766,7 @@
       "cover": {
         "src": "media/works/pippi-store/cover-1920.webp",
         "srcMobile": "media/works/pippi-store/cover-960.webp",
+        "srcThumb": "media/works/pippi-store/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Pagina iniziale di pippi.store: il titolo «Il WC verticale per il cane maschio che alza la zampa» e la foto del prodotto con le misure"
@@ -2032,6 +2039,7 @@
       "cover": {
         "src": "media/works/bianchipro/cover-1920.webp",
         "srcMobile": "media/works/bianchipro/cover-960.webp",
+        "srcThumb": "media/works/bianchipro/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "La pagina dell’abbattitore AB5514: la fotografia della macchina, «+90 °C» in rosso sopra «+3 °C», il prezzo e i quattro modelli tra cui scegliere"
@@ -2325,6 +2333,7 @@
       "cover": {
         "src": "media/works/spedizione-facile/cover-1920.webp",
         "srcMobile": "media/works/spedizione-facile/cover-960.webp",
+        "srcThumb": "media/works/spedizione-facile/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Il preventivo compilato da Roma a Milano per un pacco da 5 kg, col prezzo e il bottone «Vai ai servizi»"
@@ -2597,6 +2606,7 @@
       "cover": {
         "src": "media/works/negozio-nero-72/cover-1920.webp",
         "srcMobile": "media/works/negozio-nero-72/cover-960.webp",
+        "srcThumb": "media/works/negozio-nero-72/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Apertura del negozio di Nero 72: il nome grande in crema su bruno cioccolato e la fotografia di tre tavolette"
@@ -2862,6 +2872,7 @@
       "cover": {
         "src": "media/works/negozio-il-gatto/cover-1920.webp",
         "srcMobile": "media/works/negozio-il-gatto/cover-960.webp",
+        "srcThumb": "media/works/negozio-il-gatto/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Apertura del negozio de Il Gatto: la sagoma nera del gatto con due occhi d’oro, il nome in oro e la bottiglia"
@@ -3120,6 +3131,7 @@
       "cover": {
         "src": "media/works/negozio-mandorla/cover-1920.webp",
         "srcMobile": "media/works/negozio-mandorla/cover-960.webp",
+        "srcThumb": "media/works/negozio-mandorla/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Apertura del negozio di Mandorla: «Riempi un vassoio di dolci delle feste» e il vassoio mezzo coperto dalla carta a mandorle col bollino"
@@ -3362,6 +3374,7 @@
       "cover": {
         "src": "media/works/negozio-cerchi/cover-1920.webp",
         "srcMobile": "media/works/negozio-cerchi/cover-960.webp",
+        "srcThumb": "media/works/negozio-cerchi/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Apertura del negozio di Cerchi: una tavola dell’oculista sfocata, con la parola «otto» nitida dentro due lenti tonde"
@@ -3638,6 +3651,7 @@
       "cover": {
         "src": "media/works/zanzanext/cover-1920.webp",
         "srcMobile": "media/works/zanzanext/cover-960.webp",
+        "srcThumb": "media/works/zanzanext/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "La pagina dell’ordine di ZanzaNext: modello, misure, colore e, a destra, le zanzariere già inserite col totale"
@@ -3902,6 +3916,7 @@
       "cover": {
         "src": "media/works/interlingua/cover-1920.webp",
         "srcMobile": "media/works/interlingua/cover-960.webp",
+        "srcThumb": "media/works/interlingua/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Il design di Interlingua in modalità Testo: una frase inglese piccola e grigia in alto, sotto la traduzione italiana grande"
@@ -4163,6 +4178,7 @@
       "cover": {
         "src": "media/works/massforge/cover-1920.webp",
         "srcMobile": "media/works/massforge/cover-960.webp",
+        "srcThumb": "media/works/massforge/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Tre design di MassForge affiancati: la seduta di oggi su fondo nero, la serie da registrare in arancione e il riposo in blu"
@@ -4447,6 +4463,7 @@
       "cover": {
         "src": "media/works/skillaudit/cover-1920.webp",
         "srcMobile": "media/works/skillaudit/cover-960.webp",
+        "srcThumb": "media/works/skillaudit/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Tre design di SkillAudit affiancati, su fondo nero come un editor di codice: una domanda, un esercizio fallito al 50% e lo stesso esercizio superato"
@@ -4723,6 +4740,7 @@
       "cover": {
         "src": "media/works/carico-glicemico/cover-1920.webp",
         "srcMobile": "media/works/carico-glicemico/cover-960.webp",
+        "srcThumb": "media/works/carico-glicemico/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Tre design di Carico Glicemico affiancati: la ricerca di un alimento, la porzione dei fiocchi d’avena e la colazione composta"
@@ -4991,6 +5009,7 @@
       "cover": {
         "src": "media/works/natura/cover-1920.webp",
         "srcMobile": "media/works/natura/cover-960.webp",
+        "srcThumb": "media/works/natura/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Tre design di Natura affiancati: fine novembre su fondo color terra, la scheda delle fave e dicembre su fondo color brina"
@@ -5352,6 +5371,7 @@
       "cover": {
         "src": "media/works/cenere/cover-1920.webp",
         "srcMobile": "media/works/cenere/cover-960.webp",
+        "srcThumb": "media/works/cenere/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Studio della schermata di gioco: l’appartamento di notte, con la scrivania sotto la lampada, il divano, la piccola figura d’inchiostro e la sua sfera di luce calda"
@@ -5680,6 +5700,7 @@
       "cover": {
         "src": "media/works/soryn/cover-1920.webp",
         "srcMobile": "media/works/soryn/cover-960.webp",
+        "srcThumb": "media/works/soryn/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Il logo SORYN a colori sul suo fondo: una civetta e il nome"
@@ -5901,6 +5922,7 @@
       "cover": {
         "src": "media/works/campana/cover-1920.webp",
         "srcMobile": "media/works/campana/cover-960.webp",
+        "srcThumb": "media/works/campana/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Campana: il nome in corsivo color crema su fondo verde scuro, con la scritta «Bar · Caffè»"
@@ -6118,6 +6140,7 @@
       "cover": {
         "src": "media/works/ghisa/cover-1920.webp",
         "srcMobile": "media/works/ghisa/cover-960.webp",
+        "srcThumb": "media/works/ghisa/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Ghisa: lettere nere e pesanti su fondo giallo, con la scritta «palestra di forza»"
@@ -6343,6 +6366,7 @@
       "cover": {
         "src": "media/works/taglio/cover-1920.webp",
         "srcMobile": "media/works/taglio/cover-960.webp",
+        "srcThumb": "media/works/taglio/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Taglio: il nome color crema su fondo rosso scuro, con un coltello sotto e la scritta «Macelleria di quartiere»"
@@ -6568,6 +6592,7 @@
       "cover": {
         "src": "media/works/il-gatto/cover-1920.webp",
         "srcMobile": "media/works/il-gatto/cover-960.webp",
+        "srcThumb": "media/works/il-gatto/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Il Gatto: la sagoma nera di una testa di gatto con due punti dorati al posto degli occhi"
@@ -6793,6 +6818,7 @@
       "cover": {
         "src": "media/works/officina-tre/cover-1920.webp",
         "srcMobile": "media/works/officina-tre/cover-960.webp",
+        "srcThumb": "media/works/officina-tre/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Officina Tre: un segno giallo a tre punte e il nome in bianco su fondo blu petrolio, con la scritta «moto e ricambi»"
@@ -7010,6 +7036,7 @@
       "cover": {
         "src": "media/works/cerchi/cover-1920.webp",
         "srcMobile": "media/works/cerchi/cover-960.webp",
+        "srcThumb": "media/works/cerchi/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Cerchi: il nome in nero su fondo chiaro, con un punto sfocato sopra la i e la scritta «ottica»"
@@ -7235,6 +7262,7 @@
       "cover": {
         "src": "media/works/nero-72/cover-1920.webp",
         "srcMobile": "media/works/nero-72/cover-960.webp",
+        "srcThumb": "media/works/nero-72/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Nero 72: il nome in lettere alte color crema su fondo cioccolato, con la scritta «Cioccolato artigiano»"
@@ -7452,6 +7480,7 @@
       "cover": {
         "src": "media/works/mandorla/cover-1920.webp",
         "srcMobile": "media/works/mandorla/cover-960.webp",
+        "srcThumb": "media/works/mandorla/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Mandorla: una mandorla disegnata come un pizzo e il nome in bianco su fondo verde salvia, con la scritta «Dolci delle feste»"
@@ -7677,6 +7706,7 @@
       "cover": {
         "src": "media/works/sale-grosso/cover-1920.webp",
         "srcMobile": "media/works/sale-grosso/cover-960.webp",
+        "srcThumb": "media/works/sale-grosso/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Sale Grosso: una barchetta di carta sopra il nome in blu scuro, con la scritta «osteria di mare»"
@@ -7894,6 +7924,7 @@
       "cover": {
         "src": "media/works/cornicione/cover-1920.webp",
         "srcMobile": "media/works/cornicione/cover-960.webp",
+        "srcThumb": "media/works/cornicione/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Cornicione: il nome in lettere tonde color crema su fondo rosso, con la scritta «Pizzeria a legna»"
@@ -8119,6 +8150,7 @@
       "cover": {
         "src": "media/works/kime/cover-1920.webp",
         "srcMobile": "media/works/kime/cover-960.webp",
+        "srcThumb": "media/works/kime/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Marchio Kime: una pennellata nera con un nodo rosso sopra il nome, e la scritta «scuola di karate»"
@@ -8332,6 +8364,7 @@
       "cover": {
         "src": "media/works/sagra-del-pesce/cover-1920.webp",
         "srcMobile": "media/works/sagra-del-pesce/cover-960.webp",
+        "srcThumb": "media/works/sagra-del-pesce/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Sagra del pesce, Porto di Cagliari»: un vortice di pesci color crema su fondo blu"
@@ -8536,6 +8569,7 @@
       "cover": {
         "src": "media/works/su-civraxiu/cover-1920.webp",
         "srcMobile": "media/works/su-civraxiu/cover-960.webp",
+        "srcThumb": "media/works/su-civraxiu/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Su Civraxiu, Sanluri»: una pagnotta tonda su fondo nero, divisa in quattro da due linee bianche"
@@ -8719,6 +8753,7 @@
       "cover": {
         "src": "media/works/su-coccoi/cover-1920.webp",
         "srcMobile": "media/works/su-coccoi/cover-960.webp",
+        "srcThumb": "media/works/su-coccoi/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Su Coccoi»: una corona bianca intagliata su fondo ocra"
@@ -8902,6 +8937,7 @@
       "cover": {
         "src": "media/works/sa-binnenna/cover-1920.webp",
         "srcMobile": "media/works/sa-binnenna/cover-960.webp",
+        "srcThumb": "media/works/sa-binnenna/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Sa Binnenna, Monserrato»: un grappolo fatto con le impronte rotonde di un bicchiere di vino"
@@ -9094,6 +9130,7 @@
       "cover": {
         "src": "media/works/sagra-del-miele/cover-1920.webp",
         "srcMobile": "media/works/sagra-del-miele/cover-960.webp",
+        "srcThumb": "media/works/sagra-del-miele/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Sagra del miele, Montevecchio»: un favo giallo e una colata di miele"
@@ -9269,6 +9306,7 @@
       "cover": {
         "src": "media/works/5-km-del-poetto/cover-1920.webp",
         "srcMobile": "media/works/5-km-del-poetto/cover-960.webp",
+        "srcThumb": "media/works/5-km-del-poetto/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «5 km del Poetto, Cagliari»: il numero 5 e la scritta KM fatti con le corsie rosse di una pista"
@@ -9460,6 +9498,7 @@
       "cover": {
         "src": "media/works/corsa-campestre/cover-1920.webp",
         "srcMobile": "media/works/corsa-campestre/cover-960.webp",
+        "srcThumb": "media/works/corsa-campestre/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Corsa campestre, Arborea»: gambe e scarpe in corsa sull’erba, stampate in verde"
@@ -9653,6 +9692,7 @@
       "cover": {
         "src": "media/works/santa-chiara/cover-1920.webp",
         "srcMobile": "media/works/santa-chiara/cover-960.webp",
+        "srcThumb": "media/works/santa-chiara/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Santa Chiara, Iglesias»: una fila di luci sale di notte verso una chiesa in cima al colle"
@@ -9838,6 +9878,7 @@
       "cover": {
         "src": "media/works/castagne/cover-1920.webp",
         "srcMobile": "media/works/castagne/cover-960.webp",
+        "srcThumb": "media/works/castagne/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Castagne, Aritzo»: una padella forata vista dall’alto con una castagna, su fondo arancione"
@@ -10025,6 +10066,7 @@
       "cover": {
         "src": "media/works/settimana-santa/cover-1920.webp",
         "srcMobile": "media/works/settimana-santa/cover-960.webp",
+        "srcThumb": "media/works/settimana-santa/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Settimana Santa, Iglesias»: una croce di legno con un drappo bianco su fondo viola scuro"
@@ -10212,6 +10254,7 @@
       "cover": {
         "src": "media/works/corteo-storico/cover-1920.webp",
         "srcMobile": "media/works/corteo-storico/cover-960.webp",
+        "srcThumb": "media/works/corteo-storico/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Corteo storico medioevale, Iglesias»: bandiere con stemmi al vento su un cielo azzurro"
@@ -10391,6 +10434,7 @@
       "cover": {
         "src": "media/works/candelieri/cover-1920.webp",
         "srcMobile": "media/works/candelieri/cover-960.webp",
+        "srcThumb": "media/works/candelieri/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Candelieri, Iglesias»: otto candelieri a strisce colorate, dal più alto al più basso, con i nastri al vento"
@@ -10588,6 +10632,7 @@
       "cover": {
         "src": "media/works/corsa-dei-ceri/cover-1920.webp",
         "srcMobile": "media/works/corsa-dei-ceri/cover-960.webp",
+        "srcThumb": "media/works/corsa-dei-ceri/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Corsa dei Ceri, Gubbio»: i tre ceri portati di corsa sopra la folla in giallo, blu e nero"
@@ -10767,6 +10812,7 @@
       "cover": {
         "src": "media/works/la-quintana/cover-1920.webp",
         "srcMobile": "media/works/la-quintana/cover-960.webp",
+        "srcThumb": "media/works/la-quintana/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «La Quintana, Ascoli Piceno»: un cavaliere in armatura al galoppo punta la lancia contro un bersaglio"
@@ -10793,11 +10839,11 @@
       "story": [
         {
           "h": "L'idea",
-          "p": "La Festa del Redentore nasce nel 1577 per ringraziare della fine della peste, e ogni anno un ponte votivo collega le Zattere alla Giudecca. La notte della festa i veneziani guardano i fuochi dall’acqua, nel Bacino di San Marco. L’immagine è il ponte di barche visto dall’alto, da una riva all’altra."
+          "p": "La Festa del Redentore nasce nel 1577 per ringraziare della fine della peste, e ogni anno un ponte votivo collega le Zattere alla Giudecca. La notte della festa i veneziani guardano i fuochi dall’acqua, nel Bacino di San Marco. L’immagine è quella notte."
         },
         {
           "h": "Le scelte",
-          "p": "Ho disegnato il ponte votivo visto dall’alto: dodici barche in fila e sopra una passerella del colore della carta, che parte da una riva e arriva all’altra. I colori sono tre, il blu della notte per l’acqua, il giallo per le barche e la carta per le rive, il ponte e le parole. Il titolo è grande, in un bastone stretto, in alto a sinistra; «Venezia» chiude in basso, e i nomi delle due rive, Zattere e Giudecca, sono scritti piccoli sui margini."
+          "p": "Pennellate a olio, dense, con i fuochi rossi, bianchi e oro che si riflettono nella laguna. La chiesa sta in basso, piccola, con le barche illuminate davanti. Il titolo è in maiuscole con le grazie, color oro, in alto; «Venezia» è in corsivo, in fondo."
         },
         {
           "h": "Dove si vede",
@@ -10849,11 +10895,11 @@
                   "i": 0,
                   "box": [
                     0,
-                    0.46,
+                    0.55,
                     1,
-                    0.28
+                    0.3
                   ],
-                  "caption": "Il ponte di barche da una riva all’altra"
+                  "caption": "La chiesa sul Bacino e le barche illuminate"
                 }
               ]
             }
@@ -10865,7 +10911,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "La Festa del Redentore nasce nel 1577 per ringraziare della fine della peste, e ogni anno un ponte votivo collega le Zattere alla Giudecca. La notte della festa i veneziani guardano i fuochi dall’acqua, nel Bacino di San Marco. L’immagine è il ponte di barche visto dall’alto, da una riva all’altra."
+              "p": "La Festa del Redentore nasce nel 1577 per ringraziare della fine della peste, e ogni anno un ponte votivo collega le Zattere alla Giudecca. La notte della festa i veneziani guardano i fuochi dall’acqua, nel Bacino di San Marco. L’immagine è quella notte."
             },
             {
               "kind": "images",
@@ -10874,11 +10920,11 @@
                   "i": 0,
                   "box": [
                     0,
-                    0.48,
-                    0.5,
-                    0.25
+                    0.08,
+                    1,
+                    0.5
                   ],
-                  "caption": "Le barche in fila sotto la passerella"
+                  "caption": "I fuochi sopra la laguna"
                 }
               ]
             }
@@ -10890,7 +10936,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Ho disegnato il ponte votivo visto dall’alto: dodici barche in fila e sopra una passerella del colore della carta, che parte da una riva e arriva all’altra. I colori sono tre, il blu della notte per l’acqua, il giallo per le barche e la carta per le rive, il ponte e le parole. Il titolo è grande, in un bastone stretto, in alto a sinistra; «Venezia» chiude in basso, e i nomi delle due rive, Zattere e Giudecca, sono scritti piccoli sui margini."
+              "p": "Pennellate a olio, dense, con i fuochi rossi, bianchi e oro che si riflettono nella laguna. La chiesa sta in basso, piccola, con le barche illuminate davanti. Il titolo è in maiuscole con le grazie, color oro, in alto; «Venezia» è in corsivo, in fondo."
             },
             {
               "kind": "text",
@@ -10923,22 +10969,22 @@
                 {
                   "i": 0,
                   "box": [
-                    0.04,
-                    0.03,
-                    0.9,
-                    0.36
+                    0.2,
+                    0.72,
+                    0.6,
+                    0.28
                   ],
-                  "caption": "Il titolo, stretto e pesante, in alto a sinistra"
+                  "caption": "I riflessi dei fuochi nell’acqua"
                 },
                 {
                   "i": 0,
                   "box": [
-                    0.76,
-                    0.4,
-                    0.24,
-                    0.4
+                    0,
+                    0,
+                    1,
+                    0.2
                   ],
-                  "caption": "La riva, col suo nome scritto in verticale"
+                  "caption": "Il titolo color oro in maiuscole con le grazie"
                 }
               ]
             }
@@ -10964,16 +11010,17 @@
       "cover": {
         "src": "media/works/festa-del-redentore/cover-1920.webp",
         "srcMobile": "media/works/festa-del-redentore/cover-960.webp",
+        "srcThumb": "media/works/festa-del-redentore/cover-240.webp",
         "w": 1920,
         "h": 1200,
-        "alt": "Manifesto «Festa del Redentore, Venezia»: una fila di barche gialle unite da una passerella chiara che attraversa un canale blu da una riva all’altra"
+        "alt": "Manifesto «Festa del Redentore, Venezia»: fuochi d’artificio sopra la laguna, con la chiesa e le barche"
       },
       "gallery": [
         {
           "src": "media/works/festa-del-redentore/01-1200.webp",
           "w": 1200,
           "h": 1608,
-          "alt": "Manifesto «Festa del Redentore, Venezia»: una fila di barche gialle unite da una passerella chiara che attraversa un canale blu da una riva all’altra",
+          "alt": "Manifesto «Festa del Redentore, Venezia»: fuochi d’artificio sopra la laguna, con la chiesa e le barche",
           "caption": "",
           "srcset": "media/works/festa-del-redentore/01-600.webp 600w, media/works/festa-del-redentore/01-1200.webp 1200w"
         }
@@ -11169,6 +11216,7 @@
       "cover": {
         "src": "media/works/oh-bej-oh-bej/cover-1920.webp",
         "srcMobile": "media/works/oh-bej-oh-bej/cover-960.webp",
+        "srcThumb": "media/works/oh-bej-oh-bej/cover-240.webp",
         "w": 1920,
         "h": 1200,
         "alt": "Manifesto «Oh bej! Oh bej!, Milano»: la scritta ripetuta quattro volte in rosso, verde, giallo e blu"

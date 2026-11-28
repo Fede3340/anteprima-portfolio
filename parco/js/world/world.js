@@ -279,10 +279,11 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       way = Math.atan2(dz, dx);
       metres = Math.min(metres, left);
       // A mouth lies past the edge one keeps from: close to it is there.
-      // A walk that has not come nearer for half a second (a thing stands on the point) ends there.
+      // A walk that has not come nearer for two and a half seconds (going round a thing takes a
+      // while; a thing standing on the point never ends) stops there.
       if (left < (step.best ?? Infinity) - 0.05) Object.assign(step, { best: left, since: time });
       if (left < (state.route[1]?.path ? EDGE + 0.3 : 0.1)) state.route.shift();
-      else if (time - step.since > 0.5) state.route = [];
+      else if (time - step.since > 2.5) state.route = [];
       else if (Math.abs(state.speed) > 0.2 && !controls.locked()) steer(way, dt);
     } else if (step?.path) {
       enter(step.path, step.to === 0);

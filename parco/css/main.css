@@ -323,6 +323,22 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   opacity: 1;
 }
 
+/* The third way, small: the list of the works without the park, there from the start. */
+.threshold__ways > .threshold__list {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 20px;
+  background: rgb(255 255 255 / 0.6);
+  color: var(--ink);
+  font-size: var(--small);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+  opacity: 1;
+}
+
 .threshold button:disabled {
   cursor: progress;
 }
@@ -536,6 +552,49 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   padding: 6px 0;
 }
 
+/* A work in the list: small cover, title, kind. */
+.list__work {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  column-gap: 14px;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.list__work img {
+  grid-row: span 2;
+  width: 96px;
+  height: 60px;
+  border-radius: 8px;
+  background: rgb(0 23 80 / 0.06);
+  object-fit: cover;
+}
+
+.list__work span {
+  font-size: var(--small);
+  opacity: 0.72;
+}
+
+/* As the page, the works stand in a grid of cards. */
+:is(.no-webgl, .is-lean) .list ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px;
+}
+
+:is(.no-webgl, .is-lean) .list__work {
+  grid-template-columns: 1fr;
+  row-gap: 4px;
+}
+
+:is(.no-webgl, .is-lean) .list__work img {
+  grid-row: auto;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+}
+
 /* Without WebGL, or on a machine too slow for the park, the list is the page. */
 :is(.no-webgl, .is-lean) :is(.park, .anchors, .hud .above, .threshold, .hint) {
   display: none;
@@ -548,7 +607,7 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 :is(.no-webgl, .is-lean) .list {
   position: static;
   width: auto;
-  max-width: 44rem;
+  max-width: 60rem;
   max-height: none;
   margin: calc(var(--top) + 70px) auto 40px;
   clip-path: none;

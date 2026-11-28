@@ -170,9 +170,11 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   }
 
   // The sculpture of each place; the great cursor stands in the middle of the first island.
+  const sculptures = new Set();
   for (const zone of plan.zones) {
     const drawn = sprite(zone.id, [zone.mark]);
     if (!drawn) continue;
+    sculptures.add(drawn);
     drawn.spots[0].y += picture(zone.id).lift ?? 0;
     shadows.push({ x: zone.mark.x, z: zone.mark.z, size: 3 });
     // A sculpture is seen whole from a few metres; the great cursor from further.
@@ -291,10 +293,13 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
       here = island;
       const count = plan.islands.length;
       const apart = (index) => Math.min(Math.abs(index - island.index), count - Math.abs(index - island.index));
+      // Large pictures only for the sculptures of the island one is on and those beside it, which
+      // are seen from close: every other picture stays small, and nothing heavy is sent to the
+      // graphics card while walking.
       for (const drawn of made) {
         const away = drawn.islands ? Math.min(...[...drawn.islands].map(apart)) : 0;
         if (away > 2) drawn.release();
-        else drawn.use(away <= 1 && !light ? 'large' : 'small');
+        else drawn.use(away <= 1 && !light && sculptures.has(drawn) ? 'large' : 'small');
       }
     },
     // The light way for slow machines: half the grass and the clouds of the rims, no large pictures.

@@ -98,7 +98,7 @@ async function start(root) {
   const status = element('p', { className: 'travel__status', role: 'status' });
   const rows = works.map((entry) => {
     const button = element('button', { type: 'button', className: 'travel__work' }, [
-      element('img', { src: asset(entry.work.cover.srcMobile), alt: '', width: 72, height: 45, loading: 'lazy', decoding: 'async' }),
+      element('img', { src: asset(entry.work.cover.srcThumb ?? entry.work.cover.srcMobile), alt: '', width: 72, height: 45, loading: 'lazy', decoding: 'async' }),
       element('span', { className: 'travel__work-title', textContent: entry.work.title }),
       element('span', { className: 'travel__work-kind', textContent: entry.kind }),
     ]);
