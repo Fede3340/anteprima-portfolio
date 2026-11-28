@@ -36,13 +36,13 @@ const GLSL = `
     #ifdef GRADE_FLOOR
     // The floor faces the sky square on: brought down onto the slope from half tone to light, where
     // its felt and its soft billows show, instead of all at the light.
-    c *= 0.85;
+    c *= 0.9;
     #endif
     float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
     vec3 g = mix(uShade * min(1.0, l * 3.33), uHalf, clamp((l - 0.3) * 3.85, 0.0, 1.0));
     g = mix(g, uLit, clamp((l - 0.56) * 3.28, 0.0, 1.0));
     #ifdef GRADE_OWN
-    g = mix(g, uAccent.rgb * (0.4 + 0.7 * l), uAccent.a * step(uAccentFrom, l));
+    g = mix(g, uAccent.rgb * (0.4 + 0.7 * l), uAccent.a * smoothstep(uAccentFrom - 0.12, uAccentFrom, l));
     g = mix(g, uVeil.rgb, uVeil.a);
     #endif
     return g;

@@ -5,7 +5,9 @@
 import * as THREE from 'three';
 import { grade, pools, tones } from './grade.js';
 import { LENGTH, hourLight } from './hours.js';
+import { heightAt } from './land.js';
 import { MOODS } from './layout.js';
+import { createShadows } from './shadows.js';
 import { createSkyMaterial } from './sky.js';
 import { createSprite, drawn } from './sprites.js';
 import { asset } from '../media.js';
@@ -20,7 +22,10 @@ const PLANET_DISTANCE = 650;
 // Before a work: how much each tone leans to the cover's colour, and how soon (seconds).
 const LEAN = { lit: 0.08, half: 0.07, shade: 0.04, time: 0.17 };
 const STAND = 7.5;
-const LAMP_GLOW = new THREE.Color('#ffc887');
+// The water of the ponds, deep and at the rim, as in the door's picture.
+const WATER_DEEP = new THREE.Color('#3f7fd6');
+const WATER_SHALLOW = new THREE.Color('#8fc4f2');
+const LAMP_GLOW = new THREE.Color('#ffb860');
 
 export function createLight({ plan, sky, sun, fog, park, renderer }) {
   const scene = sky.parent;
@@ -34,7 +39,7 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
   // Ground, bodies and stones; on the light way their materials change, and the new ones are graded too.
   const ground = meshes.filter((mesh) => mesh.material?.isMeshLambertMaterial);
   const graded = new WeakSet();
-  const [shadows, patches] = [1, 2].map((order) => park.object.children.find((mesh) => mesh.renderOrder === order && mesh.material.uniforms?.colour));
+  const [contact, patches] = [1, 2].map((order) => park.object.children.find((mesh) => mesh.renderOrder === order && mesh.material.uniforms?.colour));
   // The pools of the lamps are painted by the floor itself (grade.js), following its bumps; the flat
   // patches park.js lays for them would sink into the floor, so they are not drawn.
   patches.visible = false;
@@ -71,12 +76,12 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
   for (const sprite of drawn) {
     const colour = Object.values(MOODS).find((mood) => mood.on?.[sprite.name])?.on[sprite.name];
     if (colour) {
-      sprite.tone.uAccent.value.set(...new THREE.Color(colour).toArray(), 0.72);
+      sprite.tone.uAccent.value.set(...new THREE.Color(colour).toArray(), 0.9);
       toned(sprite);
     }
     if (sprite.name === 'lampione') {
       sprite.tone.uAccent.value.set(...LAMP_GLOW.toArray(), 1);
-      sprite.tone.uAccentFrom.value = 0.8;
+      sprite.tone.uAccentFrom.value = 0.92;
       toned(sprite);
     }
   }
@@ -88,6 +93,14 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
       toned(sprite);
       return { sprite, colour, amount };
     }));
+
+  // Long shadows of the large things standing on the ground (trees, sculptures, lamps, benches) and
+  // of the works; not on the light way, where the sea of clouds is plain.
+  const standing = [...drawn].filter((sprite) => !/^(sbuffo|ciuffo|nuvola|mare|isola-lontana|lampione-spento|altalena)/.test(sprite.name)).flatMap((sprite) => sprite.spots
+    .filter((spot) => !spot.hidden && spot.height >= 1 && Math.abs(spot.y - heightAt(plan, spot.x, spot.z)) < 0.4)
+    .map((spot) => ({ x: spot.x, z: spot.z, height: spot.height, width: spot.height * sprite.aspect })));
+  const shadows = createShadows(plan, [...standing, ...plan.works.map((work) => ({ x: work.place.x, z: work.place.z, height: 2.2, width: 2.1 }))]);
+  scene.add(shadows.mesh);
 
   // The planets, still in the sky, as far as the sky goes; they need the renderer to be fetched.
   const planets = [];
@@ -207,13 +220,16 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
         sea.material.uniforms.uGap.value.copy(below.sea).multiplyScalar(0.85);
       } else sea.material.color.copy(below.sea);
       for (const { sprite, colour, amount } of behind) sprite.tone.uVeil.value.set(...(below[colour] ?? now[colour]).toArray(), amount);
-      shadows.material.uniforms.colour.value.copy(now.shade).multiplyScalar(0.8);
-      // The ponds give back the sky of the hour: its top in the middle, its middle at the rim, the
-      // light of the plaster in the rings and the sun's glow in the glint.
+      contact.material.uniforms.colour.value.copy(now.shade).multiplyScalar(0.8);
+      shadows.mesh.visible = Boolean(sea.material.uniforms);
+      shadows.material.uniforms.colour.value.copy(now.shade).multiplyScalar(0.75);
+      shadows.update(ahead + THREE.MathUtils.degToRad(now.shape[0]) + Math.PI, THREE.MathUtils.degToRad(now.shape[1]));
+      // The ponds stay water blue at every hour, touched by the sky of the hour; the light of the
+      // plaster in the rings and the sun's glow in the glint.
       if (park.water) {
         const w = park.water.uniforms;
-        w.uDeep.value.copy(now.top).lerp(now.shade, 0.3);
-        w.uShallow.value.copy(now.half);
+        w.uDeep.value.copy(WATER_DEEP).lerp(now.top, 0.3);
+        w.uShallow.value.copy(WATER_SHALLOW).lerp(now.half, 0.25);
         w.uRing.value.copy(now.lit);
         w.uGlint.value.copy(now.glow);
       }

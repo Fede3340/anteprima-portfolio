@@ -51,6 +51,7 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
   }
   const sprite = {
     mesh,
+    aspect,
     tone,
     spots,
     use,
