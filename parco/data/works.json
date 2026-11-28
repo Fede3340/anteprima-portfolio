@@ -404,7 +404,20 @@
           "alt": "L’acquisto sul telefono: bottiglia da 50 cl, «Raccolta 2026»",
           "caption": ""
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/grecale/intera-desktop.webp",
+          "w": 1440,
+          "h": 5974
+        },
+        "phone": {
+          "src": "media/works/grecale/intera-phone.webp",
+          "w": 780,
+          "h": 13900
+        }
+      },
+      "live": "https://fede3340.github.io/grecale/"
     },
     "mirtifolia": {
       "index": 2,
@@ -705,7 +718,20 @@
           "alt": "La sezione «Una cassa?» sul telefono, con la cassa vista dall’alto",
           "caption": ""
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/mirtifolia/intera-desktop.webp",
+          "w": 1440,
+          "h": 6550
+        },
+        "phone": {
+          "src": "media/works/mirtifolia/intera-phone.webp",
+          "w": 780,
+          "h": 5292
+        }
+      },
+      "live": "https://fede3340.github.io/mirtifolia/"
     },
     "operazione-africa": {
       "index": 3,
@@ -962,7 +988,19 @@
           "alt": "L’apertura sul telefono: titolo, testo, bottone «Dona ora» e l’inizio del cerchio di punti",
           "caption": "Design"
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/operazione-africa/intera-desktop.webp",
+          "w": 1440,
+          "h": 3894
+        },
+        "phone": {
+          "src": "media/works/operazione-africa/intera-phone.webp",
+          "w": 780,
+          "h": 8774
+        }
+      }
     },
     "sito-valerio": {
       "index": 4,
@@ -1158,7 +1196,20 @@
           "alt": "L’arrivo sul telefono, con il contatore dei commit",
           "caption": "Anteprima"
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/sito-valerio/intera-desktop.webp",
+          "w": 1440,
+          "h": 1538
+        },
+        "phone": {
+          "src": "media/works/sito-valerio/intera-phone.webp",
+          "w": 780,
+          "h": 4130
+        }
+      },
+      "live": "https://fede3340.github.io/anteprima-portfolio/terminale/"
     },
     "sito-sara": {
       "index": 5,
@@ -1327,7 +1378,20 @@
           "alt": "Il muro sul telefono, con i primi tre fogli",
           "caption": "Anteprima: i fogli sono segnaposto"
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/sito-sara/intera-desktop.webp",
+          "w": 1440,
+          "h": 3760
+        },
+        "phone": {
+          "src": "media/works/sito-sara/intera-phone.webp",
+          "w": 780,
+          "h": 10040
+        }
+      },
+      "live": "https://fede3340.github.io/anteprima-portfolio/sara/"
     },
     "sito-lucio": {
       "index": 6,
@@ -1492,7 +1556,20 @@
           "alt": "La prima stampa sul telefono, col numero e la fila di tacche",
           "caption": "Anteprima: le stampe sono segnaposto"
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/sito-lucio/intera-desktop.webp",
+          "w": 1440,
+          "h": 900
+        },
+        "phone": {
+          "src": "media/works/sito-lucio/intera-phone.webp",
+          "w": 780,
+          "h": 1800
+        }
+      },
+      "live": "https://fede3340.github.io/anteprima-portfolio/lucio/"
     },
     "pippi-store": {
       "index": 7,
@@ -1824,7 +1901,19 @@
           "alt": "La scheda del prodotto sul telefono",
           "caption": ""
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/pippi-store/intera-desktop.webp",
+          "w": 1440,
+          "h": 6744
+        },
+        "phone": {
+          "src": "media/works/pippi-store/intera-phone.webp",
+          "w": 780,
+          "h": 16000
+        }
+      }
     },
     "bianchipro": {
       "index": 8,
@@ -2095,7 +2184,19 @@
           "alt": "Il carrello sul telefono, con due abbattitori e il totale",
           "caption": "Design"
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/bianchipro/intera-desktop.webp",
+          "w": 1440,
+          "h": 4058
+        },
+        "phone": {
+          "src": "media/works/bianchipro/intera-phone.webp",
+          "w": 780,
+          "h": 10766
+        }
+      }
     },
     "spedizione-facile": {
       "index": 9,
@@ -2657,7 +2758,19 @@
           "alt": "Il carrello sul telefono",
           "caption": "Concept"
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/negozio-nero-72/intera-desktop.webp",
+          "w": 1440,
+          "h": 2578
+        },
+        "phone": {
+          "src": "media/works/negozio-nero-72/intera-phone.webp",
+          "w": 780,
+          "h": 6612
+        }
+      }
     },
     "negozio-il-gatto": {
       "index": 11,
@@ -2923,7 +3036,19 @@
           "alt": "Il carrello sul telefono",
           "caption": "Concept"
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/negozio-il-gatto/intera-desktop.webp",
+          "w": 1440,
+          "h": 3486
+        },
+        "phone": {
+          "src": "media/works/negozio-il-gatto/intera-phone.webp",
+          "w": 780,
+          "h": 6394
+        }
+      }
     },
     "negozio-mandorla": {
       "index": 12,
@@ -3182,7 +3307,19 @@
           "alt": "Il carrello sul telefono",
           "caption": "Concept"
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/negozio-mandorla/intera-desktop.webp",
+          "w": 1440,
+          "h": 3744
+        },
+        "phone": {
+          "src": "media/works/negozio-mandorla/intera-phone.webp",
+          "w": 780,
+          "h": 8956
+        }
+      }
     },
     "negozio-cerchi": {
       "index": 13,
@@ -3425,7 +3562,19 @@
           "alt": "Il carrello sul telefono",
           "caption": "Concept"
         }
-      ]
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/negozio-cerchi/intera-desktop.webp",
+          "w": 1440,
+          "h": 3922
+        },
+        "phone": {
+          "src": "media/works/negozio-cerchi/intera-phone.webp",
+          "w": 780,
+          "h": 11704
+        }
+      }
     },
     "zanzanext": {
       "index": 14,

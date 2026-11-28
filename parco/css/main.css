@@ -323,8 +323,12 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   opacity: 1;
 }
 
-/* The third way, small: the list of the works without the park, there from the start. */
+/* The third way, small: the list of the works without the park, there from the start. It hangs under
+   the two ways in, so that they stay where they are. */
 .threshold__ways > .threshold__list {
+  position: absolute;
+  top: 100%;
+  margin-top: 14px;
   min-height: 40px;
   padding: 0 16px;
   border: 0;
@@ -553,7 +557,7 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 }
 
 /* A work in the list: small cover, title, kind. */
-.list__work {
+.list .list__work {
   display: grid;
   grid-template-columns: 96px 1fr;
   column-gap: 14px;
@@ -579,7 +583,7 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 /* As the page, the works stand in a grid of cards. */
 :is(.no-webgl, .is-lean) .list ul {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 18px;
 }
 
@@ -596,7 +600,7 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 }
 
 /* Without WebGL, or on a machine too slow for the park, the list is the page. */
-:is(.no-webgl, .is-lean) :is(.park, .anchors, .hud .above, .threshold, .hint) {
+:is(.no-webgl, .is-lean) :is(.park, .anchors, .hud .above, .threshold, .hint, .travel) {
   display: none;
 }
 

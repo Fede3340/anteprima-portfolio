@@ -643,5 +643,45 @@
     "altezza_1024": 350,
     "larghezza_gradi": 5,
     "uso": "cielo, lontano"
+  },
+  "indice": {
+    "file": "indice.webp",
+    "larghezza": 345,
+    "altezza": 512,
+    "punta": [
+      28,
+      3
+    ],
+    "file_64": "indice-64.png",
+    "punta_64": [
+      3,
+      0
+    ],
+    "file_32": "indice-32.png",
+    "punta_32": [
+      1,
+      0
+    ],
+    "uso": "puntatore del mouse"
+  },
+  "indice-preme": {
+    "file": "indice-preme.webp",
+    "larghezza": 369,
+    "altezza": 512,
+    "punta": [
+      30,
+      3
+    ],
+    "file_64": "indice-preme-64.png",
+    "punta_64": [
+      3,
+      0
+    ],
+    "file_32": "indice-preme-32.png",
+    "punta_32": [
+      1,
+      0
+    ],
+    "uso": "puntatore del mouse"
   }
 }

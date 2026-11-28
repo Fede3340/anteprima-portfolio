@@ -64,9 +64,9 @@ const length = (blocks) => blocks.reduce((total, block) => total + (block.p?.len
 // The whole page of the work, to scroll in a window on the board of the result: a capture of the page
 // on the computer or on the phone, or the page on the phone that the work already has.
 const shot = (value) => (typeof value === 'string' ? { src: value } : value);
-function pageOf(work) {
+function pageOf(work, stacked) {
+  if (work.full?.phone && (stacked || !work.full.desktop)) return { ...shot(work.full.phone), frame: 'phone' };
   if (work.full?.desktop) return { ...shot(work.full.desktop), frame: 'browser' };
-  if (work.full?.phone) return { ...shot(work.full.phone), frame: 'phone' };
   if (TALL[work.id]) return { src: `img/work/${work.id}-tall.webp`, w: TALL[work.id], frame: 'phone' };
   return null;
 }
@@ -152,7 +152,7 @@ function plan(work, stacked, row) {
     }
     if (section.phase === 'risultato' && own.length) {
       own[0].link = true;
-      const page = pageOf(work);
+      const page = pageOf(work, stacked);
       const { visual: shown } = own[0];
       if (page) {
         own[0].visual = { kind: 'window', page, also: shown.kind === 'pics' ? shown.items.filter((image) => !image.tall) : [] };
@@ -346,8 +346,10 @@ function visual(board, work, zoom) {
   }
   if (kind === 'window') {
     const { page, also } = board.visual;
-    const img = element('img', { src: asset(page.src), alt: `La pagina intera di ${work.title}`, decoding: 'async', draggable: false });
-    // Never wider than its own pixels allow.
+    // The whole page is heavy: it is fetched only when its board comes into view. Never wider than its
+    // own pixels allow.
+    const img = element('img', { alt: `La pagina intera di ${work.title}`, decoding: 'async', draggable: false });
+    img.dataset.src = asset(page.src);
     img.addEventListener('load', () => { img.style.maxWidth = `${Math.floor((img.naturalWidth * 1.1) / devicePixelRatio)}px`; }, { once: true });
     const inside = element('div', { className: 'case-screen__page' }, [img]);
     const bar = page.frame === 'browser' && work.link ? [element('div', { className: 'case-screen__bar', textContent: new URL(work.link.href).host })] : [];
@@ -526,8 +528,9 @@ export function createStory(root, { works, sound, onClose }) {
         shown.style.width = `${room}px`;
         shown.style.minHeight = `${H}px`;
       }
-      const high = (mode === 'side' ? H : H * 0.8) - trial;
-      const wide = phone ? Math.min(room, high * 0.47) : room;
+      // On a narrow screen the page of the phone is as wide as the screen itself.
+      const high = (mode === 'side' ? H : H * 0.86) - trial;
+      const wide = phone && mode === 'side' ? Math.min(room, high * 0.47) : room;
       screen.style.width = `${Math.floor(wide)}px`;
       screen.style.height = `${Math.floor(high)}px`;
       const rest = room - wide - 12;
@@ -546,7 +549,7 @@ export function createStory(root, { works, sound, onClose }) {
       const high = Math.max(H * least, H - (text?.offsetHeight ?? 0)) - caption;
       draw(boxes[0], { w: W, h: high, ...fill });
       // A picture with few pixels, narrower than the board, grows down as far as they allow.
-      if (boxes[0].offsetWidth < W - 1) draw(boxes[0], { w: W, h: Math.min(H - caption, (W * H * 0.64) / boxes[0].offsetWidth), ...fill });
+      if (boxes[0].offsetWidth < W - 1) draw(boxes[0], { w: W, h: Math.min(least === 0.5 ? high : H - caption, (W * H * 0.64) / boxes[0].offsetWidth), ...fill });
     } else if (mode === 'side' && text) {
       // The picture, the colours or the letters on the left, the words in a column on the right.
       node.dataset.layout = 'beside';
@@ -580,7 +583,8 @@ export function createStory(root, { works, sound, onClose }) {
       else if (kind === 'palette' && board.visual.poster) draw(shown.querySelector('.case-pic'), { w: W * 0.5, h: H });
     } else {
       node.dataset.layout = text ? 'stack' : 'full';
-      const top = Math.round(H * 0.62);
+      // On the cover and on a board of passage every word stays in sight.
+      const top = Math.round(board.cover || board.pass ? Math.max(H * 0.45, H - text.offsetHeight) : H * 0.62);
       if (kind === 'crop') {
         draw(boxes[0], { w: W, h: text ? top : H - 24 - caption, fit: 'part', part });
       } else if (kind === 'pics' && upright) {
@@ -635,6 +639,10 @@ export function createStory(root, { works, sound, onClose }) {
       else button.removeAttribute('aria-current');
     }
     strip.children[at].classList.add('is-seen');
+    strip.children[at].querySelectorAll('img[data-src]').forEach((img) => {
+      img.src = img.dataset.src;
+      delete img.dataset.src;
+    });
   }
 
   // Before the cover and after the last board, a board says which work comes before and after: the

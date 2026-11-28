@@ -187,32 +187,73 @@ function createStones(plan) {
   return instances(template, spots, { slices: 16 }).drawn;
 }
 
-// The body of every island: a mass of cloud under its floor, round billows closed underneath, so that
-// from below and from the side the island is full and nothing shows through. One mesh for all.
-function createBodies(plan) {
-  const ball = new THREE.IcosahedronGeometry(1, 2);
-  // Round, not faceted: on a unit ball the normal is the point itself.
-  ball.setAttribute('normal', ball.attributes.position.clone());
-  const parts = [];
+// The body of every island, and a small cushion under every stone: one mesh of round billows, as the
+// cut-out clouds are made, so that from below and from the side an island is a full cloud. Around the
+// rim the billows rise just over the edge of the floor and hide it; underneath they hang in smaller
+// and smaller rings, like a cauliflower seen from below. Where a billow sinks into another its colour
+// goes to the soft blue of the folds. light: fewer billows, for slow machines.
+const FOLD = new THREE.Color('#a9bbdb');
+const PUFF = new THREE.Color('#ffffff');
+
+function createBodies(plan, light) {
+  const balls = [];
   for (const island of plan.islands) {
     const R = island.radius;
-    const seed = (n) => Math.abs(Math.sin((island.index * 17 + n) * 12.9898) * 43758.5453) % 1;
-    const add = (x, y, z, size, squash) => parts.push(ball.clone().scale(size, size * squash, size).translate(island.centre.x + x, island.centre.y + y, island.centre.z + z));
-    // The heart, under the middle, and a ring of billows under the rim, lower towards the middle.
-    add(0, -R * 0.45, 0, R * 0.78, 0.55);
-    for (let i = 0; i < 9; i++) {
-      const a = ((i + seed(i) * 0.5) / 9) * Math.PI * 2;
-      const size = R * (0.3 + seed(i + 20) * 0.12);
-      add(Math.cos(a) * R * 0.68, -size * 0.62 - 0.35, Math.sin(a) * R * 0.68, size, 0.62);
-    }
-    for (let i = 0; i < 5; i++) {
-      const a = seed(i + 40) * Math.PI * 2;
-      const size = R * (0.25 + seed(i + 60) * 0.1);
-      add(Math.cos(a) * R * 0.35, -R * 0.55 - size * 0.3, Math.sin(a) * R * 0.35, size, 0.8);
+    const c = island.centre;
+    const seed = (n) => Math.abs(Math.sin((island.index * 131 + n) * 12.9898) * 43758.5453) % 1;
+    let n = 0;
+    // At the mouths of the paths the billows sit lower, under the first stones, still hiding the edge.
+    const mouths = [island.out.curve.getPoint(0), island.in.curve.getPoint(1)];
+    // Rings from the rim down: radius from the middle, depth under the floor, size of the billows.
+    const rings = [[R - 0.4, 1.1, 1.9], [R * 0.86, 2.6, 2.6], [R * 0.66, 4.4, 3], [R * 0.42, 6, 3], [R * 0.16, 7.2, 3.2]];
+    for (const [r, depth, size] of rings.slice(0, light ? 3 : 5)) {
+      const count = Math.max(3, Math.round((2 * Math.PI * r) / (size * (light ? 2.2 : 1.35))));
+      for (let i = 0; i < count; i++, n++) {
+        const a = ((i + seed(n) * 0.6) / count) * Math.PI * 2;
+        const s = size * (0.75 + seed(n + 500) * 0.5);
+        const x = c.x + Math.cos(a) * r;
+        const z = c.z + Math.sin(a) * r;
+        const low = depth < 3 && mouths.some((m) => Math.hypot(x - m.x, z - m.z) < s + 1.6);
+        const y = low ? c.y - 0.45 - s * 0.8 : c.y - depth + (seed(n + 900) - 0.5) * 0.6;
+        balls.push({ x, y, z, r: s, squash: 0.8, detail: depth < 2 ? 2 : 1 });
+      }
     }
   }
-  const material = new THREE.MeshLambertMaterial({ color: '#eef3fa', emissive: '#5a6d8f' });
-  return new THREE.Mesh(mergeGeometries(parts), material);
+  if (!light) {
+    for (const path of plan.paths) {
+      for (let i = 0; i <= path.stones; i++) {
+        const at = path.curve.getPointAt(i / path.stones);
+        balls.push({ x: at.x, y: at.y - 0.22, z: at.z, r: 0.38, squash: 0.45, detail: 1 });
+      }
+    }
+  }
+  const shapes = [1, 2].map((detail) => {
+    const ball = new THREE.IcosahedronGeometry(1, detail);
+    // Round, not faceted: on a unit ball the normal is the point itself.
+    ball.setAttribute('normal', ball.attributes.position.clone());
+    return ball;
+  });
+  const near = balls.map((ball) => balls.filter((other) => other !== ball && Math.hypot(other.x - ball.x, other.y - ball.y, other.z - ball.z) < ball.r + other.r));
+  const p = new THREE.Vector3();
+  const tint = new THREE.Color();
+  const parts = balls.map((ball, index) => {
+    const geometry = shapes[ball.detail - 1].clone().scale(ball.r, ball.r * ball.squash, ball.r).translate(ball.x, ball.y, ball.z);
+    const position = geometry.attributes.position;
+    const colours = new Float32Array(position.count * 3);
+    for (let v = 0; v < position.count; v++) {
+      p.fromBufferAttribute(position, v);
+      // How far into the fold with a neighbour this point of the surface is.
+      let fold = 0;
+      for (const other of near[index]) {
+        const inside = Math.hypot(p.x - other.x, (p.y - other.y) / other.squash, p.z - other.z) / other.r;
+        fold = Math.max(fold, 1 - Math.min(1, (inside - 1) / 0.35));
+      }
+      tint.copy(PUFF).lerp(FOLD, fold * 0.85).toArray(colours, v * 3);
+    }
+    geometry.setAttribute('color', new THREE.BufferAttribute(colours, 3));
+    return geometry;
+  });
+  return mergeGeometries(parts);
 }
 
 export function createGround(plan) {
@@ -229,11 +270,17 @@ export function createGround(plan) {
   });
   const sea = createSea();
   const stones = createStones(plan);
-  const bodies = createBodies(plan);
+  // The billows wear the felt of the floor; on the light way, plain and fewer.
+  // Lit a little from within, as cloud is, so that from below it stays white and not grey.
+  const felt = floorMaterial(uniforms);
+  felt.vertexColors = true;
+  felt.emissive.set('#7487a8');
+  const bodies = new THREE.Mesh(createBodies(plan, false), felt);
+  const shapes = { full: bodies.geometry, light: createBodies(plan, true) };
   // The light way: the floor in its plain colour, the sea of clouds as one soft colour, nothing
   // worked out pixel by pixel.
-  const plain = { floor: new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#2f3e58' }), sea: new THREE.MeshBasicMaterial({ color: '#c9dcf2' }) };
-  const full = { floor: material, sea: sea.material };
+  const plain = { floor: new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#2f3e58' }), sea: new THREE.MeshBasicMaterial({ color: '#c9dcf2' }), bodies: new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#7487a8', vertexColors: true }), shape: shapes.light };
+  const full = { floor: material, sea: sea.material, bodies: felt, shape: shapes.full };
   let next = 0;
   return {
     floors,
@@ -244,6 +291,8 @@ export function createGround(plan) {
       const use = on ? plain : full;
       for (const floor of floors) floor.material = use.floor;
       sea.material = use.sea;
+      bodies.material = use.bodies;
+      bodies.geometry = use.shape;
     },
     update(time) {
       uniforms.uTime.value = time;
