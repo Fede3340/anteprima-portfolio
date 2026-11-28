@@ -306,6 +306,94 @@ button { font: inherit; color: inherit; }
 .slot__tape--a { left: -6%; rotate: -32deg; }
 .slot__tape--b { right: -6%; rotate: 28deg; }
 
+/* China: every sheet is held up its own way. */
+.hold--tape-one .slot__tape--a { left: 31%; top: -3%; width: 27%; rotate: -7deg; }
+.hold--tape-long .slot__tape--a { left: -5%; top: -2.5%; width: 64%; rotate: 3.5deg; }
+.hold--tape-long .slot__tape--b { top: auto; right: 6%; bottom: -3%; width: 21%; rotate: -16deg; }
+.hold--tape-one .slot__tape--b,
+.hold--pin .slot__tape,
+.hold--clip .slot__tape,
+.hold--pin .slot__scrap,
+.hold--clip .slot__scrap { display: none; }
+
+.hold--pin::before,
+.hold--clip::before,
+.hold--clip::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hold--pin::before {
+  left: 44%;
+  top: 2.2%;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, #ff9a8a, #d02c1d 55%, #6e130b);
+  box-shadow: 3px 6px 5px rgba(0, 0, 0, .45);
+}
+
+.hold--clip::before {
+  left: 50%;
+  top: -10px;
+  width: 46px;
+  height: 22px;
+  translate: -50% 0;
+  rotate: 4deg;
+  border-radius: 3px 3px 7px 7px;
+  background: linear-gradient(#3a3734, #151311);
+  box-shadow: 0 5px 6px rgba(0, 0, 0, .4);
+}
+
+.hold--clip::after {
+  left: 50%;
+  top: -30px;
+  width: 30px;
+  height: 22px;
+  translate: -50% 0;
+  rotate: -9deg;
+  border: 2px solid #a8a49c;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+}
+
+/* Spray: one long wall that scrolls sideways; the pieces are painted on it, not framed. */
+.street {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink) transparent;
+  cursor: grab;
+}
+
+.street.is-panning { cursor: grabbing; user-select: none; }
+
+.street__wall {
+  position: relative;
+  min-width: 100%;
+  height: min(80svh, 720px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #a39d94 url("../img/wall.webp") 0 0 / 700px auto repeat;
+  background-blend-mode: multiply;
+}
+
+.piece { position: absolute; }
+.piece .sheet { cursor: inherit; box-shadow: none; touch-action: auto; }
+.piece .sheet__fibre { display: none; }
+.piece .sheet__face {
+  background: none;
+  -webkit-mask: var(--edge) center / 100% 100% no-repeat;
+  mask: var(--edge) center / 100% 100% no-repeat;
+}
+
+.label--street { margin: 10px var(--gutter) 14px; rotate: -1deg; }
+
 .sheet {
   position: absolute;
   inset: 0;
@@ -545,6 +633,7 @@ button { font: inherit; color: inherit; }
   .slip--drawings { right: 6%; bottom: 25%; }
   .scroll-cue { bottom: 60px; }
   .label--hint { font-size: 16px; }
+  .street__wall { height: min(66svh, 540px); }
   .sheet__state { font-size: 15px; }
   .viewer__count { font-size: 16px; }
   /* On phones the count and title get their own row, above the buttons. */

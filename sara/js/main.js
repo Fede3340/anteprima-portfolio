@@ -27,6 +27,36 @@ const DESK_SLOTS = [
 const PHONE_WIDTHS = [64, 58, 62, 56];
 const PHONE_ROT = [-3, 2.5, -1.5, 3.5, -2.5, 1.5];
 
+// China: a heap of sheets hung by hand, each placed on its own (x, y, w in % of the board width).
+const HEAP_DESK = [
+  { x: -3, y: 5, w: 29, r: -6.5, hold: 'tape-one' },
+  { x: 27, y: 1, w: 31, r: 3.5, hold: 'pin' },
+  { x: 55, y: 17, w: 19, r: -2, hold: 'clip' },
+  { x: 77, y: 3, w: 26, r: 9, hold: 'tape' },
+  { x: 21, y: 38, w: 38, r: -11.5, hold: 'tape-long' },
+];
+const HEAP_PHONE = [
+  { x: -6, y: 9, w: 76, r: -5, hold: 'tape-one' },
+  { x: 24, y: 88, w: 84, r: 3.5, hold: 'pin' },
+  { x: 3, y: 142, w: 50, r: -8, hold: 'clip' },
+  { x: 49, y: 164, w: 49, r: 6.5, hold: 'tape' },
+  { x: -3, y: 236, w: 92, r: -2.5, hold: 'tape-long' },
+];
+
+// Spray: pieces on one long wall; x, y and h are in wall heights, e picks the edge of the paint.
+const STREET = [
+  { x: 0.05, y: 0.1, h: 0.62, r: -2, e: 1 },
+  { x: 0.62, y: 0.02, h: 0.88, r: 1.5, e: 2 },
+  { x: 1.17, y: 0.4, h: 0.5, r: -4, e: 3 },
+  { x: 1.93, y: 0.05, h: 0.76, r: 3, e: 1 },
+  { x: 2.41, y: 0.17, h: 0.8, r: -1, e: 2 },
+  { x: 3.04, y: 0.33, h: 0.54, r: 0.5, e: 3 },
+  { x: 3.83, y: 0, h: 0.72, r: -6, e: 2 },
+  { x: 4.44, y: 0.29, h: 0.66, r: 2.5, e: 1 },
+  { x: 4.9, y: 0.03, h: 0.5, r: -3, e: 3 },
+  { x: 5.34, y: 0.45, h: 0.5, r: 5, e: 2 },
+];
+
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const walls = document.querySelector('[data-walls]');
 const viewer = document.querySelector('[data-viewer]');
@@ -119,6 +149,9 @@ function buildName() {
   });
 }
 
+// The 1600 px file plus its 480 and 960 px copies (media/name-480.webp, media/name-960.webp).
+const variant = (work, w) => (w < work.width ? work.file.replace('.webp', `-${w}.webp`) : work.file);
+
 function sheetMarkup(work, i) {
   const sheet = document.createElement('button');
   sheet.type = 'button';
@@ -127,9 +160,12 @@ function sheetMarkup(work, i) {
   sheet.innerHTML = `<span class="sheet__fibre"></span><span class="sheet__face"><span class="sheet__number">${work.number}</span><span class="sheet__state">in arrivo</span></span>`;
   if (work.file) {
     const img = new Image();
-    img.dataset.src = work.file;
-    img.alt = '';
+    img.loading = 'lazy';
     img.decoding = 'async';
+    img.alt = '';
+    if (work.width) img.srcset = [480, 960].filter((w) => w < work.width).map((w) => `${variant(work, w)} ${w}w`).concat(`${work.file} ${work.width}w`).join(', ');
+    img.sizes = '30vw';
+    img.src = work.file;
     if (!work.ratio) img.addEventListener('load', () => { works[i].ratio = img.naturalHeight / img.naturalWidth; layout(); });
     sheet.querySelector('.sheet__face').append(img);
     sheet.classList.add('has-image');
@@ -139,31 +175,42 @@ function sheetMarkup(work, i) {
 
 function buildBoard(series) {
   series.forEach((group) => {
+    const street = group.layout === 'muro';
     const wrap = document.createElement('div');
     wrap.className = 'wall__group';
-    wrap.innerHTML = `<h3 class="label label--series">${group.name}</h3><ol class="wall__board" data-qa-overlap-ok></ol>`;
+    wrap.innerHTML = street
+      ? `<h3 class="label label--series">${group.name}</h3><p class="label label--hint label--street">Il muro continua: scorrilo di lato.</p><div class="street" tabindex="0" aria-label="${group.name}, muro che scorre di lato"><ol class="street__wall"></ol></div>`
+      : `<h3 class="label label--series">${group.name}</h3><ol class="wall__board" data-qa-overlap-ok></ol>`;
     const board = wrap.querySelector('ol');
+    board.dataset.layout = group.layout || '';
     walls.append(wrap);
+    if (street) panStreet(wrap.querySelector('.street'));
     group.works.forEach((entry, local) => {
       const i = works.push({ ...entry, series: group.name, total: group.works.length }) - 1;
       const work = works[i];
       const [bg, fg] = PALETTE[local % PALETTE.length];
       const li = document.createElement('li');
-      li.className = 'slot';
       li.style.setProperty('--c', `var(${bg})`);
       li.style.setProperty('--t', `var(${fg})`);
-      if (work.file) {
-        li.classList.add('has-image');
-        li.style.setProperty('--img', `url("${new URL(work.file, location.href)}")`);
-      }
-      li.innerHTML = '<span class="slot__scrap slot__scrap--a"></span><span class="slot__scrap slot__scrap--b"></span><span class="slot__tape slot__tape--a"></span><span class="slot__tape slot__tape--b"></span>';
       const sheet = sheetMarkup(work, i);
-      li.insertBefore(sheet, li.querySelector('.slot__tape'));
-      const slot = { li, sheet, board, local, rotation: 0, index: i };
-      makeDraggable(sheet, {
-        angle: () => slot.rotation,
-        onStart: () => { li.style.zIndex = ++zTop; li.classList.add('is-torn'); },
-      });
+      const slot = { li, sheet, board, local, rotation: 0, index: i, tear: !street };
+      if (street) {
+        li.className = 'piece';
+        li.style.setProperty('--edge', `url("${new URL(`img/edge-${STREET[local % STREET.length].e}.webp`, location.href)}")`);
+        li.append(sheet);
+      } else {
+        li.className = 'slot';
+        if (work.file) {
+          li.classList.add('has-image');
+          li.style.setProperty('--img', `url("${new URL(variant(work, 480), location.href)}")`);
+        }
+        li.innerHTML = '<span class="slot__scrap slot__scrap--a"></span><span class="slot__scrap slot__scrap--b"></span><span class="slot__tape slot__tape--a"></span><span class="slot__tape slot__tape--b"></span>';
+        li.insertBefore(sheet, li.querySelector('.slot__tape'));
+        makeDraggable(sheet, {
+          angle: () => slot.rotation,
+          onStart: () => { li.style.zIndex = ++zTop; li.classList.add('is-torn'); },
+        });
+      }
       sheet.addEventListener('click', () => {
         if (sheet.dataset.dragged === '1') return;
         li.style.zIndex = ++zTop;
@@ -171,36 +218,73 @@ function buildBoard(series) {
       });
       slots.push(slot);
       board.append(li);
-      loader.observe(li);
     });
   });
   document.getElementById('wall-title').textContent = `${works.length} fogli`;
 }
 
-// Each drawing is fetched only when its sheet comes near the screen.
-const loader = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    loader.unobserve(entry.target);
-    loadImage(entry.target);
+// With a mouse the wall is pulled sideways; a pull that moved is not a click on the piece under it.
+function panStreet(street) {
+  let start = null;
+  street.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    start = { x: e.clientX, left: street.scrollLeft, moved: false };
   });
-}, { rootMargin: '300px 0px' });
+  street.addEventListener('pointermove', (e) => {
+    if (!start) return;
+    const dx = e.clientX - start.x;
+    if (!start.moved) {
+      if (Math.abs(dx) < 6) return;
+      start.moved = true;
+      street.setPointerCapture(e.pointerId);
+      street.classList.add('is-panning');
+    }
+    street.scrollLeft = start.left - dx;
+  });
+  const end = () => {
+    start = null;
+    street.classList.remove('is-panning');
+  };
+  street.addEventListener('pointerup', end);
+  street.addEventListener('pointercancel', end);
+  street.addEventListener('dragstart', (e) => e.preventDefault());
+}
 
-function loadImage(root) {
-  const img = root.querySelector('img[data-src]:not([src])');
-  if (img) img.src = img.dataset.src;
+function place(slot, left, top, w, h, r) {
+  slot.rotation = r;
+  Object.assign(slot.li.style, { left: `${left}px`, top: `${top}px`, width: `${w}px`, height: `${h}px`, rotate: `${r}deg` });
+  const img = slot.sheet.querySelector('img');
+  if (img) img.sizes = `${Math.ceil(w)}px`;
+}
+
+function layoutStreet(wall, wallSlots) {
+  const H = wall.clientHeight;
+  let right = 0;
+  wallSlots.forEach((slot) => {
+    const spec = STREET[slot.local % STREET.length];
+    const h = spec.h * H;
+    const w = h / (works[slot.index].ratio || 1);
+    place(slot, spec.x * H, spec.y * H, w, h, spec.r);
+    right = Math.max(right, spec.x * H + w);
+  });
+  wall.style.width = `${right + 0.1 * H}px`;
 }
 
 function layoutBoard(board, boardSlots) {
+  if (board.dataset.layout === 'muro') return layoutStreet(board, boardSlots);
   const W = board.clientWidth;
   const phone = W <= 700;
   const vw = W / 100;
+  const heap = board.dataset.layout === 'mucchio' && (phone ? HEAP_PHONE : HEAP_DESK);
   let bottom = 0;
   let y = 4;
   boardSlots.forEach((slot) => {
     const i = slot.local;
     let spec;
-    if (phone) {
+    if (heap) {
+      spec = heap[i % heap.length];
+      slot.li.classList.add(`hold--${spec.hold}`);
+    } else if (phone) {
       const landscape = i === 5 || i === 9;
       const w = landscape ? 84 : PHONE_WIDTHS[i % 4];
       spec = { x: landscape ? 8 : (i % 2 ? 100 - w - 5 : 5), y, w, r: PHONE_ROT[i % PHONE_ROT.length], landscape };
@@ -211,10 +295,7 @@ function layoutBoard(board, boardSlots) {
     const w = spec.w * vw;
     const h = w * ratio;
     if (phone) y += (h / vw) * 0.8;
-    slot.rotation = spec.r;
-    Object.assign(slot.li.style, {
-      left: `${spec.x * vw}px`, top: `${spec.y * vw}px`, width: `${w}px`, height: `${h}px`, rotate: `${spec.r}deg`,
-    });
+    place(slot, spec.x * vw, spec.y * vw, w, h, spec.r);
     slot.sheet.style.setProperty('--num', `${Math.round(Math.min(w, h) * 0.22)}px`);
     bottom = Math.max(bottom, spec.y * vw + h);
   });
@@ -222,7 +303,7 @@ function layoutBoard(board, boardSlots) {
 }
 
 function layout() {
-  walls.querySelectorAll('.wall__board').forEach((board) => layoutBoard(board, slots.filter((slot) => slot.board === board)));
+  walls.querySelectorAll('ol').forEach((board) => layoutBoard(board, slots.filter((slot) => slot.board === board)));
 }
 
 function revealBoard() {
@@ -232,15 +313,14 @@ function revealBoard() {
       if (!entry.isIntersecting) return;
       io.unobserve(entry.target);
       const slot = slots.find((s) => s.li === entry.target);
-      const tapes = slot.li.querySelectorAll('.slot__tape');
-      gsap.timeline()
-        .fromTo(slot.sheet, { scale: 1.14, autoAlpha: 0, rotation: 5 }, { scale: 1, autoAlpha: 1, rotation: 0, duration: 0.42, ease: 'back.out(2)' })
-        .fromTo(tapes, { scaleX: 0, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 0.9, duration: 0.22, stagger: 0.08, ease: 'power2.out', transformOrigin: '0% 50%' }, '-=0.12');
+      const tl = gsap.timeline()
+        .fromTo(slot.sheet, { scale: 1.14, autoAlpha: 0, rotation: 5 }, { scale: 1, autoAlpha: 1, rotation: 0, duration: 0.42, ease: 'back.out(2)' });
+      if (slot.tear) tl.fromTo(slot.li.querySelectorAll('.slot__tape'), { scaleX: 0, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 0.9, duration: 0.22, stagger: 0.08, ease: 'power2.out', transformOrigin: '0% 50%' }, '-=0.12');
     });
   }, { rootMargin: '0px 0px -12% 0px' });
   slots.forEach((slot) => {
     gsap.set(slot.sheet, { autoAlpha: 0 });
-    gsap.set(slot.li.querySelectorAll('.slot__tape'), { autoAlpha: 0 });
+    if (slot.tear) gsap.set(slot.li.querySelectorAll('.slot__tape'), { autoAlpha: 0 });
     io.observe(slot.li);
   });
 }
@@ -270,14 +350,14 @@ function makeFigure(i) {
   const ratio = slot.li.offsetHeight / slot.li.offsetWidth;
   const box = targetBox(ratio);
   const fig = document.createElement('div');
-  fig.className = 'viewer__sheet slot is-torn';
+  fig.className = `viewer__sheet slot${slot.tear ? ' is-torn' : ''}`;
   fig.style.cssText = `width:${box.w}px;height:${box.h}px;left:${box.left}px;top:${box.top}px;rotate:0deg;--c:${slot.li.style.getPropertyValue('--c')};--t:${slot.li.style.getPropertyValue('--t')}`;
   const sheet = slot.sheet.cloneNode(true);
   sheet.removeAttribute('style');
   sheet.style.setProperty('--num', `${Math.round(box.w * 0.18)}px`);
   sheet.setAttribute('tabindex', '-1');
   sheet.setAttribute('aria-hidden', 'true');
-  loadImage(sheet);
+  sheet.querySelector('img')?.setAttribute('sizes', `${Math.ceil(box.w)}px`);
   fig.append(sheet);
   stage.append(fig);
   swipe(fig);
@@ -319,6 +399,8 @@ function closeViewer() {
   const slot = slots[state.index];
   const fig = state.figure;
   gsap.set(slot.sheet, { visibility: 'visible', autoAlpha: 0 });
+  const street = slot.li.closest('.street');
+  if (street) street.scrollLeft = slot.li.offsetLeft + slot.li.offsetWidth / 2 - street.clientWidth / 2;
   const to = slot.sheet.getBoundingClientRect();
   const box = fig.getBoundingClientRect();
   const dx = to.left + to.width / 2 - (box.left + box.width / 2) + gsap.getProperty(fig, 'x');

@@ -1,35 +1,35 @@
 [
   {"name": "Città", "works": [
-    {"number": "01", "file": "media/citta-01.webp", "ratio": 1.3389, "title": "Gru con casetta"},
-    {"number": "02", "file": "media/citta-02.webp", "ratio": 1.3389, "title": "Torre di case"},
-    {"number": "03", "file": "media/citta-03.webp", "ratio": 1.3389, "title": "Ponteggio con sciarpa"},
-    {"number": "04", "file": "media/citta-04.webp", "ratio": 1.3389, "title": "Betoniera a righe"},
-    {"number": "05", "file": "media/citta-05.webp", "ratio": 1.3389, "title": "Tetti con bucato"},
-    {"number": "06", "file": "media/citta-06.webp", "ratio": 0.7469, "title": "Il cono"},
-    {"number": "07", "file": "media/citta-07.webp", "ratio": 1.3389, "title": "Casco con fiori"},
-    {"number": "08", "file": "media/citta-08.webp", "ratio": 1.3389, "title": "Scala fino alle nuvole"},
-    {"number": "09", "file": "media/citta-09.webp", "ratio": 1.3389, "title": "Rullo e strisce"},
-    {"number": "10", "file": "media/citta-10.webp", "ratio": 0.7469, "title": "Ponte a metà"},
-    {"number": "11", "file": "media/citta-11.webp", "ratio": 1.3389, "title": "Carriola di case"},
-    {"number": "12", "file": "media/citta-12.webp", "ratio": 1.3389, "title": "Finestra sul mare"}
+    {"number": "01", "file": "media/citta-01.webp", "ratio": 1.3389, "title": "Gru con casetta", "width": 1195},
+    {"number": "02", "file": "media/citta-02.webp", "ratio": 1.3389, "title": "Torre di case", "width": 1195},
+    {"number": "03", "file": "media/citta-03.webp", "ratio": 1.3389, "title": "Ponteggio con sciarpa", "width": 1195},
+    {"number": "04", "file": "media/citta-04.webp", "ratio": 1.3389, "title": "Betoniera a righe", "width": 1195},
+    {"number": "05", "file": "media/citta-05.webp", "ratio": 1.3389, "title": "Tetti con bucato", "width": 1195},
+    {"number": "06", "file": "media/citta-06.webp", "ratio": 0.7469, "title": "Il cono", "width": 1600},
+    {"number": "07", "file": "media/citta-07.webp", "ratio": 1.3389, "title": "Casco con fiori", "width": 1195},
+    {"number": "08", "file": "media/citta-08.webp", "ratio": 1.3389, "title": "Scala fino alle nuvole", "width": 1195},
+    {"number": "09", "file": "media/citta-09.webp", "ratio": 1.3389, "title": "Rullo e strisce", "width": 1195},
+    {"number": "10", "file": "media/citta-10.webp", "ratio": 0.7469, "title": "Ponte a metà", "width": 1600},
+    {"number": "11", "file": "media/citta-11.webp", "ratio": 1.3389, "title": "Carriola di case", "width": 1195},
+    {"number": "12", "file": "media/citta-12.webp", "ratio": 1.3389, "title": "Finestra sul mare", "width": 1195}
   ]},
-  {"name": "Spray", "works": [
-    {"number": "01", "file": "media/spray-01.webp", "ratio": 1.3389, "title": "Gru e nuvola"},
-    {"number": "02", "file": "media/spray-02.webp", "ratio": 1.3389, "title": "Cono in cammino"},
-    {"number": "03", "file": "media/spray-03.webp", "ratio": 1.3389, "title": "Bolle"},
-    {"number": "04", "file": "media/spray-04.webp", "ratio": 1.3389, "title": "Tre case"},
-    {"number": "05", "file": "media/spray-05.webp", "ratio": 1.3389, "title": "Pila di case"},
-    {"number": "06", "file": "media/spray-06.webp", "ratio": 0.7469, "title": "Fila di case"},
-    {"number": "07", "file": "media/spray-07.webp", "ratio": 1.3389, "title": "Frecce"},
-    {"number": "08", "file": "media/spray-08.webp", "ratio": 1.3389, "title": "Betoniera"},
-    {"number": "09", "file": "media/spray-09.webp", "ratio": 1.3389, "title": "Prova di stencil"},
-    {"number": "10", "file": "media/spray-10.webp", "ratio": 0.7469, "title": "Ruspa e stelle"}
+  {"name": "Spray", "layout": "muro", "works": [
+    {"number": "01", "file": "media/spray-01.webp", "width": 1600, "ratio": 0.9406, "title": "Gru e nuvola"},
+    {"number": "02", "file": "media/spray-02.webp", "width": 1195, "ratio": 1.3389, "title": "Cono in cammino"},
+    {"number": "03", "file": "media/spray-03.webp", "width": 1600, "ratio": 0.7469, "title": "Bolle"},
+    {"number": "04", "file": "media/spray-04.webp", "width": 1280, "ratio": 1.25, "title": "Tre case"},
+    {"number": "05", "file": "media/spray-05.webp", "width": 1062, "ratio": 1.5066, "title": "Pila di case"},
+    {"number": "06", "file": "media/spray-06.webp", "width": 1600, "ratio": 0.5656, "title": "Fila di case"},
+    {"number": "07", "file": "media/spray-07.webp", "width": 1195, "ratio": 1.3389, "title": "Frecce"},
+    {"number": "08", "file": "media/spray-08.webp", "width": 1280, "ratio": 1.25, "title": "Betoniera"},
+    {"number": "09", "file": "media/spray-09.webp", "width": 1600, "ratio": 0.6637, "title": "Prova di stencil"},
+    {"number": "10", "file": "media/spray-10.webp", "width": 1600, "ratio": 0.7469, "title": "Ruspa e stelle"}
   ]},
-  {"name": "China", "works": [
-    {"number": "01", "file": "media/china-01.webp", "ratio": 1.3389, "title": "Casa aperta"},
-    {"number": "02", "file": "media/china-02.webp", "ratio": 1.3389, "title": "Gru con pianta"},
-    {"number": "03", "file": "media/china-03.webp", "ratio": 1.3389, "title": "Scala e palla"},
-    {"number": "04", "file": "media/china-04.webp", "ratio": 1.3389, "title": "Finestra con calzini"},
-    {"number": "05", "file": "media/china-05.webp", "ratio": 1.3389, "title": "Tetti dall’alto"}
+  {"name": "China", "layout": "mucchio", "works": [
+    {"number": "01", "file": "media/china-01.webp", "width": 1280, "ratio": 1.25, "title": "Casa aperta"},
+    {"number": "02", "file": "media/china-02.webp", "width": 1600, "ratio": 0.7469, "title": "Gru con pianta"},
+    {"number": "03", "file": "media/china-03.webp", "width": 1062, "ratio": 1.5066, "title": "Scala e palla"},
+    {"number": "04", "file": "media/china-04.webp", "width": 1062, "ratio": 1.5066, "title": "Finestra con calzini"},
+    {"number": "05", "file": "media/china-05.webp", "width": 1600, "ratio": 0.67, "title": "Tetti dall’alto"}
   ]}
 ]
