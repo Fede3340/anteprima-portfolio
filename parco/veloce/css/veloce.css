@@ -1,6 +1,7 @@
 /* The park seen flat. Colours, letters, pills, plates and the bar come from css/main.css and
-   css/travel.css of the park; here only what a page that scrolls needs on top of them. The colours
-   of each island (--h-*, --accent) are set from the hours and moods of the park. */
+   css/travel.css of the park; here only what a page that scrolls needs on top of them. Ground, clouds
+   and plaster are the same on every island; the sky, the accent (--accent, --on-accent), the garden
+   and the way the works are set out change from one island to the next. */
 
 html.veloce {
   height: auto;
@@ -20,6 +21,20 @@ html.veloce:has(.story:not([hidden])) {
   overflow: hidden;
 }
 
+/* The sky stays behind the page: one layer for each place, faded into the next as one scrolls. */
+.cielo {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cielo__strato {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
 .pianta {
   padding-bottom: calc(var(--bottom) + 72px);
 }
@@ -28,25 +43,19 @@ html.veloce:has(.story:not([hidden])) {
   padding: 120px var(--gutter);
 }
 
-/* An island: its sky from the top of the hour down to its horizon, and at the foot the colour of the
-   next sky, so that one island hands over to the next. */
 .isola {
   position: relative;
   padding: 8px var(--gutter) 0;
   overflow-x: clip;
-  background: linear-gradient(var(--h-top), var(--h-quarter) 12%, var(--h-half) 30%, var(--h-horizon) 52%, var(--next-top));
   scroll-margin-top: calc(var(--top) + 52px);
 }
 
 /* The arrival: who, in one sentence, and at once the first island. The sun of the dawn is only
-   light in its sky, low and to the side: part of the background, it scrolls away with it and never
-   crosses a word or a work. */
+   light in its sky, low and to the side, and scrolls away with it. */
 .arrivo {
   position: relative;
   padding: calc(var(--top) + 80px) var(--gutter) 4px;
-  background:
-    radial-gradient(circle at calc(100% - var(--gutter) - 40px) calc(var(--top) + 96px), #fff4dc 0, #ffd9a0 20px, rgb(255 170 100 / 0.35) 50px, rgb(255 170 100 / 0) 180px),
-    linear-gradient(var(--h-top), var(--next-top));
+  background: radial-gradient(circle at calc(100% - var(--gutter) - 40px) calc(var(--top) + 96px), #fff4dc 0, #ffd9a0 20px, rgb(255 170 100 / 0.35) 50px, rgb(255 170 100 / 0) 180px);
 }
 
 .arrivo__dentro {
@@ -85,21 +94,19 @@ html.veloce:has(.story:not([hidden])) {
   animation: drift 38s ease-in-out infinite alternate;
 }
 
-.nuvola:first-child {
-  top: 6%;
-  left: -8%;
-}
-
-.nuvola:last-child {
-  top: 38%;
-  right: -10%;
-  width: clamp(120px, 26vw, 320px);
-  animation-duration: 52s;
-  animation-direction: alternate-reverse;
-}
+/* Every island has its clouds somewhere else in its sky. */
+.nuvola--0 { top: 6%; left: -8%; }
+.nuvola--1 { top: 2%; right: -6%; width: clamp(130px, 28vw, 340px); animation-duration: 46s; }
+.nuvola--2 { top: 30%; right: -10%; width: clamp(120px, 26vw, 320px); animation-duration: 52s; animation-direction: alternate-reverse; }
+.nuvola--3 { top: 24%; left: -12%; width: clamp(110px, 22vw, 280px); animation-duration: 60s; }
 
 .nuvola:not([src]) {
   visibility: hidden;
+}
+
+/* At night the clouds of the game sink into the dark. */
+.isola--videogioco .nuvola {
+  opacity: 0.42;
 }
 
 @keyframes drift {
@@ -108,26 +115,28 @@ html.veloce:has(.story:not([hidden])) {
   }
 }
 
-/* The name of the island, on the side the sculpture leaves free, standing just above the cloud. */
+/* The name of the island in its colour, on the side the garden leaves free. On a phone it stands above
+   the garden, so that nothing tall ever comes near it. */
 .isola__nome {
   position: relative;
   z-index: 3;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 8px;
   max-width: 1240px;
-  min-height: max(var(--room), 96px);
   margin: 0 auto;
-  padding-bottom: 30px;
+  padding: 24px 0 calc(var(--room) + 12px);
 }
 
-.isola--right .isola__nome {
-  align-items: flex-start;
+.isola__nome--end {
+  align-items: flex-end;
 }
 
 .isola__nome .zone-name {
+  background: var(--accent);
+  color: var(--on-accent);
   white-space: normal;
 }
 
@@ -153,7 +162,7 @@ html.veloce:has(.story:not([hidden])) {
   box-shadow: 0 0 0 1.5px var(--ink);
 }
 
-/* The cloud the works stand on: lit from above as the floor of the park, its body under it in puffs. */
+/* The cloud the works stand on, the same on every island: lit from above, its body under it in puffs. */
 .isola__terra {
   position: relative;
   isolation: isolate;
@@ -162,15 +171,15 @@ html.veloce:has(.story:not([hidden])) {
   gap: 28px;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 44px 14px 56px;
-  /* Flat on top like the floor of an island, rounding under it like its body, as at the door. --rim is
-     the height of the curve of its top edge, which the things standing on it follow. */
+  padding: 52px 16px 56px;
+  /* Flat on top like the floor of an island, rounding under it like its body. --rim is the height of
+     the curve of its top edge, which the things standing on it follow. */
   --rim: 64px;
   border-radius: 50% 50% 46% 46% / var(--rim) var(--rim) 140px 140px;
   background:
-    radial-gradient(120% 70% at 30% 0%, var(--h-lit), transparent 70%),
-    linear-gradient(var(--h-lit), var(--h-mid));
-  box-shadow: inset 0 -40px 60px -40px var(--h-shade);
+    radial-gradient(120% 70% at 30% 0%, #fdfbf9, transparent 70%),
+    linear-gradient(#fdfbf9, #c3cfea);
+  box-shadow: inset 0 -40px 60px -40px #7f95d2;
 }
 
 .isola__suolo {
@@ -182,33 +191,49 @@ html.veloce:has(.story:not([hidden])) {
   height: 0;
 }
 
+/* A cut-out of the park, its foot on the floor (towards the sides the top edge curves down and the
+   thing goes down with it; --u is its place, 0 to 1), with its soft shadow on the ground. */
 .cosa {
   position: absolute;
-  /* The foot on the floor where it stands: towards the sides the top edge curves down, and the thing
-     goes down with it (the floor line is 30px under the top in the middle; --u is its place, 0 to 1). */
   bottom: calc(-1 * max(0px, var(--rim) * (1 - sqrt(1 - pow(2 * var(--u) - 1, 2))) - 16px));
-  filter: drop-shadow(0 6px 5px rgb(0 23 80 / 0.2));
   left: var(--x);
   width: var(--w);
   height: var(--h);
-  max-width: none;
-  translate: var(--anchor) var(--foot);
+  translate: calc(-1 * var(--ax)) var(--ay);
   opacity: 0;
   transform: translateY(18px);
-  transform-origin: 50% 100%;
   transition: opacity 0.6s ease, transform 0.9s var(--ease);
 }
 
-.cosa--statua {
-  z-index: 1;
+.cosa::before {
+  content: '';
+  position: absolute;
+  left: var(--ax);
+  bottom: var(--ay);
+  width: max(46%, 28px);
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 23 80 / 0.24), transparent);
+  translate: -50% 50%;
 }
 
-.isola__suolo.is-in .cosa {
+/* The plaster picture, coloured by multiplying it with its colours and cut out by itself. */
+.cosa__sagoma {
+  position: absolute;
+  inset: 0;
+  background-image: var(--tint), var(--src);
+  background-size: 100% 100%;
+  background-blend-mode: multiply;
+  -webkit-mask: var(--src) 0 0 / 100% 100% no-repeat;
+  mask: var(--src) 0 0 / 100% 100% no-repeat;
+}
+
+.isola__suolo.is-in .cosa.is-ready {
   opacity: 1;
   transform: none;
 }
 
-.isola__suolo.is-in .cosa:not(.cosa--statua) {
+.isola__suolo.is-in .cosa + .cosa {
   transition-delay: 0.12s;
 }
 
@@ -241,18 +266,12 @@ html.veloce:has(.story:not([hidden])) {
   text-align: center;
 }
 
-/* The works: each in its frame on two legs, turned a little towards the middle, of its own size and
-   standing back as much as its place in the rhythm says. */
+/* The works. What every island shares: a plaster frame, the picture in it, the plate under it, and
+   how they rise onto the island as they arrive. */
 .isola__opere,
 .mondi__lista {
   margin: 0;
   padding: 0;
-}
-
-.isola__opere {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
   list-style: none;
 }
 
@@ -260,22 +279,9 @@ html.veloce:has(.story:not([hidden])) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: calc(var(--phone) * 100%);
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.6s ease, transform 0.9s var(--ease);
-}
-
-.opera[data-side="start"] {
-  align-self: flex-start;
-}
-
-.opera[data-side="end"] {
-  align-self: flex-end;
-}
-
-.opera[data-side="center"] {
-  align-self: center;
 }
 
 .opera.is-in {
@@ -292,9 +298,9 @@ html.veloce:has(.story:not([hidden])) {
 }
 
 .opera__quadro {
+  position: relative;
   display: block;
   width: 100%;
-  perspective: 900px;
   text-decoration: none;
   border-radius: 12px;
   cursor: url("../../img/sprites/indice-32.png") 1 0, pointer;
@@ -312,7 +318,6 @@ html.veloce:has(.story:not([hidden])) {
   border-radius: 10px;
   background: var(--light);
   box-shadow: 0 12px 26px -18px rgb(0 23 80 / 0.35), inset 0 -2px 0 rgb(0 23 80 / 0.08);
-  transform: rotateY(var(--turn));
   transition: transform 0.5s var(--ease);
 }
 
@@ -327,8 +332,27 @@ html.veloce:has(.story:not([hidden])) {
   height: auto;
   aspect-ratio: 16 / 10;
   border-radius: 5px;
-  background: var(--h-mid);
+  background: #dfe4f0;
   object-fit: cover;
+}
+
+/* Before its picture comes, the words that stand for it take no room. */
+.opera__immagine:not([src]) {
+  color: transparent;
+  font-size: 0;
+}
+
+.opera__targa {
+  max-width: 100%;
+  margin-top: 8px;
+}
+
+.opera__targa .work-label__logo {
+  max-width: min(100%, var(--max-w, 240px));
+}
+
+.work-label__logo:not([src]) {
+  visibility: hidden;
 }
 
 /* Two thin plaster legs, and the soft shadow they leave on the cloud. */
@@ -340,7 +364,8 @@ html.veloce:has(.story:not([hidden])) {
   background: linear-gradient(90deg, var(--light) 0 5px, transparent 5px calc(100% - 5px), var(--light) calc(100% - 5px));
 }
 
-.opera__gambe::after {
+.opera__gambe::after,
+.opera__base::after {
   content: '';
   position: absolute;
   left: -14%;
@@ -351,31 +376,299 @@ html.veloce:has(.story:not([hidden])) {
   background: radial-gradient(closest-side, rgb(0 23 80 / 0.22), transparent);
 }
 
-.opera__targa {
-  max-width: 100%;
-  margin-top: 6px;
+/* Sites: wide windows, one to a row, each further to one side; the page runs inside the window as one
+   goes past it. */
+.opere--finestre {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
 }
 
-.opera[data-side="start"] .opera__targa {
+.opera--finestra {
+  width: 100%;
+}
+
+.opera--finestra .opera__cornice {
+  padding: 0 var(--frame) var(--frame);
+}
+
+.finestra__barra {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding-left: 4px;
+}
+
+.finestra__barra i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(0 23 80 / 0.16);
+}
+
+.finestra__barra i:first-child {
+  background: var(--accent);
+}
+
+.finestra__vista {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border-radius: 5px;
+  background: #dfe4f0;
+}
+
+.finestra__pagina {
+  aspect-ratio: auto;
+  border-radius: 0;
+  object-fit: fill;
+  will-change: transform;
+}
+
+/* Shops: a shop window. Each shop stands on its shelf with its tag in front; the shelves of a row meet,
+   and the rows of two and of three (one and two on a phone) sit off each other. */
+.opere--vetrina {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 30px 12px;
+}
+
+.opera--scaffale {
+  grid-column-end: span 2;
+}
+
+.opera--scaffale:nth-child(3n + 1) { grid-column-start: 1; }
+.opera--scaffale:nth-child(3n + 2) { grid-column-start: 3; }
+.opera--scaffale:nth-child(3n) { grid-column-start: 2; }
+
+.opera--scaffale .opera__cornice {
+  width: 88%;
+  margin: 0 auto;
+}
+
+.opera__mensola {
+  display: block;
+  height: 11px;
+  margin: 0 -6px;
+  border-radius: 3px;
+  background: linear-gradient(var(--light) 0 45%, #d5dbea);
+  box-shadow: 0 9px 12px -8px rgb(0 23 80 / 0.4);
+}
+
+.opera--scaffale .opera__targa {
+  margin-top: -2px;
+  padding: 4px 12px 6px;
+  border-radius: 0 0 10px 10px;
+}
+
+.opera--scaffale .work-label__logo {
+  display: none;
+}
+
+/* Software: two large screens on their stands. */
+.opere--schermi {
+  display: grid;
+  gap: 40px;
+}
+
+.opera--schermo .opera__cornice {
+  padding: 12px;
+  border-radius: 14px;
+}
+
+.opera__piede {
+  position: relative;
+  display: block;
+  width: 14%;
+  height: 30px;
+  margin: 0 auto 10px;
+  background: linear-gradient(90deg, #d9dfec, var(--light) 40%, #d9dfec);
+}
+
+.opera__piede::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -110%;
+  right: -110%;
+  height: 10px;
+  border-radius: 50% 50% 5px 5px / 100% 100% 5px 5px;
+  background: var(--light);
+  box-shadow: 0 8px 12px -6px rgb(0 23 80 / 0.35);
+}
+
+/* Apps: phones standing in a row on small plaster bases. */
+.opere--telefoni {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 22px;
+  padding: 0 4%;
+}
+
+.opera--telefono .opera__cornice {
+  padding: 7px;
+  border-radius: 26px;
+}
+
+.opera--telefono .opera__immagine {
+  aspect-ratio: 9 / 16;
+  border-radius: 19px;
+}
+
+.opera__base {
+  position: relative;
+  display: block;
+  width: 56%;
+  height: 12px;
+  margin: 8px auto 0;
+  border-radius: 6px;
+  background: linear-gradient(var(--light) 0 50%, #d5dbea);
+}
+
+/* The game: one large picture at night. */
+.opere--quadro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.opera--grande {
+  width: 100%;
+}
+
+/* Marks: a plaster wall of small tiles, close and even, with much white round them. */
+.opere--muro {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px 16px 22px;
+  border-radius: 8px;
+  background: var(--light);
+  box-shadow: 0 20px 30px -24px rgb(0 23 80 / 0.5), inset 0 -5px 0 rgb(0 23 80 / 0.06);
+}
+
+.opera--marchio .opera__cornice {
+  padding: 0;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px -8px rgb(0 23 80 / 0.4);
+}
+
+.opera--marchio .opera__immagine {
+  border-radius: 4px;
+}
+
+/* Posters: hung by two pegs from lines across the island, each of its own size. The line of each
+   poster reaches half the gap on either side, so that the lines of a row meet. */
+.opere--fune {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 40px 20px;
+}
+
+.opera--manifesto {
+  position: relative;
+  padding-top: 12px;
+}
+
+.opera--manifesto::before {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: -10px;
+  right: -10px;
+  height: 2px;
+  background: #8d96c8;
+}
+
+.opera--manifesto .opera__quadro {
+  width: calc(var(--size) * 100%);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.opera--manifesto .opera__cornice {
+  padding: 4px;
+  border-radius: 2px;
+}
+
+.opera--manifesto .opera__immagine {
+  aspect-ratio: 3 / 4;
+  border-radius: 1px;
+}
+
+.opera__mollette {
+  position: absolute;
+  z-index: 2;
+  top: -9px;
+  left: 16%;
+  right: 16%;
+  height: 18px;
+  background: linear-gradient(90deg, var(--accent) 0 6px, transparent 6px calc(100% - 6px), var(--accent) calc(100% - 6px));
+  border-radius: 2px;
+  transition: transform 0.5s var(--ease);
+}
+
+.opera__quadro:hover .opera__mollette {
+  transform: translateY(-6px);
+}
+
+/* What I do: the places of the work in large letters, each with the colour of its island. */
+.parole {
+  margin: 0;
+  padding: 0 4px;
+  list-style: none;
+}
+
+.parola {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.36em;
+  padding: 2px 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.3rem + 4vw, 4.75rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.parola__punto {
+  flex: none;
   align-self: flex-start;
+  margin-top: 0.46em;
+  width: 0.3em;
+  height: 0.3em;
+  border-radius: 50%;
+  background: var(--dot);
+  box-shadow: 0 0 0 2px var(--ink);
 }
 
-.opera[data-side="end"] .opera__targa {
-  align-self: flex-end;
+.parola:hover span:last-child,
+.parola:focus-visible span:last-child {
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.14em;
 }
 
-.work-label__logo:not([src]) {
-  visibility: hidden;
+/* The campaigns: the short film, upright as it was made for the phone, with the card beside it. */
+.campagna {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
 }
 
-/* Before its picture comes, the words that stand for it take no room: the frame keeps its shape and
-   nothing under it moves when the picture arrives. */
-.opera__immagine:not([src]) {
-  color: transparent;
-  font-size: 0;
+.opere--corto {
+  width: min(70%, 300px);
 }
 
-/* The cards of the arrival, of Google and of the contacts, as in the park. */
+.opera--corto .opera__immagine {
+  aspect-ratio: 9 / 16;
+  background: #1a1410;
+}
+
 .isola__carta {
   position: relative;
   z-index: 1;
@@ -392,13 +685,47 @@ html.veloce:has(.story:not([hidden])) {
   line-height: 1.25;
 }
 
-.isola__carta--servizi,
-.isola__carta--contatti {
-  align-self: flex-end;
-}
-
 .card__facts li {
   margin-top: 6px;
+}
+
+/* Contacts: one word, large, and the ways to write under it. */
+.scrivimi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 8px 0 12px;
+  text-align: center;
+}
+
+.scrivimi__titolo {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 2rem + 8vw, 9rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.scrivimi__vie {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 28px;
+  list-style: none;
+}
+
+.scrivimi__via {
+  display: inline-block;
+  padding: 6px 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2.25rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.2em;
 }
 
 /* The stones of the path to the next island, peach as in the park. */
@@ -468,10 +795,6 @@ html.veloce:has(.story:not([hidden])) {
   cursor: pointer;
 }
 
-.mondi__lista {
-  list-style: none;
-}
-
 .mondi__voce {
   display: flex;
   align-items: center;
@@ -525,38 +848,99 @@ html.veloce:has(.story:not([hidden])) {
 }
 
 @media (min-width: 768px) {
+  /* On a wide screen the name stands beside the garden, on its free side. */
+  .isola__nome {
+    justify-content: flex-end;
+    min-height: max(var(--room), 96px);
+    padding: 0 0 30px;
+  }
+
   .isola__terra {
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: flex-start;
-    column-gap: 40px;
-    padding: 64px 40px 80px;
+    gap: 36px;
+    padding: 72px 48px 88px;
     --rim: 90px;
     border-radius: 50% 50% 46% 46% / var(--rim) var(--rim) 220px 220px;
   }
 
-  .isola__opere,
-  .isola__nota {
-    flex-basis: 100%;
+  .opere--finestre {
+    gap: 64px;
   }
 
-  .isola__opere {
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: flex-start;
+  .opera--finestra {
+    width: min(76%, 920px);
+  }
+
+  .opera--finestra[data-side="end"] {
+    align-self: flex-end;
+  }
+
+  .opere--vetrina {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 44px 24px;
+    max-width: 1040px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .opera--scaffale:nth-child(5n + 1) { grid-column-start: 2; }
+  .opera--scaffale:nth-child(5n + 2) { grid-column-start: 4; }
+  .opera--scaffale:nth-child(5n + 3) { grid-column-start: 1; }
+  .opera--scaffale:nth-child(5n + 4) { grid-column-start: 3; }
+  .opera--scaffale:nth-child(5n) { grid-column-start: 5; }
+
+  .opera__mensola {
+    margin: 0 -12px;
+  }
+
+  .opere--schermi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 6%;
+  }
+
+  .opere--telefoni {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     column-gap: 5%;
-    row-gap: 36px;
+    width: min(100%, 1000px);
+    margin: 0 auto;
   }
 
-  .opera,
-  .opera[data-side] {
-    align-self: auto;
-    width: calc(var(--wide) * var(--many) * 100%);
-    margin-top: var(--back);
+  .opera--grande {
+    width: min(84%, 1000px);
   }
 
-  .opera[data-side] .opera__targa {
-    align-self: center;
+  .opere--muro {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 40px 48px;
+    width: min(100%, 1000px);
+    margin: 0 auto;
+    padding: 56px 64px 64px;
+  }
+
+  .opere--fune {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 64px 40px;
+    width: min(100%, 1060px);
+    margin: 0 auto;
+  }
+
+  .opera--manifesto::before {
+    left: -20px;
+    right: -20px;
+  }
+
+  .parole {
+    padding: 0 6%;
+  }
+
+  .campagna {
+    flex-direction: row;
+    justify-content: center;
+    gap: 7%;
+  }
+
+  .opere--corto {
+    flex: none;
+    width: 320px;
   }
 
   .sentiero {
@@ -571,7 +955,8 @@ html.veloce:has(.story:not([hidden])) {
 
   .cosa,
   .opera,
-  .opera__cornice {
+  .opera__cornice,
+  .opera__mollette {
     transform: none;
     transition: opacity 0.3s ease;
   }

@@ -869,14 +869,14 @@
  "isola-parco": {
   "file": "isola-parco.webp",
   "larghezza": 1400,
-  "altezza": 1242,
+  "altezza": 1241,
   "file_1024": "isola-parco-1024.webp",
   "larghezza_1024": 700,
-  "altezza_1024": 621,
-  "altezza_m": 7.1,
+  "altezza_1024": 620,
+  "altezza_m": 7.09,
   "appoggio": {
-   "x": 0.485,
-   "y": 0.9928
+   "x": 0.4854,
+   "y": 0.9936
   },
   "larghezza_m": 8
  }
