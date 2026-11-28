@@ -23,6 +23,7 @@
   --ink: #15120f;
   --paper: #f6f2e9;
   --wall: #b8afa3;
+  --fibre: #f4efe4;
   --gutter: clamp(16px, 3vw, 40px);
   --sans: "Bricolage", "Arial Narrow", sans-serif;
   --stamp: "Bungee", "Arial Black", sans-serif;
@@ -245,19 +246,39 @@ button { font: inherit; color: inherit; }
   top: 0;
 }
 
-.slot__scrap {
-  position: absolute;
-  width: 34%;
-  height: 12%;
-  background: var(--c) url("../img/paper.webp") center / 400px auto;
-  background-blend-mode: multiply;
-  opacity: 0;
+/* Torn corners: the same points cut the sheet and the scraps left under the tape. */
+.slot {
+  --torn-sheet: polygon(30.2% 0, 70.1% 0, 71.4% 1.8%, 70% 5.9%, 74.8% 4.9%, 81.6% 8.5%, 88.4% 6.4%, 96.6% 9%, 100% 6.7%, 100% 100%, 0 100%, 0 6.9%, 5.5% 9%, 13.6% 6.8%, 25.2% 9%, 23.2% 5.4%, 32% 3.2%, 29.3% 1.6%);
+  --torn-face: polygon(31.4% 0, 69% 0, 70.3% 2.9%, 69.2% 7.3%, 74.3% 6.1%, 81.4% 9.9%, 88% 7.4%, 96.3% 10.4%, 100% 7.9%, 100% 100%, 0 100%, 0 8.3%, 5.8% 10.1%, 13.8% 8.2%, 25.6% 10.6%, 24% 6.5%, 33.2% 4.2%, 30.4% 2.4%);
 }
 
-.slot.is-torn .slot__scrap { opacity: 1; }
+.slot__scrap {
+  position: absolute;
+  inset: 0;
+  background: var(--fibre);
+  opacity: 0;
+  pointer-events: none;
+}
 
-.slot__scrap--a { left: -2%; top: -3%; clip-path: polygon(0 0, 100% 0, 92% 38%, 100% 52%, 74% 70%, 80% 100%, 46% 82%, 22% 100%, 0 76%); }
-.slot__scrap--b { right: -2%; top: -3%; clip-path: polygon(0 0, 100% 0, 100% 70%, 84% 100%, 60% 78%, 40% 96%, 20% 66%, 6% 74%, 10% 40%); }
+.slot__scrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--c) url("../img/paper.webp") center / 400px auto;
+  background-blend-mode: multiply;
+}
+
+.slot.is-torn .slot__scrap { opacity: 1; animation: tear .22s ease-out; }
+
+.slot__scrap--a { clip-path: polygon(0 0, 30.2% 0, 29.3% 1.6%, 32% 3.2%, 23.2% 5.4%, 25.2% 9%, 13.6% 6.8%, 5.5% 9%, 0 6.9%); }
+.slot__scrap--a::after { clip-path: polygon(0 0, 29.4% 0, 28.6% .5%, 31.2% 2.2%, 22.4% 4.3%, 24.5% 7.9%, 13.4% 5.7%, 5.1% 7.9%, 0 5.8%); }
+.slot__scrap--b { clip-path: polygon(70.1% 0, 100% 0, 100% 6.7%, 96.6% 9%, 88.4% 6.4%, 81.6% 8.5%, 74.8% 4.9%, 70% 5.9%, 71.4% 1.8%); }
+.slot__scrap--b::after { clip-path: polygon(70.9% 0, 100% 0, 100% 5.6%, 96.8% 7.8%, 88.7% 5.3%, 81.8% 7.3%, 75.2% 3.8%, 70.8% 4.7%, 72.1% .8%); }
+
+/* The scrap left on the wall is the corner of the drawing itself. */
+.slot.has-image .slot__scrap::after { background: var(--img) center / cover no-repeat; }
+
+@keyframes tear { from { translate: 0 1.5%; } }
 
 .slot__tape {
   position: absolute;
@@ -281,8 +302,7 @@ button { font: inherit; color: inherit; }
   width: 100%;
   padding: 0;
   border: 0;
-  background: var(--c) url("../img/paper.webp") center / cover;
-  background-blend-mode: multiply;
+  background: none;
   color: var(--t);
   text-align: left;
   cursor: grab;
@@ -296,7 +316,37 @@ button { font: inherit; color: inherit; }
 
 .sheet.is-dragging { cursor: grabbing; box-shadow: 0 2px 0 rgba(0, 0, 0, .1), 0 30px 40px -18px rgba(0, 0, 0, .6); }
 
+.sheet__fibre,
+.sheet__face { position: absolute; inset: 0; }
+
+.sheet__fibre { background: var(--fibre); }
+
+.sheet__face {
+  background: var(--c) url("../img/paper.webp") center / cover;
+  background-blend-mode: multiply;
+}
+
 .sheet img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* Once torn, a box-shadow would be cut by the clip: the shadow follows the paper instead. */
+.slot.is-torn .sheet { box-shadow: none; filter: drop-shadow(0 8px 7px rgba(0, 0, 0, .32)); }
+.slot.is-torn .sheet.is-dragging { filter: drop-shadow(0 18px 16px rgba(0, 0, 0, .4)); }
+.slot.is-torn .sheet__fibre { clip-path: var(--torn-sheet); }
+.slot.is-torn .sheet__face { clip-path: var(--torn-face); }
+
+.sheet__tag {
+  position: absolute;
+  right: -4px;
+  bottom: 7%;
+  padding: 5px 16px 6px 14px;
+  background: url("../img/tape.webp") center / 100% 100% no-repeat;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  rotate: -4deg;
+  pointer-events: none;
+}
 
 .sheet__number {
   position: absolute;
@@ -521,4 +571,5 @@ button { font: inherit; color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .slot.is-torn .slot__scrap { animation: none; }
 }

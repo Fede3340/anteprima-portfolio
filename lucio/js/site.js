@@ -7,6 +7,7 @@ const table = document.getElementById('table');
 const ticks = document.getElementById('ticks');
 const countNow = document.getElementById('countNow');
 const caption = document.getElementById('caption');
+const captionNote = document.getElementById('captionNote');
 const prevButton = document.getElementById('prev');
 const nextButton = document.getElementById('next');
 const viewer = document.getElementById('viewer');
@@ -92,6 +93,7 @@ function layout({ from = current, instant = false } = {}) {
   });
   countNow.textContent = items[current].n;
   caption.textContent = items[current].title;
+  captionNote.textContent = items[current].example ? 'Esempio' : '';
   prevButton.disabled = current === 0;
   nextButton.disabled = current === items.length - 1;
 }
@@ -144,17 +146,22 @@ function blank(item, i) {
 }
 
 function build(data) {
+  document.getElementById('countAll').textContent = `/ ${String(data.length).padStart(2, '0')}`;
   items = data.map((entry, i) => ({ ...entry, ratio: PLACEHOLDER_RATIOS[i % PLACEHOLDER_RATIOS.length] }));
   items.forEach((item, i) => {
     const el = document.createElement('figure');
     el.className = 'print';
     el.setAttribute('role', 'img');
-    el.setAttribute('aria-label', item.title ? `${item.n}, ${item.title}` : `Immagine ${item.n}`);
+    el.setAttribute('aria-label', `${item.title ? `${item.n}, ${item.title}` : `Immagine ${item.n}`}${item.example ? ', esempio' : ''}`);
     if (item.file) {
       const img = new Image();
       img.decoding = 'async';
       img.alt = '';
       img.onload = () => { item.ratio = img.naturalWidth / img.naturalHeight; layout({ instant: true }); };
+      if (item.srcset) {
+        img.srcset = item.srcset.split(', ').map(s => `media/${s}`).join(', ');
+        img.sizes = '100vw';
+      }
       img.src = `media/${item.file}`;
       el.append(img);
     } else {

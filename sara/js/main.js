@@ -123,8 +123,9 @@ function sheetMarkup(work, i) {
   const sheet = document.createElement('button');
   sheet.type = 'button';
   sheet.className = 'sheet';
-  sheet.setAttribute('aria-label', `Foglio ${work.number}${work.title ? `, ${work.title}` : ', in arrivo'}`);
-  sheet.innerHTML = `<span class="sheet__number">${work.number}</span><span class="sheet__state">in arrivo</span>`;
+  const label = work.title || 'in arrivo';
+  sheet.setAttribute('aria-label', `Foglio ${work.number}, ${label}${work.example ? ', esempio' : ''}`);
+  sheet.innerHTML = `<span class="sheet__fibre"></span><span class="sheet__face"><span class="sheet__number">${work.number}</span><span class="sheet__state">in arrivo</span></span>`;
   if (work.file) {
     const img = new Image();
     img.src = work.file;
@@ -132,9 +133,10 @@ function sheetMarkup(work, i) {
     img.decoding = 'async';
     img.loading = 'lazy';
     img.addEventListener('load', () => { works[i].ratio = img.naturalHeight / img.naturalWidth; layout(); });
-    sheet.append(img);
+    sheet.querySelector('.sheet__face').append(img);
     sheet.classList.add('has-image');
   }
+  if (work.example) sheet.insertAdjacentHTML('beforeend', '<span class="sheet__tag">Esempio</span>');
   return sheet;
 }
 
@@ -145,6 +147,10 @@ function buildBoard() {
     li.className = 'slot';
     li.style.setProperty('--c', `var(${bg})`);
     li.style.setProperty('--t', `var(${fg})`);
+    if (work.file) {
+      li.classList.add('has-image');
+      li.style.setProperty('--img', `url("${new URL(work.file, location.href)}")`);
+    }
     li.innerHTML = '<span class="slot__scrap slot__scrap--a"></span><span class="slot__scrap slot__scrap--b"></span><span class="slot__tape slot__tape--a"></span><span class="slot__tape slot__tape--b"></span>';
     const sheet = sheetMarkup(work, i);
     li.insertBefore(sheet, li.querySelector('.slot__tape'));
@@ -237,7 +243,7 @@ function makeFigure(i) {
   const ratio = slot.li.offsetHeight / slot.li.offsetWidth;
   const box = targetBox(ratio);
   const fig = document.createElement('div');
-  fig.className = 'viewer__sheet slot';
+  fig.className = 'viewer__sheet slot is-torn';
   fig.style.cssText = `width:${box.w}px;height:${box.h}px;left:${box.left}px;top:${box.top}px;rotate:0deg;--c:${slot.li.style.getPropertyValue('--c')};--t:${slot.li.style.getPropertyValue('--t')}`;
   const sheet = slot.sheet.cloneNode(true);
   sheet.removeAttribute('style');

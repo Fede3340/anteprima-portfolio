@@ -22,8 +22,8 @@
 
 <main class="room" aria-label="Immagini">
   <div class="table" id="table" aria-live="polite"></div>
-  <div class="count" aria-hidden="true"><span class="count-now" id="countNow">01</span><span class="count-all">/ 25</span></div>
-  <p class="caption" id="caption"></p>
+  <div class="count" aria-hidden="true"><span class="count-now" id="countNow">01</span><span class="count-all" id="countAll"></span></div>
+  <p class="caption"><span id="caption"></span><span class="caption-note" id="captionNote"></span></p>
   <div class="steps">
     <button type="button" class="step" id="prev" aria-label="Immagine precedente">&larr;</button>
     <button type="button" class="step" id="next" aria-label="Immagine successiva">&rarr;</button>
@@ -40,7 +40,7 @@
   <section class="sheet-part" id="about" aria-labelledby="aboutTitle">
     <h2 id="aboutTitle">Chi è</h2>
     <p>Lucio Giannottu, Cagliari.</p>
-    <p class="todo">[Biografia di Lucio: da scrivere con lui]</p>
+    <p>Geometra, qualche anno di cantiere, poi ha cambiato mestiere. Qui ci sono le sue immagini.</p>
   </section>
   <section class="sheet-part" id="contact" aria-labelledby="contactTitle">
     <h2 id="contactTitle">Contatti</h2>
@@ -48,7 +48,7 @@
   </section>
 </aside>
 
-<p class="preview-note">Anteprima: le immagini sono segnaposto</p>
+<p class="preview-note">Anteprima: le immagini sono esempi, in attesa dei lavori di Lucio</p>
 
 <script src="js/site.js" defer></script>
 </body>

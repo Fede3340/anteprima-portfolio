@@ -1,14 +1,14 @@
 [
-  { "number": "01", "file": "", "title": "" },
-  { "number": "02", "file": "", "title": "" },
-  { "number": "03", "file": "", "title": "" },
-  { "number": "04", "file": "", "title": "" },
-  { "number": "05", "file": "", "title": "" },
-  { "number": "06", "file": "", "title": "" },
-  { "number": "07", "file": "", "title": "" },
-  { "number": "08", "file": "", "title": "" },
-  { "number": "09", "file": "", "title": "" },
-  { "number": "10", "file": "", "title": "" },
-  { "number": "11", "file": "", "title": "" },
-  { "number": "12", "file": "", "title": "" }
+  {"number": "01", "file": "media/01.webp", "title": "Gru con casetta", "example": true},
+  {"number": "02", "file": "media/02.webp", "title": "Torre di case", "example": true},
+  {"number": "03", "file": "media/03.webp", "title": "Ponteggio con sciarpa", "example": true},
+  {"number": "04", "file": "media/04.webp", "title": "Betoniera a righe", "example": true},
+  {"number": "05", "file": "media/05.webp", "title": "Tetti con bucato", "example": true},
+  {"number": "06", "file": "media/06.webp", "title": "Il cono", "example": true},
+  {"number": "07", "file": "media/07.webp", "title": "Casco con fiori", "example": true},
+  {"number": "08", "file": "media/08.webp", "title": "Scala fino alle nuvole", "example": true},
+  {"number": "09", "file": "media/09.webp", "title": "Rullo e strisce", "example": true},
+  {"number": "10", "file": "media/10.webp", "title": "Ponte a metà", "example": true},
+  {"number": "11", "file": "media/11.webp", "title": "Carriola di case", "example": true},
+  {"number": "12", "file": "media/12.webp", "title": "Finestra sul mare", "example": true}
 ]
