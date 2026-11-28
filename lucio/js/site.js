@@ -1,11 +1,14 @@
-const PLACEHOLDER_RATIOS = [0.8, 1.5, 1, 0.667, 1.778, 0.8, 1.25, 0.75, 1, 0.667, 1.5, 0.8, 1, 1.6, 0.75, 0.8, 1.5, 1, 0.667, 1.25, 0.8, 1.5, 1, 0.75, 1.778];
 const BENEATH = 3;
 const STAGGER = 70;
 
 const body = document.body;
+const masthead = document.querySelector('.masthead');
+const seriesNav = document.getElementById('series');
 const table = document.getElementById('table');
 const ticks = document.getElementById('ticks');
 const countNow = document.getElementById('countNow');
+const countAll = document.getElementById('countAll');
+const count = document.querySelector('.count');
 const caption = document.getElementById('caption');
 const prevButton = document.getElementById('prev');
 const nextButton = document.getElementById('next');
@@ -27,19 +30,23 @@ function fit(ratio, box) {
 
 function boxes() {
   const W = innerWidth, H = innerHeight;
+  const top = masthead.getBoundingClientRect().bottom;
   if (isPhone()) {
+    const y = top + 20;
     return {
       full: { x: 12, y: 72, w: W - 24, h: H - 132 },
-      stage: { x: 20, y: 104, w: W - 40, h: H - 104 - 160 },
+      stage: { x: 20, y, w: W - 40, h: H - y - 160 },
       seen: null,
     };
   }
   const g = Math.min(48, Math.max(20, W * 0.034));
   const left = Math.max(330, W * 0.26);
+  const seenY = top + 28;
+  const seenH = Math.min(H * 0.22, count.getBoundingClientRect().top - 24 - seenY);
   return {
     full: { x: g, y: g + 64, w: W - 2 * g, h: H - 2 * g - 100 },
     stage: { x: left, y: g, w: W - left - g, h: H - 2 * g - 70 },
-    seen: { x: g, y: H * 0.36, w: 150, h: H * 0.22 },
+    seen: seenH >= 80 ? { x: g, y: seenY, w: 150, h: seenH } : null,
   };
 }
 
@@ -49,6 +56,17 @@ function place(item, box, scaleBy = 1, rotate = 0) {
   const x = box.x + box.w / 2 - item.base.w / 2;
   const y = box.y + box.h / 2 - item.base.h / 2;
   return `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${s.toFixed(4)}) rotate(${rotate.toFixed(2)}deg)`;
+}
+
+function load(item) {
+  if (item.el.firstElementChild) return;
+  const img = new Image();
+  img.decoding = 'async';
+  img.alt = '';
+  img.sizes = `${Math.ceil(item.base.w)}px`;
+  img.srcset = item.srcset.split(', ').map(s => `media/${s}`).join(', ');
+  img.src = `media/${item.file}`;
+  item.el.append(img);
 }
 
 function layout({ from = current, instant = false } = {}) {
@@ -63,6 +81,7 @@ function layout({ from = current, instant = false } = {}) {
     const changed = (i - from) * (i - current) <= 0 && from !== current;
     el.style.transitionDelay = instant || !changed ? '0ms' : `${Math.abs(i - from) * STAGGER}ms`;
     el.style.transitionDuration = instant ? '0ms' : '';
+    if (i >= current - 1 && i <= current + BENEATH + 1) load(item);
 
     let transform, hidden = false, depth;
     if (i === current) {
@@ -132,39 +151,17 @@ function closeSheet() {
   sheet.setAttribute('aria-hidden', 'true');
 }
 
-function blank(item, i) {
-  const hue = (i * 47 + 20) % 360;
-  const box = document.createElement('div');
-  box.className = 'blank';
-  box.style.setProperty('--angle', `${(i * 53) % 180 + 100}deg`);
-  box.style.setProperty('--from', `hsl(${hue} 7% ${84 - (i % 4) * 2}%)`);
-  box.style.setProperty('--to', `hsl(${(hue + 30) % 360} 9% ${74 - (i % 3) * 3}%)`);
-  box.innerHTML = `<span aria-hidden="true">${item.n}</span>`;
-  return box;
-}
-
-function build(data) {
-  document.getElementById('countAll').textContent = `/ ${String(data.length).padStart(2, '0')}`;
-  items = data.map((entry, i) => ({ ...entry, ratio: PLACEHOLDER_RATIOS[i % PLACEHOLDER_RATIOS.length] }));
+function build(set) {
+  table.replaceChildren();
+  ticks.replaceChildren();
+  current = 0;
+  countAll.textContent = `/ ${String(set.items.length).padStart(2, '0')}`;
+  items = set.items.map(entry => ({ ...entry, ratio: entry.w / entry.h }));
   items.forEach((item, i) => {
     const el = document.createElement('figure');
     el.className = 'print';
     el.setAttribute('role', 'img');
-    el.setAttribute('aria-label', item.title ? `${item.n}, ${item.title}` : `Immagine ${item.n}`);
-    if (item.file) {
-      const img = new Image();
-      img.decoding = 'async';
-      img.alt = '';
-      img.onload = () => { item.ratio = img.naturalWidth / img.naturalHeight; layout({ instant: true }); };
-      if (item.srcset) {
-        img.srcset = item.srcset.split(', ').map(s => `media/${s}`).join(', ');
-        img.sizes = '100vw';
-      }
-      img.src = `media/${item.file}`;
-      el.append(img);
-    } else {
-      el.append(blank(item, i));
-    }
+    el.setAttribute('aria-label', `${item.n}, ${item.title}`);
     el.addEventListener('click', () => {
       if (moved) { moved = false; return; }
       if (i === current) setViewing(!viewing);
@@ -184,6 +181,7 @@ function build(data) {
     li.append(tick);
     ticks.append(li);
   });
+  [...seriesNav.children].forEach(button => button.setAttribute('aria-current', String(button.dataset.series === set.id)));
 }
 
 function enter() {
@@ -200,6 +198,12 @@ function enter() {
   items.slice(0, BENEATH + 1).forEach((item, i) => {
     item.el.style.transitionDelay = `${300 + (BENEATH - i) * 160}ms`;
   });
+}
+
+function show(set) {
+  if (viewing) setViewing(false);
+  build(set);
+  enter();
 }
 
 let startX = 0, startY = 0, moved = false;
@@ -251,4 +255,15 @@ addEventListener('resize', () => {
 
 fetch('data/images.json')
   .then(r => r.json())
-  .then(data => { build(data); enter(); });
+  .then(series => {
+    series.forEach(set => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'series-link';
+      button.dataset.series = set.id;
+      button.textContent = set.title;
+      button.addEventListener('click', () => { if (button.getAttribute('aria-current') !== 'true') show(set); });
+      seriesNav.append(button);
+    });
+    show(series[0]);
+  });
