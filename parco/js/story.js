@@ -910,7 +910,7 @@ export function createStory(root, { works, sound, onClose }) {
     },
     async open(id, point) {
       await styled;
-      await document.fonts.load('700 100px Grandstander').catch(() => {});
+      await document.fonts.load('500 100px "Schibsted Grotesk"').catch(() => {});
       unzoom();
       work = works[id];
       const tint = await tintOf(work);

@@ -2501,7 +2501,7 @@
     },
     "negozio-nero-72": {
       "index": 10,
-      "title": "Nero 72, il negozio",
+      "title": "Nero 72",
       "kind": "concept",
       "tag": "Concept",
       "year": "2026",
@@ -2788,7 +2788,7 @@
     },
     "negozio-il-gatto": {
       "index": 11,
-      "title": "Il Gatto, il negozio",
+      "title": "Il Gatto",
       "kind": "concept",
       "tag": "Concept",
       "year": "2026",
@@ -3067,7 +3067,7 @@
     },
     "negozio-mandorla": {
       "index": 12,
-      "title": "Mandorla, il negozio",
+      "title": "Mandorla",
       "kind": "concept",
       "tag": "Concept",
       "year": "2026",
@@ -3339,7 +3339,7 @@
     },
     "negozio-cerchi": {
       "index": 13,
-      "title": "Cerchi, il negozio",
+      "title": "Cerchi",
       "kind": "concept",
       "tag": "Concept",
       "year": "2026",
@@ -3595,9 +3595,9 @@
     },
     "negozio-tre-fili": {
       "index": 14,
-      "title": "Tre Fili, il negozio",
+      "title": "Tre Fili",
       "kind": "concept",
-      "tag": "Concept",
+      "tag": "In corso",
       "year": "2026",
       "place": "Cagliari",
       "line": "Negozio online per lo zafferano di un piccolo coltivatore di Iglesias: fili interi in vetro, e la pagina dice perché non è DOP.",
@@ -3617,7 +3617,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+          "p": "È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
         }
       ],
       "study": [
@@ -3775,7 +3775,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+              "p": "È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
             },
             {
               "kind": "facts",
@@ -3867,9 +3867,9 @@
     },
     "negozio-serra": {
       "index": 15,
-      "title": "Serra, il negozio",
+      "title": "Serra",
       "kind": "concept",
-      "tag": "Concept",
+      "tag": "In corso",
       "year": "2026",
       "place": "Cagliari",
       "line": "Negozio online per coltelli a serramanico fatti a mano: sotto ogni coltello c’è un righello.",
@@ -3889,7 +3889,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+          "p": "È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
         }
       ],
       "study": [
@@ -4047,7 +4047,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+              "p": "È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
             },
             {
               "kind": "facts",
@@ -4139,9 +4139,9 @@
     },
     "negozio-scorza": {
       "index": 16,
-      "title": "Scorza, il negozio",
+      "title": "Scorza",
       "kind": "concept",
-      "tag": "Concept",
+      "tag": "In corso",
       "year": "2026",
       "place": "Cagliari",
       "line": "Negozio online per oggetti di sughero: ogni pezzo ha il suo peso, e il carrello pesa il pacco.",
@@ -4161,7 +4161,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+          "p": "È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
         }
       ],
       "study": [
@@ -4319,7 +4319,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+              "p": "È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
             },
             {
               "kind": "facts",
@@ -4411,9 +4411,9 @@
     },
     "negozio-cotta": {
       "index": 17,
-      "title": "Cotta, il negozio",
+      "title": "Cotta",
       "kind": "concept",
-      "tag": "Concept",
+      "tag": "In corso",
       "year": "2026",
       "place": "Cagliari",
       "line": "Negozio online per ceramiche al tornio: mezze smaltate e mezze crude, e la pagina fa lo stesso.",
@@ -4433,7 +4433,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+          "p": "È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
         }
       ],
       "study": [
@@ -4601,7 +4601,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+              "p": "È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
             },
             {
               "kind": "facts",
@@ -4693,9 +4693,9 @@
     },
     "negozio-spola": {
       "index": 18,
-      "title": "Spola, il negozio",
+      "title": "Spola",
       "kind": "concept",
-      "tag": "Concept",
+      "tag": "In corso",
       "year": "2026",
       "place": "Cagliari",
       "line": "Negozio online per tessuti al telaio: ogni pezzo ha le sue settimane di lavoro, e tutti sono disegnati alla stessa scala.",
@@ -4715,7 +4715,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+          "p": "È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
         }
       ],
       "study": [
@@ -4873,7 +4873,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+              "p": "È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
             },
             {
               "kind": "facts",

@@ -28,16 +28,16 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   align-items: center;
   justify-content: center;
   min-width: 44px;
-  min-height: 44px;
+  min-height: 40px;
   padding: 0 18px;
   border: 0;
-  border-radius: 22px;
+  border-radius: 10px;
   background: var(--paper);
   color: var(--ink);
   font-size: var(--small);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.2;
-  box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.5);
+  box-shadow: 0 6px 18px -12px rgb(0 23 80 / 0.28);
   cursor: pointer;
 }
 
@@ -70,9 +70,9 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   display: flex;
   gap: 2px;
   padding: 3px;
-  border-radius: 25px;
+  border-radius: 10px;
   background: var(--paper);
-  box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.5);
+  box-shadow: 0 6px 18px -12px rgb(0 23 80 / 0.28);
 }
 
 .case-phase {
@@ -80,11 +80,11 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   min-height: 38px;
   padding: 0 14px;
   border: 0;
-  border-radius: 19px;
+  border-radius: 10px;
   background: none;
   color: var(--ink);
   font-size: var(--small);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.2;
   cursor: pointer;
 }
@@ -209,13 +209,13 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
 .case-count {
   min-width: 96px;
   padding: 10px 16px;
-  border-radius: 22px;
+  border-radius: 10px;
   background: var(--paper);
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 500;
   text-align: center;
   line-height: 1.5;
-  box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.5);
+  box-shadow: 0 6px 18px -12px rgb(0 23 80 / 0.28);
 }
 
 /* The strip of boards inside the frame. */
@@ -343,7 +343,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
 .case-name,
 .case-subtitle {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 1.2;
 }
@@ -371,7 +371,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
 
 .case-line {
   font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.375rem);
-  font-weight: 700;
+  font-weight: 500;
   text-wrap: pretty;
 }
 
@@ -403,10 +403,10 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   align-items: center;
   min-height: 48px;
   padding: 0 22px;
-  border-radius: 24px;
+  border-radius: 10px;
   background: var(--ink);
   color: var(--light);
-  font-weight: 700;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -456,7 +456,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
 .case-pic--tall {
   cursor: default;
   container-type: size;
-  border-radius: 22px;
+  border-radius: 10px;
 }
 
 .case-pic--tall img {
@@ -480,7 +480,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   flex: none;
   width: 100%;
   text-align: center;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 /* A poster and its colours, side by side. */
@@ -536,7 +536,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
 
 .case-swatch__name {
   font-size: 1.125rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .case-system {
@@ -576,11 +576,11 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
 }
 
 .case-type__role {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .case-type__name {
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 1.15;
   overflow-wrap: break-word;
@@ -597,10 +597,10 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
 
 .case-values li {
   padding: 4px 14px;
-  border-radius: 18px;
+  border-radius: 12px;
   background: var(--panel);
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
   font-size: 1.125rem;
   line-height: 1.4;
@@ -618,11 +618,11 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
 }
 
 .case-rows--facts li {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .case-rows__label {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .case-ways {
@@ -657,12 +657,12 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   border-radius: 12px;
   background: var(--light);
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .case-way__name {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
   font-size: 1.25rem;
   line-height: 1.3;
@@ -676,12 +676,12 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   border: 2px solid var(--panel);
   border-radius: 14px;
   background: #ffffff;
-  box-shadow: 0 18px 40px -24px rgb(0 23 80 / 0.5);
+  box-shadow: 0 10px 28px -18px rgb(0 23 80 / 0.32);
 }
 
 .case-screen--phone {
   border: 8px solid #f6f8fb;
-  border-radius: 30px;
+  border-radius: 10px;
 }
 
 .case-screen__bar {
@@ -692,7 +692,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   padding: 4px 6px 4px 16px;
   background: var(--panel);
   font-size: var(--small);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .case-screen__host {
@@ -709,11 +709,11 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   min-height: 36px;
   padding: 0 14px;
   border: 0;
-  border-radius: 18px;
+  border-radius: 12px;
   background: var(--ink);
   color: var(--light);
   font-size: var(--small);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.2;
   text-decoration: none;
   white-space: nowrap;
@@ -799,7 +799,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   min-width: 52px;
   min-height: 52px;
   padding: 0;
-  border-radius: 26px;
+  border-radius: 10px;
   font-size: 2rem;
 }
 
@@ -828,7 +828,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
 }
 
 .case-kicker {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .case-actions {
@@ -841,10 +841,10 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   min-height: 48px;
   padding: 0 22px;
   border: 2px solid var(--ink);
-  border-radius: 24px;
+  border-radius: 10px;
   background: none;
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
 }
 

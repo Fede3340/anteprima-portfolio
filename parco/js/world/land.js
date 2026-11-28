@@ -124,6 +124,7 @@ function createSea() {
   const sea = new THREE.Mesh(new THREE.RingGeometry(0, 1500, 96, 48), material);
   sea.rotation.x = -Math.PI / 2;
   sea.position.y = -95;
+  sea.userData.sea = true;
   return sea;
 }
 

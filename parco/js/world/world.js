@@ -5,6 +5,7 @@ import { EYE, createRig } from './camera.js';
 import { createControls } from './controls.js';
 import { HAZE, createGround, createSky, heightAt } from './land.js';
 import { islandOf, mouth } from './layout.js';
+import { forming } from './sprites.js';
 
 // A walk: 2.8 m/s, up to 4.2 holding the screen; at full pace within 0.12 s, and stopped as quickly.
 const WALK = 2.8;
@@ -35,14 +36,19 @@ const SINK = 0.035;
 const LANDING = 1.5;
 // The light on the ground: a strong sky with a pale blue bounce from below and a gentle sun.
 // The sharpness of the drawing follows the machine. It starts at the screen's own density, up to 1.5
-// and up to about 2.6 million pixels drawn (a large screen of high density starts a step lower). The
-// time of a frame, 50 ms at most, is averaged over about ten frames, so that a screen dropping every other frame (16
-// and 33 ms in turn) counts as slow: after half a second of that average above 22 ms it goes down a
-// step; on the lowest step, after one more second, the light way comes on. It goes back up a step
-// after five seconds at the screen's full pace (under 18 ms: the time between frames cannot be shorter
-// than the screen's own, 16.7 ms at 60 Hz); a step found too slow is tried again once, twenty seconds
-// later, and after a second failure no more.
-const STEPS = [1.5, 1.25, 1, 0.8, 0.65];
+// and up to about 2.6 million pixels drawn (a large screen of high density starts a step lower), and
+// never goes under one pixel of the page: a coarse picture is worse than fewer things in it. The
+// time of a frame, 50 ms at most, is averaged over about ten frames, so that a screen dropping every
+// other frame (16 and 33 ms in turn) counts as slow: after half a second of that average above 22 ms
+// it goes down a step; on the lowest step, after one more second, the light way comes on. A phone
+// starts on the light way, at its full sharpness. It goes back up a step after five seconds at the
+// screen's full pace (under 18 ms: the time between frames cannot be shorter than the screen's own,
+// 16.7 ms at 60 Hz); a step found too slow is tried again once, twenty seconds later, and after a
+// second failure no more. Nothing is measured while the park takes shape behind the door.
+const STEPS = [1.5, 1.25, 1];
+const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 700;
+// Behind the door the park is drawn once in half a second, which keeps its programs and pictures ready.
+const WARM = 500;
 const PIXELS = 2.6e6;
 const SLOW = 22;
 const QUICK = 18;
@@ -66,6 +72,12 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   scene.add(sky, sun, sun.target);
 
   const land = createGround(plan);
+  // A phone takes the light way from the start, so that it is in place when the park is first prepared.
+  if (PHONE) {
+    quality.light = true;
+    land.light(true);
+  }
+  let told = false;
   // The sky is the land's too, for whoever sets the light.
   land.sky = createSky();
   scene.add(land.sky, land.sea, land.bodies, ...land.floors, ...land.stones);
@@ -76,6 +88,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   const state = { island: plan.landing, path: undefined, t: 0, x: 0, y: 0, z: 0, heading: 0, pitch: -0.1, speed: 0, walked: 0, hop: 0, rise: 0, hold: false, route: [], near: [], still: !reducedMotion.matches };
   const parts = [];
   let running = false;
+  let drawnAt = 0;
   let paused = false;
   let last = 0;
   let time = 0;
@@ -387,6 +400,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       go(quality.step + 1);
     } else if (quality.slow > 1000 && !quality.light) {
       quality.light = true;
+      told = true;
       quality.slow = 0;
       land.light(true);
       listeners.light?.(true);
@@ -403,8 +417,13 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   }
 
   function frame(now) {
-    // The first frame after a pause is not a measure.
-    if (last && now - last < 1000) adapt(now - last);
+    if (!forming.value && now - drawnAt < WARM) {
+      last = now;
+      return;
+    }
+    drawnAt = now;
+    // The first frame after a pause is not a measure, nor those of the park taking shape.
+    if (last && now - last < 1000 && forming.value === 1) adapt(now - last);
     const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
     last = now;
     time += dt;
@@ -471,7 +490,21 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     on(more) {
       listeners = { ...listeners, ...more };
     },
+    // One frame drawn at once, unseen under the door: the programs are made and the pictures sent to
+    // the graphics card before the park is shown.
+    warm() {
+      // Drawn whole, as if already formed, so that every thing is really drawn once.
+      const was = forming.value;
+      forming.value = 1;
+      for (const part of parts) part.update?.(0, time, state, camera);
+      rig.update(0, state, time);
+      renderer.render(scene, camera);
+      forming.value = was;
+    },
     start() {
+      // The rest of the park learns of the light way when it is first drawn.
+      if (quality.light && !told) listeners.light?.(true);
+      told = true;
       loop(true);
     },
     pause(value) {

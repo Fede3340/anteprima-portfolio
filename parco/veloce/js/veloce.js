@@ -380,7 +380,7 @@ function opening(first) {
       arco: box({ left: land.left, top: land.top, width: land.width, height: innerWidth < 768 ? 64 : 90 }),
       luna: box(statue && square(statue, 0.5)),
       linea: box(work && { left: work.left, top: work.top, width: work.width, height: 1 }),
-      ...Object.fromEntries(things.slice(0, 3).map((rect, i) => [`punto${i}`, box(square(rect, 0.3))])),
+      ...Object.fromEntries(things.slice(0, 3).map((rect, i) => [`stella${i}`, box(square(rect, 0.3))])),
     };
   }
   let drawn;
@@ -390,9 +390,10 @@ function opening(first) {
     if (layer.hidden) return;
     drawn ??= shapes(layer);
     if (!drawn) return;
-    const at = places(drawn.view());
+    const view = drawn.view();
+    const at = places(view);
     const t = reducedMotion.matches ? 0 : settle(gone);
-    for (const shape of drawn.list) place(shape, mix(shape.start, at[shape.name] || shape.start, t));
+    for (const shape of drawn.list) place(shape, mix(shape.start, at[shape.name] || shape.start, t), view);
     layer.style.opacity = String(1 - settle((gone - 0.7) / 0.3));
   }
   let queued = false;

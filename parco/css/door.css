@@ -1,6 +1,7 @@
-/* The start of the flow (js/threshold.js): a few shapes in a calm field and the name; going on, the
-   shapes become the things of the park, the name goes to its corner, the way forks, and the door
-   fades on the park. Everything that moves here is set by js/threshold.js from the way gone. */
+/* The start of the flow (js/threshold.js): a sun of light and a few drawn signs in a deep field, and
+   the name; going on, the sun moves aside, the name goes to its corner, the way forks, then the signs
+   become the things of the park and the door fades on it. What moves is set by js/threshold.js from
+   the way gone, and only by transform and opacity. */
 .threshold {
   justify-content: center;
   align-items: center;
@@ -12,16 +13,24 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: linear-gradient(#b7b7ee, #ddb8cf);
+  background: #2a3478;
 }
 
-/* The shapes (js/forma.js), drawn to cover the screen: one drawing for a wide screen, one for a tall. */
+/* The field (js/forma.js): deep and cool at the top, opening to lilac and to the warmth of the dawn
+   low down, with a fine grain over it that takes the plastic off. Still: it never repaints. */
 .forma-campo,
 .forma {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+}
+
+.forma-campo--cielo {
+  background:
+    var(--grana),
+    radial-gradient(120% 70% at 30% 110%, rgb(255 162 87 / 0.32), rgb(255 162 87 / 0) 60%),
+    linear-gradient(#1c2566 0%, #2f3a88 38%, #4e55a6 66%, #b99bc6 92%, #d6b4d3 100%);
 }
 
 .forma--alto {
@@ -38,51 +47,69 @@
   }
 }
 
-/* The disc is the invitation and the first gesture (js/threshold.js). */
-.forma [data-forma="sole"] {
-  cursor: pointer;
-}
-
-.forma [data-forma="anello"] {
+/* The sun is light, not a disc: a small bright core with a soft edge, and a wide halo melting into the
+   field. One layer of its own, moved by its transform only; the halo breathes, barely. Its core is the
+   invitation and the first gesture. */
+.sole {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  transform-origin: 50% 50%;
   pointer-events: none;
+  will-change: transform;
 }
 
-/* Pressed, a wave of rings leaves from the point. */
+.sole,
+.sole__respiro {
+  border-radius: 50%;
+  background: radial-gradient(closest-side in oklab, #fffaf0 0%, #ffeab0 6%, rgb(255 190 120 / 0.75) 10%, rgb(255 162 87 / 0.3) 24%, rgb(255 162 87 / 0.1) 46%, rgb(255 162 87 / 0.03) 70%, rgb(255 162 87 / 0) 92%);
+}
+
+.sole__respiro {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: respiro 6s ease-in-out infinite;
+}
+
+@keyframes respiro {
+  50% {
+    opacity: 0.6;
+    transform: scale(1.12);
+  }
+}
+
+.sole__cuore {
+  position: absolute;
+  inset: 40%;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* Pressed, a wave of rings of light leaves from the point. */
 .threshold__onda {
   position: absolute;
   z-index: 1;
   width: 24px;
   height: 24px;
   margin: -12px 0 0 -12px;
-  border: 1.5px solid #fff0e4;
+  border: 1px solid #fff0e4;
   border-radius: 50%;
   pointer-events: none;
-  animation: onda 1.4s cubic-bezier(0.2, 0.6, 0.3, 1) backwards;
+  animation: onda 1.6s cubic-bezier(0.2, 0.6, 0.3, 1) backwards;
 }
 
 @keyframes onda {
   from {
     transform: scale(0.4);
-    opacity: 0.9;
+    opacity: 0.8;
   }
   to {
-    transform: scale(14);
+    transform: scale(16);
     opacity: 0;
-  }
-}
-
-/* At rest the shapes drift a few pixels over tens of seconds. */
-.forma :is([data-forma="sole"], [data-forma="luna"], [data-forma="arco"]) {
-  animation: forma-deriva 40s ease-in-out infinite alternate;
-}
-
-.forma [data-forma="luna"] {
-  animation-duration: 55s;
-}
-
-@keyframes forma-deriva {
-  to {
-    translate: 6px -4px;
   }
 }
 
@@ -109,6 +136,10 @@
   margin-bottom: 0.4em;
 }
 
+.threshold__name {
+  color: #fff0e4;
+}
+
 .threshold__word,
 .brand {
   font-family: var(--font-text);
@@ -127,8 +158,8 @@
 
 .threshold__by {
   font-family: var(--font-text);
-  font-size: 0.5em;
-  font-weight: 600;
+  font-size: max(1rem, 0.5em);
+  font-weight: 400;
   letter-spacing: 0.03em;
 }
 
@@ -180,7 +211,7 @@ body:has(.threshold:not([hidden])) .travel {
   box-shadow: none;
   color: var(--ink);
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
   font-size: 1.625rem;
   line-height: 1.2;
@@ -190,29 +221,39 @@ body:has(.threshold:not([hidden])) .travel {
   translate: -50% -50%;
 }
 
-.bivio img {
-  width: clamp(150px, 15vw, 210px);
-  height: clamp(150px, 15vw, 210px);
-  filter: drop-shadow(0 12px 10px rgb(0 23 80 / 0.25));
+.bivio__segno {
+  width: clamp(104px, 9vw, 128px);
+  height: auto;
+  fill: none;
+  stroke: #fff0e4;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: #fff0e4;
+  overflow: visible;
   transition: transform 0.3s var(--ease);
 }
 
-.bivio:hover img,
-.bivio:focus-visible img {
+.bivio__segno * {
+  vector-effect: non-scaling-stroke;
+}
+
+.bivio:hover .bivio__segno,
+.bivio:focus-visible .bivio__segno {
   transform: translateY(-4px);
 }
 
 .bivio span {
   padding: 12px 26px 14px;
-  border-radius: 28px;
+  border-radius: 10px;
   background: var(--paper);
-  box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.45);
+  box-shadow: 0 6px 18px -12px rgb(0 23 80 / 0.28);
   white-space: nowrap;
 }
 
 .bivio--parco {
-  left: 50%;
-  top: 50%;
+  left: 36%;
+  top: 60%;
 }
 
 .bivio--parco span::after {
@@ -220,14 +261,13 @@ body:has(.threshold:not([hidden])) .travel {
 }
 
 .bivio--lavori {
-  left: 79%;
-  top: 40%;
+  left: 66%;
+  top: 60%;
 }
 
 @media (orientation: portrait) {
-  .bivio img {
-    width: 120px;
-    height: 120px;
+  .bivio__segno {
+    width: 96px;
   }
 
   .bivio {
@@ -236,12 +276,12 @@ body:has(.threshold:not([hidden])) .travel {
 
   .bivio--parco {
     left: 50%;
-    top: 47%;
+    top: 66%;
   }
 
   .bivio--lavori {
     left: 50%;
-    top: 21%;
+    top: 39%;
   }
 }
 
@@ -263,12 +303,16 @@ body:has(.threshold:not([hidden])) .travel {
   min-height: 56px;
   padding: 4px 26px 6px;
   border: 0;
-  border-radius: 24px;
+  border-radius: 10px;
   background: var(--ink);
   color: var(--light);
   font-size: var(--small);
   font-weight: 500;
   cursor: pointer;
+}
+
+.threshold__avanti {
+  white-space: nowrap;
 }
 
 .threshold__avanti strong {
@@ -294,14 +338,14 @@ body:has(.threshold:not([hidden])) .travel {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 44px;
+  min-height: 40px;
   padding: 0 18px;
   border: 0;
-  border-radius: 22px;
+  border-radius: 10px;
   background: rgb(255 255 255 / 0.6);
   color: var(--ink);
   font-size: var(--small);
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
 }
 
@@ -310,7 +354,7 @@ body:has(.threshold:not([hidden])) .travel {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .forma [data-forma],
+  .sole__respiro,
   .threshold__onda {
     animation: none;
   }

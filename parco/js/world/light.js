@@ -48,10 +48,19 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
   const heavens = createSkyMaterial();
   dome.material = heavens;
   const u = heavens.uniforms;
-  const sea = meshes.find((mesh) => mesh.material?.uniforms?.uCloud);
+  const sea = meshes.find((mesh) => mesh.userData.sea);
   // Ground, bodies and stones; on the light way their materials change, and the new ones are graded too.
   const ground = meshes.filter((mesh) => mesh.material?.isMeshLambertMaterial);
   const graded = new WeakSet();
+  // Graded at once, so that they are ready when the park is first prepared, and again whenever the
+  // light way changes them.
+  const gradeGround = () => {
+    for (const mesh of ground) {
+      if (graded.has(mesh.material)) continue;
+      graded.add(grade(mesh.material, undefined, Boolean(mesh.userData.island)));
+    }
+  };
+  gradeGround();
   const [contact, patches] = [1, 2].map((order) => park.object.children.find((mesh) => mesh.renderOrder === order && mesh.material.uniforms?.colour));
   // The pools of the lamps are painted by the floor itself (grade.js), following its bumps; the flat
   // patches park.js lays for them would sink into the floor, so they are not drawn.
@@ -213,10 +222,7 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
       leanTo(tones.uHalf.value, now.mid, LEAN.half * lean);
       leanTo(tones.uLit.value, now.lit, LEAN.lit * lean);
 
-      for (const mesh of ground) {
-        if (graded.has(mesh.material)) continue;
-        graded.add(grade(mesh.material, undefined, Boolean(mesh.userData.island)));
-      }
+      gradeGround();
 
       u.uTop.value.copy(now.top);
       u.uQuarter.value.copy(now.quarter);
@@ -237,7 +243,8 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
       fog.color.copy(now.horizon);
       fog.near = near * now.haze;
       // While the park takes shape the haze stands close, and lifts.
-      fog.far = far * now.haze * (0.2 + 0.8 * forming.value);
+      // On the light way the haze comes nearer: less is seen far off, the near things stay sharp.
+      fog.far = far * now.haze * (0.2 + 0.8 * forming.value) * (sea.material.uniforms ? 1 : 0.7);
       below.sea.copy(now.seaNear).multiplyScalar(0.8).lerp(now.shade, 0.35);
       if (sea.material.uniforms) {
         sea.material.uniforms.uCloud.value.copy(below.sea);

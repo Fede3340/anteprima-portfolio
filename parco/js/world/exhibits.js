@@ -187,8 +187,8 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     // (layout.js, 2.7 m) and the room kept round a thing (world.js, 0.3 m), so that one can stand
     // between two works of the first row to see one of the second.
     solid: plan.works.map((work) => ({ x: work.x, z: work.z, r: 0.9 })),
-    // Small covers up to two islands away, large ones (not on the light way) on the island one is on
-    // and those beside it; further, everything is let go.
+    // Small covers up to two islands away, large ones on the island one is on and those beside it (on
+    // the light way only on the island one is on); further, everything is let go.
     island(island) {
       here = island;
       const count = plan.islands.length;
@@ -198,7 +198,7 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
         if (away > 2) forget(item);
         else {
           far(item);
-          if (away <= 1 && !light) load(item);
+          if (away <= (light ? 0 : 1)) load(item);
           else release(item);
         }
       }

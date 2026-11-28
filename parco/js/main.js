@@ -538,6 +538,9 @@ if (world) {
   // The park is drawn from the moment one goes in; behind the door there is the picture.
   await loaded;
   world.renderer.compile(world.scene, world.camera);
+  // Hook of the drawing (world.js): one frame drawn now, under the door, so that nothing is prepared
+  // when the park first shows.
+  world.warm();
   threshold.ready();
   here ??= plan.landing;
   unveil();

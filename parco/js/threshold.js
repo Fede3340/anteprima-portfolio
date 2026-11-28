@@ -17,13 +17,12 @@ const REST = 450;
 export function createThreshold(root, { onBegin, onSound, onArrive }) {
   const field = createForma(true);
   root.querySelector('.threshold__forma').append(field);
-  // With less motion the ring round the disc stands still.
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) field.querySelectorAll('animate').forEach((node) => node.remove());
   const name = root.querySelector('.threshold__name');
   const fork = root.querySelector('.threshold__bivio');
   const avanti = root.querySelector('.threshold__avanti');
   const verso = root.querySelector('.threshold__verso');
   const sound = root.querySelector('.threshold__sound');
+  const foot = root.querySelector('.threshold__piede');
   const still = matchMedia('(prefers-reduced-motion: reduce)');
   const heard = () => sound.getAttribute('aria-checked') === 'true';
 
@@ -52,26 +51,34 @@ export function createThreshold(root, { onBegin, onSound, onArrive }) {
       : { x: -innerWidth / 2, y: -innerHeight / 2, s: 0.2 };
   }
 
+  // The way, in shares of it: the name rises to its corner and is gone by NAMED; the sun moves aside
+  // by the fork, where the two choices stand alone in their place, clear and whole; past the fork the
+  // choices go, the things go home (HOME), the door fades on the park (FADE) and the park takes shape.
+  const NAMED = 0.2;
+  const HOME = [0.6, 0.74];
+  const FADE = [0.68, 0.88];
   function draw() {
     const g = gone;
-    const settle = smooth(g / FORK);
     if (drawn) {
-      for (const shape of drawn.list) place(shape, mix(shape.start, shape.home, still.matches ? 0 : settle));
-      // The ring round the disc breathes only while the disc is the invitation.
-      const ring = drawn.list.find((shape) => shape.name === 'anello');
-      if (ring) ring.el.style.opacity = String(1 - smooth(g / 0.12));
+      const view = drawn.view();
+      const aside = still.matches ? 0 : smooth(g / FORK);
+      const home = still.matches ? 0 : smooth((g - HOME[0]) / (HOME[1] - HOME[0]));
+      for (const shape of drawn.list) place(shape, mix(mix(shape.start, shape.fork, aside), shape.home, home), view);
     }
-    const lift = smooth(g / 0.3);
+    const lift = smooth(g / NAMED);
     name.style.transform = still.matches ? 'none' : `translate(${corner.x * lift}px, ${corner.y * lift}px) scale(${1 + (corner.s - 1) * lift})`;
     name.style.opacity = String(1 - lift);
-    document.documentElement.classList.toggle('flusso-angolo', g > 0.22);
-    // The fork shows round FORK; past it the door fades on the park, which takes shape.
-    const open = smooth((g - 0.22) / 0.16) * (1 - smooth((g - 0.58) / 0.12));
+    name.style.visibility = lift >= 1 ? 'hidden' : '';
+    document.documentElement.classList.toggle('flusso-angolo', g >= NAMED);
+    // The choices are there whole, or not at all: a short fade in and out.
+    const open = smooth((g - 0.3) / 0.05) * (1 - smooth((g - 0.56) / 0.04));
     fork.style.opacity = String(open);
-    fork.style.translate = `0 ${(1 - open) * 24}px`;
-    fork.inert = open < 0.5;
-    root.style.opacity = String(1 - smooth((g - 0.6) / 0.22));
-    if (begun) forming.value = smooth((g - 0.62) / 0.38);
+    fork.style.visibility = open > 0 ? '' : 'hidden';
+    fork.inert = open < 0.9;
+    root.style.opacity = String(1 - smooth((g - FADE[0]) / (FADE[1] - FADE[0])));
+    if (begun) forming.value = smooth((g - 0.7) / 0.3);
+    // While the things go home the foot steps aside too: nothing passes over a word.
+    foot.style.opacity = String(1 - smooth((g - 0.56) / 0.04));
     verso.textContent = g < 0.2 ? 'scorri' : g < 0.7 ? 'entra nel parco' : '';
   }
 
@@ -148,7 +155,7 @@ export function createThreshold(root, { onBegin, onSound, onArrive }) {
   let press;
   root.addEventListener('pointerdown', (event) => {
     if (!event.isPrimary || event.button || event.target.closest('a, button')) return;
-    if (event.target.closest('[data-forma="sole"]') && want < FORK) {
+    if (event.target.closest('.sole__cuore') && want < FORK) {
       wave(event.clientX, event.clientY);
       wake();
       to(FORK, 2.4);

@@ -61,7 +61,7 @@ html.veloce:has(.story:not([hidden])) {
   max-width: 22em;
   font-family: var(--font-display);
   font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2.25rem);
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 1.25;
 }
@@ -133,11 +133,11 @@ html.veloce:has(.story:not([hidden])) {
   gap: 8px;
   min-height: 32px;
   padding: 0 14px;
-  border-radius: 16px;
+  border-radius: 12px;
   background: var(--paper);
   font-size: var(--small);
-  font-weight: 600;
-  box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.45);
+  font-weight: 400;
+  box-shadow: 0 6px 18px -12px rgb(0 23 80 / 0.28);
 }
 
 .isola__conta::before {
@@ -233,7 +233,7 @@ html.veloce:has(.story:not([hidden])) {
 .isola__nota {
   align-self: center;
   max-width: 34em;
-  font-weight: 600;
+  font-weight: 400;
   text-align: center;
 }
 
@@ -307,7 +307,7 @@ html.veloce:has(.story:not([hidden])) {
   padding: var(--frame);
   border-radius: 10px;
   background: var(--light);
-  box-shadow: 0 22px 34px -22px rgb(0 23 80 / 0.55), inset 0 -2px 0 rgb(0 23 80 / 0.08);
+  box-shadow: 0 12px 26px -18px rgb(0 23 80 / 0.35), inset 0 -2px 0 rgb(0 23 80 / 0.08);
   transform: rotateY(var(--turn));
   transition: transform 0.5s var(--ease);
 }
@@ -379,7 +379,7 @@ html.veloce:has(.story:not([hidden])) {
 .isola__carta h3 {
   margin-bottom: 10px;
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
   font-size: var(--title);
   line-height: 1.25;
@@ -431,7 +431,7 @@ html.veloce:has(.story:not([hidden])) {
   max-height: calc(100dvh - 48px);
   padding: 18px 16px 16px;
   border: 0;
-  border-radius: 22px;
+  border-radius: 10px;
   background: var(--paper);
   color: var(--ink);
   box-shadow: 0 24px 60px -24px rgb(0 23 80 / 0.6);
@@ -452,7 +452,7 @@ html.veloce:has(.story:not([hidden])) {
 
 .mondi__titolo {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
   font-size: var(--title);
 }
@@ -471,7 +471,7 @@ html.veloce:has(.story:not([hidden])) {
   gap: 12px;
   min-height: 48px;
   padding: 4px 12px;
-  border-radius: 16px;
+  border-radius: 12px;
   text-decoration: none;
 }
 
@@ -492,7 +492,7 @@ html.veloce:has(.story:not([hidden])) {
 .mondi__nome {
   font-family: var(--font-display);
   font-size: 1.125rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
 }
 

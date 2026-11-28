@@ -39,7 +39,7 @@ const ISLETS = {
 // groups, one each side, with the bench on the left; the middle, where the way runs to the path ahead,
 // stays empty ground.
 const FRONT = [
-  [['albero-grande'], 9, -8.5], [['cespuglio-1'], 5.2, -4.8, 0.6], [['nuvola-a-terra'], 6.5, -6, 0.6], [['ciuffo-2'], 4.4, -3.6, 0.4],
+  [['albero-grande'], 7, -11.5], [['cespuglio-1'], 5.2, -4.8, 0.6], [['nuvola-a-terra'], 6.5, -6, 0.6], [['ciuffo-2'], 4.4, -3.6, 0.4],
   [['panchina'], 7.5, -3.4], [['cespuglio-1'], 12, -9],
   [['albero-doppio', 'albero-medio'], 10.5, 7.5], [['cespugli-gruppo', 'cespuglio-2'], 4.8, 4.4, 0.7], [['ciuffo-1'], 3.8, 3.4, 0.3],
 ];
@@ -50,6 +50,21 @@ const SMALLER = { apertura: 5.5 };
 // dip of the floor].
 const BODY = [['falda-1', 0.75, 1, 2.15], ['falda-2', 0.35, 2, 1.5]];
 const ISLET_BODY = [['falda-3', 0.75, 1, 2.1]];
+
+// The looks at the sculptures of an island: from where one arrives, from the last stones of the path
+// that brings one there and, on the first island, from where the visit begins, to each sculpture, as
+// segments [from, to].
+const sights = (island) => {
+  const bridge = island.in.curve.getPoint(Math.max(0, 1 - 7 / island.in.curve.getLength()));
+  return island.zones.flatMap((zone) => [island.arrival, island.start, bridge].filter(Boolean).map((from) => [from, zone.mark]));
+};
+// How far a point is from a segment.
+function along(p, a, b) {
+  const dx = b.x - a.x;
+  const dz = b.z - a.z;
+  const t = Math.min(1, Math.max(0, ((p.x - a.x) * dx + (p.z - a.z) * dz) / (dx * dx + dz * dz || 1)));
+  return Math.hypot(p.x - a.x - dx * t, p.z - a.z - dz * t);
+}
 
 function random(seed) {
   let a = seed >>> 0;
@@ -139,6 +154,10 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     if (island.start) ways.push([island.start, mouth(plan, island, island.out)]);
     for (const [a, b] of ways) {
       for (let k = 0; k <= 10; k++) taken.push({ x: a.x + (b.x - a.x) * (k / 10), z: a.z + (b.z - a.z) * (k / 10), r: 2 });
+    }
+    // Nothing stands between where one arrives and the sculptures.
+    for (const [a, b] of sights(island)) {
+      for (let k = 0; k <= 10; k++) taken.push({ x: a.x + (b.x - a.x) * (k / 10), z: a.z + (b.z - a.z) * (k / 10), r: 1.5 });
     }
   }
   for (const pond of plan.ponds) taken.push({ x: pond.x, z: pond.z, r: pond.r + 1 });
@@ -278,13 +297,13 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   const lampSpots = plan.islands.flatMap((island) => [island.in, island.out].map((path) => {
     const at = mouth(plan, island, path);
     const r = island.radius - 3.2;
-    // Beside the mouth, on the other side if that one is by a pond.
     const beside = (turn) => {
       const toward = Math.atan2(at.z - island.centre.z, at.x - island.centre.x) + turn;
       return { x: island.centre.x + Math.cos(toward) * r, z: island.centre.z + Math.sin(toward) * r };
     };
-    const spot = beside(0.5);
-    return plan.ponds.some((pond) => Math.hypot(spot.x - pond.x, spot.z - pond.z) < pond.r + 4) ? beside(-0.5) : spot;
+    // Beside the mouth, on whichever side is clear of a pond and of the look at a sculpture.
+    const clear = (spot) => !plan.ponds.some((pond) => Math.hypot(spot.x - pond.x, spot.z - pond.z) < pond.r + 4) && !sights(island).some(([a, b]) => along(spot, a, b) < 2);
+    return [0.5, -0.5, 0.9, -0.9].map(beside).find(clear) ?? beside(0.5);
   }));
   const lampIslet = plan.islets.find((islet) => islet.id === 'lampione').centre;
   lampSpots.push({ x: lampIslet.x + 0.6, z: lampIslet.z, home: 0 });
@@ -418,14 +437,15 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
         else drawn.use(away <= 1 && !light && sculptures.has(drawn) ? 'large' : 'small');
       }
     },
-    // The light way for slow machines: half the gardens, the grass and the small clouds, no large
-    // pictures.
+    // The light way for slow machines and phones: half the gardens, a third of the grass and the small
+    // clouds, no shadows on the ground, no large pictures.
     light(on) {
       light = on;
       for (const drawn of made) {
-        const share = halved.has(drawn) || /^(ciuffo|sbuffo)/.test(drawn.name) ? 2 : 1;
+        const share = /^(ciuffo|sbuffo)/.test(drawn.name) ? 3 : halved.has(drawn) ? 2 : 1;
         drawn.mesh.count = on ? Math.ceil(drawn.spots.length / share) : drawn.spots.length;
       }
+      ground.mesh.visible = !on;
       if (here) this.island(here);
     },
     // Something of the park was touched: a lamp switches, the swing is pushed.

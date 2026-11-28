@@ -147,15 +147,15 @@
   },
   "siti": {
     "file": "siti.webp",
-    "larghezza": 733,
-    "altezza": 1304,
+    "larghezza": 1080,
+    "altezza": 1393,
     "file_1024": "siti-1024.webp",
-    "larghezza_1024": 366,
-    "altezza_1024": 652,
-    "altezza_m": 4.0,
+    "larghezza_1024": 540,
+    "altezza_1024": 696,
+    "altezza_m": 4.27,
     "appoggio": {
-      "x": 0.4993,
-      "y": 0.9939
+      "x": 0.5,
+      "y": 0.9914
     }
   },
   "google": {
