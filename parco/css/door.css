@@ -1,5 +1,6 @@
-/* The door: the park at dawn as a picture, the name and, under it, the two ways: into the park or
-   straight to the works. At a tap on the first the picture dissolves into the park. */
+/* The door: the park drawn down to its bones, the name and, under it, the two ways: into the park
+   or straight to the works. At «Entra nel parco» the shapes settle where the park has them and the
+   park takes shape behind them. */
 .threshold {
   justify-content: center;
   align-items: center;
@@ -7,65 +8,108 @@
   transition: opacity 1.1s ease;
 }
 
-.threshold__picture {
+.threshold__forma {
   position: absolute;
   inset: 0;
   overflow: hidden;
   background: #ddb8cf;
 }
 
-.threshold__picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 62%;
-  animation: door-breath 26s ease-in-out infinite alternate;
-}
-
-/* A little morning haze behind the name and the ways in, so they read over the islands too. */
-.threshold__picture::after {
-  content: '';
+.forma {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 36vmax 25vmax at 50% 47%, rgb(246 228 238 / 0.66), rgb(246 228 238 / 0) 72%);
+  width: 100%;
+  height: 100%;
 }
 
-/* The picture breathes: a few pixels of drift, nothing else. */
-@keyframes door-breath {
-  from {
-    transform: scale(1.02) translate3d(-0.4%, 0.3%, 0);
+.forma--alto {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .forma--largo {
+    display: none;
   }
+
+  .forma--alto {
+    display: block;
+  }
+}
+
+/* At the door the shapes stand a little apart from where the park has them: the sun higher, the
+   far islands wider, the near land lower. Going in, they settle, and the trees and the bodies of the
+   islands sink into them: the park grows them again. */
+.forma :is(.forma__sole, .forma__lontano > g, .forma__vicino, .forma__corpo) {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  transition: transform 0.9s var(--ease);
+}
+
+.forma__sole {
+  transform: translateY(-5%);
+}
+
+.forma__sinistra {
+  transform: translate(-18%, -12%);
+}
+
+.forma__alta {
+  transform: translate(16%, -18%);
+}
+
+.forma__destra {
+  transform: translate(8%, -6%);
+}
+
+.forma__vicino {
+  transform: translateY(5%);
+}
+
+.threshold.is-forming .forma :is(.forma__sole, .forma__lontano > g, .forma__vicino) {
+  transform: none;
+}
+
+.threshold.is-forming .forma__corpo {
+  transform: scale(1, 0);
+}
+
+/* The far islands breathe: a few pixels up and down, slowly. */
+.forma__lontano > g {
+  animation: forma-respiro 14s ease-in-out infinite alternate;
+}
+
+.forma__lontano > g:nth-child(2) {
+  animation-duration: 18s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes forma-respiro {
   to {
-    transform: scale(1.045) translate3d(0.4%, -0.5%, 0);
+    translate: 0 -6px;
   }
 }
 
-/* The name, held by one plain cloud of the park in the light of the door picture: the sign large
-   above, the name in the spaced capitals of the official lockup under it, on the cloud. */
+/* Going in: the name and the ways step aside, the shapes settle, then the door fades into the park. */
+.threshold.is-forming {
+  transition: opacity 0.6s ease 0.9s;
+}
+
+.threshold.is-forming :is(.threshold__name, .threshold__ways) {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* The name: the sign large above, the name in the spaced capitals of the official lockup under it. */
 .threshold__name {
   position: relative;
-  isolation: isolate;
   max-width: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.35em;
-  padding-bottom: 1.6em;
   font-size: clamp(1.5rem, 0.9rem + 1.5vw, 2.25rem);
   line-height: 1;
   white-space: nowrap;
-}
-
-.threshold__name::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  left: 50%;
-  bottom: -0.9em;
-  width: 11em;
-  aspect-ratio: 900 / 400;
-  translate: -50% 0;
-  background: url(../img/door/nuvola-marchio.webp) center / 100% 100% no-repeat;
 }
 
 /* The official sign, flat and untouched, with more than a nib's width free around it. */
@@ -144,6 +188,8 @@
 .threshold__way img {
   width: 128px;
   height: 128px;
+  /* A shadow where the plaster stands, so that white reads on the paper. */
+  filter: drop-shadow(0 10px 8px rgb(0 23 80 / 0.22));
 }
 
 /* The works are there from the first moment; the park once it has arrived. */
@@ -210,7 +256,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .threshold__picture img {
+  .forma__lontano > g {
     animation: none;
   }
 }

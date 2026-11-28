@@ -159,7 +159,8 @@ html.veloce:has(.story:not([hidden])) {
   max-width: 1240px;
   margin: 0 auto;
   padding: 44px 14px 56px;
-  border-radius: 50% 50% 40px 40px / 64px 64px 40px 40px;
+  /* Flat on top like the floor of an island, rounding under it like its body, as at the door. */
+  border-radius: 50% 50% 46% 46% / 64px 64px 140px 140px;
   background:
     radial-gradient(120% 70% at 30% 0%, var(--h-lit), transparent 70%),
     linear-gradient(var(--h-lit), var(--h-mid));
@@ -518,7 +519,7 @@ html.veloce:has(.story:not([hidden])) {
     align-items: flex-start;
     column-gap: 40px;
     padding: 64px 40px 80px;
-    border-radius: 50% 50% 64px 64px / 90px 90px 64px 64px;
+    border-radius: 50% 50% 46% 46% / 90px 90px 220px 220px;
   }
 
   .isola__opere,
@@ -561,4 +562,18 @@ html.veloce:has(.story:not([hidden])) {
     transform: none;
     transition: opacity 0.3s ease;
   }
+}
+
+/* Come from the door: its shapes lie over the page and become its sky and its first island; until
+   then the works wait to rise. */
+.forma-arrivo {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  pointer-events: none;
+}
+
+.da-porta :is(.opera.is-in, .isola__suolo.is-in .cosa) {
+  opacity: 0;
+  transform: translateY(30px);
 }

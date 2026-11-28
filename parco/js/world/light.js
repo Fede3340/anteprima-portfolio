@@ -9,7 +9,7 @@ import { heightAt } from './land.js';
 import { MOODS } from './layout.js';
 import { createShadows } from './shadows.js';
 import { createSkyMaterial } from './sky.js';
-import { createSprite, drawn } from './sprites.js';
+import { createSprite, drawn, forming } from './sprites.js';
 import { asset } from '../media.js';
 
 // Less sky and more sun than world.js gives: the side towards the sun reaches the light tone, the
@@ -236,7 +236,8 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
 
       fog.color.copy(now.horizon);
       fog.near = near * now.haze;
-      fog.far = far * now.haze;
+      // While the park takes shape the haze stands close, and lifts.
+      fog.far = far * now.haze * (0.2 + 0.8 * forming.value);
       below.sea.copy(now.seaNear).multiplyScalar(0.8).lerp(now.shade, 0.35);
       if (sea.material.uniforms) {
         sea.material.uniforms.uCloud.value.copy(below.sea);

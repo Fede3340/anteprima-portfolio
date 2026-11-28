@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { placed } from './instances.js';
 import { createStones, heightAt, islandAt } from './land.js';
 import { mouth } from './layout.js';
-import { createSprite } from './sprites.js';
+import { createSprite, forming } from './sprites.js';
 import { createWater } from './water.js';
 
 // What grows on each island: a few groups, each a thing and what grows at its foot ([pictures, the
@@ -474,7 +474,7 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
           });
         }
       }
-      for (const drawn of made) if (moved || moving.has(drawn)) drawn.face(camera);
+      for (const drawn of made) if (moved || moving.has(drawn) || forming.value < 1) drawn.face(camera);
     },
   };
 }

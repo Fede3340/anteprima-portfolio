@@ -354,6 +354,48 @@ function travel(id, smooth = true) {
   target.scrollIntoView({ behavior: smooth && !reducedMotion.matches ? 'smooth' : 'auto', block: 'start' });
 }
 
+// Come from the door (index.html of this folder lays its shapes over the page): the near land of the
+// shapes settles on the first island, the sun and the far islands rise away, the shapes fade into the
+// sky of the page, and the works rise onto the island.
+async function arrive(first) {
+  const cover = $('.forma-arrivo');
+  const svg = [...cover.querySelectorAll('svg.forma')].find((node) => node.getBoundingClientRect().width);
+  const land = first?.querySelector('.isola__terra');
+  const done = () => {
+    cover.remove();
+    document.documentElement.classList.remove('da-porta');
+  };
+  if (!svg || !land) return done();
+  // From the page to the user units of the shapes, drawn to cover the screen.
+  const box = svg.getBoundingClientRect();
+  const view = svg.viewBox.baseVal;
+  const k = Math.max(box.width / view.width, box.height / view.height);
+  const ox = box.left + (box.width - view.width * k) / 2;
+  const oy = box.top + (box.height - view.height * k) / 2;
+  const near = svg.querySelector('.forma__vicino');
+  const from = near.getBBox();
+  const to = land.getBoundingClientRect();
+  const s = to.width / k / from.width;
+  const settle = { duration: 900, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', fill: 'forwards' };
+  const start = getComputedStyle(near).transform;
+  near.style.transformBox = 'view-box';
+  near.style.transformOrigin = '0 0';
+  const moving = near.animate([
+    { transform: start === 'none' ? 'none' : start },
+    { transform: `translate(${(to.left - ox) / k - s * from.x}px, ${(to.top - oy) / k - s * from.y}px) scale(${s})` },
+  ], settle);
+  for (const node of svg.querySelectorAll('.forma__sole, .forma__lontano')) {
+    node.animate({ opacity: 0, translate: '0 -60px' }, settle);
+  }
+  // Of the near land only the ground goes on: the path, the pond and the islands beside it melt.
+  for (const node of near.querySelectorAll(':scope > :not(path:not([fill]))')) {
+    node.animate({ opacity: 0 }, { ...settle, duration: 500 });
+  }
+  await moving.finished;
+  await cover.animate({ opacity: 0 }, { duration: 400, fill: 'forwards' }).finished;
+  done();
+}
+
 async function start() {
   const json = (path) => fetch(path).then((response) => response.json());
   const [data, texts, manifest] = await Promise.all([json('data/works.json'), json('data/racconto.json'), json('img/sprites/manifest.json')]);
@@ -361,6 +403,7 @@ async function start() {
   const { works, sections } = build(data, texts);
   wake(sections);
   bar(sections);
+  if (document.documentElement.classList.contains('da-porta')) arrive(sections[1]);
 
   // The close view of the park, fetched when a work is first near the finger or the pointer. Opening a
   // work adds an entry to the history, so that Back closes it, as in the park.
