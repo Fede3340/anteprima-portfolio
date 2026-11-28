@@ -2,6 +2,7 @@
 // ground of an island is a soft white floor, a little uneven, with a very fine felt; its rim and its
 // underside are clouds (see park.js). The stones are flat round plaster discs hanging in the sky.
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/BufferGeometryUtils.js';
 import { instances } from './instances.js';
 
 // The haze far away, light blue, and the sea of clouds under it.
@@ -186,6 +187,34 @@ function createStones(plan) {
   return instances(template, spots, { slices: 16 }).drawn;
 }
 
+// The body of every island: a mass of cloud under its floor, round billows closed underneath, so that
+// from below and from the side the island is full and nothing shows through. One mesh for all.
+function createBodies(plan) {
+  const ball = new THREE.IcosahedronGeometry(1, 2);
+  // Round, not faceted: on a unit ball the normal is the point itself.
+  ball.setAttribute('normal', ball.attributes.position.clone());
+  const parts = [];
+  for (const island of plan.islands) {
+    const R = island.radius;
+    const seed = (n) => Math.abs(Math.sin((island.index * 17 + n) * 12.9898) * 43758.5453) % 1;
+    const add = (x, y, z, size, squash) => parts.push(ball.clone().scale(size, size * squash, size).translate(island.centre.x + x, island.centre.y + y, island.centre.z + z));
+    // The heart, under the middle, and a ring of billows under the rim, lower towards the middle.
+    add(0, -R * 0.45, 0, R * 0.78, 0.55);
+    for (let i = 0; i < 9; i++) {
+      const a = ((i + seed(i) * 0.5) / 9) * Math.PI * 2;
+      const size = R * (0.3 + seed(i + 20) * 0.12);
+      add(Math.cos(a) * R * 0.68, -size * 0.62 - 0.35, Math.sin(a) * R * 0.68, size, 0.62);
+    }
+    for (let i = 0; i < 5; i++) {
+      const a = seed(i + 40) * Math.PI * 2;
+      const size = R * (0.25 + seed(i + 60) * 0.1);
+      add(Math.cos(a) * R * 0.35, -R * 0.55 - size * 0.3, Math.sin(a) * R * 0.35, size, 0.8);
+    }
+  }
+  const material = new THREE.MeshLambertMaterial({ color: '#eef3fa', emissive: '#5a6d8f' });
+  return new THREE.Mesh(mergeGeometries(parts), material);
+}
+
 export function createGround(plan) {
   const uniforms = {
     uTime: { value: 0 },
@@ -200,14 +229,25 @@ export function createGround(plan) {
   });
   const sea = createSea();
   const stones = createStones(plan);
+  const bodies = createBodies(plan);
+  // The light way: the floor in its plain colour, the sea of clouds as one soft colour, nothing
+  // worked out pixel by pixel.
+  const plain = { floor: new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#2f3e58' }), sea: new THREE.MeshBasicMaterial({ color: '#c9dcf2' }) };
+  const full = { floor: material, sea: sea.material };
   let next = 0;
   return {
     floors,
     stones,
     sea,
+    bodies,
+    light(on) {
+      const use = on ? plain : full;
+      for (const floor of floors) floor.material = use.floor;
+      sea.material = use.sea;
+    },
     update(time) {
       uniforms.uTime.value = time;
-      sea.material.uniforms.uTime.value = time;
+      full.sea.uniforms.uTime.value = time;
     },
     // Rings start where the ground was touched.
     ripple(x, z) {

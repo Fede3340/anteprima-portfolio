@@ -248,11 +248,6 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   align-items: stretch;
 }
 
-.case-board[data-layout="under"] {
-  flex-direction: column-reverse;
-  justify-content: flex-end;
-}
-
 .case-board[data-layout="full"] {
   align-items: center;
   justify-content: center;
@@ -287,11 +282,10 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
 }
 
 .case-board[data-layout="beside"] .case-words {
-  align-self: center;
+  align-self: safe center;
 }
 
-.case-board[data-layout="over"] .case-words,
-.case-board[data-layout="under"] .case-words {
+.case-board[data-layout="over"] .case-words {
   columns: 2;
   column-gap: 48px;
   padding-block: 24px;
@@ -329,8 +323,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   margin-top: 14px;
 }
 
-.case-board[data-layout="over"] .case-words > :is(.case-title, .case-name),
-.case-board[data-layout="under"] .case-words > .case-title {
+.case-board[data-layout="over"] .case-words > .case-name {
   column-span: all;
 }
 
@@ -393,21 +386,6 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   object-position: left center;
 }
 
-.case-sources {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: var(--small);
-}
-
-.case-sources span {
-  font-weight: 700;
-}
-
-.case-sources a {
-  text-underline-offset: 3px;
-}
-
 .case-link {
   display: inline-flex;
   align-items: center;
@@ -433,10 +411,6 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   gap: 12px;
 }
 
-.case-next .case-extra {
-  margin-top: 12px;
-}
-
 .case-board[data-layout="stack"] .case-pics {
   flex-direction: column;
 }
@@ -453,7 +427,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   cursor: zoom-in;
 }
 
-.case-board:is([data-layout="over"], [data-layout="under"], [data-layout="stack"]) .case-visual > .case-pic,
+.case-board:is([data-layout="over"], [data-layout="stack"]) .case-visual > .case-pic,
 .case-board:is([data-layout="over"], [data-layout="stack"]) .case-pics:has(> .case-pic:only-child) > .case-pic {
   border-radius: 0;
 }
@@ -490,10 +464,6 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   }
 }
 
-.case-words > .case-more {
-  margin-top: 24px;
-}
-
 .case-caption {
   flex: none;
   width: 100%;
@@ -501,16 +471,28 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   font-weight: 700;
 }
 
-.case-words .case-caption {
-  width: auto;
-  text-align: left;
+/* A poster and its colours, side by side. */
+.case-poster {
+  display: flex;
+  gap: 12px;
 }
 
-.case-detail {
-  display: flex;
+.case-poster > .case-swatches,
+.case-poster > .case-system {
+  flex: 1;
+}
+
+.case-poster .case-swatches {
+  grid-template-columns: 1fr;
+}
+
+[data-mode="stack"] .case-poster {
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+}
+
+[data-mode="stack"] .case-poster > :not(.case-pic) {
+  align-self: stretch;
 }
 
 /* Colours as real samples. */
@@ -588,119 +570,116 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   overflow-wrap: break-word;
 }
 
-/* Lists as tiles: what comes before the colon small, the rest large. */
-.case-tiles,
-.case-directions {
+/* Values as labels, facts and lists as rows, the directions tried as short notes: each as high as
+   its own words. */
+.case-values {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.case-values li {
+  padding: 4px 14px;
+  border-radius: 18px;
+  background: var(--panel);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+.case-rows {
+  list-style: none;
+}
+
+.case-rows li {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  border-top: 2px solid var(--panel);
+}
+
+.case-rows--facts li {
+  font-weight: 700;
+}
+
+.case-rows__label {
+  font-weight: 700;
+}
+
+.case-ways {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: minmax(min-content, 1fr);
-  gap: 12px;
-  padding: clamp(14px, 2vw, 32px);
+  gap: 8px;
+  align-items: start;
+}
+
+.case-board[data-layout="over"] .case-ways {
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  column-span: all;
+}
+
+.case-way {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  border-radius: 14px;
   background: var(--panel);
 }
 
-[data-mode="stack"] :is(.case-tiles, .case-directions) {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.case-tile,
-.case-direction {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 20px;
-  border-radius: 18px;
-  background: var(--board);
-  box-shadow: 0 8px 20px -14px rgb(0 23 80 / 0.4);
-}
-
-.case-tiles__title {
-  grid-column: 1 / -1;
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: 0;
-  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.625rem);
-  line-height: 1.2;
-}
-
-[data-mode="stack"] .case-tiles--words {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.case-tile__value {
-  overflow-wrap: anywhere;
-}
-
-.case-tiles--words .case-tile {
-  justify-content: center;
-}
-
-
-
-.case-tile__label {
-  font-weight: 700;
-}
-
-.case-tile__value,
-.case-direction__name {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: 0;
-  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.625rem);
-  line-height: 1.25;
-}
-
-.case-tile__value--plain {
-  font-family: var(--font-text);
-  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
-  line-height: 1.45;
-}
-
-.case-direction.is-chosen {
+.case-way.is-chosen {
   background: var(--ink);
   color: var(--light);
 }
 
-.case-direction__mark {
+.case-way__mark {
   align-self: flex-start;
-  padding: 2px 10px;
+  padding: 0 10px;
   border-radius: 12px;
   background: var(--light);
   color: var(--ink);
   font-weight: 700;
 }
 
-/* The next work. */
-.case-next {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: inherit;
-  text-decoration: none;
-}
-
-.case-next .case-pic {
-  cursor: pointer;
-}
-
-.case-next__label {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  padding: 12px clamp(20px, 2.6vw, 40px) 16px;
-}
-
-.case-next__kicker {
-  font-weight: 700;
-}
-
-.case-next__title {
+.case-way__name {
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: 0;
-  font-size: clamp(1.375rem, 1.2rem + 0.8vw, 2rem);
-  line-height: 1.2;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+/* The board of passage to the work before or after. */
+.case-board--pass .case-visual {
+  cursor: pointer;
+}
+
+.case-board--pass[data-layout="over"] .case-words {
+  columns: auto;
+}
+
+.case-kicker {
+  font-weight: 700;
+}
+
+.case-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.case-back {
+  min-height: 48px;
+  padding: 0 22px;
+  border: 2px solid var(--ink);
+  border-radius: 24px;
+  background: none;
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
 }
 
 /* A picture whole, over everything. */

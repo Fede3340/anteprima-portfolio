@@ -127,13 +127,7 @@
       "study": [
         {
           "title": "La ricerca",
-          "p": "Prima di disegnare ho cercato come si assaggia l’olio di mestiere. Ai panel l’olio si versa in un bicchiere di vetro scuro, di solito blu, perché chi assaggia non deve vederne il colore. Il Consiglio oleicolo internazionale ha convalidato anche un bicchiere rosso, che da fuori fa sembrare l’olio senza colore.",
-          "sources": [
-            {
-              "label": "International Olive Council, The red tasting glass",
-              "href": "https://www.internationaloliveoil.org/sensorial-analysis-the-red-tasting-glass"
-            }
-          ]
+          "p": "Prima di disegnare ho cercato come si assaggia l’olio di mestiere. Ai panel l’olio si versa in un bicchiere di vetro scuro, di solito blu, perché chi assaggia non deve vederne il colore. Il Consiglio oleicolo internazionale ha convalidato anche un bicchiere rosso, che da fuori fa sembrare l’olio senza colore."
         },
         {
           "title": "La struttura",
@@ -202,11 +196,17 @@
               "p": "Prima di disegnare ho cercato come si assaggia l’olio di mestiere. Ai panel l’olio si versa in un bicchiere di vetro scuro, di solito blu, perché chi assaggia non deve vederne il colore. Il Consiglio oleicolo internazionale ha convalidato anche un bicchiere rosso, che da fuori fa sembrare l’olio senza colore."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "International Olive Council, The red tasting glass",
-                  "href": "https://www.internationaloliveoil.org/sensorial-analysis-the-red-tasting-glass"
+                  "i": 1,
+                  "box": [
+                    0.1,
+                    0.5,
+                    0.8,
+                    0.5
+                  ],
+                  "caption": "Le due facce della foglia d’ulivo, sopra e sotto"
                 }
               ]
             }
@@ -328,7 +328,7 @@
             {
               "kind": "facts",
               "items": [
-                "Il nome viene dal vento di nord-est e dalla foglia d’ulivo, verde-grigia sopra e argentata sotto.",
+                "Il nome viene dal vento di nord-est e dalla foglia d’ulivo.",
                 "Su computer lo scorrimento manda avanti un video di 6 secondi che riempie la ciotola.",
                 "Sul telefono il video parte da solo quando entra in vista."
               ]
@@ -439,13 +439,7 @@
       "study": [
         {
           "title": "La ricerca",
-          "p": "Prima della pagina ho studiato il frutto. Il chinotto è un agrume sempreverde alto fino a tre metri; da fresco è troppo amaro, e si mangia candito o sciroppato, un tempo nel Maraschino. Il primo laboratorio di canditura in Liguria apre a Savona nel 1877.",
-          "sources": [
-            {
-              "label": "Fondazione Slow Food, Presidio del Chinotto di Savona",
-              "href": "https://www.fondazioneslowfood.com/it/presidi-slow-food/chinotto-di-savona/"
-            }
-          ]
+          "p": "Prima della pagina ho studiato il frutto. Il chinotto è un agrume sempreverde alto fino a tre metri; da fresco è troppo amaro, e si mangia candito o sciroppato, un tempo nel Maraschino. Il primo laboratorio di canditura in Liguria apre a Savona nel 1877."
         },
         {
           "title": "La struttura",
@@ -510,11 +504,17 @@
               "p": "Prima della pagina ho studiato il frutto. Il chinotto è un agrume sempreverde alto fino a tre metri; da fresco è troppo amaro, e si mangia candito o sciroppato, un tempo nel Maraschino. Il primo laboratorio di canditura in Liguria apre a Savona nel 1877."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Fondazione Slow Food, Presidio del Chinotto di Savona",
-                  "href": "https://www.fondazioneslowfood.com/it/presidi-slow-food/chinotto-di-savona/"
+                  "i": 0,
+                  "box": [
+                    0.38,
+                    0.25,
+                    0.3,
+                    0.65
+                  ],
+                  "caption": "La bottiglia da 27 cl"
                 }
               ]
             }
@@ -527,6 +527,21 @@
             {
               "kind": "text",
               "p": "L’idea è il sorso, e c’è dalla prima versione: quattro strati, «Dolce.», «Scorza.», «Amaro.» e «Un altro.», salgono uno sull’altro mentre la bottiglia gira dentro la scritta del marchio. All’inizio accanto a ogni parola c’era un tempo, da 0,0 a 4,0 secondi, che alla fine ho tolto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0,
+                    0.05,
+                    0.65,
+                    0.3
+                  ],
+                  "caption": "Lo strato «Amaro.», salito del tutto"
+                }
+              ]
             }
           ]
         },
@@ -614,7 +629,7 @@
             {
               "kind": "facts",
               "items": [
-                "Quattro strati, «Dolce.», «Scorza.», «Amaro.» e «Un altro.», salgono uno sull’altro mentre la bottiglia gira.",
+                "Quattro strati salgono uno sull’altro mentre la bottiglia gira.",
                 "La bottiglia che gira è un video trasparente di 6 secondi.",
                 "La barra in alto cambia colore con la sezione che le passa sotto."
               ]
@@ -714,7 +729,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Non è online. Le immagini sono il progetto grafico nuovo, costruito come pagina vera che si adatta dal telefono al computer; il pagamento non è attivo. La fotografia è di Peter Chilumba, da Pexels, ed è un’immagine d’esempio."
+          "p": "Non è online. Le immagini sono il progetto grafico nuovo, costruito come pagina vera che si adatta dal telefono al computer; il pagamento non è attivo. La fotografia è un’immagine d’esempio."
         }
       ],
       "study": [
@@ -752,12 +767,6 @@
               "role": "Tutti i testi",
               "family": "Bricolage Grotesque",
               "note": "cinque misure e tre pesi"
-            }
-          ],
-          "sources": [
-            {
-              "label": "Pexels, Peter Chilumba, «Woman Watering Plants in Tanzanian Farm»",
-              "href": "https://www.pexels.com/photo/woman-watering-plants-in-tanzanian-farm-29124239/"
             }
           ]
         }
@@ -873,15 +882,6 @@
               "p": "I colori sono quelli della pagina di prima, ritoccati: il verde l’ho scurito per i bottoni, l’arancio l’ho reso un poco più pieno per i punti. Un carattere solo, Bricolage Grotesque, in cinque misure e tre pesi."
             },
             {
-              "kind": "sources",
-              "items": [
-                {
-                  "label": "Pexels, Peter Chilumba, «Woman Watering Plants in Tanzanian Farm»",
-                  "href": "https://www.pexels.com/photo/woman-watering-plants-in-tanzanian-farm-29124239/"
-                }
-              ]
-            },
-            {
               "kind": "images",
               "items": [
                 0,
@@ -897,7 +897,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Non è online. Le immagini sono il progetto grafico nuovo, costruito come pagina vera che si adatta dal telefono al computer; il pagamento non è attivo. È un prototipo: campagna, cifre ed equivalenze sono esempi, e la pagina lo scrive. La fotografia è di Peter Chilumba, da Pexels."
+              "p": "Non è online. Le immagini sono il progetto grafico nuovo, costruito come pagina vera che si adatta dal telefono al computer; il pagamento non è attivo. È un prototipo: campagna, cifre ed equivalenze sono esempi, e la pagina lo scrive. La fotografia è un’immagine d’esempio."
             },
             {
               "kind": "facts",
@@ -1013,6 +1013,21 @@
               "items": [
                 "precisione",
                 "la soddisfazione di una cosa che funziona"
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0,
+                    0.5,
+                    0.5
+                  ],
+                  "caption": "Il nome e i primi progetti, con le date e i commit"
+                }
               ]
             }
           ]
@@ -1187,6 +1202,21 @@
               "kind": "text",
               "title": "Per chi",
               "p": "Sara Sanna è ingegnere edile a Cagliari, libera professionista dal 2013. Il suo sito però doveva essere da grafica, fatto per i disegni e non per lo studio. La richiesta: «molto colorato e vivace, stile molto street»."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.1,
+                    0.3,
+                    0.45
+                  ],
+                  "caption": "Il bollo «Cagliari» sul muro di manifesti strappati"
+                }
+              ]
             }
           ]
         },
@@ -1340,6 +1370,21 @@
               "kind": "text",
               "title": "Per chi",
               "p": "Lucio Giannottu fa immagini, a Cagliari, e per il sito ne darà circa venticinque. La richiesta per il suo sito era una frase sola: «molto artistico, elegante, minimale»."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0,
+                    0,
+                    0.35,
+                    0.3
+                  ],
+                  "caption": "Il nome, la città e le due voci"
+                }
+              ]
             }
           ]
         },
@@ -1477,13 +1522,7 @@
       "study": [
         {
           "title": "La ricerca",
-          "p": "Il colore del prodotto conta anche per il cane. Il cane ha due tipi di coni nella retina, non tre: vede bene il blu e il giallo, mentre rosso e verde gli arrivano spenti. Da qui la pagina sui colori, con la stessa stanza vista da una persona e dal cane, e il consiglio del colore nella scheda.",
-          "sources": [
-            {
-              "label": "American Kennel Club, Can dogs see color?",
-              "href": "https://www.akc.org/expert-advice/health/can-dogs-see-color/"
-            }
-          ]
+          "p": "Il colore del prodotto conta anche per il cane. Il cane ha due tipi di coni nella retina, non tre: vede bene il blu e il giallo, mentre rosso e verde gli arrivano spenti. Da qui la pagina sui colori, con la stessa stanza vista da una persona e dal cane, e il consiglio del colore nella scheda."
         },
         {
           "title": "La struttura",
@@ -1559,11 +1598,17 @@
               "p": "Il colore del prodotto conta anche per il cane. Il cane ha due tipi di coni nella retina, non tre: vede bene il blu e il giallo, mentre rosso e verde gli arrivano spenti. Da qui la pagina sui colori, con la stessa stanza vista da una persona e dal cane, e il consiglio del colore nella scheda."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "American Kennel Club, Can dogs see color?",
-                  "href": "https://www.akc.org/expert-advice/health/can-dogs-see-color/"
+                  "i": 2,
+                  "box": [
+                    0.08,
+                    0.38,
+                    0.65,
+                    0.52
+                  ],
+                  "caption": "La stessa scena vista da una persona e dal cane"
                 }
               ]
             }
@@ -1699,7 +1744,7 @@
               "items": [
                 "Online dal 16 ottobre 2026.",
                 "Si paga in due passi senza registrarsi, con carta, PayPal o contrassegno.",
-                "Il testo corrente è a 22 px, perché il negozio parla soprattutto a persone dai 50 anni in su."
+                "Testo corrente a 22 px: il negozio parla a persone dai 50 anni in su."
               ]
             },
             {
@@ -1798,7 +1843,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È un prototipo: una pagina vera che si adatta dal telefono al computer, col carrello che fa i conti e il pagamento non collegato. Dati, prezzi e fotografie sono quelli del sito del negozio, letti il 27 novembre 2026, e le fotografie non sono mai ingrandite oltre i loro pixel."
+          "p": "È un prototipo: una pagina vera che si adatta dal telefono al computer, col carrello che fa i conti e il pagamento non collegato. Dati e prezzi sono quelli del sito del negozio, letti il 27 novembre 2026."
         }
       ],
       "study": [
@@ -1833,12 +1878,6 @@
               "family": "Archivo",
               "note": "largo e pesante per numeri e modello, normale per il testo"
             }
-          ],
-          "sources": [
-            {
-              "label": "bianchipro.it, abbattitore AB5514",
-              "href": "https://www.bianchipro.it/it/abbattitori/2449-abbattitore-professionale-per-15-teglie-gn11-o-60x40-ab5514-G-AB5514.html"
-            }
           ]
         }
       ],
@@ -1863,11 +1902,17 @@
               "p": "Ho confrontato con il sito anche il prototipo di prima: 52 recensioni, lo sconto del 25%, «solo 3 unità» e le sonde a pagamento non si trovano da nessuna parte. Nella pagina nuova non ci sono."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "bianchipro.it, abbattitore AB5514",
-                  "href": "https://www.bianchipro.it/it/abbattitori/2449-abbattitore-professionale-per-15-teglie-gn11-o-60x40-ab5514-G-AB5514.html"
+                  "i": 0,
+                  "box": [
+                    0.3,
+                    0.25,
+                    0.25,
+                    0.55
+                  ],
+                  "caption": "+90 °C sopra +3 °C, accanto alla macchina"
                 }
               ]
             }
@@ -1964,7 +2009,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un prototipo: una pagina vera che si adatta dal telefono al computer, col carrello che fa i conti e il pagamento non collegato. Dati, prezzi e fotografie sono quelli del sito del negozio, letti il 27 novembre 2026, e le fotografie non sono mai ingrandite oltre i loro pixel."
+              "p": "È un prototipo: una pagina vera che si adatta dal telefono al computer, col carrello che fa i conti e il pagamento non collegato. Dati e prezzi sono quelli del sito del negozio, letti il 27 novembre 2026."
             },
             {
               "kind": "facts",
@@ -2147,6 +2192,21 @@
                 "Niente sfumature tra verde e arancione",
                 "Un oggetto, un nome: «Contrassegno», mai altri sinonimi"
               ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.05,
+                    0.15,
+                    0.9,
+                    0.45
+                  ],
+                  "caption": "Partenza, destinazione, peso e misure del pacco"
+                }
+              ]
             }
           ]
         },
@@ -2157,6 +2217,21 @@
             {
               "kind": "text",
               "p": "L’idea che tiene insieme le schermate l’ho chiamata «La Tratta»: una spedizione va da un punto A a un punto B. Ogni schermata disegna una linea verde petrolio che diventa arancione solo nel punto d’arrivo, dove c’è il prezzo o il bottone. Una superficie che non sa dire «percorso che arriva» resta fuori dal sistema."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.05,
+                    0.65,
+                    0.9,
+                    0.3
+                  ],
+                  "caption": "Il prezzo nel bottone arancione, in fondo al preventivo"
+                }
+              ]
             }
           ]
         },
@@ -2233,7 +2308,7 @@
               "kind": "facts",
               "items": [
                 "Scrivi partenza, destinazione, peso e misure e vedi subito il prezzo.",
-                "In ogni schermata una linea verde petrolio diventa arancione solo dove c’è il prezzo o il bottone.",
+                "Una linea verde petrolio diventa arancione solo dove c’è il prezzo o il bottone.",
                 "Le regole per il telefono si controllano una per una su uno schermo da 375 px."
               ]
             },
@@ -2365,16 +2440,6 @@
               "family": "Newsreader",
               "note": ""
             }
-          ],
-          "sources": [
-            {
-              "label": "Wikipedia, Chocolate",
-              "href": "https://en.wikipedia.org/wiki/Chocolate"
-            },
-            {
-              "label": "Geopop, Come si produce il cioccolato",
-              "href": "https://www.geopop.it/produzione-del-cioccolato/"
-            }
           ]
         }
       ],
@@ -2394,15 +2459,17 @@
               "p": "La percentuale in etichetta somma la parte solida del cacao e il burro di cacao, e un fondente al 100% a rigore non è cioccolato ma massa di cacao. Ho cercato anche un negozio con i prodotti nei quadrati di una tavoletta: non l’ho trovato."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Wikipedia, Chocolate",
-                  "href": "https://en.wikipedia.org/wiki/Chocolate"
-                },
-                {
-                  "label": "Geopop, Come si produce il cioccolato",
-                  "href": "https://www.geopop.it/produzione-del-cioccolato/"
+                  "i": 0,
+                  "box": [
+                    0.03,
+                    0.25,
+                    0.5,
+                    0.35
+                  ],
+                  "caption": "Il nome con la linea di rame che taglia il 7"
                 }
               ]
             }
@@ -2419,6 +2486,21 @@
             {
               "kind": "text",
               "p": "Accanto agli altri tre negozi: Il Gatto è una carta dei vini solo tipografica in nero e oro, Mandorla un vassoio da comporre in verde salvia, Cerchi un bianco e nero con una lente. Qui la pagina è bruna e cambia tono col cacao, e il gesto di comprare è spezzare un quadrato."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0.33,
+                    0.1,
+                    0.65,
+                    0.7
+                  ],
+                  "caption": "Il catalogo come una tavoletta, un quadrato per prodotto"
+                }
+              ]
             }
           ]
         },
@@ -2639,6 +2721,21 @@
               "kind": "text",
               "title": "Il marchio",
               "p": "Il Gatto è un marchio inventato, un vino rosso con un’etichetta nera e due punti d’oro per occhi. Uva e gradi sono generici, un carignano a 14 e a 14,5 gradi, senza denominazioni né luoghi, perché il vino non esiste."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.25,
+                    0.2,
+                    0.3,
+                    0.45
+                  ],
+                  "caption": "La bottiglia scura e i due occhi d’oro"
+                }
+              ]
             }
           ]
         },
@@ -2653,6 +2750,21 @@
             {
               "kind": "text",
               "p": "Accanto agli altri tre negozi: niente griglia di quadrati come Nero 72, niente vassoio su verde salvia come Mandorla, niente fondo chiaro con la lente come Cerchi. Qui c’è una lista tipografica su fondo nero, e l’unico movimento sono gli occhi."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0.05,
+                    0.15,
+                    0.65,
+                    0.8
+                  ],
+                  "caption": "Le righe della carta: annata, uva, gradi, formato, prezzo"
+                }
+              ]
             }
           ]
         },
@@ -2861,12 +2973,6 @@
               "family": "Lora",
               "note": ""
             }
-          ],
-          "sources": [
-            {
-              "label": "Sardegna Turismo, i dolci",
-              "href": "https://sardegnaturismo.it/it/node/251476"
-            }
           ]
         }
       ],
@@ -2881,11 +2987,17 @@
               "p": "Mandorla è un marchio inventato, una pasticceria di dolci delle feste. Ho studiato gli otto dolci della tradizione sarda che vende: amaretti, gueffus, pabassinas, pistoccheddus de cappa, pardulas, candelaus, bianchini e tiliccas, ognuno con i suoi ingredienti."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Sardegna Turismo, i dolci",
-                  "href": "https://sardegnaturismo.it/it/node/251476"
+                  "i": 0,
+                  "box": [
+                    0.55,
+                    0.25,
+                    0.25,
+                    0.55
+                  ],
+                  "caption": "Dolci disegnati dall’alto nel vassoio"
                 }
               ]
             }
@@ -2902,6 +3014,21 @@
             {
               "kind": "text",
               "p": "Accanto agli altri tre negozi: Nero 72 è una tavoletta su fondo bruno, Il Gatto solo tipografia in nero e oro, Cerchi bianco e nero con una lente. Qui c’è un oggetto che si riempie e si chiude, col pizzo della mandorla su carta, nastro e bollino."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0,
+                    0.05,
+                    0.55,
+                    0.5
+                  ],
+                  "caption": "Il vassoio con un dolce posato e i posti vuoti"
+                }
+              ]
             }
           ]
         },
@@ -3096,12 +3223,6 @@
               "family": "Lexend",
               "note": "dal 400 al 700"
             }
-          ],
-          "sources": [
-            {
-              "label": "All About Vision, le misure delle montature",
-              "href": "https://www.allaboutvision.com/eyewear/eyeglasses/styles/glasses-frame-size/"
-            }
           ]
         }
       ],
@@ -3116,15 +3237,17 @@
               "p": "Cerchi è un marchio inventato, un negozio di ottica. Ho studiato le tre misure scritte sulla stanghetta, in millimetri: il calibro è la larghezza di una lente, di solito tra 40 e 60; il ponte è la distanza tra le lenti, tra 14 e 24; l’asta è la stanghetta, tra 120 e 150."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "All About Vision, le misure delle montature",
-                  "href": "https://www.allaboutvision.com/eyewear/eyeglasses/styles/glasses-frame-size/"
-                },
-                {
-                  "label": "ISO 8624:2002, sistema di misura delle montature, anteprima pubblica",
-                  "href": "https://cdn.standards.iteh.ai/samples/29883/d50e9248d2c64e148997988410867eb9/ISO-8624-2002.pdf"
+                  "i": 1,
+                  "box": [
+                    0.3,
+                    0.08,
+                    0.4,
+                    0.42
+                  ],
+                  "caption": "Una montatura con le sue tre misure"
                 }
               ]
             }
@@ -3141,6 +3264,21 @@
             {
               "kind": "text",
               "p": "La tavola dell’oculista e le montature in scala hanno senso solo per un’ottica. Accanto agli altri tre negozi, qui il fondo è bianco caldo, il testo è nero e l’unico colore sono le montature disegnate al tratto: niente riquadri, niente griglie di schede."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.25,
+                    0.15,
+                    0.5,
+                    0.4
+                  ],
+                  "caption": "La parola «otto» nitida dentro due lenti, il resto sfocato"
+                }
+              ]
             }
           ]
         },
@@ -3365,6 +3503,21 @@
               "kind": "text",
               "title": "La ricerca",
               "p": "Ho contato i gesti di quattro compiti veri: un ordine, i cinque fogli della distinta del giorno, un ordine cercato al telefono, un DDT. Prima delle correzioni costavano 103 tasti e 39 clic, con 10 punti in cui il gesto abituale dava un risultato sbagliato. Alla consegna: 97 tasti e 5 punti."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.1,
+                    0.7,
+                    0.55
+                  ],
+                  "caption": "La pagina dell’ordine: modello, misure, colore"
+                }
+              ]
             }
           ]
         },
@@ -3375,6 +3528,21 @@
             {
               "kind": "text",
               "p": "Per le Distinte sono nati tre progetti indipendenti, giudicati e poi riuniti in una proposta sola. Il 13 novembre, per tenere il programma semplice, il piano restante è sceso a 20 voci piccole: 9 rimandate e 2 tolte."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 2,
+                  "box": [
+                    0,
+                    0,
+                    0.6,
+                    0.25
+                  ],
+                  "caption": "I cinque fogli da stampare, in una fascia in alto"
+                }
+              ]
             }
           ]
         },
@@ -3454,7 +3622,7 @@
               "kind": "facts",
               "items": [
                 "Consegnato il 17 novembre 2026.",
-                "Con 1.800 ordini la pagina delle Distinte ci metteva 11,9 secondi ad aprirsi: dopo la correzione ne bastano circa 0,3.",
+                "Con 1.800 ordini le Distinte si aprivano in 11,9 secondi, ora in circa 0,3.",
                 "Al primo avvio porta dentro le 50.466 righe dello storico ordini del programma di prima."
               ]
             },
@@ -3593,6 +3761,21 @@
               "kind": "text",
               "title": "La ricerca",
               "p": "Ho guardato due app degli Apple Design Award 2026: Structured, finalista, e Tide Guide, che ha vinto. Structured è lodata per un impianto che si scorre in un attimo, anche da chi ha difficoltà di attenzione e di lettura. Tide Guide mostra molti dati una cosa grande per volta. In tutte e due il colore ha un compito."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0.15,
+                    0.1,
+                    0.55,
+                    0.4
+                  ],
+                  "caption": "La zona osservata nella cornice rossa, e la sua traduzione"
+                }
+              ]
             }
           ]
         },
@@ -3685,9 +3868,7 @@
               "kind": "images",
               "items": [
                 0,
-                1,
-                2,
-                3
+                2
               ]
             }
           ]
@@ -3706,6 +3887,13 @@
                 "Quattro modalità: Live, Testo, Appunti, Scatto.",
                 "In modalità Testo traduce da solo 600 millisecondi dopo l’ultima battuta.",
                 "Tiene una cronologia delle traduzioni, da cercare e fissare."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                1,
+                3
               ]
             }
           ]
@@ -3839,6 +4027,21 @@
               "kind": "text",
               "title": "La ricerca",
               "p": "Prima di disegnare ho guardato app premiate: Gentler Streak e Crouton, Apple Design Award 2024, CapWords, Apple Design Award 2025, e la scheda di Weightroom. Hanno in comune un’idea sola presa dal contenuto, una cosa grande per schermata che si legge da lontano e un colore con un significato fisso."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0,
+                    0.5,
+                    1,
+                    0.35
+                  ],
+                  "caption": "Chili, ripetizioni e RIR: i numeri grandi"
+                }
+              ]
             }
           ]
         },
@@ -3854,6 +4057,21 @@
               "kind": "text",
               "title": "L’idea",
               "p": "Il progetto grafico nuovo parte dal nome, la forgia: caldo e freddo. Lo sforzo è metallo incandescente, schermo arancione pieno mentre si registra la serie; il riposo è la tempra in acqua, schermo blu pieno mentre corre il timer. Chi alza gli occhi capisce la fase dal colore."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 2,
+                  "box": [
+                    0,
+                    0,
+                    1,
+                    0.7
+                  ],
+                  "caption": "Il riposo: schermo blu pieno e 1:29"
+                }
+              ]
             }
           ]
         },
@@ -3910,10 +4128,8 @@
             {
               "kind": "images",
               "items": [
-                0,
                 1,
-                2,
-                3
+                2
               ]
             }
           ]
@@ -3932,6 +4148,13 @@
                 "I dati restano sul telefono, senza server.",
                 "Quattro schede: Oggi, Programma, Profilo e Coach.",
                 "Arancione mentre si lavora, blu mentre si riposa: la fase si capisce dal colore."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                0,
+                3
               ]
             }
           ]
@@ -4076,6 +4299,21 @@
               "kind": "text",
               "title": "La ricerca",
               "p": "Ho guardato due app degli Apple Design Award 2026: grug, che ha vinto, e Harvee, finalista. grug è tutta disegnata a mano, un mondo solo tenuto fino all’ultimo dettaglio. In Harvee un piccolo amico sta al centro e fa da specchio allo stato della persona: i dati diventano un’espressione."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.03,
+                    0.6,
+                    0.38
+                  ],
+                  "caption": "Il nome del file e i numeri di riga"
+                }
+              ]
             }
           ]
         },
@@ -4174,9 +4412,7 @@
               "kind": "images",
               "items": [
                 0,
-                1,
                 2,
-                3,
                 4
               ]
             }
@@ -4196,6 +4432,13 @@
                 "Si parte con un profilo in quattro passi e sei domande, poi arriva un percorso su misura.",
                 "Quattro schede: Percorso, Palestra, Test, Profilo.",
                 "Il punteggio non si gonfia ripetendo lo stesso esercizio: le ripetizioni valgono meno."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                1,
+                3
               ]
             }
           ]
@@ -4341,6 +4584,21 @@
               "kind": "text",
               "title": "L’app",
               "p": "L’app calcola quanto mangiare ogni giorno e tiene il diario dei pasti, con un catalogo di 291 alimenti, ognuno col suo carico glicemico per 100 grammi. Le soglie che l’app usa per dire basso, medio e alto sono 10 e 20."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.42,
+                    1,
+                    0.42
+                  ],
+                  "caption": "Tre alimenti con la foto e il carico per 100 grammi"
+                }
+              ]
             }
           ]
         },
@@ -4351,6 +4609,21 @@
             {
               "kind": "text",
               "p": "L’idea è il righello del carico: una scala da 0 a 40 con due tacche fisse, 10 e 20, e un triangolo dove cade il valore. Nel pasto il carico diventa una barra fatta di pezzi, uno per alimento, lunga quanto pesa."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0,
+                    0.5,
+                    1,
+                    0.22
+                  ],
+                  "caption": "Il carico 14,7 e il righello con le tacche a 10 e 20"
+                }
+              ]
             }
           ]
         },
@@ -4415,10 +4688,8 @@
             {
               "kind": "images",
               "items": [
-                0,
                 1,
-                2,
-                3
+                2
               ]
             }
           ]
@@ -4437,6 +4708,13 @@
                 "Un catalogo di 291 alimenti, ognuno col suo carico glicemico per 100 grammi.",
                 "Cinque sezioni: Catalogo, Diario, Dieta, Metriche, Profilo.",
                 "Il fabbisogno è una stima: un test di 28 giorni la restringe."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                0,
+                3
               ]
             }
           ]
@@ -4557,12 +4835,6 @@
               "family": "Nunito",
               "note": ""
             }
-          ],
-          "sources": [
-            {
-              "label": "Università di Bologna, manuali del progetto Hortis",
-              "href": "https://site.unibo.it/hortis/it/area-download/manuali-elettronici-1"
-            }
           ]
         }
       ],
@@ -4587,11 +4859,17 @@
               "p": "Le semine mese per mese e la regola dell’acqua vengono da «L’orto urbano sostenibile», manuale del progetto europeo Hortis pubblicato dall’Università di Bologna nel 2013. È scritto per gli orti di Bologna: per questo l’esempio è Bologna."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Università di Bologna, manuali del progetto Hortis",
-                  "href": "https://site.unibo.it/hortis/it/area-download/manuali-elettronici-1"
+                  "i": 2,
+                  "box": [
+                    0.05,
+                    0.2,
+                    0.9,
+                    0.42
+                  ],
+                  "caption": "La regola dell’acqua: i primi 2 cm di terra"
                 }
               ]
             }
@@ -4678,10 +4956,8 @@
             {
               "kind": "images",
               "items": [
-                0,
                 1,
-                2,
-                3
+                2
               ]
             }
           ]
@@ -4700,6 +4976,13 @@
                 "Nasce dal mio progetto d’esame di Interaction Design del 2019.",
                 "La ruota dell’anno mostra quando si semina ogni pianta.",
                 "Per l’acqua una regola sola: se i primi 2 cm di terra sono asciutti, si annaffia."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                0,
+                3
               ]
             }
           ]
@@ -4846,6 +5129,21 @@
                 "What Remains of Edith Finch: le stanze",
                 "Gris no: è il modello da non inseguire"
               ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.42,
+                    0.35,
+                    0.35,
+                    0.55
+                  ],
+                  "caption": "La piccola figura d’inchiostro con la sua sfera di luce"
+                }
+              ]
             }
           ]
         },
@@ -4874,16 +5172,51 @@
             },
             {
               "kind": "text",
-              "p": "Il viaggio va dal freddo al caldo: spento e desaturato verso la morte, caldo e saturo verso l’infanzia. I disegni sono le prove della figura, delle stanze, dei colori e degli oggetti."
+              "p": "Il viaggio va dal freddo al caldo: spento e desaturato verso la morte, caldo e saturo verso l’infanzia. I fogli a matita, a penna nera e a carboncino sono le prove della figura, delle stanze e della luce."
             },
             {
               "kind": "images",
               "items": [
-                3,
-                4,
-                5,
-                6,
-                7
+                {
+                  "i": 3,
+                  "box": [
+                    0,
+                    0,
+                    0.5,
+                    0.5
+                  ],
+                  "caption": "Figure scarabocchiate a penna, strette insieme"
+                },
+                {
+                  "i": 3,
+                  "box": [
+                    0.6,
+                    0.65,
+                    0.35,
+                    0.3
+                  ],
+                  "caption": "La figura piccola e sola, con una luce in mano"
+                },
+                {
+                  "i": 9,
+                  "box": [
+                    0.02,
+                    0.03,
+                    0.6,
+                    0.9
+                  ],
+                  "caption": "Macchie nere a carboncino, la brace arancione e una figura minuscola"
+                },
+                {
+                  "i": 8,
+                  "box": [
+                    0,
+                    0.25,
+                    1,
+                    0.65
+                  ],
+                  "caption": "Le cinque stanze come riquadri collegati da frecce"
+                }
               ]
             }
           ]
@@ -4914,7 +5247,7 @@
             {
               "kind": "text",
               "title": "I colori",
-              "p": "Misurati sui tre studi. Nell’appartamento il fondo va dal blu notte al viola, e l’unico caldo è la brace della sfera. In cucina tutto si scalda verso il rosso mattone. Nel giardino restano verdi spenti e grigi."
+              "p": "Misurati sui tre studi. Nell’appartamento il fondo è blu notte, e l’unico caldo è la brace della sfera. In cucina tutto si scalda verso il rosso mattone. Nel giardino restano verdi spenti e grigi."
             },
             {
               "kind": "palette",
@@ -4922,10 +5255,6 @@
                 {
                   "name": "Notte",
                   "hex": "#120b35"
-                },
-                {
-                  "name": "Viola",
-                  "hex": "#2b1850"
                 },
                 {
                   "name": "Brace",
@@ -4944,9 +5273,53 @@
             {
               "kind": "images",
               "items": [
-                0,
                 1,
                 2
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 4,
+                  "box": [
+                    0.3,
+                    0.03,
+                    0.68,
+                    0.72
+                  ],
+                  "caption": "L’appartamento visto dall’alto, con la stanza accesa d’arancione"
+                },
+                {
+                  "i": 5,
+                  "box": [
+                    0,
+                    0.03,
+                    1,
+                    0.7
+                  ],
+                  "caption": "Lo studio dell’avvocato: scrivania, poltrona, lampada, libreria"
+                },
+                {
+                  "i": 6,
+                  "box": [
+                    0,
+                    0,
+                    0.7,
+                    0.75
+                  ],
+                  "caption": "Il giardino: l’albero, la panchina, i panni stesi, il sentiero"
+                },
+                {
+                  "i": 7,
+                  "box": [
+                    0,
+                    0.48,
+                    1,
+                    0.52
+                  ],
+                  "caption": "La cucina: finestra, credenza, tovaglia a quadri, moka e bambino"
+                }
               ]
             }
           ]
@@ -4962,9 +5335,15 @@
             {
               "kind": "facts",
               "items": [
-                "Cinque capitoli a ritroso, dalla morte all’infanzia: l’appartamento, lo studio dell’avvocato, l’ospedale, il giardino, la cucina.",
-                "Nella direzione visiva, «Inchiostro e Brace», il colore vive solo dentro la luce e nei ricordi.",
+                "Cinque capitoli a ritroso, dalla morte all’infanzia.",
+                "«Inchiostro e Brace»: il colore vive solo dentro la luce e nei ricordi.",
                 "Oggi esistono il menu, le cinque scene e 11 ricordi scritti su 33."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
               ]
             }
           ]
@@ -5007,44 +5386,60 @@
           "srcset": "media/works/cenere/03-640.webp 640w, media/works/cenere/03-1280.webp 1280w, media/works/cenere/03-1920.webp 1920w"
         },
         {
-          "src": "media/works/cenere/04-1920.webp",
-          "w": 1920,
-          "h": 1086,
-          "alt": "Tre pose della figura, ferma, in cammino e con il braccio teso verso la luce, schizzate in viola con una macchia ambra accanto",
+          "src": "media/works/cenere/04-1200.webp",
+          "w": 1200,
+          "h": 1608,
+          "alt": "Foglio a penna nera: un gruppo di figure tonde e scarabocchiate strette insieme, e in basso una figura piccola, sola, con una luce in mano",
           "caption": "Disegno",
-          "srcset": "media/works/cenere/04-640.webp 640w, media/works/cenere/04-1280.webp 1280w, media/works/cenere/04-1920.webp 1920w"
+          "srcset": "media/works/cenere/04-600.webp 600w, media/works/cenere/04-1200.webp 1200w"
         },
         {
           "src": "media/works/cenere/05-1920.webp",
           "w": 1920,
-          "h": 1086,
-          "alt": "La stanza vista dall’alto di tre quarti, abbozzata a macchie di colore: scrivania, divano, finestra e una pozza di luce ambra attorno alla figura",
+          "h": 1434,
+          "alt": "Foglio a matita: l’appartamento visto dall’alto in mezzo al buio, con la stanza accesa d’arancione e la figura al centro; sotto, una lampada da tavolo",
           "caption": "Disegno",
           "srcset": "media/works/cenere/05-640.webp 640w, media/works/cenere/05-1280.webp 1280w, media/works/cenere/05-1920.webp 1920w"
         },
         {
-          "src": "media/works/cenere/06-1920.webp",
-          "w": 1920,
-          "h": 1086,
-          "alt": "Cinque piccoli studi di colore, uno per stanza: notte viola, ufficio grigio, ospedale verde chiaro, giardino blu, cucina dorata",
+          "src": "media/works/cenere/06-1200.webp",
+          "w": 1200,
+          "h": 1608,
+          "alt": "Foglio a matita: lo studio dell’avvocato, con la scrivania, la poltrona, la lampada, la libreria e un quadro alla parete",
           "caption": "Disegno",
-          "srcset": "media/works/cenere/06-640.webp 640w, media/works/cenere/06-1280.webp 1280w, media/works/cenere/06-1920.webp 1920w"
+          "srcset": "media/works/cenere/06-600.webp 600w, media/works/cenere/06-1200.webp 1200w"
         },
         {
           "src": "media/works/cenere/07-1920.webp",
           "w": 1920,
-          "h": 1086,
-          "alt": "Un bambino di spalle tra due linee che fanno da porta, e sopra di lui una piccola luce ambra",
+          "h": 1434,
+          "alt": "Foglio a matita: il giardino, con l’albero, la panchina, i panni stesi e il sentiero, appena toccato d’arancione",
           "caption": "Disegno",
           "srcset": "media/works/cenere/07-640.webp 640w, media/works/cenere/07-1280.webp 1280w, media/works/cenere/07-1920.webp 1920w"
         },
         {
-          "src": "media/works/cenere/08-1920.webp",
-          "w": 1920,
-          "h": 1086,
-          "alt": "Quattro oggetti schizzati in viola: una lampada, una moka, un paio di occhiali e il disegno di una casa, due con un alone ambra",
+          "src": "media/works/cenere/08-1200.webp",
+          "w": 1200,
+          "h": 1608,
+          "alt": "Foglio a matita: la cucina in fondo alla pagina, con la finestra, la credenza, la tovaglia a quadri arancioni, la moka sul fornello e il bambino",
           "caption": "Disegno",
-          "srcset": "media/works/cenere/08-640.webp 640w, media/works/cenere/08-1280.webp 1280w, media/works/cenere/08-1920.webp 1920w"
+          "srcset": "media/works/cenere/08-600.webp 600w, media/works/cenere/08-1200.webp 1200w"
+        },
+        {
+          "src": "media/works/cenere/09-1920.webp",
+          "w": 1920,
+          "h": 1434,
+          "alt": "Foglio a matita: cinque stanze come riquadri collegati da frecce, dalla più grande alla più piccola",
+          "caption": "Disegno",
+          "srcset": "media/works/cenere/09-640.webp 640w, media/works/cenere/09-1280.webp 1280w, media/works/cenere/09-1920.webp 1920w"
+        },
+        {
+          "src": "media/works/cenere/10-1920.webp",
+          "w": 1920,
+          "h": 1434,
+          "alt": "Foglio a carboncino: macchie nere con dentro la brace arancione, e una figura minuscola dentro la più grande",
+          "caption": "Disegno",
+          "srcset": "media/works/cenere/10-640.webp 640w, media/works/cenere/10-1280.webp 1280w, media/works/cenere/10-1920.webp 1920w"
         }
       ]
     },
@@ -5141,6 +5536,21 @@
               "kind": "text",
               "title": "La tavola di riferimento",
               "p": "La tavola di riferimento del manuale lavora su tre idee: l’ordine modulare di un software fatto a pannelli, una luce che guida e la calma del lavoro notturno. La civetta le tiene insieme, e la luce è il suo becco."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.38,
+                    0.15,
+                    0.3,
+                    0.45
+                  ],
+                  "caption": "La civetta: due metà blu e il becco arancio"
+                }
+              ]
             }
           ]
         },
@@ -5355,17 +5765,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "L’Espresso Italiano Certificato è una tazzina di circa 25 millilitri; il suo profilo guarda schiuma, aroma e gusto, ed è nato da tre anni di ricerca con consumatori e laboratorio. Iglesias nasce come Villa di Chiesa, nominata per la prima volta in un documento del 1272.",
-          "sources": [
-            {
-              "label": "Istituto Espresso Italiano, Espresso Italiano Certificato",
-              "href": "https://iei.coffee/en/espresso-italiano-certificato/"
-            },
-            {
-              "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-              "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
-            }
-          ]
+          "p": "L’Espresso Italiano Certificato è una tazzina di circa 25 millilitri; il suo profilo guarda schiuma, aroma e gusto, ed è nato da tre anni di ricerca con consumatori e laboratorio. Iglesias nasce come Villa di Chiesa, nominata per la prima volta in un documento del 1272."
         }
       ],
       "process": [
@@ -5401,15 +5801,17 @@
               "p": "L’Espresso Italiano Certificato è una tazzina di circa 25 millilitri; il suo profilo guarda schiuma, aroma e gusto, ed è nato da tre anni di ricerca con consumatori e laboratorio. Iglesias nasce come Villa di Chiesa, nominata per la prima volta in un documento del 1272."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Istituto Espresso Italiano, Espresso Italiano Certificato",
-                  "href": "https://iei.coffee/en/espresso-italiano-certificato/"
-                },
-                {
-                  "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-                  "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
+                  "i": 1,
+                  "box": [
+                    0.05,
+                    0.15,
+                    0.6,
+                    0.55
+                  ],
+                  "caption": "La tazzina e le bustine sul banco di marmo"
                 }
               ]
             }
@@ -5584,17 +5986,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "La ghisa è una lega di ferro e carbonio, con il carbonio tra l’1,9 e il 6,5%, più dell’acciaio, e si cola bene negli stampi. Nel Medioevo la terra di Iglesias si chiamava Argentaria, per il piombo ricco d’argento, e il Breve di Villa di Chiesa aveva un libro intero sulle miniere.",
-          "sources": [
-            {
-              "label": "Treccani, Ghisa",
-              "href": "https://www.treccani.it/enciclopedia/ghisa/"
-            },
-            {
-              "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-              "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
-            }
-          ]
+          "p": "La ghisa è una lega di ferro e carbonio, con il carbonio tra l’1,9 e il 6,5%, più dell’acciaio, e si cola bene negli stampi. Nel Medioevo la terra di Iglesias si chiamava Argentaria, per il piombo ricco d’argento, e il Breve di Villa di Chiesa aveva un libro intero sulle miniere."
         }
       ],
       "process": [
@@ -5630,15 +6022,17 @@
               "p": "La ghisa è una lega di ferro e carbonio, con il carbonio tra l’1,9 e il 6,5%, più dell’acciaio, e si cola bene negli stampi. Nel Medioevo la terra di Iglesias si chiamava Argentaria, per il piombo ricco d’argento, e il Breve di Villa di Chiesa aveva un libro intero sulle miniere."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Treccani, Ghisa",
-                  "href": "https://www.treccani.it/enciclopedia/ghisa/"
-                },
-                {
-                  "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-                  "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
+                  "i": 1,
+                  "box": [
+                    0.2,
+                    0.65,
+                    0.6,
+                    0.35
+                  ],
+                  "caption": "Il bilanciere davanti alla parete"
                 }
               ]
             }
@@ -5813,13 +6207,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "Le scritte dorate sui vetri delle vecchie botteghe vengono da una tecnica: si dipinge e si dora il retro del vetro, e da fuori la scritta brilla come uno specchio. Si chiama verre églomisé, dal nome di Jean-Baptiste Glomy, decoratore francese del Settecento, e si è usata per scritte da vetrina.",
-          "sources": [
-            {
-              "label": "Wikipedia, Verre églomisé",
-              "href": "https://en.wikipedia.org/wiki/Verre_%C3%A9glomis%C3%A9"
-            }
-          ]
+          "p": "Le scritte dorate sui vetri delle vecchie botteghe vengono da una tecnica: si dipinge e si dora il retro del vetro, e da fuori la scritta brilla come uno specchio. Si chiama verre églomisé, dal nome di Jean-Baptiste Glomy, decoratore francese del Settecento, e si è usata per scritte da vetrina."
         }
       ],
       "process": [
@@ -5855,11 +6243,17 @@
               "p": "Le scritte dorate sui vetri delle vecchie botteghe vengono da una tecnica: si dipinge e si dora il retro del vetro, e da fuori la scritta brilla come uno specchio. Si chiama verre églomisé, dal nome di Jean-Baptiste Glomy, decoratore francese del Settecento, e si è usata per scritte da vetrina."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Wikipedia, Verre églomisé",
-                  "href": "https://en.wikipedia.org/wiki/Verre_%C3%A9glomis%C3%A9"
+                  "i": 2,
+                  "box": [
+                    0.1,
+                    0.15,
+                    0.8,
+                    0.55
+                  ],
+                  "caption": "La scritta sul vetro della vetrina, col filo d’oro"
                 }
               ]
             }
@@ -6038,13 +6432,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "Sant’Antioco sta nella zona del Carignano del Sulcis, un rosso fatto almeno all’85% con uva carignano. Nelle sabbie dell’isola la fillossera non ha fatto danni, e la vite si coltiva ancora a piede franco, cioè senza innesto, ad alberello. In sardo quest’uva si chiama «axina de Spagna».",
-          "sources": [
-            {
-              "label": "Disciplinare della DOC Carignano del Sulcis",
-              "href": "https://aisitalia.it/Disciplinari/Sardegna/DOC/Carignano%20del%20Sulcis.pdf"
-            }
-          ]
+          "p": "Sant’Antioco sta nella zona del Carignano del Sulcis, un rosso fatto almeno all’85% con uva carignano. Nelle sabbie dell’isola la fillossera non ha fatto danni, e la vite si coltiva ancora a piede franco, cioè senza innesto, ad alberello. In sardo quest’uva si chiama «axina de Spagna»."
         }
       ],
       "process": [
@@ -6080,11 +6468,17 @@
               "p": "Sant’Antioco sta nella zona del Carignano del Sulcis, un rosso fatto almeno all’85% con uva carignano. Nelle sabbie dell’isola la fillossera non ha fatto danni, e la vite si coltiva ancora a piede franco, cioè senza innesto, ad alberello. In sardo quest’uva si chiama «axina de Spagna»."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Disciplinare della DOC Carignano del Sulcis",
-                  "href": "https://aisitalia.it/Disciplinari/Sardegna/DOC/Carignano%20del%20Sulcis.pdf"
+                  "i": 1,
+                  "box": [
+                    0.3,
+                    0.1,
+                    0.4,
+                    0.8
+                  ],
+                  "caption": "Le etichette nere con i due punti dorati"
                 }
               ]
             }
@@ -6263,17 +6657,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "Tre elementi che girano attorno a un centro sono un segno antico, il triscele, dal greco «tre gambe». Tre gambe in armatura stanno sulla bandiera dell’Isola di Man, dove dal 1907 si corre il Tourist Trophy, una gara di moto su strade chiuse, su un giro di 60,72 km.",
-          "sources": [
-            {
-              "label": "Wikipedia, Triskelion",
-              "href": "https://en.wikipedia.org/wiki/Triskelion"
-            },
-            {
-              "label": "Wikipedia, Isle of Man TT",
-              "href": "https://en.wikipedia.org/wiki/Isle_of_Man_TT"
-            }
-          ]
+          "p": "Tre elementi che girano attorno a un centro sono un segno antico, il triscele, dal greco «tre gambe». Tre gambe in armatura stanno sulla bandiera dell’Isola di Man, dove dal 1907 si corre il Tourist Trophy, una gara di moto su strade chiuse, su un giro di 60,72 km."
         }
       ],
       "process": [
@@ -6309,15 +6693,17 @@
               "p": "Tre elementi che girano attorno a un centro sono un segno antico, il triscele, dal greco «tre gambe». Tre gambe in armatura stanno sulla bandiera dell’Isola di Man, dove dal 1907 si corre il Tourist Trophy, una gara di moto su strade chiuse, su un giro di 60,72 km."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Wikipedia, Triskelion",
-                  "href": "https://en.wikipedia.org/wiki/Triskelion"
-                },
-                {
-                  "label": "Wikipedia, Isle of Man TT",
-                  "href": "https://en.wikipedia.org/wiki/Isle_of_Man_TT"
+                  "i": 2,
+                  "box": [
+                    0.45,
+                    0.05,
+                    0.5,
+                    0.6
+                  ],
+                  "caption": "Il timbro rosso sul foglio di lavoro"
                 }
               ]
             }
@@ -6492,13 +6878,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "Quando un punto non è a fuoco, la lente non lo restituisce come un punto ma come un piccolo disco sfocato: in ottica si chiama cerchio di confusione. È il puntino della «i» del marchio.",
-          "sources": [
-            {
-              "label": "Wikipedia, Circle of confusion",
-              "href": "https://en.wikipedia.org/wiki/Circle_of_confusion"
-            }
-          ]
+          "p": "Quando un punto non è a fuoco, la lente non lo restituisce come un punto ma come un piccolo disco sfocato: in ottica si chiama cerchio di confusione. È il puntino della «i» del marchio."
         }
       ],
       "process": [
@@ -6534,11 +6914,17 @@
               "p": "Quando un punto non è a fuoco, la lente non lo restituisce come un punto ma come un piccolo disco sfocato: in ottica si chiama cerchio di confusione. È il puntino della «i» del marchio."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Wikipedia, Circle of confusion",
-                  "href": "https://en.wikipedia.org/wiki/Circle_of_confusion"
+                  "i": 0,
+                  "box": [
+                    0.5,
+                    0.2,
+                    0.3,
+                    0.35
+                  ],
+                  "caption": "Il puntino sfocato sopra la «i»"
                 }
               ]
             }
@@ -6713,13 +7099,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "Il cioccolato si tempera: si porta a circa 45 gradi, poi si raffredda e si riscalda a intervalli perché cristallizzi bene. Se la tempera è sbagliata compare la fioritura bianca, una patina sulla superficie. Un fondente al 100% tecnicamente non è cioccolato, ma massa di cacao.",
-          "sources": [
-            {
-              "label": "Geopop, Come si produce il cioccolato",
-              "href": "https://www.geopop.it/produzione-del-cioccolato/"
-            }
-          ]
+          "p": "Il cioccolato si tempera: si porta a circa 45 gradi, poi si raffredda e si riscalda a intervalli perché cristallizzi bene. Se la tempera è sbagliata compare la fioritura bianca, una patina sulla superficie. Un fondente al 100% tecnicamente non è cioccolato, ma massa di cacao."
         }
       ],
       "process": [
@@ -6755,11 +7135,17 @@
               "p": "Il cioccolato si tempera: si porta a circa 45 gradi, poi si raffredda e si riscalda a intervalli perché cristallizzi bene. Se la tempera è sbagliata compare la fioritura bianca, una patina sulla superficie. Un fondente al 100% tecnicamente non è cioccolato, ma massa di cacao."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Geopop, Come si produce il cioccolato",
-                  "href": "https://www.geopop.it/produzione-del-cioccolato/"
+                  "i": 1,
+                  "box": [
+                    0.6,
+                    0.25,
+                    0.35,
+                    0.45
+                  ],
+                  "caption": "La tavoletta aperta e un quadrato di cioccolato"
                 }
               ]
             }
@@ -6934,17 +7320,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "Tra i dolci di Iglesias ci sono gueffus, pastiglias, pabassinas, pistoccus cun sa cappa e pardulas. Le pabassinas sono biscotti con uva passa, mandorle e noci, ricoperti di glassa; i pistoccheddus de cappa hanno una glassa bianca e si legano alla Pasqua.",
-          "sources": [
-            {
-              "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-              "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
-            },
-            {
-              "label": "Sardegna Turismo, Ogni festa è buona con i dolci della tradizione",
-              "href": "https://sardegnaturismo.it/it/node/251476"
-            }
-          ]
+          "p": "Tra i dolci di Iglesias ci sono gueffus, pastiglias, pabassinas, pistoccus cun sa cappa e pardulas. Le pabassinas sono biscotti con uva passa, mandorle e noci, ricoperti di glassa; i pistoccheddus de cappa hanno una glassa bianca e si legano alla Pasqua."
         }
       ],
       "process": [
@@ -6980,15 +7356,17 @@
               "p": "Tra i dolci di Iglesias ci sono gueffus, pastiglias, pabassinas, pistoccus cun sa cappa e pardulas. Le pabassinas sono biscotti con uva passa, mandorle e noci, ricoperti di glassa; i pistoccheddus de cappa hanno una glassa bianca e si legano alla Pasqua."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-                  "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
-                },
-                {
-                  "label": "Sardegna Turismo, Ogni festa è buona con i dolci della tradizione",
-                  "href": "https://sardegnaturismo.it/it/node/251476"
+                  "i": 1,
+                  "box": [
+                    0.55,
+                    0.35,
+                    0.4,
+                    0.55
+                  ],
+                  "caption": "I dolci decorati a pizzo nella scatola"
                 }
               ]
             }
@@ -7163,13 +7541,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "Carloforte l’hanno fondata famiglie di pescatori di Pegli che vivevano sull’isola tunisina di Tabarka: nel 1738 ebbero dal re Carlo Emanuele III il permesso di colonizzare l’isola di San Pietro. Il paese conserva lingua e cultura liguri, e tra maggio e giugno ospita il Girotonno.",
-          "sources": [
-            {
-              "label": "Sardegna Turismo, Carloforte",
-              "href": "https://www.sardegnaturismo.it/it/luoghi/sud/carloforte"
-            }
-          ]
+          "p": "Carloforte l’hanno fondata famiglie di pescatori di Pegli che vivevano sull’isola tunisina di Tabarka: nel 1738 ebbero dal re Carlo Emanuele III il permesso di colonizzare l’isola di San Pietro. Il paese conserva lingua e cultura liguri, e tra maggio e giugno ospita il Girotonno."
         }
       ],
       "process": [
@@ -7205,11 +7577,17 @@
               "p": "Carloforte l’hanno fondata famiglie di pescatori di Pegli che vivevano sull’isola tunisina di Tabarka: nel 1738 ebbero dal re Carlo Emanuele III il permesso di colonizzare l’isola di San Pietro. Il paese conserva lingua e cultura liguri, e tra maggio e giugno ospita il Girotonno."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Sardegna Turismo, Carloforte",
-                  "href": "https://www.sardegnaturismo.it/it/luoghi/sud/carloforte"
+                  "i": 2,
+                  "box": [
+                    0.65,
+                    0.25,
+                    0.35,
+                    0.5
+                  ],
+                  "caption": "Il porto accanto all’ingresso dell’osteria"
                 }
               ]
             }
@@ -7384,17 +7762,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "La Pizza Napoletana STG ha un disciplinare europeo. Al centro il disco è spesso al massimo 0,4 cm, sul bordo il cornicione arriva a 1-2 cm. Si cuoce solo nel forno a legna, con la platea a circa 485 gradi, per 60-90 secondi.",
-          "sources": [
-            {
-              "label": "Disciplinare della Pizza Napoletana STG",
-              "href": "https://horecanews.it/wp-content/uploads/2022/11/pizza-napoletana-stg.pdf"
-            },
-            {
-              "label": "ARSIAL, scheda Pizza Napoletana STG",
-              "href": "https://www.arsial.it/wp-content/uploads/2025/06/PizzaNapoletanaSTG.pdf"
-            }
-          ]
+          "p": "La Pizza Napoletana STG ha un disciplinare europeo. Al centro il disco è spesso al massimo 0,4 cm, sul bordo il cornicione arriva a 1-2 cm. Si cuoce solo nel forno a legna, con la platea a circa 485 gradi, per 60-90 secondi."
         }
       ],
       "process": [
@@ -7430,15 +7798,17 @@
               "p": "La Pizza Napoletana STG ha un disciplinare europeo. Al centro il disco è spesso al massimo 0,4 cm, sul bordo il cornicione arriva a 1-2 cm. Si cuoce solo nel forno a legna, con la platea a circa 485 gradi, per 60-90 secondi."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Disciplinare della Pizza Napoletana STG",
-                  "href": "https://horecanews.it/wp-content/uploads/2022/11/pizza-napoletana-stg.pdf"
-                },
-                {
-                  "label": "ARSIAL, scheda Pizza Napoletana STG",
-                  "href": "https://www.arsial.it/wp-content/uploads/2025/06/PizzaNapoletanaSTG.pdf"
+                  "i": 3,
+                  "box": [
+                    0.2,
+                    0.35,
+                    0.75,
+                    0.4
+                  ],
+                  "caption": "Il bordo della pizza in primo piano"
                 }
               ]
             }
@@ -7613,17 +7983,7 @@
         },
         {
           "title": "La ricerca",
-          "p": "Karate vuol dire «via della mano vuota», ed è nato a Okinawa. Il karategi è giacca e pantaloni di cotone bianco, stretti da una cintura il cui colore dice il grado: dal bianco al marrone, e dal primo dan nera. Il kime è la potenza del colpo concentrata in un punto.",
-          "sources": [
-            {
-              "label": "Wikipedia, Karate",
-              "href": "https://it.wikipedia.org/wiki/Karate"
-            },
-            {
-              "label": "Wikipedia, Kime",
-              "href": "https://en.wikipedia.org/wiki/Kime"
-            }
-          ]
+          "p": "Karate vuol dire «via della mano vuota», ed è nato a Okinawa. Il karategi è giacca e pantaloni di cotone bianco, stretti da una cintura il cui colore dice il grado: dal bianco al marrone, e dal primo dan nera. Il kime è la potenza del colpo concentrata in un punto."
         }
       ],
       "process": [
@@ -7659,15 +8019,17 @@
               "p": "Karate vuol dire «via della mano vuota», ed è nato a Okinawa. Il karategi è giacca e pantaloni di cotone bianco, stretti da una cintura il cui colore dice il grado: dal bianco al marrone, e dal primo dan nera. Il kime è la potenza del colpo concentrata in un punto."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Wikipedia, Karate",
-                  "href": "https://it.wikipedia.org/wiki/Karate"
-                },
-                {
-                  "label": "Wikipedia, Kime",
-                  "href": "https://en.wikipedia.org/wiki/Kime"
+                  "i": 2,
+                  "box": [
+                    0,
+                    0.1,
+                    0.45,
+                    0.85
+                  ],
+                  "caption": "Il karategi bianco piegato, col segno sul petto"
                 }
               ]
             }
@@ -7817,13 +8179,7 @@
       "study": [
         {
           "title": "La festa",
-          "p": "Al Villaggio Pescatori di Cagliari la sagra si fa a inizio settembre, nella piazza del borgo: nel 2026 il 5 e il 6. Pesce e vermentino, fritto misto, muggini e sardine arrosto, e un piatto di fave lesse che i pescatori cucinavano quando la pesca andava male.",
-          "sources": [
-            {
-              "label": "Sardegna Turismo, Sagra del pesce al Villaggio Pescatori",
-              "href": "https://www.sardegnaturismo.it/it/node/1141702"
-            }
-          ]
+          "p": "Al Villaggio Pescatori di Cagliari la sagra si fa a inizio settembre, nella piazza del borgo: nel 2026 il 5 e il 6. Pesce e vermentino, fritto misto, muggini e sardine arrosto, e un piatto di fave lesse che i pescatori cucinavano quando la pesca andava male."
         },
         {
           "title": "La scelta",
@@ -7855,11 +8211,17 @@
               "p": "Al Villaggio Pescatori di Cagliari la sagra si fa a inizio settembre, nella piazza del borgo: nel 2026 il 5 e il 6. Pesce e vermentino, fritto misto, muggini e sardine arrosto, e un piatto di fave lesse che i pescatori cucinavano quando la pesca andava male."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Sardegna Turismo, Sagra del pesce al Villaggio Pescatori",
-                  "href": "https://www.sardegnaturismo.it/it/node/1141702"
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.38,
+                    0.5,
+                    0.35
+                  ],
+                  "caption": "Il banco di pesci color crema"
                 }
               ]
             }
@@ -7926,7 +8288,26 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0.55,
+                    0.42,
+                    0.4,
+                    0.25
+                  ],
+                  "caption": "L’unico occhio arancione"
+                },
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.8,
+                    1,
+                    0.2
+                  ],
+                  "caption": "Il titolo scritto a mano e «Porto di Cagliari»"
+                }
               ]
             }
           ]
@@ -7938,6 +8319,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -7986,12 +8373,6 @@
         {
           "title": "La festa",
           "p": "A Sanluri la Festa del Borgo e la Sagra del Civraxu cadono insieme, a fine settembre: nel 2026 domenica 27, alla 29ª edizione della festa e all’8ª della sagra. Nel centro medievale si mostrano mestieri e attrezzi di una volta, e c’è uno spazio sul pane, dal grano seminato alla cottura.",
-          "sources": [
-            {
-              "label": "Sardegna Turismo, Festa del Borgo e Sagra del Civraxu",
-              "href": "https://www.sardegnaturismo.it/it/eventi/festa-del-borgo-e-sagra-del-civraxu"
-            }
-          ],
           "list": [
             "Più di 100 punti espositivi e più di 30 punti ristoro",
             "Si visita il castello di Sanluri, il meglio conservato dell’isola"
@@ -8034,11 +8415,17 @@
               ]
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Sardegna Turismo, Festa del Borgo e Sagra del Civraxu",
-                  "href": "https://www.sardegnaturismo.it/it/eventi/festa-del-borgo-e-sagra-del-civraxu"
+                  "i": 0,
+                  "box": [
+                    0.15,
+                    0.1,
+                    0.4,
+                    0.3
+                  ],
+                  "caption": "La crosta, con le crepe e la farina"
                 }
               ]
             }
@@ -8055,6 +8442,21 @@
             {
               "kind": "text",
               "p": "Nel primo giro i manifesti erano feste senza posto: «Sagra del pesce», «Sagra del pane», «Sagra del vino», «Festa patronale». Nel secondo giro ognuno ha preso la sua festa e, quasi sempre, il suo paese."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.05,
+                    0.05,
+                    0.9,
+                    0.68
+                  ],
+                  "caption": "La pagnotta sola su fondo nero"
+                }
+              ]
             }
           ]
         },
@@ -8090,7 +8492,26 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0.35,
+                    0.3,
+                    0.3,
+                    0.25
+                  ],
+                  "caption": "Le due linee bianche che si incrociano sul pane"
+                },
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.8,
+                    0.5,
+                    0.2
+                  ],
+                  "caption": "Il testo piccolo e bianco, in basso a sinistra"
+                }
               ]
             }
           ]
@@ -8102,6 +8523,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -8149,13 +8576,7 @@
       "study": [
         {
           "title": "Il pane",
-          "p": "Su coccoi non ha una festa sola: è il pane delle ricorrenze, fatto di semola. Sa cozzula, a forma di corona, si portava in chiesa per le nozze; su coccoi cun s’ou, con un uovo sodo, è solo di Pasqua. Decorarlo era il lavoro più fine, affidato a donne con un’abilità precisa.",
-          "sources": [
-            {
-              "label": "Sardegna Turismo, Sapori di pane",
-              "href": "https://www.sardegnaturismo.it/it/sapori-di-pane-tradizione-e-fragranza"
-            }
-          ]
+          "p": "Su coccoi non ha una festa sola: è il pane delle ricorrenze, fatto di semola. Sa cozzula, a forma di corona, si portava in chiesa per le nozze; su coccoi cun s’ou, con un uovo sodo, è solo di Pasqua. Decorarlo era il lavoro più fine, affidato a donne con un’abilità precisa."
         },
         {
           "title": "La scelta",
@@ -8187,11 +8608,17 @@
               "p": "Su coccoi non ha una festa sola: è il pane delle ricorrenze, fatto di semola. Sa cozzula, a forma di corona, si portava in chiesa per le nozze; su coccoi cun s’ou, con un uovo sodo, è solo di Pasqua. Decorarlo era il lavoro più fine, affidato a donne con un’abilità precisa."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Sardegna Turismo, Sapori di pane",
-                  "href": "https://www.sardegnaturismo.it/it/sapori-di-pane-tradizione-e-fragranza"
+                  "i": 0,
+                  "box": [
+                    0.05,
+                    0.05,
+                    0.45,
+                    0.35
+                  ],
+                  "caption": "Spighe, fiori e colombe intagliati nel pane"
                 }
               ]
             }
@@ -8208,6 +8635,21 @@
             {
               "kind": "text",
               "p": "Nel primo giro i manifesti erano feste senza posto: «Sagra del pesce», «Sagra del pane», «Sagra del vino», «Festa patronale». Nel secondo giro ognuno ha preso la sua festa e, quasi sempre, il suo paese."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.02,
+                    0.02,
+                    0.96,
+                    0.78
+                  ],
+                  "caption": "La corona di pane bianco su ocra"
+                }
+              ]
             }
           ]
         },
@@ -8243,7 +8685,16 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0.05,
+                    0.8,
+                    0.9,
+                    0.2
+                  ],
+                  "caption": "Il titolo con le grazie e la riga in corsivo"
+                }
               ]
             }
           ]
@@ -8255,6 +8706,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -8302,13 +8759,7 @@
       "study": [
         {
           "title": "Il vino",
-          "p": "Nel sud dell’isola il rosso più diffuso è il monica, che ha una denominazione sua, il Monica di Cagliari; la produzione maggiore sta tra Cagliari, Iglesias e Oristano. La strada del vino del capoluogo parte dalla città e attraversa le campagne del Campidano.",
-          "sources": [
-            {
-              "label": "Sardegna Turismo, A ciascun territorio il suo vino",
-              "href": "https://www.sardegnaturismo.it/it/ciascun-territorio-il-suo-vino"
-            }
-          ]
+          "p": "Nel sud dell’isola il rosso più diffuso è il monica, che ha una denominazione sua, il Monica di Cagliari; la produzione maggiore sta tra Cagliari, Iglesias e Oristano. La strada del vino del capoluogo parte dalla città e attraversa le campagne del Campidano."
         },
         {
           "title": "La scelta",
@@ -8340,11 +8791,17 @@
               "p": "Nel sud dell’isola il rosso più diffuso è il monica, che ha una denominazione sua, il Monica di Cagliari; la produzione maggiore sta tra Cagliari, Iglesias e Oristano. La strada del vino del capoluogo parte dalla città e attraversa le campagne del Campidano."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Sardegna Turismo, A ciascun territorio il suo vino",
-                  "href": "https://www.sardegnaturismo.it/it/ciascun-territorio-il-suo-vino"
+                  "i": 0,
+                  "box": [
+                    0.55,
+                    0.3,
+                    0.4,
+                    0.3
+                  ],
+                  "caption": "Gli anelli di vino, con le gocce che colano"
                 }
               ]
             }
@@ -8361,6 +8818,21 @@
             {
               "kind": "text",
               "p": "Nel primo giro i manifesti erano feste senza posto: «Sagra del pesce», «Sagra del pane», «Sagra del vino», «Festa patronale». Nel secondo giro ognuno ha preso la sua festa e, quasi sempre, il suo paese."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.1,
+                    0,
+                    0.85,
+                    0.8
+                  ],
+                  "caption": "Il grappolo fatto di impronte di bicchiere"
+                }
+              ]
             }
           ]
         },
@@ -8396,7 +8868,16 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0.05,
+                    0.8,
+                    0.9,
+                    0.2
+                  ],
+                  "caption": "Il titolo con le grazie e il sottotitolo in corsivo"
+                }
               ]
             }
           ]
@@ -8408,6 +8889,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -8456,16 +8943,6 @@
         {
           "title": "La festa",
           "p": "La sagra è a fine agosto e la organizza la Pro Loco di Guspini: la 29ª edizione, nel 2022, è stata il 27 e il 28. Oltre agli assaggi ci sono le visite guidate alla miniera, in superficie e in galleria, e i racconti degli ex minatori.",
-          "sources": [
-            {
-              "label": "Eventi e Sagre, Sagra del miele di Montevecchio",
-              "href": "https://www.eventiesagre.it/Eventi_Sagre/9782_Sagra+Del+Miele.html"
-            },
-            {
-              "label": "Sardegna Turismo, Montevecchio",
-              "href": "https://www.sardegnaturismo.it/it/esplora/montevecchio"
-            }
-          ],
           "list": [
             "La miniera di Montevecchio ha lavorato dal 1848 al 1991"
           ]
@@ -8506,15 +8983,17 @@
               ]
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Eventi e Sagre, Sagra del miele di Montevecchio",
-                  "href": "https://www.eventiesagre.it/Eventi_Sagre/9782_Sagra+Del+Miele.html"
-                },
-                {
-                  "label": "Sardegna Turismo, Montevecchio",
-                  "href": "https://www.sardegnaturismo.it/it/esplora/montevecchio"
+                  "i": 0,
+                  "box": [
+                    0,
+                    0,
+                    0.8,
+                    0.2
+                  ],
+                  "caption": "Il titolo col nome del borgo"
                 }
               ]
             }
@@ -8531,6 +9010,21 @@
             {
               "kind": "text",
               "p": "Nel primo giro i manifesti erano feste senza posto: «Sagra del pesce», «Sagra del pane», «Sagra del vino», «Festa patronale». Nel secondo giro ognuno ha preso la sua festa e, quasi sempre, il suo paese."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.25,
+                    0.48,
+                    0.45,
+                    0.52
+                  ],
+                  "caption": "La colata di miele che scende da una cella"
+                }
+              ]
             }
           ]
         },
@@ -8566,7 +9060,16 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0.5,
+                    0.15,
+                    0.5,
+                    0.3
+                  ],
+                  "caption": "Le righe nere sottili del favo"
+                }
               ]
             }
           ]
@@ -8578,6 +9081,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -8625,13 +9134,7 @@
       "study": [
         {
           "title": "Il posto",
-          "p": "Il Poetto è diviso tra Cagliari e Quartu, che ne ha quasi quattro chilometri. Il lungomare alle spalle della spiaggia è fatto per correre, andare in bici, sui pattini e sullo skate; sopra Marina Piccola sta la Sella del Diavolo, e dal mare arrivano onde buone per il surf e il kite.",
-          "sources": [
-            {
-              "label": "Sardegna Turismo, Poetto",
-              "href": "https://www.sardegnaturismo.it/it/esplora/poetto"
-            }
-          ]
+          "p": "Il Poetto è diviso tra Cagliari e Quartu, che ne ha quasi quattro chilometri. Il lungomare alle spalle della spiaggia è fatto per correre, andare in bici, sui pattini e sullo skate; sopra Marina Piccola sta la Sella del Diavolo, e dal mare arrivano onde buone per il surf e il kite."
         },
         {
           "title": "La scelta",
@@ -8659,11 +9162,17 @@
               "p": "Il Poetto è diviso tra Cagliari e Quartu, che ne ha quasi quattro chilometri. Il lungomare alle spalle della spiaggia è fatto per correre, andare in bici, sui pattini e sullo skate; sopra Marina Piccola sta la Sella del Diavolo, e dal mare arrivano onde buone per il surf e il kite."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Sardegna Turismo, Poetto",
-                  "href": "https://www.sardegnaturismo.it/it/esplora/poetto"
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.8,
+                    0.7,
+                    0.2
+                  ],
+                  "caption": "Il titolo e «Cagliari, si parte all’alba»"
                 }
               ]
             }
@@ -8726,7 +9235,16 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0,
+                    0.5,
+                    0.25
+                  ],
+                  "caption": "Le corsie numerate da 1 a 8"
+                }
               ]
             }
           ]
@@ -8738,6 +9256,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -8785,13 +9309,7 @@
       "study": [
         {
           "title": "La corsa",
-          "p": "Ad Arborea il cross si corre nelle pinete sul lungomare. Il 5 marzo 2023 la pineta ha ospitato l’ultima tappa del campionato regionale: tre percorsi da 300, 1.000 e 2.000 metri, su aghi di pino, erba e sabbia, davanti allo stagno di S’Ena Arrubia e ai suoi fenicotteri.",
-          "sources": [
-            {
-              "label": "FIDAL Sardegna, comunicato del cross di Arborea",
-              "href": "https://fidal.it/upload/sardegna/Comunicati%20e%20Circolari%202023/Comunicato%20Stampa%20Cross%20Arborea.pdf"
-            }
-          ]
+          "p": "Ad Arborea il cross si corre nelle pinete sul lungomare. Il 5 marzo 2023 la pineta ha ospitato l’ultima tappa del campionato regionale: tre percorsi da 300, 1.000 e 2.000 metri, su aghi di pino, erba e sabbia, davanti allo stagno di S’Ena Arrubia e ai suoi fenicotteri."
         },
         {
           "title": "La scelta",
@@ -8827,11 +9345,17 @@
               "p": "Ad Arborea il cross si corre nelle pinete sul lungomare. Il 5 marzo 2023 la pineta ha ospitato l’ultima tappa del campionato regionale: tre percorsi da 300, 1.000 e 2.000 metri, su aghi di pino, erba e sabbia, davanti allo stagno di S’Ena Arrubia e ai suoi fenicotteri."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "FIDAL Sardegna, comunicato del cross di Arborea",
-                  "href": "https://fidal.it/upload/sardegna/Comunicati%20e%20Circolari%202023/Comunicato%20Stampa%20Cross%20Arborea.pdf"
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.78,
+                    1,
+                    0.22
+                  ],
+                  "caption": "Il titolo e «Arborea, tra i campi della bonifica»"
                 }
               ]
             }
@@ -8848,6 +9372,21 @@
             {
               "kind": "text",
               "p": "Nel primo giro i manifesti erano feste senza posto: «Sagra del pesce», «Sagra del pane», «Sagra del vino», «Festa patronale». Nel secondo giro ognuno ha preso la sua festa e, quasi sempre, il suo paese."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.35,
+                    0.35,
+                    0.5,
+                    0.4
+                  ],
+                  "caption": "Una scarpa infangata che passa nell’erba"
+                }
+              ]
             }
           ]
         },
@@ -8887,7 +9426,16 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0.05,
+                    0,
+                    0.4,
+                    0.3
+                  ],
+                  "caption": "La retinatura grossa del verde"
+                }
               ]
             }
           ]
@@ -8899,6 +9447,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -8946,17 +9500,7 @@
       "study": [
         {
           "title": "La festa",
-          "p": "Santa Chiara è la patrona di Iglesias e si festeggia l’11 agosto. La cattedrale a lei dedicata è stata costruita tra il 1285 e il 1288 per volontà di Ugolino della Gherardesca, ed è l’unica cattedrale al mondo intitolata alla santa di Assisi.",
-          "sources": [
-            {
-              "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-              "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
-            },
-            {
-              "label": "Sardegna Turismo, Cattedrale di Santa Chiara",
-              "href": "https://www.sardegnaturismo.it/it/esplora/santa-chiara-iglesias"
-            }
-          ]
+          "p": "Santa Chiara è la patrona di Iglesias e si festeggia l’11 agosto. La cattedrale a lei dedicata è stata costruita tra il 1285 e il 1288 per volontà di Ugolino della Gherardesca, ed è l’unica cattedrale al mondo intitolata alla santa di Assisi."
         },
         {
           "title": "La scelta",
@@ -8988,15 +9532,17 @@
               "p": "Santa Chiara è la patrona di Iglesias e si festeggia l’11 agosto. La cattedrale a lei dedicata è stata costruita tra il 1285 e il 1288 per volontà di Ugolino della Gherardesca, ed è l’unica cattedrale al mondo intitolata alla santa di Assisi."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-                  "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
-                },
-                {
-                  "label": "Sardegna Turismo, Cattedrale di Santa Chiara",
-                  "href": "https://www.sardegnaturismo.it/it/esplora/santa-chiara-iglesias"
+                  "i": 0,
+                  "box": [
+                    0.05,
+                    0.8,
+                    0.9,
+                    0.2
+                  ],
+                  "caption": "La riga «festa patronale di Iglesias»"
                 }
               ]
             }
@@ -9063,7 +9609,26 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.5,
+                    0.75,
+                    0.4
+                  ],
+                  "caption": "Le piccole luci gialle che salgono a zig zag"
+                },
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0,
+                    1,
+                    0.2
+                  ],
+                  "caption": "Il titolo in maiuscole spaziate, color oro"
+                }
               ]
             }
           ]
@@ -9075,6 +9640,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -9122,13 +9693,7 @@
       "study": [
         {
           "title": "La festa",
-          "p": "La sagra è una tappa di Autunno in Barbagia. Aritzo sta a 800 metri e per secoli ha commerciato la neve, conservata nelle neviere del Seicento; con quel ghiaccio si fa ancora la carapigna, un sorbetto al limone che ha una sua sagra a metà agosto.",
-          "sources": [
-            {
-              "label": "Sardegna Turismo, Aritzo",
-              "href": "https://www.sardegnaturismo.it/it/esplora/aritzo"
-            }
-          ]
+          "p": "La sagra è una tappa di Autunno in Barbagia. Aritzo sta a 800 metri e per secoli ha commerciato la neve, conservata nelle neviere del Seicento; con quel ghiaccio si fa ancora la carapigna, un sorbetto al limone che ha una sua sagra a metà agosto."
         },
         {
           "title": "La scelta",
@@ -9156,11 +9721,17 @@
               "p": "La sagra è una tappa di Autunno in Barbagia. Aritzo sta a 800 metri e per secoli ha commerciato la neve, conservata nelle neviere del Seicento; con quel ghiaccio si fa ancora la carapigna, un sorbetto al limone che ha una sua sagra a metà agosto."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Sardegna Turismo, Aritzo",
-                  "href": "https://www.sardegnaturismo.it/it/esplora/aritzo"
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.78,
+                    0.8,
+                    0.22
+                  ],
+                  "caption": "Il titolo col nome del paese sotto"
                 }
               ]
             }
@@ -9233,7 +9804,16 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0.45,
+                    0.45,
+                    0.35,
+                    0.3
+                  ],
+                  "caption": "La castagna fatta della stessa sostanza dei buchi"
+                }
               ]
             }
           ]
@@ -9245,6 +9825,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -9292,17 +9878,7 @@
       "study": [
         {
           "title": "La festa",
-          "p": "I riti li cura da secoli l’Arciconfraternita della Vergine della Pietà del Sacro Monte. Il Giovedì e il Venerdì Santo le vie del centro si riempiono di is baballottis, adulti e bambini vestiti di bianco e incappucciati. Il ciclo si chiude con s’Incontru a Pasqua e s’Inserru il martedì dopo.",
-          "sources": [
-            {
-              "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-              "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
-            },
-            {
-              "label": "Sardegna Turismo, Settimana Santa a Iglesias",
-              "href": "https://www.sardegnaturismo.it/it/node/283766"
-            }
-          ]
+          "p": "I riti li cura da secoli l’Arciconfraternita della Vergine della Pietà del Sacro Monte. Il Giovedì e il Venerdì Santo le vie del centro si riempiono di is baballottis, adulti e bambini vestiti di bianco e incappucciati. Il ciclo si chiude con s’Incontru a Pasqua e s’Inserru il martedì dopo."
         },
         {
           "title": "La scelta",
@@ -9338,15 +9914,17 @@
               "p": "I riti li cura da secoli l’Arciconfraternita della Vergine della Pietà del Sacro Monte. Il Giovedì e il Venerdì Santo le vie del centro si riempiono di is baballottis, adulti e bambini vestiti di bianco e incappucciati. Il ciclo si chiude con s’Incontru a Pasqua e s’Inserru il martedì dopo."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-                  "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
-                },
-                {
-                  "label": "Sardegna Turismo, Settimana Santa a Iglesias",
-                  "href": "https://www.sardegnaturismo.it/it/node/283766"
+                  "i": 0,
+                  "box": [
+                    0.25,
+                    0.8,
+                    0.5,
+                    0.2
+                  ],
+                  "caption": "Il nome della città, piccolo, in fondo"
                 }
               ]
             }
@@ -9359,6 +9937,21 @@
             {
               "kind": "text",
               "p": "A Iglesias i riti della Settimana Santa sono di origine spagnola e risalgono al Seicento: si va dalla processione dei Misteri, il Martedì Santo, fino al Descenso, la sera del Venerdì. L’immagine è una croce di legno con un drappo bianco, sola, su un fondo viola quasi nero."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.2,
+                    0.08,
+                    0.6,
+                    0.55
+                  ],
+                  "caption": "La croce di legno con il drappo bianco"
+                }
+              ]
             }
           ]
         },
@@ -9398,7 +9991,16 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0,
+                    1,
+                    0.2
+                  ],
+                  "caption": "Il titolo bianco in maiuscole spaziate"
+                }
               ]
             }
           ]
@@ -9410,6 +10012,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -9457,13 +10065,7 @@
       "study": [
         {
           "title": "La festa",
-          "p": "L’estate medioevale comincia nella prima settimana di agosto col Torneo della Balestra, che ricorda l’assedio di Alfonso d’Aragona nel Trecento, quando i balestrieri difesero la città per otto mesi. Il 13 agosto il corteo sfila tra i vicoli del centro con più di 700 figuranti.",
-          "sources": [
-            {
-              "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-              "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
-            }
-          ]
+          "p": "L’estate medioevale comincia nella prima settimana di agosto col Torneo della Balestra, che ricorda l’assedio di Alfonso d’Aragona nel Trecento, quando i balestrieri difesero la città per otto mesi. Il 13 agosto il corteo sfila tra i vicoli del centro con più di 700 figuranti."
         },
         {
           "title": "La scelta",
@@ -9499,11 +10101,17 @@
               "p": "L’estate medioevale comincia nella prima settimana di agosto col Torneo della Balestra, che ricorda l’assedio di Alfonso d’Aragona nel Trecento, quando i balestrieri difesero la città per otto mesi. Il 13 agosto il corteo sfila tra i vicoli del centro con più di 700 figuranti."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-                  "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.8,
+                    1,
+                    0.2
+                  ],
+                  "caption": "Il titolo rosso e il nome della città in blu"
                 }
               ]
             }
@@ -9516,6 +10124,21 @@
             {
               "kind": "text",
               "p": "Ad agosto Iglesias vive la sua estate medioevale, e il corteo storico sfila tra i vicoli del centro, nella città che nel Medioevo si chiamava Villa di Chiesa. L’immagine è un mucchio di bandiere al vento, ognuna col suo stemma, su un cielo azzurro."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0,
+                    0.8,
+                    0.55
+                  ],
+                  "caption": "Le bandiere al vento, ognuna col suo stemma"
+                }
+              ]
             }
           ]
         },
@@ -9555,7 +10178,16 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0.5,
+                    0.5,
+                    0.45,
+                    0.35
+                  ],
+                  "caption": "Una torre su una bandiera, col contorno scuro"
+                }
               ]
             }
           ]
@@ -9567,6 +10199,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -9614,13 +10252,7 @@
       "study": [
         {
           "title": "La festa",
-          "p": "La festa è ripresa dopo che nella cattedrale è stata ritrovata la colonna di un candeliere. Il corteo segue la statua della Vergine Dormiente: parte dalla piazza della Cattedrale e arriva alla chiesa del Collegio, e si chiude con una fiaccolata di ceri grandi e piccoli.",
-          "sources": [
-            {
-              "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-              "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
-            }
-          ]
+          "p": "La festa è ripresa dopo che nella cattedrale è stata ritrovata la colonna di un candeliere. Il corteo segue la statua della Vergine Dormiente: parte dalla piazza della Cattedrale e arriva alla chiesa del Collegio, e si chiude con una fiaccolata di ceri grandi e piccoli."
         },
         {
           "title": "La scelta",
@@ -9652,11 +10284,17 @@
               "p": "La festa è ripresa dopo che nella cattedrale è stata ritrovata la colonna di un candeliere. Il corteo segue la statua della Vergine Dormiente: parte dalla piazza della Cattedrale e arriva alla chiesa del Collegio, e si chiude con una fiaccolata di ceri grandi e piccoli."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Comune di Iglesias, «Iglesias tra memoria, identità e futuro»",
-                  "href": "https://www.comune.iglesias.ca.it/.galleries/doc-tematiche/iglesias-memoria-identita-futuro.pdf"
+                  "i": 0,
+                  "box": [
+                    0,
+                    0,
+                    0.7,
+                    0.2
+                  ],
+                  "caption": "Il titolo e «Sancta Maria di Mezo Gosto, Iglesias»"
                 }
               ]
             }
@@ -9669,6 +10307,21 @@
             {
               "kind": "text",
               "p": "La sera di Sancta Maria di Mezo Gosto, ad agosto, a Iglesias sfilano i Candelieri: sono alti quattro metri e rappresentano il Comune, le miniere, i quartieri storici e i mestieri. La festa è già citata nel Breve di Villa di Chiesa ed è tornata nel 1992."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.1,
+                    1,
+                    0.9
+                  ],
+                  "caption": "Gli otto candelieri, dal più alto al più basso"
+                }
+              ]
             }
           ]
         },
@@ -9704,7 +10357,16 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.1,
+                    0.4,
+                    0.3
+                  ],
+                  "caption": "I fiori in cima a un candeliere e il suo nastro"
+                }
               ]
             }
           ]
@@ -9716,6 +10378,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -9763,13 +10431,7 @@
       "study": [
         {
           "title": "La festa",
-          "p": "Si corre ogni 15 maggio. Ogni cero ha il suo santo e la sua corporazione: Sant’Ubaldo i muratori, San Giorgio i commercianti, Sant’Antonio Abate i contadini. La salita parte da Porta dell’Angelo, fa 9 stradoni e 8 tornanti, e supera di poco i 4 chilometri.",
-          "sources": [
-            {
-              "label": "Italia.it, La Festa dei Ceri a Gubbio",
-              "href": "https://www.italia.it/it/umbria/cosa-fare/la-festa-dei-ceri-a-gubbio"
-            }
-          ]
+          "p": "Si corre ogni 15 maggio. Ogni cero ha il suo santo e la sua corporazione: Sant’Ubaldo i muratori, San Giorgio i commercianti, Sant’Antonio Abate i contadini. La salita parte da Porta dell’Angelo, fa 9 stradoni e 8 tornanti, e supera di poco i 4 chilometri."
         },
         {
           "title": "La scelta",
@@ -9805,11 +10467,17 @@
               "p": "Si corre ogni 15 maggio. Ogni cero ha il suo santo e la sua corporazione: Sant’Ubaldo i muratori, San Giorgio i commercianti, Sant’Antonio Abate i contadini. La salita parte da Porta dell’Angelo, fa 9 stradoni e 8 tornanti, e supera di poco i 4 chilometri."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Italia.it, La Festa dei Ceri a Gubbio",
-                  "href": "https://www.italia.it/it/umbria/cosa-fare/la-festa-dei-ceri-a-gubbio"
+                  "i": 0,
+                  "box": [
+                    0.35,
+                    0,
+                    0.6,
+                    0.3
+                  ],
+                  "caption": "I santi in cima ai ceri"
                 }
               ]
             }
@@ -9822,6 +10490,21 @@
             {
               "kind": "text",
               "p": "A Gubbio tre ceri di legno, alti cinque metri e pesanti quasi trecento chili, corrono fino alla chiesa di Sant’Ubaldo: in testa c’è sempre Sant’Ubaldo, e i ceri non si sorpassano mai. L’immagine segue la salita, con i ceri inclinati sopra la folla."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.1,
+                    1,
+                    0.7
+                  ],
+                  "caption": "I tre ceri inclinati sopra la folla"
+                }
+              ]
             }
           ]
         },
@@ -9861,7 +10544,26 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.6,
+                    0.5,
+                    0.4
+                  ],
+                  "caption": "La folla in carta strappata, gialla e blu"
+                },
+                {
+                  "i": 0,
+                  "box": [
+                    0.4,
+                    0.8,
+                    0.6,
+                    0.2
+                  ],
+                  "caption": "Il titolo in corsivo nero, in basso a destra"
+                }
               ]
             }
           ]
@@ -9873,6 +10575,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -9920,13 +10628,7 @@
       "study": [
         {
           "title": "La festa",
-          "p": "Le giostre sono due: il secondo sabato di luglio, la sera, per la Madonna della Pace, e la prima domenica di agosto, il pomeriggio, per Sant’Emidio. Corrono sei sestieri, ognuno coi suoi colori, dopo un corteo di circa 1.400 figuranti. Gli Statuti del 1377 la descrivono già come un’usanza.",
-          "sources": [
-            {
-              "label": "Wikipedia, Quintana di Ascoli Piceno",
-              "href": "https://it.wikipedia.org/wiki/Quintana_di_Ascoli_Piceno"
-            }
-          ]
+          "p": "Le giostre sono due: il secondo sabato di luglio, la sera, per la Madonna della Pace, e la prima domenica di agosto, il pomeriggio, per Sant’Emidio. Corrono sei sestieri, ognuno coi suoi colori, dopo un corteo di circa 1.400 figuranti. Gli Statuti del 1377 la descrivono già come un’usanza."
         },
         {
           "title": "La scelta",
@@ -9958,11 +10660,17 @@
               "p": "Le giostre sono due: il secondo sabato di luglio, la sera, per la Madonna della Pace, e la prima domenica di agosto, il pomeriggio, per Sant’Emidio. Corrono sei sestieri, ognuno coi suoi colori, dopo un corteo di circa 1.400 figuranti. Gli Statuti del 1377 la descrivono già come un’usanza."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Wikipedia, Quintana di Ascoli Piceno",
-                  "href": "https://it.wikipedia.org/wiki/Quintana_di_Ascoli_Piceno"
+                  "i": 0,
+                  "box": [
+                    0,
+                    0,
+                    1,
+                    0.25
+                  ],
+                  "caption": "Il titolo in lettere gotiche e il nome della città"
                 }
               ]
             }
@@ -9975,6 +10683,21 @@
             {
               "kind": "text",
               "p": "Nella Quintana di Ascoli Piceno ogni cavaliere galoppa su un tracciato a forma di otto, lungo 720 metri, e prova a colpire con la lancia il bersaglio sullo scudo del Saraceno. Del torneo ho tenuto solo l’istante del colpo: il cavaliere, la lancia e il bersaglio."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.45,
+                    0.3,
+                    0.55,
+                    0.4
+                  ],
+                  "caption": "La lancia che arriva al centro del bersaglio"
+                }
+              ]
             }
           ]
         },
@@ -10010,7 +10733,16 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.2,
+                    0.45,
+                    0.3
+                  ],
+                  "caption": "Il pennacchio rosso e le linee di velocità"
+                }
               ]
             }
           ]
@@ -10022,6 +10754,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -10055,11 +10793,11 @@
       "story": [
         {
           "h": "L'idea",
-          "p": "La Festa del Redentore nasce nel 1577 per ringraziare della fine della peste, e ogni anno un ponte votivo collega le Zattere alla Giudecca. La notte della festa i veneziani guardano i fuochi dall’acqua, nel Bacino di San Marco. L’immagine è quella notte."
+          "p": "La Festa del Redentore nasce nel 1577 per ringraziare della fine della peste, e ogni anno un ponte votivo collega le Zattere alla Giudecca. La notte della festa i veneziani guardano i fuochi dall’acqua, nel Bacino di San Marco. L’immagine è il ponte di barche visto dall’alto, da una riva all’altra."
         },
         {
           "h": "Le scelte",
-          "p": "Pennellate a olio, dense, con i fuochi rossi, bianchi e oro che si riflettono nella laguna. La chiesa sta in basso, piccola, con le barche illuminate davanti. Il titolo è in maiuscole con le grazie, color oro, in alto; «Venezia» è in corsivo, in fondo."
+          "p": "Ho disegnato il ponte votivo visto dall’alto: dodici barche in fila e sopra una passerella del colore della carta, che parte da una riva e arriva all’altra. I colori sono tre, il blu della notte per l’acqua, il giallo per le barche e la carta per le rive, il ponte e le parole. Il titolo è grande, in un bastone stretto, in alto a sinistra; «Venezia» chiude in basso, e i nomi delle due rive, Zattere e Giudecca, sono scritti piccoli sui margini."
         },
         {
           "h": "Dove si vede",
@@ -10069,13 +10807,7 @@
       "study": [
         {
           "title": "La festa",
-          "p": "Si festeggia la terza domenica di luglio, ma la notte che si ricorda è il sabato prima: le barche addobbate si radunano nel Bacino di San Marco, si cena a bordo e poi partono i fuochi, per tre quarti d’ora o un’ora. La chiesa del Redentore è di Andrea Palladio, consacrata nel 1592.",
-          "sources": [
-            {
-              "label": "Wikipedia, Festa del Redentore",
-              "href": "https://en.wikipedia.org/wiki/Festa_del_Redentore"
-            }
-          ]
+          "p": "Si festeggia la terza domenica di luglio, ma la notte che si ricorda è il sabato prima: le barche addobbate si radunano nel Bacino di San Marco, si cena a bordo e poi partono i fuochi, per tre quarti d’ora o un’ora. La chiesa del Redentore è di Andrea Palladio, consacrata nel 1592."
         },
         {
           "title": "La scelta",
@@ -10111,11 +10843,17 @@
               "p": "Si festeggia la terza domenica di luglio, ma la notte che si ricorda è il sabato prima: le barche addobbate si radunano nel Bacino di San Marco, si cena a bordo e poi partono i fuochi, per tre quarti d’ora o un’ora. La chiesa del Redentore è di Andrea Palladio, consacrata nel 1592."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Wikipedia, Festa del Redentore",
-                  "href": "https://en.wikipedia.org/wiki/Festa_del_Redentore"
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.46,
+                    1,
+                    0.28
+                  ],
+                  "caption": "Il ponte di barche da una riva all’altra"
                 }
               ]
             }
@@ -10127,7 +10865,22 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "La Festa del Redentore nasce nel 1577 per ringraziare della fine della peste, e ogni anno un ponte votivo collega le Zattere alla Giudecca. La notte della festa i veneziani guardano i fuochi dall’acqua, nel Bacino di San Marco. L’immagine è quella notte."
+              "p": "La Festa del Redentore nasce nel 1577 per ringraziare della fine della peste, e ogni anno un ponte votivo collega le Zattere alla Giudecca. La notte della festa i veneziani guardano i fuochi dall’acqua, nel Bacino di San Marco. L’immagine è il ponte di barche visto dall’alto, da una riva all’altra."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.48,
+                    0.5,
+                    0.25
+                  ],
+                  "caption": "Le barche in fila sotto la passerella"
+                }
+              ]
             }
           ]
         },
@@ -10137,7 +10890,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Pennellate a olio, dense, con i fuochi rossi, bianchi e oro che si riflettono nella laguna. La chiesa sta in basso, piccola, con le barche illuminate davanti. Il titolo è in maiuscole con le grazie, color oro, in alto; «Venezia» è in corsivo, in fondo."
+              "p": "Ho disegnato il ponte votivo visto dall’alto: dodici barche in fila e sopra una passerella del colore della carta, che parte da una riva e arriva all’altra. I colori sono tre, il blu della notte per l’acqua, il giallo per le barche e la carta per le rive, il ponte e le parole. Il titolo è grande, in un bastone stretto, in alto a sinistra; «Venezia» chiude in basso, e i nomi delle due rive, Zattere e Giudecca, sono scritti piccoli sui margini."
             },
             {
               "kind": "text",
@@ -10167,7 +10920,26 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0.04,
+                    0.03,
+                    0.9,
+                    0.36
+                  ],
+                  "caption": "Il titolo, stretto e pesante, in alto a sinistra"
+                },
+                {
+                  "i": 0,
+                  "box": [
+                    0.76,
+                    0.4,
+                    0.24,
+                    0.4
+                  ],
+                  "caption": "La riva, col suo nome scritto in verticale"
+                }
               ]
             }
           ]
@@ -10179,6 +10951,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }
@@ -10188,14 +10966,14 @@
         "srcMobile": "media/works/festa-del-redentore/cover-960.webp",
         "w": 1920,
         "h": 1200,
-        "alt": "Manifesto «Festa del Redentore, Venezia»: fuochi d’artificio sopra la laguna, con la chiesa e le barche"
+        "alt": "Manifesto «Festa del Redentore, Venezia»: una fila di barche gialle unite da una passerella chiara che attraversa un canale blu da una riva all’altra"
       },
       "gallery": [
         {
           "src": "media/works/festa-del-redentore/01-1200.webp",
           "w": 1200,
           "h": 1608,
-          "alt": "Manifesto «Festa del Redentore, Venezia»: fuochi d’artificio sopra la laguna, con la chiesa e le barche",
+          "alt": "Manifesto «Festa del Redentore, Venezia»: una fila di barche gialle unite da una passerella chiara che attraversa un canale blu da una riva all’altra",
           "caption": "",
           "srcset": "media/works/festa-del-redentore/01-600.webp 600w, media/works/festa-del-redentore/01-1200.webp 1200w"
         }
@@ -10226,13 +11004,7 @@
       "study": [
         {
           "title": "La festa",
-          "p": "La fiera dura qualche giorno attorno al 7 dicembre: nel 2026 dal 5 all’8. Si tiene attorno al Castello Sforzesco e al Parco Sempione, e va avanti da cinque secoli. Tra le bancarelle ci sono fabbri, ramai e ottonai, dolci, giocattoli, fiori, libri, stampe e miele.",
-          "sources": [
-            {
-              "label": "Italia.it, Fiera degli Oh Bej! Oh Bej!",
-              "href": "https://www.italia.it/it/lombardia/milano/cosa-fare/evento-fiera-obej-sant-ambrogio"
-            }
-          ]
+          "p": "La fiera dura qualche giorno attorno al 7 dicembre: nel 2026 dal 5 all’8. Si tiene attorno al Castello Sforzesco e al Parco Sempione, e va avanti da cinque secoli. Tra le bancarelle ci sono fabbri, ramai e ottonai, dolci, giocattoli, fiori, libri, stampe e miele."
         },
         {
           "title": "La scelta",
@@ -10272,11 +11044,17 @@
               "p": "La fiera dura qualche giorno attorno al 7 dicembre: nel 2026 dal 5 all’8. Si tiene attorno al Castello Sforzesco e al Parco Sempione, e va avanti da cinque secoli. Tra le bancarelle ci sono fabbri, ramai e ottonai, dolci, giocattoli, fiori, libri, stampe e miele."
             },
             {
-              "kind": "sources",
+              "kind": "images",
               "items": [
                 {
-                  "label": "Italia.it, Fiera degli Oh Bej! Oh Bej!",
-                  "href": "https://www.italia.it/it/lombardia/milano/cosa-fare/evento-fiera-obej-sant-ambrogio"
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.8,
+                    1,
+                    0.2
+                  ],
+                  "caption": "La riga «la fiera di Sant’Ambrogio, Milano»"
                 }
               ]
             }
@@ -10289,6 +11067,21 @@
             {
               "kind": "text",
               "p": "La fiera degli Oh bej! Oh bej! si fa a Milano intorno al 7 dicembre, festa di Sant’Ambrogio, il patrono. Tra le bancarelle si vendono caldarroste e firunatt, castagne affumicate infilate in lunghe collane. Il manifesto è il nome della fiera, ripetuto quattro volte."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0,
+                    1,
+                    0.5
+                  ],
+                  "caption": "Il nome della fiera ripetuto, una riga per colore"
+                }
+              ]
             }
           ]
         },
@@ -10332,7 +11125,26 @@
             {
               "kind": "images",
               "items": [
-                0
+                {
+                  "i": 0,
+                  "box": [
+                    0.55,
+                    0,
+                    0.45,
+                    0.25
+                  ],
+                  "caption": "Lettere di legno consumate, in rosso"
+                },
+                {
+                  "i": 0,
+                  "box": [
+                    0.35,
+                    0.2,
+                    0.3,
+                    0.2
+                  ],
+                  "caption": "La stellina tra due righe"
+                }
               ]
             }
           ]
@@ -10344,6 +11156,12 @@
             {
               "kind": "text",
               "p": "Il manifesto fa parte della serie «Feste», sedici in tutto, ognuno con una festa e il suo posto: dodici in Sardegna e quattro nel resto d’Italia. È una serie personale: sul foglio ci sono solo il nome della festa e, quasi sempre, il posto."
+            },
+            {
+              "kind": "images",
+              "items": [
+                0
+              ]
             }
           ]
         }

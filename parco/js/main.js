@@ -1,5 +1,5 @@
 import { fillList } from './list.js';
-import { reducedMotion } from './media.js';
+import { element, reducedMotion } from './media.js';
 import { createSound } from './sound.js';
 import { createStory } from './story.js';
 import { createThreshold } from './threshold.js';
@@ -97,11 +97,23 @@ addEventListener('popstate', () => {
   });
 });
 
+// The line over the list when the park has given way on a slow machine.
+function lean() {
+  const back = element('button', { className: 'pill', type: 'button', textContent: 'Torna al parco' });
+  back.addEventListener('click', () => {
+    document.documentElement.classList.remove('is-lean');
+    world.pause(false);
+    world.controls.lock();
+  });
+  return element('p', { className: 'lean' }, ['Il parco su questo computer va a scatti: ecco tutti i lavori in elenco.', back]);
+}
+
 function setUp(data, texts) {
   works = catalogue(data);
   plan = planPark(data, texts);
   story = createStory($('.story'), { works, sound, onClose: close, onEnd: close });
   fillList($('.list'), { plan, works, onOpen: (id) => open(id) });
+  $('.list').prepend(lean());
 }
 
 const above = $('.above');
@@ -140,8 +152,7 @@ function stoneAt(point) {
   return [best.path, best.t];
 }
 
-// Builds the park; the promise is kept when every picture of it is decoded and drawn, the large
-// covers of the island one lands on included.
+// Builds the park; the promise is kept when what is seen from the arrival is decoded and drawn.
 function build(texts, pictures, sprites) {
   world = createWorld($('.park'), { plan, reducedMotion });
   const anchors = createAnchors($('.anchors'), world.camera);
@@ -167,7 +178,7 @@ function build(texts, pictures, sprites) {
     onWork: (id) => open(id),
   });
   world.add({ update: () => anchors.update() });
-  keep = () => anchors.keep({ top: $('.hud').getBoundingClientRect().bottom + 8, bottom: innerHeight - $('.hint').getBoundingClientRect().top + 8 });
+  keep = () => anchors.keep({ top: Math.max($('.hud').getBoundingClientRect().bottom, $('.hint').getBoundingClientRect().bottom) + 8, bottom: 8 });
   addEventListener('resize', () => {
     keep();
     anchors.remeasure();
@@ -191,9 +202,19 @@ function build(texts, pictures, sprites) {
     walk() {
       if (hint.textContent === welcome) hint.classList.add('is-gone');
     },
-    // The mouse captured shows the dot; let go with Esc (or refused), a line asks for a click.
+    // A slow machine: the park goes the light way; too slow even so, the list of the works is the
+    // page, with a way back to the park.
+    light(on) {
+      park.light(on);
+      exhibits.light(on);
+    },
+    crawl() {
+      world.controls.unlock();
+      world.pause(true);
+      document.documentElement.classList.add('is-lean');
+    },
+    // The mouse let go with Esc (or refused): a line asks for a click.
     lock(locked, wanted) {
-      document.body.classList.toggle('is-locked', locked);
       if (locked && hint.textContent === RESUME) hint.classList.add('is-gone');
       if (locked || !wanted) return;
       hint.textContent = RESUME;
@@ -203,8 +224,12 @@ function build(texts, pictures, sprites) {
     // park answers, and a place of the ground is walked to, with rings where it was touched.
     tap(x, y) {
       if (world.rig.mode !== 'walk') return;
-      // With the mouse captured the click is the dot's: it goes only where the look already faces.
-      const ahead = world.controls.locked();
+      // With the mouse captured a click only opens the work in front, near enough to show its plate;
+      // walking is for the keys and the wheel.
+      if (world.controls.locked()) {
+        if (exhibits.plated()) open(exhibits.plated().id);
+        return;
+      }
       if (world.moving()) {
         world.stop();
         return;
@@ -218,18 +243,30 @@ function build(texts, pictures, sprites) {
         if (Math.hypot(world.camera.position.x - spot.x, world.camera.position.z - spot.z) < NEAR_ENOUGH) open(spot.id, { x, y });
         else {
           const { x: wx, z: wz, fx, fz } = exhibits.standing(spot);
-          world.goTo(plan.islands[spot.island], wx + fx * 3, wz + fz * 3, ahead);
+          world.goTo(plan.islands[spot.island], wx + fx * 3, wz + fz * 3);
         }
       } else if (park.touch(hit)) sound.play('tap');
       else if (world.land.stones.includes(hit.object)) {
-        if (world.goAlong(...stoneAt(hit.point), ahead)) sound.play('drop');
-      } else if (world.goTo(hit.object.userData.island, hit.point.x, hit.point.z, ahead)) {
+        sound.play('drop');
+        world.goAlong(...stoneAt(hit.point));
+      } else {
         world.land.ripple(hit.point.x, hit.point.z);
         sound.play('drop');
+        world.goTo(hit.object.userData.island, hit.point.x, hit.point.z);
       }
     },
   });
-  return Promise.all([park.ready(), exhibits.ready(), exhibits.island(plan.landing)]);
+  // The door opens when the first island is drawn, in its light pictures (tools/build-light.py).
+  // Then, without sharing the line with it, the same sharper and the islands up to two away in the
+  // order of the walk; once in, each island change asks for what comes near and lets go what is far.
+  const first = Promise.all([park.load(0, 'light'), exhibits.load(0)]);
+  first.then(() => {
+    for (const index of [0, 1, 2, plan.islands.length - 1, plan.islands.length - 2]) {
+      park.load(index, 'small');
+      exhibits.load(index);
+    }
+  });
+  return first;
 }
 
 addEventListener('keydown', (event) => {
@@ -272,6 +309,7 @@ $('.brand').addEventListener('click', (event) => {
 const threshold = createThreshold($('.threshold'), {
   async onEnter(withSound) {
     world.controls.lock();
+    world.start();
     sound.begin(withSound);
     sound.play('drop');
     const target = read();
@@ -298,9 +336,11 @@ const library = (manifest) => Object.fromEntries(Object.entries(manifest).map(([
   h: entry.altezza,
   metres: entry.altezza_m,
   lift: entry.sospesa_m ?? 0,
-  anchor: [entry.appoggio.x, 1 - entry.appoggio.y],
+  // The planets of the sky have no foot to stand on.
+  anchor: entry.appoggio && [entry.appoggio.x, 1 - entry.appoggio.y],
   large: { file: `img/sprites/${entry.file}` },
   small: { file: `img/sprites/${entry.file_1024}` },
+  light: { file: `img/sprites-light/${id}.webp` },
 }]));
 
 const [data, texts, pictures, manifest] = await Promise.all([json('data/works.json'), json('data/racconto.json'), json('img/park/park.json'), json('img/sprites/manifest.json'), document.fonts.ready]);
@@ -315,8 +355,7 @@ try {
   $('.threshold').hidden = true;
 }
 if (world) {
-  world.start();
-  // The door opens only on a park that is whole.
+  // The park is drawn from the moment one goes in; behind the door there is the picture.
   await loaded;
   world.renderer.compile(world.scene, world.camera);
   threshold.ready();

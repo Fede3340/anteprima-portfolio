@@ -9,6 +9,7 @@ const LEVEL = { drop: 0.7, tap: 0.6, whoosh: 0.7, music: 0.3, nature: 0.18 };
 const MASTER = 0.35;
 const SWITCH_FADE = 0.4;
 const BED_RISE = 0.4;
+const BED_FADE = 2;
 const ATTACK = 0.012;
 const DROP_GAP = 0.15;
 const KEY = 'sound';
@@ -72,7 +73,9 @@ export function createSound(button) {
         bed.audio.loop = true;
         beds[name] = bed;
         bed.gain = context.createGain();
-        bed.gain.gain.value = LEVEL[name];
+        bed.gain.gain.value = 0;
+        // However late it arrives, the bed comes in softly.
+        bed.audio.addEventListener('playing', () => ramp(bed.gain.gain, LEVEL[name], BED_FADE), { once: true });
         context.createMediaElementSource(bed.audio).connect(bed.gain);
         bed.gain.connect(master);
       }

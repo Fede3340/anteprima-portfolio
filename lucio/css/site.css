@@ -310,6 +310,15 @@ body.is-viewing .print.is-current { cursor: zoom-out; }
 
 .sheet .todo { color: var(--ink-soft); }
 
+.sheet .mail {
+  color: inherit;
+  display: inline-block;
+  padding-block: 10px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+
 @media (max-width: 767px) {
   .masthead {
     top: 18px;

@@ -26,11 +26,22 @@ const SOFT = 1;
 const SINK = 0.035;
 const LANDING = 1.5;
 // The light on the ground: a strong sky with a pale blue bounce from below and a gentle sun.
+// The sharpness of the drawing follows the machine. It starts at the screen's own density up to 1.5;
+// after half a second of frames slower than 22 ms it goes down a step; on the lowest step, after one
+// more second, the light way comes on. It goes back up a step after five seconds at the screen's full
+// pace (frames under 18 ms: the time between frames cannot be shorter than the screen's own, 16.7 ms
+// at 60 Hz), and a step found too slow is tried again only twenty seconds later.
+const STEPS = [1.5, 1.25, 1, 0.8, 0.65];
+const SLOW = 22;
+const QUICK = 18;
+
 export const LIGHT = { sky: '#ffffff', ground: '#b9cde6', skyIntensity: 2.2, sun: '#ffffff', sunIntensity: 1.1, sunDirection: [-0.45, 0.75, 0.5] };
 
 export function createWorld(canvas, { plan, reducedMotion }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const top = STEPS.findIndex((ratio) => ratio <= Math.min(devicePixelRatio, 1.5));
+  const quality = { step: top, slow: 0, quick: 0, crawl: 0, failed: {}, light: false, gaveWay: false };
+  renderer.setPixelRatio(STEPS[top]);
   const scene = new THREE.Scene();
   scene.fog = new THREE.Fog(HAZE, 60, 460);
   const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 2000);
@@ -41,7 +52,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   scene.add(sky, sun, sun.target);
 
   const land = createGround(plan);
-  scene.add(createSky(), land.sea, ...land.floors, ...land.stones);
+  scene.add(createSky(), land.sea, land.bodies, ...land.floors, ...land.stones);
 
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
@@ -141,34 +152,18 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     return { steps, metres };
   }
 
-  // The way from where one is to an island and a point on it. From a path, by the shorter of its two
-  // ends; with ahead, only by the end the look faces, never turning back.
-  function route(island, at, ahead) {
+  // The way from where one is to an island and a point on it; from a path, by the shorter of its ends.
+  function route(island, at) {
     if (!state.path) return across(state.island, island, at, [], 0).steps;
     const { path, t } = state;
-    const way = facing();
-    return [[path.to, path.length, path.length - t, 1], [path.from, 0, t, -1]]
-      .filter(([, , , sign]) => !ahead || sign === way)
+    return [[path.to, path.length, path.length - t], [path.from, 0, t]]
       .map(([end, to, left]) => across(plan.islands[end], island, at, [{ path, to }], left))
       .sort((a, b) => a.metres - b.metres)[0].steps;
   }
 
-  // Whether the first stretch of a way goes where the look faces.
-  function inFront(steps) {
-    const [first] = steps;
-    if (first.path) return !state.path || Math.sign(first.to - state.t) === facing();
-    const dx = first.x - state.x;
-    const dz = first.z - state.z;
-    return Math.hypot(dx, dz) < 0.5 || dx * Math.cos(state.heading) + dz * Math.sin(state.heading) > 0;
-  }
-
-  // Sets a way to walk; with ahead (the mouse captured, the click where the dot is) only one that
-  // starts where the look faces. Says whether it was set.
-  function go(steps, ahead) {
+  function go(steps) {
     state.pending = 0;
-    if (ahead && !inFront(steps)) return false;
     state.route = steps;
-    return true;
   }
 
   // Steps onto a path or off it.
@@ -307,7 +302,36 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     [state.x, state.z] = slide(island, state.x, state.z, mx, mz);
   }
 
+  function adapt(spent) {
+    quality.slow = spent > SLOW ? quality.slow + spent : 0;
+    quality.quick = spent < QUICK ? quality.quick + spent : 0;
+    const go = (step) => {
+      quality.step = step;
+      quality.slow = 0;
+      quality.quick = 0;
+      renderer.setPixelRatio(STEPS[step]);
+      renderer.setSize(innerWidth, innerHeight, false);
+    };
+    if (quality.slow > 500 && quality.step < STEPS.length - 1) {
+      quality.failed[quality.step] = time;
+      go(quality.step + 1);
+    } else if (quality.slow > 1000 && !quality.light) {
+      quality.light = true;
+      quality.slow = 0;
+      land.light(true);
+      listeners.light?.(true);
+    } else if (quality.quick > 5000 && quality.step > top && !(time - quality.failed[quality.step - 1] < 20)) go(quality.step - 1);
+    // Light, and still under 15 frames a second for five seconds: the park gives way, once.
+    quality.crawl = quality.light && spent > 1000 / 15 ? quality.crawl + spent : 0;
+    if (quality.crawl > 5000 && !quality.gaveWay) {
+      quality.gaveWay = true;
+      listeners.crawl?.();
+    }
+  }
+
   function frame(now) {
+    // The first frame after a pause is not a measure.
+    if (last && now - last < 1000) adapt(now - last);
     const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
     last = now;
     time += dt;
@@ -356,6 +380,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     scene,
     camera,
     state,
+    quality,
     land,
     controls,
     rig,
@@ -386,13 +411,12 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       place(typeof id === 'string' ? islandOf(plan, id) : id, at);
     },
     // Walks to a point of an island, along the paths if it is another one.
-    // With ahead, only if the way starts where the look faces; says whether it walks.
-    goTo: (island, x, z, ahead) => go(route(island, { x, z }, ahead), ahead),
-    // Walks to a point along a path, with ahead as above.
-    goAlong(path, t, ahead) {
-      if (state.path === path) return go([{ path, to: t }], ahead);
+    goTo: (island, x, z) => go(route(island, { x, z })),
+    // Walks to a point along a path.
+    goAlong(path, t) {
+      if (state.path === path) return go([{ path, to: t }]);
       const end = plan.islands[t > path.length / 2 ? path.to : path.from];
-      return go([...route(end, mouth(plan, end, path), ahead), { path, to: t }], ahead);
+      return go([...route(end, mouth(plan, end, path)), { path, to: t }]);
     },
     // Walks to an island: to its arrival point, or to a place given by id.
     goIsland(id, speed) {

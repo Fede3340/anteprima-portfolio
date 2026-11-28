@@ -3,7 +3,7 @@
 // light does not touch them; the mood brightens or dims them all a little. Each picture has a small
 // and a large file: the large one is fetched only where it is needed.
 import * as THREE from 'three';
-import { loadTexture } from './textures.js';
+import { fadeIn, loadTexture } from './textures.js';
 
 const m = new THREE.Matrix4();
 const q = new THREE.Quaternion();
@@ -24,7 +24,9 @@ export function setTint(value) {
 }
 
 export function createSprite(entry, count, { renderer, fog = true, anchor = entry.anchor ?? [0.5, 0] }) {
-  const material = new THREE.MeshBasicMaterial({ transparent: true, alphaTest: 0.5, fog, color: new THREE.Color().setScalar(tint.value) });
+  // Cut out at half alpha and drawn as solid: no pale rim, and pictures in front hide those behind
+  // instead of being added on top of them.
+  const material = new THREE.MeshBasicMaterial({ alphaTest: 0.5, fog, color: new THREE.Color().setScalar(tint.value) });
   materials.add(material);
   const mesh = new THREE.InstancedMesh(plane(...anchor), material, count);
   // Nothing shows until its picture has arrived.
@@ -33,23 +35,36 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
   let size;
   const spots = Array.from({ length: count }, () => ({ x: 0, y: 0, z: 0, height: entry.metres ?? 1, roll: 0, hidden: false }));
 
-  // The picture at the size given, swapped in once decoded; resolves when it is drawn.
-  function use(which) {
+  // The picture at the size given, swapped in once decoded; resolves when it is drawn. The first to
+  // arrive is drawn even if a larger one has been asked for since, and comes in softly.
+  // Where there is no light version the small one stands for it.
+  function use(wanted) {
+    const which = entry[wanted] ? wanted : 'small';
     if (size === which || !entry[which]) return Promise.resolve();
     size = which;
     return loadTexture(entry[which].file, renderer).then((texture) => {
-      if (size !== which) return texture.dispose();
+      if (size === undefined || (size !== which && material.map)) return texture.dispose();
+      const first = !material.map;
       material.map?.dispose();
       material.map = texture;
       material.needsUpdate = true;
       mesh.visible = true;
+      if (first) fadeIn(material, { alphaTest: 0.5 });
     }, (error) => console.warn(error));
   }
   return {
     mesh,
     spots,
     use,
-    ready: use('small'),
+    // The picture let go, until it is asked for again.
+    release() {
+      if (!material.map) return;
+      size = undefined;
+      material.map.dispose();
+      material.map = null;
+      material.needsUpdate = true;
+      mesh.visible = false;
+    },
     // Every copy turned to the eyes; call once a frame.
     face(camera) {
       spots.forEach((spot, index) => {

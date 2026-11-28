@@ -9,7 +9,7 @@ import { element, logo } from '../media.js';
 import { instances } from './instances.js';
 import { heightAt } from './land.js';
 import { FRAME } from './layout.js';
-import { loadTexture } from './textures.js';
+import { fadeIn, loadTexture } from './textures.js';
 
 const LIFT = 0.1;
 const CLOSE = 9;
@@ -50,6 +50,8 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
   template.group.remove(template.screen);
   const blank = template.screen.material;
   const object = new THREE.Group();
+  let here;
+  let light = false;
   const tanHalf = () => Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
 
   const items = plan.works.map((spot, index) => {
@@ -63,16 +65,9 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     screen.userData.index = index;
     object.add(screen);
     const work = works[spot.id];
-    // A plate, as under a picture in a museum: the logo and the title. A wide logo already writes the
-    // name, so the title goes; a square one is a sign, and the title stays beside it.
-    const mark = work.logo && logo(work.logo, { className: 'work-label__logo' });
-    const plate = element('div', { className: 'work-label' }, [...(mark ? [mark] : []), element('strong', { textContent: work.title })]);
-    if (mark) {
-      // Read as laid out, 40 px high: drawings that give only a viewBox have no natural size.
-      const named = () => requestAnimationFrame(() => plate.classList.toggle('has-name', mark.offsetWidth / Math.max(1, mark.offsetHeight) > 1.4));
-      mark.addEventListener('load', named, { once: true });
-    }
-    const item = { spot, work, screen, base: yaw, yaw, height: 0, texture: undefined, close: false, plate: false, distance: Infinity };
+    // A plate, as under a picture in a museum: the title, and the logo once the island is near.
+    const plate = element('div', { className: 'work-label' }, [element('strong', { textContent: work.title })]);
+    const item = { spot, work, screen, label: plate, base: yaw, yaw, height: 0, texture: undefined, close: false, plate: false, distance: Infinity };
     const under = new THREE.Vector3(p.x, y + MIDDLE - FRAME.height / 2 - BORDER - 0.05, p.z);
     anchors.add(plate, under, {
       place: 'below',
@@ -117,11 +112,46 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
   // The cover file with enough pixels for the size the work takes in front of the eyes.
   const wide = () => innerWidth * 0.8 * Math.min(devicePixelRatio, 2) > 960 * 1.1;
 
-  // The small cover, built from the 960 one by tools/build-covers.py.
-  const far = (item) => loadTexture(item.work.cover.srcMobile.replace(/^media\/works\/([^/]+)\/.*$/, 'img/covers/$1.webp'), renderer).then((texture) => {
-    item.far = new THREE.MeshBasicMaterial({ map: texture });
-    if (!item.texture) item.screen.material = item.far;
-  });
+  // The small cover, built from the 960 one by tools/build-covers.py, and the logo of the plate;
+  // asked for once, let go when the island is far.
+  function far(item) {
+    item.near = true;
+    dress(item);
+    if (item.far) return Promise.resolve();
+    item.farLoading ??= loadTexture(item.work.cover.srcMobile.replace(/^media\/works\/([^/]+)\/.*$/, 'img/covers/$1.webp'), renderer).then((texture) => {
+      item.farLoading = undefined;
+      if (!item.near) return texture.dispose();
+      item.far = new THREE.MeshBasicMaterial({ map: texture });
+      if (item.texture) return;
+      item.screen.material = item.far;
+      fadeIn(item.far);
+    }, (error) => {
+      item.farLoading = undefined;
+      console.warn(error);
+    });
+    return item.farLoading;
+  }
+
+  function forget(item) {
+    item.near = false;
+    release(item);
+    if (!item.far) return;
+    item.far.map.dispose();
+    item.far.dispose();
+    item.far = undefined;
+    item.screen.material = blank;
+  }
+
+  // The logo on the plate. A wide logo already writes the name, so the title goes; a square one is a
+  // sign, and the title stays beside it.
+  function dress(item) {
+    if (item.dressed || !item.work.logo) return;
+    item.dressed = true;
+    const mark = logo(item.work.logo, { className: 'work-label__logo' });
+    // Read as laid out, 40 px high: drawings that give only a viewBox have no natural size.
+    mark.addEventListener('load', () => requestAnimationFrame(() => item.label.classList.toggle('has-name', mark.offsetWidth / Math.max(1, mark.offsetHeight) > 1.4)), { once: true });
+    item.label.prepend(mark);
+  }
 
   function load(item) {
     item.wanted = true;
@@ -152,14 +182,28 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     items,
     // One stops about a metre before a work, its frame in sight.
     solid: plan.works.map((work) => ({ x: work.x, z: work.z, r: 1.6 })),
-    // Covers for the island one is on and the two beside it; the others are let go.
+    // Small covers up to two islands away, large ones (not on the light way) on the island one is on
+    // and those beside it; further, everything is let go.
     island(island) {
+      here = island;
       const count = plan.islands.length;
-      const near = (index) => Math.min(Math.abs(index - island.index), count - Math.abs(index - island.index)) <= 1;
-      return Promise.all(items.map((item) => (near(item.spot.island) ? load(item) : release(item))));
+      const apart = (index) => Math.min(Math.abs(index - island.index), count - Math.abs(index - island.index));
+      for (const item of items) {
+        const away = apart(item.spot.island);
+        if (away > 2) forget(item);
+        else {
+          far(item);
+          if (away <= 1 && !light) load(item);
+          else release(item);
+        }
+      }
     },
-    // Every small cover, drawn.
-    ready: () => Promise.all(items.map(far)),
+    light(on) {
+      light = on;
+      if (here) this.island(here);
+    },
+    // The small covers of the island of the given index; resolves when they are drawn.
+    load: (index) => Promise.all(items.filter((item) => item.spot.island === index).map(far)),
     update(dt, time, state) {
       let nearest;
       const slow = Math.abs(state.speed) < 0.5;
@@ -190,6 +234,8 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
       state.nearest = nearest?.spot;
     },
     targets: [...frames.drawn, ...items.map((item) => item.screen)],
+    // The work in front showing its plate, if any.
+    plated: () => items.find((item) => item.plate)?.spot,
     // The work a hit on one of the targets belongs to.
     spotOf: (hit) => items[hit.object.isInstancedMesh ? frames.spotOf(hit) : hit.object.userData.index].spot,
     // The rectangle of a work's picture on the screen, in CSS pixels.

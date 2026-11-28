@@ -77,6 +77,12 @@ const link = (href, label) => {
   return anchor;
 };
 
+const mailLink = (address) => {
+  const anchor = el('a', 'link', address);
+  anchor.href = `mailto:${address}`;
+  return anchor;
+};
+
 const text = (content, className = '') => el('p', className, content);
 const added = (...content) => el('p', 'row added', el('span', '', '+'), el('span', '', ...content));
 const removed = (content) => el('p', 'row removed', el('span', '', '-'), el('span', '', content));
@@ -299,7 +305,7 @@ function gioca() {
 function contatti() {
   return [
     fact('github', link(GITHUB, 'github.com/Valee8')),
-    fact('email', '[indirizzo email: lo indica Valerio]'),
+    fact('email', mailLink('oirelav95@gmail.com')),
     fact('dove', 'Cagliari'),
   ];
 }

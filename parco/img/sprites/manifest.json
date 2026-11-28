@@ -603,5 +603,45 @@
       "y": 0.9657
     },
     "uso": "fondo: fascia da stendere sotto le isole, misura libera; le valli tra le nuvole sono semitrasparenti e vanno sul celeste del cielo"
+  },
+  "pianeta-anello": {
+    "file": "pianeta-anello.webp",
+    "larghezza": 1443,
+    "altezza": 938,
+    "file_1024": "pianeta-anello-1024.webp",
+    "larghezza_1024": 722,
+    "altezza_1024": 469,
+    "larghezza_gradi": 10,
+    "uso": "cielo, lontano"
+  },
+  "pianeta-luna": {
+    "file": "pianeta-luna.webp",
+    "larghezza": 1058,
+    "altezza": 1071,
+    "file_1024": "pianeta-luna-1024.webp",
+    "larghezza_1024": 529,
+    "altezza_1024": 536,
+    "larghezza_gradi": 8,
+    "uso": "cielo, lontano"
+  },
+  "pianeta-fasce": {
+    "file": "pianeta-fasce.webp",
+    "larghezza": 1005,
+    "altezza": 1028,
+    "file_1024": "pianeta-fasce-1024.webp",
+    "larghezza_1024": 502,
+    "altezza_1024": 514,
+    "larghezza_gradi": 6,
+    "uso": "cielo, lontano"
+  },
+  "pianeta-piccolo": {
+    "file": "pianeta-piccolo.webp",
+    "larghezza": 808,
+    "altezza": 701,
+    "file_1024": "pianeta-piccolo-1024.webp",
+    "larghezza_1024": 404,
+    "altezza_1024": 350,
+    "larghezza_gradi": 5,
+    "uso": "cielo, lontano"
   }
 }

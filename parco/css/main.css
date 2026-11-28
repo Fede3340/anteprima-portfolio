@@ -201,11 +201,12 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   }
 }
 
+/* The invitation stands at the top: the bottom middle is the travel bar's. */
 .hint {
   position: fixed;
   z-index: 40;
   left: 50%;
-  bottom: calc(var(--bottom) + 18px);
+  top: calc(var(--top) + 76px);
   width: max-content;
   max-width: calc(100vw - 32px);
   padding-block: 8px;
@@ -216,28 +217,15 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   transition: opacity 0.6s ease;
 }
 
+/* On a phone, under the two buttons stacked on the right. */
+@media (max-width: 560px) {
+  .hint {
+    top: calc(var(--top) + 124px);
+  }
+}
+
 .hint[hidden] {
   display: none;
-}
-
-/* The hand while the mouse is captured: a small dot in the middle of the screen. */
-.aim {
-  position: fixed;
-  z-index: 40;
-  top: 50%;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  margin: -3px;
-  border-radius: 50%;
-  background: var(--paper);
-  box-shadow: 0 0 0 1.5px var(--ink);
-  pointer-events: none;
-  opacity: 0;
-}
-
-body.is-locked .aim {
-  opacity: 1;
 }
 
 .hint.is-gone {
@@ -548,19 +536,16 @@ body.is-locked .aim {
   padding: 6px 0;
 }
 
-/* Without WebGL the list is the page. */
-.no-webgl .park,
-.no-webgl .anchors,
-.no-webgl .hud .above,
-.no-webgl .threshold {
+/* Without WebGL, or on a machine too slow for the park, the list is the page. */
+:is(.no-webgl, .is-lean) :is(.park, .anchors, .hud .above, .threshold, .hint) {
   display: none;
 }
 
-.no-webgl body {
+:is(.no-webgl, .is-lean) body {
   overflow: auto;
 }
 
-.no-webgl .list {
+:is(.no-webgl, .is-lean) .list {
   position: static;
   width: auto;
   max-width: 44rem;
@@ -570,10 +555,22 @@ body.is-locked .aim {
   opacity: 1;
 }
 
-.no-webgl,
-.no-webgl body {
+:is(.no-webgl, .is-lean),
+:is(.no-webgl, .is-lean) body {
   height: auto;
   overflow: auto;
+}
+
+.lean {
+  display: none;
+}
+
+.is-lean .lean {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin-bottom: 24px;
 }
 
 @keyframes rise {

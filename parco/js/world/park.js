@@ -72,13 +72,21 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   const object = new THREE.Group();
   const roll = random(7);
   const made = [];
+  let here;
+  let light = false;
   const shadows = [];
   const picture = (name) => library[name] ?? pictures[name];
   // One picture drawn at many spots: [{ x, y, z, height }], each on the ground unless y is given.
-  const sprite = (name, spots, options = {}) => {
+  // Each picture knows the islands where it stands, so that it is fetched when one of them comes
+  // near and let go when they are all far; everywhere: the sky, the sea, the far islands.
+  const nearest = (spot) => plan.islands.reduce((a, b) => (Math.hypot(spot.x - a.centre.x, spot.z - a.centre.z) < Math.hypot(spot.x - b.centre.x, spot.z - b.centre.z) ? a : b)).index;
+  const sprite = (name, spots, { everywhere = false, ...options } = {}) => {
     const entry = picture(name);
     if (!entry || !spots.length) return undefined;
     const drawn = createSprite(entry, spots.length, { renderer, ...options });
+    drawn.name = name;
+    drawn.islands = everywhere ? undefined : new Set(spots.map(nearest));
+    drawn.mesh.userData.rank = everywhere ? 0 : Math.min(...drawn.islands);
     spots.forEach((spot, index) => Object.assign(drawn.spots[index], { x: spot.x, z: spot.z, y: spot.y ?? heightAt(plan, spot.x, spot.z), ...(spot.height ? { height: spot.height } : {}) }));
     made.push(drawn);
     object.add(drawn.mesh);
@@ -150,8 +158,9 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   // Things one cannot walk through, and how near one may come: about a metre from their edge.
   const solid = [];
   const SOFT = /^(ciuffo|nuvola-a-terra|sbuffo|erba-alta|canne|fiore|aiuola|cespuglio|sasso)/;
+  // The grass is drawn with the tufts of the whole floor, further down: one picture, one fetch.
   for (const [name, spots] of Object.entries(gardens)) {
-    sprite(name, spots);
+    if (!/^ciuffo/.test(name)) sprite(name, spots);
     const entry = picture(name);
     spots.forEach((spot) => {
       const width = spot.height * (entry.w / entry.h);
@@ -161,19 +170,15 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   }
 
   // The sculpture of each place; the great cursor stands in the middle of the first island.
-  const statues = [];
   for (const zone of plan.zones) {
     const drawn = sprite(zone.id, [zone.mark]);
     if (!drawn) continue;
     drawn.spots[0].y += picture(zone.id).lift ?? 0;
-    statues.push(drawn);
     shadows.push({ x: zone.mark.x, z: zone.mark.z, size: 3 });
     // A sculpture is seen whole from a few metres; the great cursor from further.
     solid.push({ x: zone.mark.x, z: zone.mark.z, r: zone.id === 'apertura' ? 5.5 : 3 });
-    const ring = sprite(`${zone.id}-cerchio`, [zone.mark]);
-    if (ring) statues.push(ring);
+    sprite(`${zone.id}-cerchio`, [zone.mark]);
   }
-  const statueOf = new Map(statues.map((drawn) => [drawn, plan.zones.find((zone) => zone.mark.x === drawn.spots[0].x && zone.mark.z === drawn.spots[0].z).island]));
 
   // Lamps by the mouths of the paths.
   const lampSpots = plan.islands.flatMap((island) => [island.in, island.out].map((path) => {
@@ -230,10 +235,9 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
       push(unders, roll() * Math.PI * 2, island.radius * (0.15 + roll() * 0.35), height, island.centre.y - 2.5 - height * (0.6 + roll() * 0.5), 3 + height * 1.4);
     }
   }
-  sprite('sbuffo-2', rims.filter((_, i) => i % 3 === 0));
+  sprite('sbuffo-2', [...rims.filter((_, i) => i % 3 === 0), ...unders]);
   sprite('sbuffo-1', rims.filter((_, i) => i % 3 === 1));
   sprite('sbuffo-3', rims.filter((_, i) => i % 3 === 2));
-  sprite('sbuffo-2', unders);
   // Grass of cloud, in little tufts all over the floors.
   const tufts = [];
   for (const island of plan.islands) {
@@ -242,8 +246,8 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
       if (spot) tufts.push({ ...spot, height: 0.3 + roll() * 0.5 });
     }
   }
-  sprite('ciuffo-1', tufts.filter((_, i) => i % 2));
-  sprite('ciuffo-2', tufts.filter((_, i) => !(i % 2)));
+  sprite('ciuffo-1', [...(gardens['ciuffo-1'] ?? []), ...tufts.filter((_, i) => i % 2)]);
+  sprite('ciuffo-2', [...(gardens['ciuffo-2'] ?? []), ...tufts.filter((_, i) => !(i % 2))]);
   const sky = [];
   for (let i = 0; i < 12; i++) {
     const a = roll() * Math.PI * 2;
@@ -260,10 +264,10 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     const r = 190 + roll() * 90;
     return { x: Math.cos(a) * r, z: Math.sin(a) * r, y: -6 + roll() * 22, height: 11 + roll() * 6 };
   });
-  const high = sprite('nuvola-1', sky, { fog: false });
-  sprite('mare-di-nuvole', sea);
-  sprite('isola-lontana-1', distant.filter((_, i) => i % 2));
-  sprite('isola-lontana-2', distant.filter((_, i) => !(i % 2)));
+  const high = sprite('nuvola-1', sky, { fog: false, everywhere: true });
+  sprite('mare-di-nuvole', sea, { everywhere: true });
+  sprite('isola-lontana-1', distant.filter((_, i) => i % 2), { everywhere: true });
+  sprite('isola-lontana-2', distant.filter((_, i) => !(i % 2)), { everywhere: true });
 
   const ground = createPatches(shadows.map((spot) => ({ ...spot, y: heightAt(plan, spot.x, spot.z) })), { colour: '#5f7fb3', strength: 0.34, falloff: 0.1 });
   const pools = createPatches(lampSpots.map((spot) => ({ x: spot.x, z: spot.z, y: heightAt(plan, spot.x, spot.z), size: 6 })), { colour: '#ffffff', strength: 0.3, falloff: 0, light: true });
@@ -274,8 +278,9 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   return {
     object,
     solid,
-    // Every picture of the park drawn, at its small size.
-    ready: () => Promise.all(made.map((drawn) => drawn.ready)),
+    // The pictures first seen on the island of the given index, at a size ('light' or 'small');
+    // resolves when they are drawn.
+    load: (index, size) => Promise.all(made.filter((drawn) => !drawn.islands || drawn.islands.has(index)).map((drawn) => drawn.use(size))),
     tappable: [lit?.mesh, dark?.mesh, seat?.mesh, swingCloud?.mesh].filter(Boolean),
     set lamps(level) {
       lampLevel = level;
@@ -283,9 +288,20 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     // After the door: the large pictures of what is everywhere, and of the sculptures on the island
     // one is on and those beside it; the small ones of the others.
     island(island) {
+      here = island;
       const count = plan.islands.length;
-      const near = (other) => Math.min(Math.abs(other.index - island.index), count - Math.abs(other.index - island.index)) <= 1;
-      for (const drawn of made) drawn.use(statueOf.has(drawn) && !near(statueOf.get(drawn)) ? 'small' : 'large');
+      const apart = (index) => Math.min(Math.abs(index - island.index), count - Math.abs(index - island.index));
+      for (const drawn of made) {
+        const away = drawn.islands ? Math.min(...[...drawn.islands].map(apart)) : 0;
+        if (away > 2) drawn.release();
+        else drawn.use(away <= 1 && !light ? 'large' : 'small');
+      }
+    },
+    // The light way for slow machines: half the grass and the clouds of the rims, no large pictures.
+    light(on) {
+      light = on;
+      for (const drawn of made) if (/^(ciuffo|sbuffo)/.test(drawn.name)) drawn.mesh.count = on ? Math.ceil(drawn.spots.length / 2) : drawn.spots.length;
+      if (here) this.island(here);
     },
     // Something of the park was touched: a lamp switches, the swing is pushed.
     touch(hit) {

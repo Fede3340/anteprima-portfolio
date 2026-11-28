@@ -404,6 +404,16 @@ button { font: inherit; color: inherit; }
   font-size: clamp(20px, 2.2vw, 30px);
 }
 
+.strip__mail a {
+  display: inline-block;
+  min-height: 44px;
+  padding-block: 9px;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
 /* preview note */
 
 .preview-note {

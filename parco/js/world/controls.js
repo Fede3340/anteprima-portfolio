@@ -1,5 +1,5 @@
 // How the visitor moves, as in a walking game. With a mouse the pointer is captured (Pointer Lock):
-// moving it turns the look, a dot in the middle of the screen is the hand, a click goes or opens; Esc
+// moving it turns the look, a click opens the work in front (main.js decides); Esc
 // lets it go and the next click takes it back. Without capture, and on a phone: dragging looks
 // around, a tap on a place goes there, holding the lower part of the screen walks ahead. Keys: W and S
 // or the up and down arrows walk, A and D step aside, the side arrows turn. The wheel walks a notch.
@@ -66,7 +66,7 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold,
 
   surface.addEventListener('pointerdown', (event) => {
     if (!event.isPrimary || event.button) return;
-    // Captured, the click is where the dot is; let go after Esc, a click takes the mouse back.
+    // Captured, the click is the middle of the screen's; let go after Esc, a click takes the mouse back.
     if (locked()) {
       onTap(innerWidth / 2, innerHeight / 2);
       return;
