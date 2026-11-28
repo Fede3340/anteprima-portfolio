@@ -1,102 +1,201 @@
-/* The start of the flow (js/threshold.js): a sun of light and a few drawn signs in a deep field, and
-   the name; going on, the sun moves aside, the name goes to its corner, the way forks, then the signs
-   become the things of the park and the door fades on it. What moves is set by js/threshold.js from
-   the way gone, and only by transform and opacity. */
+/* The arrival (js/threshold.js): the park itself, high in the sky at dawn, with the name over it. The
+   page is tall and scrolls as any page does; the scene stays on the screen (sticky) while what is
+   scrolled moves the eyes down. Nothing here moves by itself: the words on the things are placed by
+   js/threshold.js, by transform and opacity only. */
 .threshold {
-  justify-content: center;
-  align-items: center;
-  touch-action: none;
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  outline: none;
   user-select: none;
+  -webkit-user-select: none;
 }
 
-.threshold__forma {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background: #2a3478;
-}
-
-/* The field (js/forma.js): deep and cool at the top, opening to lilac and to the warmth of the dawn
-   low down, with a fine grain over it that takes the plastic off. Still: it never repaints. */
-.forma-campo,
-.forma {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.forma-campo--cielo {
-  background:
-    var(--grana),
-    radial-gradient(120% 70% at 30% 110%, rgb(255 162 87 / 0.32), rgb(255 162 87 / 0) 60%),
-    linear-gradient(#1c2566 0%, #2f3a88 38%, #4e55a6 66%, #b99bc6 92%, #d6b4d3 100%);
-}
-
-.forma--alto {
+.threshold::-webkit-scrollbar {
   display: none;
 }
 
-@media (orientation: portrait) {
-  .forma--largo {
-    display: none;
-  }
-
-  .forma--alto {
-    display: block;
-  }
+.no-js .threshold,
+.threshold[hidden] {
+  display: none;
 }
 
-/* The sun is light, not a disc: a small bright core with a soft edge, and a wide halo melting into the
-   field. One layer of its own, moved by its transform only; the halo breathes, barely. Its core is the
-   invitation and the first gesture. */
-.sole {
+/* Until the park is drawn, the same dawn in a gradient, so that the first frame is not a jump. */
+.threshold:not(.is-ready) {
+  background: linear-gradient(#5b74c8, #9aa9e6 55%, #f3c3b4);
+}
+
+.threshold__scena {
+  position: sticky;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* The way down: four screens of page under the one shown. */
+.threshold__strada {
+  height: 400%;
+}
+
+/* The name: the flat sign, the name in spaced capitals under it, and who made it. Dark on the
+   light sky of dawn, in the ink of the site (6.8:1 and more on it). Scrolling, it rises and is gone; the name in the corner takes its place. */
+.threshold__name {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  color: var(--ink);
+  font-size: clamp(1.375rem, 0.9rem + 1.2vw, 2rem);
+  line-height: 1;
+  white-space: nowrap;
+  translate: -50% -50%;
+  will-change: transform, opacity;
+}
+
+/* The official sign, flat and untouched, with more than a nib's width free around it. */
+.threshold__mark {
+  width: auto;
+  height: clamp(88px, 14vh, 136px);
+  margin-bottom: 0.5em;
+}
+
+.threshold__word,
+.brand {
+  font-family: var(--font-text);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.threshold__word {
+  margin-right: -0.5em;
+  letter-spacing: 0.5em;
+}
+
+.brand {
+  letter-spacing: 0.3em;
+}
+
+.threshold__by {
+  font-family: var(--font-text);
+  font-size: max(1rem, 0.55em);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.brand__mark {
+  width: auto;
+  height: 1.5em;
+  margin-right: 0.5em;
+  vertical-align: -0.38em;
+}
+
+/* The name in the corner stays hidden over the arrival (css/main.css) until the large one has gone;
+   then it shows. The selector outweighs that rule. */
+html.is-named body:has(.threshold:not([hidden])) .brand.brand {
+  display: inline-flex;
+}
+
+/* The bar of the visit waits under the arrival, coming back to it from the first stop. */
+body:has(.threshold:not([hidden])) .travel {
+  visibility: hidden;
+}
+
+/* The words of the fork, held under their things in the sky: plain text in ink, with only the soft
+   light round it that it needs to be read over the park. No plate. */
+.threshold__targa {
   position: absolute;
   top: 0;
   left: 0;
-  width: 400px;
-  height: 400px;
-  transform-origin: 50% 50%;
-  pointer-events: none;
-  will-change: transform;
-}
-
-.sole,
-.sole__respiro {
-  border-radius: 50%;
-  background: radial-gradient(closest-side in oklab, #fffaf0 0%, #ffeab0 6%, rgb(255 190 120 / 0.75) 10%, rgb(255 162 87 / 0.3) 24%, rgb(255 162 87 / 0.1) 46%, rgb(255 162 87 / 0.03) 70%, rgb(255 162 87 / 0) 92%);
-}
-
-.sole__respiro {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  animation: respiro 6s ease-in-out infinite;
-}
-
-@keyframes respiro {
-  50% {
-    opacity: 0.6;
-    transform: scale(1.12);
-  }
-}
-
-.sole__cuore {
-  position: absolute;
-  inset: 40%;
-  border-radius: 50%;
+  padding: 10px 14px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+  text-shadow: 0 0 6px rgb(255 255 255 / 0.9), 0 0 22px rgb(255 255 255 / 0.8);
   cursor: pointer;
   pointer-events: auto;
+  visibility: hidden;
+  will-change: transform, opacity;
 }
 
-/* Pressed, a wave of rings of light leaves from the point. */
-.threshold__onda {
+.threshold__targa::after {
+  display: block;
+  width: 0;
+  height: 1px;
+  margin: 6px auto 0;
+  background: currentColor;
+  content: '';
+  transition: width 0.3s var(--ease);
+}
+
+.threshold__targa:hover::after,
+.threshold__targa:focus-visible::after {
+  width: 100%;
+}
+
+/* At the foot: «Avanti» and the sound, small and quiet. */
+.threshold__piede {
   position: absolute;
+  left: 50%;
+  bottom: calc(var(--bottom) + 10px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+  translate: -50% 0;
+}
+
+.threshold__avanti,
+.threshold__sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  font-size: var(--small);
+  font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.threshold__avanti,
+.threshold__sound {
+  background: rgb(255 255 255 / 0.62);
+  color: var(--ink);
+  font-size: 0.9375rem;
+}
+
+.threshold__sound[aria-checked="true"] .sound__dot {
+  background: currentColor;
+}
+
+/* The sun can be pressed: the hand presses over it, and a wave of light leaves it. */
+.threshold.is-over {
+  cursor: url("../img/sprites/indice-preme-32.png") 1 0, pointer;
+}
+
+.threshold__onda {
+  position: fixed;
   z-index: 1;
   width: 24px;
   height: 24px;
   margin: -12px 0 0 -12px;
-  border: 1px solid #fff0e4;
+  border: 1px solid #fff4e8;
   border-radius: 50%;
   pointer-events: none;
   animation: onda 1.6s cubic-bezier(0.2, 0.6, 0.3, 1) backwards;
@@ -113,255 +212,23 @@
   }
 }
 
-/* The name: the sign large above, the name in the spaced capitals of the official lockup under it.
-   Going on it rises onto the name in the corner. */
-.threshold__name {
-  position: relative;
-  max-width: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35em;
-  font-size: clamp(1.5rem, 0.9rem + 1.5vw, 2.25rem);
-  line-height: 1;
-  white-space: nowrap;
-  transform-origin: 50% clamp(48px, 8vh, 75px);
-  animation: none;
-}
-
-/* The official sign, flat and untouched, with more than a nib's width free around it. */
-.threshold__mark {
-  width: auto;
-  height: clamp(96px, 16vh, 150px);
-  margin-bottom: 0.4em;
-}
-
-.threshold__name {
-  color: #fff0e4;
-}
-
-.threshold__word,
-.brand {
-  font-family: var(--font-text);
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.threshold__word {
-  margin-right: -0.42em;
-  letter-spacing: 0.42em;
-}
-
-.brand {
-  letter-spacing: 0.3em;
-}
-
-.threshold__by {
-  font-family: var(--font-text);
-  font-size: max(1rem, 0.5em);
-  font-weight: 400;
-  letter-spacing: 0.03em;
-}
-
-.brand__mark {
-  width: auto;
-  height: 1.5em;
-  margin-right: 0.5em;
-  vertical-align: -0.38em;
-}
-
-/* The name in the corner stays laid out under the door (css/main.css hides it there), so that the
-   flow knows where it is, and shows once the name has risen to it. The selector outweighs that rule. */
-html body:has(.threshold:not([hidden])) .brand.brand {
-  display: inline-flex;
+/* Without motion the way is three stops, the change hidden by a short fade. */
+.threshold__scena::after {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  content: '';
   opacity: 0;
+  transition: opacity 0.25s ease;
   pointer-events: none;
-  transition: opacity 0.3s ease;
 }
 
-html.flusso-angolo body:has(.threshold:not([hidden])) .brand.brand {
+.threshold.is-fading .threshold__scena::after {
   opacity: 1;
 }
 
-/* The bar of the visit waits under the door, coming back to it from the first stop. */
-body:has(.threshold:not([hidden])) .travel {
-  visibility: hidden;
-}
-
-/* The fork, a moment of the way: straight on, the park taking shape; aside, the portal to all the
-   works on one page. Two things of the same weight standing in the space, not a menu. */
-.threshold__bivio {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.bivio {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  min-height: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-  color: var(--ink);
-  font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: 0;
-  font-size: 1.625rem;
-  line-height: 1.2;
-  text-decoration: none;
-  cursor: pointer;
-  pointer-events: auto;
-  translate: -50% -50%;
-}
-
-.bivio__segno {
-  width: clamp(104px, 9vw, 128px);
-  height: auto;
-  fill: none;
-  stroke: #fff0e4;
-  stroke-width: 1.25;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  color: #fff0e4;
-  overflow: visible;
-  transition: transform 0.3s var(--ease);
-}
-
-.bivio__segno * {
-  vector-effect: non-scaling-stroke;
-}
-
-.bivio:hover .bivio__segno,
-.bivio:focus-visible .bivio__segno {
-  transform: translateY(-4px);
-}
-
-.bivio span {
-  padding: 12px 26px 14px;
-  border-radius: 10px;
-  background: var(--paper);
-  box-shadow: 0 6px 18px -12px rgb(0 23 80 / 0.28);
-  white-space: nowrap;
-}
-
-.bivio--parco {
-  left: 36%;
-  top: 60%;
-}
-
-.bivio--parco span::after {
-  content: ' ↓';
-}
-
-.bivio--lavori {
-  left: 66%;
-  top: 60%;
-}
-
-@media (orientation: portrait) {
-  .bivio__segno {
-    width: 96px;
-  }
-
-  .bivio {
-    font-size: 1.25rem;
-  }
-
-  .bivio--parco {
-    left: 50%;
-    top: 66%;
-  }
-
-  .bivio--lavori {
-    left: 50%;
-    top: 39%;
-  }
-}
-
-/* At the foot: «Avanti», the same command as all through the park, and the sound, small. */
-.threshold__piede {
-  position: absolute;
-  left: 50%;
-  bottom: calc(var(--bottom) + 12px);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  translate: -50% 0;
-}
-
-.threshold__avanti {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 56px;
-  padding: 4px 26px 6px;
-  border: 0;
-  border-radius: 10px;
-  background: var(--ink);
-  color: var(--light);
-  font-size: var(--small);
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.threshold__avanti {
-  white-space: nowrap;
-}
-
-.threshold__avanti strong {
-  font-family: var(--font-display);
-  font-size: 1.375rem;
-  line-height: 1.15;
-}
-
-.threshold__avanti:hover {
-  background: #0b2a72;
-}
-
-.threshold__verso:empty {
-  display: none;
-}
-
-/* The park still arriving: the foot breathes. */
-.threshold.is-waiting .threshold__avanti {
-  animation: wait 1.4s ease-in-out infinite;
-}
-
-.threshold__sound {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 40px;
-  padding: 0 18px;
-  border: 0;
-  border-radius: 10px;
-  background: rgb(255 255 255 / 0.6);
-  color: var(--ink);
-  font-size: var(--small);
-  font-weight: 400;
-  cursor: pointer;
-}
-
-.threshold__sound[aria-checked="true"] .sound__dot {
-  background: currentColor;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .sole__respiro,
   .threshold__onda {
     animation: none;
-  }
-
-  .threshold,
-  .threshold__name,
-  .threshold__bivio {
-    transition: opacity 0.4s ease;
   }
 }

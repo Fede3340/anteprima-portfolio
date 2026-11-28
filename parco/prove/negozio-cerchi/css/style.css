@@ -327,7 +327,6 @@ button { cursor: pointer; }
 .foot-logo { width: min(18rem, 70vw); }
 .foot-facts { display: grid; gap: 1.25rem; }
 .foot-facts dt { font-weight: 600; }
-.foot-concept { color: var(--muted); font-size: .9375rem; }
 
 /* dialogs */
 .sheet {
@@ -413,7 +412,6 @@ button { cursor: pointer; }
   .case-b { grid-column: 2; grid-row: 2; }
   .foot { grid-template-columns: 1fr 2fr; align-items: start; }
   .foot-facts { grid-template-columns: repeat(3, 1fr); }
-  .foot-concept { grid-column: 1 / -1; }
   .sheet { width: min(36rem, calc(100% - 2rem)); margin: auto 1rem 0 auto; }
 }
 

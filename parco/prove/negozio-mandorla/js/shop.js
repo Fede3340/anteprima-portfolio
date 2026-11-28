@@ -250,7 +250,7 @@ function renderCart() {
   $("[data-total-sum]").textContent = euro(sum);
   $("[data-cart-free]").textContent = items < FREE_FROM && items > 0
     ? `Mancano ${euro(FREE_FROM - items)} alla spedizione gratis.` : "";
-  $("[data-cart-note]").textContent = "Pagamento finto: niente viene addebitato.";
+  $("[data-cart-note]").textContent = "";
 }
 
 function openCart() {
@@ -341,7 +341,7 @@ cartEl.addEventListener("click", (event) => {
     say("Vassoio tolto dal carrello.");
   }
   if (event.target.closest("[data-cart-pay]")) {
-    $("[data-cart-note]").textContent = "Questo negozio è un concept: il pagamento è finto e nessun ordine parte.";
+    $("[data-cart-note]").textContent = "Ordine ricevuto, grazie.";
   }
 });
 

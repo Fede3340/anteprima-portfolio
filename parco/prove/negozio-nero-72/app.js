@@ -210,7 +210,7 @@ function renderCart() {
   $("[data-total]").textContent = money.format((subtotal + shipping) / 100);
   $("[data-free]").textContent =
     items === 0 ? "" : shipping ? `Mancano ${money.format((FREE_FROM - subtotal) / 100)} alla spedizione gratuita.` : "Spedizione gratuita da 40 €: ci sei.";
-  $("[data-fake]").textContent = "Il pagamento è finto: è un concept, nessun ordine parte.";
+  $("[data-fake]").textContent = "";
 }
 
 function openSheet(dialog) {
@@ -275,7 +275,7 @@ $("#carrello").addEventListener("click", (event) => {
     renderCart();
   }
   if (event.target.closest("[data-pay]")) {
-    $("[data-fake]").textContent = "Qui il pagamento si ferma: Nero 72 è un concept e nessun ordine parte.";
+    $("[data-fake]").textContent = "Ordine ricevuto, grazie.";
   }
 });
 

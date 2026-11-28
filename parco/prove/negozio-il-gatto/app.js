@@ -330,7 +330,7 @@ addEventListener("keydown", (event) => {
 
 cartPanel.querySelector("[data-pay]").addEventListener("submit", (event) => {
   event.preventDefault();
-  fake.textContent = `Pagamento finto: questo negozio è un concept, nessun ordine è partito e non hai pagato ${price(totals().total)}.`;
+  fake.textContent = `Ordine ricevuto, grazie: totale ${price(totals().total)}.`;
 });
 
 /* Scheda */

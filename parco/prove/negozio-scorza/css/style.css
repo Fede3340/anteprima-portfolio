@@ -91,7 +91,6 @@ p { margin: 0; }
 .cart-note.is-done { color: var(--ink); font-weight: 600; }
 .cart-pay { width: 100%; }
 
-.foot-concept { font-weight: 600; }
 
 @font-face { font-family: "Bricolage Grotesque"; src: url("../fonts/BricolageGrotesque-Variable.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
 :root {

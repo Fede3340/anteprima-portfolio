@@ -9,7 +9,7 @@ import { heightAt } from './land.js';
 import { MOODS } from './layout.js';
 import { createShadows } from './shadows.js';
 import { createSkyMaterial } from './sky.js';
-import { createSprite, drawn, forming } from './sprites.js';
+import { createSprite, drawn } from './sprites.js';
 import { asset } from '../media.js';
 
 // Less sky and more sun than world.js gives: the side towards the sun reaches the light tone, the
@@ -17,7 +17,8 @@ import { asset } from '../media.js';
 const SKY = 1.9;
 const SUN = 2.4;
 // Planets: [name, degrees to the right of the arrival's look, degrees above the horizon], far away.
-const PLANETS = [['pianeta-anello', -33, 13], ['pianeta-luna', -10, 19], ['pianeta-fasce', 150, 16], ['pianeta-piccolo', 70, 24]];
+// The ringed one stands well away from the sun, out of the first view from the sky (js/threshold.js).
+const PLANETS = [['pianeta-anello', -85, 15], ['pianeta-luna', -10, 19], ['pianeta-fasce', 150, 16], ['pianeta-piccolo', 70, 24]];
 const PLANET_DISTANCE = 650;
 // Before a work: how much each tone leans to the cover's colour, and how soon (seconds).
 const LEAN = { lit: 0.08, half: 0.07, shade: 0.04, time: 0.17 };
@@ -141,6 +142,8 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
       const at = direction(right, up).multiplyScalar(PLANET_DISTANCE);
       Object.assign(planet.spots[0], { x: at.x, y: at.y, z: at.z, height: width * (entry.altezza / entry.larghezza) });
       planet.mesh.renderOrder = -1;
+      // Faded in by the arrival (js/threshold.js) as the park comes out of the haze.
+      planet.mesh.userData.planet = true;
       toned(planet);
       scene.add(planet.mesh);
       planet.use('small');
@@ -242,9 +245,8 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
 
       fog.color.copy(now.horizon);
       fog.near = near * now.haze;
-      // While the park takes shape the haze stands close, and lifts.
       // On the light way the haze comes nearer: less is seen far off, the near things stay sharp.
-      fog.far = far * now.haze * (0.2 + 0.8 * forming.value) * (sea.material.uniforms ? 1 : 0.7);
+      fog.far = far * now.haze * (sea.material.uniforms ? 1 : 0.7);
       below.sea.copy(now.seaNear).multiplyScalar(0.8).lerp(now.shade, 0.35);
       if (sea.material.uniforms) {
         sea.material.uniforms.uCloud.value.copy(below.sea);

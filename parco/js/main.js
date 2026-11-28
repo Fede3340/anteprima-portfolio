@@ -199,8 +199,8 @@ const faceStop = (stop) => {
 export const nextStop = () => stops[(position() + 1) % stops.length];
 export function advance(way = 1) {
   if (!world || world.rig.mode !== 'walk' || story.work) return;
-  // THE FLOW (js/threshold.js): back from the first stop, or on the way to it, is back into the start
-  // of the flow, to its fork. The only hook of the start in the steps of the visit.
+  // THE ARRIVAL (js/threshold.js): back from the first stop, or on the way to it, is back up into the
+  // sky, to the portal. The only hook of the arrival in the steps of the visit.
   if (way < 0 && at === 0 && world.here() === stops[0]?.island) {
     threshold.back();
     return;
@@ -489,14 +489,6 @@ $('.brand').addEventListener('click', (event) => {
 });
 
 const threshold = createThreshold($('.threshold'), {
-  // Past the start of the flow the park begins to draw, at the place asked for.
-  onBegin() {
-    world.start();
-    const target = read();
-    if (target.work) world.place(plan.islands[workSpot(target.work).island]);
-    else if (target.zone) world.place(target.zone);
-    world.rig.go('walk');
-  },
   onSound: (on) => sound.begin(on),
   onArrive() {
     sound.play('drop');
@@ -526,19 +518,23 @@ const library = (manifest) => Object.fromEntries(Object.entries(manifest).map(([
 
 const [data, texts, pictures, manifest] = await Promise.all([json('data/works.json'), json('data/racconto.json'), json('img/park/park.json'), json('img/sprites/manifest.json'), document.fonts.ready]);
 setUp(data, texts);
+const sprites = library(manifest);
 let loaded;
 try {
-  loaded = build(texts, pictures, library(manifest));
+  loaded = build(texts, pictures, sprites);
 } catch (error) {
-  // Without WebGL the flow leads to the page of all the works, and a work asked for opens closely.
+  // Without WebGL a work asked for opens closely; otherwise the page of all the works is the way in.
   console.warn(error);
-  threshold.noPark();
+  if (!read().work) location.replace('veloce/');
 }
 if (world) {
-  // The park is drawn from the moment one goes in; behind the door there is the picture.
-  await loaded;
+  // The way down from the sky ends where the visit was asked to begin.
+  const target = read();
+  if (target.work) world.place(plan.islands[workSpot(target.work).island]);
+  else if (target.zone) world.place(target.zone);
+  await Promise.all([loaded, threshold.prepare(world, { portal: sprites.siti, cloud: pictures['nuvola-2'], islet: sprites['sbuffo-3'], tree: sprites['albero-medio'], bench: sprites.panchina })]);
   world.renderer.compile(world.scene, world.camera);
-  // Hook of the drawing (world.js): one frame drawn now, under the door, so that nothing is prepared
+  // Hook of the drawing (world.js): one frame drawn now, under the name, so that nothing is prepared
   // when the park first shows.
   world.warm();
   threshold.ready();

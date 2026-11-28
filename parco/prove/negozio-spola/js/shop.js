@@ -6,7 +6,7 @@
     title: document.title,
     ship: 1200,
     freeFrom: 20000,
-    payNote: 'Pagamento finto: niente viene addebitato.',
+    payNote: '',
     products: [
       { id: 'tappeto', name: 'Tappeto', sub: '120 × 180 cm, lana', price: 52000, img: 'p1.webp', weeks: 5, size: [120, 180],
         alt: 'Un tappeto di lana chiara con grani rossi e blu in rilievo: alberi, pavoni e un rombo al centro, con la frangia',
@@ -209,14 +209,14 @@
     if (line) setQty(line.dataset.line, (cart.get(line.dataset.line) || 0) + Number(line.dataset.d));
   });
 
-  // Fake payment
+  // Payment
   const payBtn = $('[data-cart-pay]');
   const note = $('[data-cart-note]');
   function resetPay() { note.textContent = SHOP.payNote; note.classList.remove('is-error', 'is-done'); }
   payBtn.addEventListener('click', () => {
     const problem = SHOP.beforePay ? SHOP.beforePay() : null;
     if (problem) { note.textContent = problem; note.classList.add('is-error'); say(problem); return; }
-    note.textContent = `Ordine di prova da ${money(totals().total)}: in questo negozio il pagamento è finto, niente viene addebitato e niente parte.`;
+    note.textContent = `Ordine ricevuto, grazie: totale ${money(totals().total)}.`;
     note.classList.add('is-done');
     say(note.textContent);
   });

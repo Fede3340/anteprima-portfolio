@@ -7,7 +7,7 @@
     title: document.title,
     ship: 690,
     freeFrom: 6000,
-    payNote: 'Pagamento finto: niente viene addebitato.',
+    payNote: '',
     products: [
       { id: 'sottopentola', name: 'Sottopentola tondo', sub: 'Ø 20 cm, bordo di scorza', price: 1400, img: 'p1.webp', g: 160,
         alt: 'Un sottopentola tondo di sughero chiaro col bordo di corteccia scura, su un piano color sabbia',
@@ -205,14 +205,14 @@
     if (line) setQty(line.dataset.line, (cart.get(line.dataset.line) || 0) + Number(line.dataset.d));
   });
 
-  // Fake payment
+  // Payment
   const payBtn = $('[data-cart-pay]');
   const note = $('[data-cart-note]');
   function resetPay() { note.textContent = SHOP.payNote; note.classList.remove('is-error', 'is-done'); }
   payBtn.addEventListener('click', () => {
     const problem = SHOP.beforePay ? SHOP.beforePay() : null;
     if (problem) { note.textContent = problem; note.classList.add('is-error'); say(problem); return; }
-    note.textContent = `Ordine di prova da ${money(totals().total)}: in questo negozio il pagamento è finto, niente viene addebitato e niente parte.`;
+    note.textContent = `Ordine ricevuto, grazie: totale ${money(totals().total)}.`;
     note.classList.add('is-done');
     say(note.textContent);
   });

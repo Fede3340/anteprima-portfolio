@@ -1,129 +1,89 @@
-// The start of the flow, before the first stop of the park. One number, the way gone (0 to 1), follows
-// the wheel, a swipe, the keys and «Avanti», forwards and back: the shapes of the opening go home and
-// become the things of the park, the name goes to its corner, the way forks (on into the park, or
-// aside to all the works on one page), and the park takes shape behind as the door fades. At 1 the
-// visit begins; «Indietro» from its first stop comes back here.
-import { createForma, mix, place, shapes, smooth } from './forma.js';
-import { forming } from './world/sprites.js';
+// The arrival: the park itself, seen from high in the sky at dawn, under the name. The page is tall
+// and scrolls as any page does; where it is scrolled to is the way down of the eyes (descend, in
+// js/world/camera.js), followed with a short ease. Almost nothing is on the screen: the sky and the
+// sun; two large clouds passing close on the way down; at the fork two things only, the portal of all
+// the works on one page and an islet with a tree and a bench for the park. Until the fork is passed
+// the park is not drawn; then it comes out of the haze, little by little, to where the walk begins.
+// At the bottom the visit begins; «Indietro» from its first stop climbs back to the fork.
+import * as THREE from 'three';
+import { descend } from './world/camera.js';
+import { createSprite } from './world/sprites.js';
 
-const FORK = 0.45;
-const STOPS = [0, FORK, 1];
-// How much wheel and how many screens of swipe make the whole way.
-const WHEEL = 1600;
-const SWIPE = 1.4;
-// Past the fork the way does not rest half done: after a pause it goes on or back.
-const REST = 450;
+// Where the fork is, in shares of the page scrolled; there the eyes slow down.
+const FORK = 0.5;
+const SLOW = 0.55;
+// How quickly the eyes follow the page (per second): within about a tenth of a second.
+const EASE = 22;
+// The two things of the fork, seen from the eyes there: metres ahead, to the right and down to their
+// foot. On a wide screen side by side at the same height; on a tall one the portal above the islet.
+const SPOTS = {
+  wide: { portal: [16, -4.4, 4.6], islet: [16, 4.4, 4.6] },
+  tall: { portal: [21, 0, 1.2], islet: [21, 0, 13] },
+};
+const PORTAL_HEIGHT = 6;
+// The islet: a flat cloud with a tree on it and a bench beside the tree (metres).
+const ISLET = { width: 6, tree: 5, bench: 1.2 };
+// The two clouds passing close on the way down: share of the way, metres to the right and ahead of
+// the way, height.
+const CLOUDS = [[0.24, -13, 4, 13], [0.34, 15, 8, 11]];
+// Past the fork the two things fade and the park comes out of the haze.
+const FADE = [0.6, 0.7];
+const PARK = 0.56;
+// The page scrolled for a share of the way down: slower round the fork.
+const shareOf = (scrolled) => scrolled + (SLOW * Math.sin(2 * Math.PI * scrolled)) / (2 * Math.PI);
+const { smoothstep } = THREE.MathUtils;
 
-export function createThreshold(root, { onBegin, onSound, onArrive }) {
-  const field = createForma(true);
-  root.querySelector('.threshold__forma').append(field);
+// A cut-out faded to a share of itself: drawn see-through while it is not whole.
+function fade(material, k) {
+  material.opacity = k;
+  const through = k < 1;
+  if (material.transparent === through) return;
+  material.transparent = through;
+  material.alphaTest = through ? 0.01 : 0.5;
+  material.needsUpdate = true;
+}
+
+export function createThreshold(root, { onSound, onArrive }) {
   const name = root.querySelector('.threshold__name');
-  const fork = root.querySelector('.threshold__bivio');
+  const works = root.querySelector('.threshold__lavori');
+  const enter = root.querySelector('.threshold__entra');
   const avanti = root.querySelector('.threshold__avanti');
-  const verso = root.querySelector('.threshold__verso');
   const sound = root.querySelector('.threshold__sound');
-  const foot = root.querySelector('.threshold__piede');
   const still = matchMedia('(prefers-reduced-motion: reduce)');
   const heard = () => sound.getAttribute('aria-checked') === 'true';
 
-  let drawn;
-  let corner;
-  let gone = 0;
-  // How quickly the way follows what is wanted: at once for a gesture, slowly when the disc is pressed.
-  let pace = 9;
-  let want = 0;
-  let ready = false;
-  let begun = false;
-  let park = true;
-  let looping = false;
-  let last = 0;
-  let restTimer;
+  let world;
+  let decor;
+  let sun;
+  let planets = [];
+  // The share of the page scrolled, and of the way down shown; the arrival waits for the eyes to come
+  // up a little after «Indietro» before it can happen again.
+  let scrolled = 0;
+  let shown = 0;
+  let armed = true;
   let soundOn = false;
+  let warmed = 0;
+  let prepared = false;
+  let warmedAt = performance.now();
+  // In the colours of the screen, so that the programs prepared are those the screen will use.
+  const unseen = new THREE.WebGLRenderTarget(1, 1, { colorSpace: THREE.SRGBColorSpace });
+  const at = new THREE.Vector3();
+  const look = new THREE.Vector3();
+  const point = new THREE.Vector3();
 
-  // Where the name goes: onto the name in the corner.
-  function measure() {
-    drawn = shapes(field);
-    const brand = document.querySelector('.brand__mark')?.getBoundingClientRect();
-    name.style.transform = 'none';
-    const mark = name.querySelector('.threshold__mark').getBoundingClientRect();
-    corner = brand && brand.height
-      ? { x: brand.left + brand.width / 2 - (mark.left + mark.width / 2), y: brand.top + brand.height / 2 - (mark.top + mark.height / 2), s: brand.height / mark.height }
-      : { x: -innerWidth / 2, y: -innerHeight / 2, s: 0.2 };
-  }
+  const room = () => root.scrollHeight - root.clientHeight;
+  const read = () => {
+    scrolled = Math.min(1, Math.max(0, root.scrollTop / (room() || 1)));
+  };
+  root.addEventListener('scroll', read, { passive: true });
+  addEventListener('resize', () => {
+    read();
+    if (world && !root.hidden) place();
+  });
 
-  // The way, in shares of it: the name rises to its corner and is gone by NAMED; the sun moves aside
-  // by the fork, where the two choices stand alone in their place, clear and whole; past the fork the
-  // choices go, the things go home (HOME), the door fades on the park (FADE) and the park takes shape.
-  const NAMED = 0.2;
-  const HOME = [0.6, 0.74];
-  const FADE = [0.68, 0.88];
-  function draw() {
-    const g = gone;
-    if (drawn) {
-      const view = drawn.view();
-      const aside = still.matches ? 0 : smooth(g / FORK);
-      const home = still.matches ? 0 : smooth((g - HOME[0]) / (HOME[1] - HOME[0]));
-      for (const shape of drawn.list) place(shape, mix(mix(shape.start, shape.fork, aside), shape.home, home), view);
-    }
-    const lift = smooth(g / NAMED);
-    name.style.transform = still.matches ? 'none' : `translate(${corner.x * lift}px, ${corner.y * lift}px) scale(${1 + (corner.s - 1) * lift})`;
-    name.style.opacity = String(1 - lift);
-    name.style.visibility = lift >= 1 ? 'hidden' : '';
-    document.documentElement.classList.toggle('flusso-angolo', g >= NAMED);
-    // The choices are there whole, or not at all: a short fade in and out.
-    const open = smooth((g - 0.3) / 0.05) * (1 - smooth((g - 0.56) / 0.04));
-    fork.style.opacity = String(open);
-    fork.style.visibility = open > 0 ? '' : 'hidden';
-    fork.inert = open < 0.9;
-    root.style.opacity = String(1 - smooth((g - FADE[0]) / (FADE[1] - FADE[0])));
-    if (begun) forming.value = smooth((g - 0.7) / 0.3);
-    // While the things go home the foot steps aside too: nothing passes over a word.
-    foot.style.opacity = String(1 - smooth((g - 0.56) / 0.04));
-    verso.textContent = g < 0.2 ? 'scorri' : g < 0.7 ? 'entra nel parco' : '';
-  }
-
-  function frame(now) {
-    const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
-    last = now;
-    gone = still.matches ? want : gone + (want - gone) * (1 - Math.exp(-dt * pace));
-    if (Math.abs(want - gone) < 0.0005) gone = want;
-    if (gone > 0.3 && !begun && park) {
-      begun = true;
-      forming.value = 0;
-      onBegin();
-    }
-    if (gone > FORK + 0.1 && !park) location.href = 'veloce/';
-    draw();
-    if (gone >= 1) {
-      looping = false;
-      root.hidden = true;
-      document.documentElement.classList.remove('flusso-angolo');
-      forming.value = 1;
-      onArrive();
-      return;
-    }
-    if (gone === want) {
-      looping = false;
-      return;
-    }
-    requestAnimationFrame(frame);
-  }
-
-  // The way wanted, within what is ready: until the park has arrived the way waits a little past the
-  // fork, with a soft sign at the foot.
-  function to(value, rate = 9) {
-    pace = rate;
-    want = Math.min(Math.max(value, 0), ready || !park ? 1 : FORK + 0.08);
-    root.classList.toggle('is-waiting', !ready && park && value > FORK + 0.08);
-    clearTimeout(restTimer);
-    if (want > 0.58 && want < 1) restTimer = setTimeout(() => to(want > 0.75 ? 1 : FORK), REST);
-    if (!looping) {
-      looping = true;
-      last = performance.now();
-      requestAnimationFrame(frame);
-    }
-  }
-  const step = (way) => to(way > 0 ? STOPS.find((stop) => stop > want + 0.01) ?? 1 : [...STOPS].reverse().find((stop) => stop < want - 0.01) ?? 0);
+  // «Avanti», the sun and «Entra nel parco» scroll the page softly to a share; a gesture takes it back.
+  const scrollTo = (share) => root.scrollTo({ top: share * room(), behavior: still.matches ? 'instant' : 'smooth' });
+  const step = () => scrollTo(scrolled < FORK - 0.01 ? FORK : 1);
 
   // Sound may start only inside a tap or a key: the first one starts it, if it is wanted.
   const wake = () => {
@@ -132,15 +92,146 @@ export function createThreshold(root, { onBegin, onSound, onArrive }) {
     onSound(true);
   };
 
-  root.addEventListener('wheel', (event) => {
-    event.preventDefault();
-    const scale = event.deltaMode === 1 ? 40 : event.deltaMode === 2 ? innerHeight : 1;
-    const delta = (Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX) * scale;
-    to(want + delta / WHEEL);
-  }, { passive: false });
+  // A point seen from the eyes at a share of the way down: metres ahead, to the right, and down.
+  function from(share, [ahead, right, below], out) {
+    const { state } = world;
+    descend(state, share, out, look);
+    return out.set(out.x + Math.cos(state.heading) * ahead - Math.sin(state.heading) * right, out.y - below, out.z + Math.sin(state.heading) * ahead + Math.cos(state.heading) * right);
+  }
 
-  // The disc is the first gesture: pressed (a click, a tap, a press held), a wave of rings leaves from
-  // where it was pressed and the way goes on by itself to the fork.
+  // The two things of the fork and the two clouds, placed along the way down to where the walk begins.
+  function place() {
+    const spots = SPOTS[innerWidth >= innerHeight ? 'wide' : 'tall'];
+    from(FORK, spots.portal, at);
+    Object.assign(decor.portal.spots[0], { x: at.x, y: at.y, z: at.z, height: PORTAL_HEIGHT });
+    from(FORK, spots.islet, at);
+    const base = decor.islet.spots[0];
+    Object.assign(base, { x: at.x, y: at.y, z: at.z, height: ISLET.width / decor.islet.aspect });
+    const top = at.y + base.height * 0.55;
+    Object.assign(decor.tree.spots[0], { x: at.x, y: top, z: at.z, height: ISLET.tree });
+    // The bench beside the tree, across the way the eyes come from.
+    const { heading } = world.state;
+    Object.assign(decor.bench.spots[0], { x: at.x - Math.sin(heading) * 1.3, y: top, z: at.z + Math.cos(heading) * 1.3, height: ISLET.bench });
+    CLOUDS.forEach(([share, right, ahead, height], index) => {
+      from(share, [ahead, right, height * 0.45], at);
+      Object.assign(decor.clouds.spots[index], { x: at.x, y: at.y, z: at.z, height });
+    });
+  }
+
+  // A word held under a point of the sky, kept on the screen; seen only within its stretch of the way.
+  function hold(node, x, y, z, seen) {
+    point.set(x, y, z).project(world.camera);
+    const width = node.offsetWidth / 2 + 16;
+    const left = Math.min(innerWidth - width, Math.max(width, ((point.x + 1) / 2) * innerWidth));
+    const top = Math.min(innerHeight - 120, ((1 - point.y) / 2) * innerHeight);
+    node.style.transform = `translate(${left}px, ${top}px) translate(-50%, 0)`;
+    const open = point.z < 1 ? seen : 0;
+    node.style.opacity = String(open);
+    node.style.visibility = open > 0.02 ? 'visible' : '';
+    node.inert = open < 0.6;
+  }
+
+  // The sun of the sky on the screen, if it is in front.
+  const sunOnScreen = () => {
+    point.copy(sun.value).multiplyScalar(500).add(world.camera.position).project(world.camera);
+    return point.z < 1 ? { x: ((point.x + 1) / 2) * innerWidth, y: ((1 - point.y) / 2) * innerHeight } : undefined;
+  };
+
+  // The park drawn once into a target nobody sees, from a little above where the walk begins; the
+  // eyes are put back by the rig before the frame is drawn.
+  function warm() {
+    const { camera, renderer, scene } = world;
+    descend(world.state, 0.8, camera.position, look);
+    camera.lookAt(look);
+    camera.updateMatrixWorld();
+    camera.layers.mask = 3;
+    renderer.setRenderTarget(unseen);
+    renderer.render(scene, camera);
+    renderer.setRenderTarget(null);
+  }
+
+  // Each frame of the park while the arrival is on, after the light of the hour is set: the eyes
+  // follow the page; before the fork only the sky and the things of the arrival are drawn (layer 1),
+  // past it the haze of the hour (light.js) opens from nothing to its own reach, and the planets
+  // come in with it. Without motion the way down is three stops, sky, fork, park, the change hidden by
+  // a short fade.
+  const stopOf = () => (scrolled < 0.3 ? 0 : scrolled < 0.999 ? FORK : 1);
+  let fading = false;
+  function update(dt) {
+    if (still.matches) {
+      if (stopOf() !== shown && !fading) {
+        fading = true;
+        root.classList.add('is-fading');
+        setTimeout(() => {
+          shown = stopOf();
+          root.classList.remove('is-fading');
+          fading = false;
+        }, 250);
+      }
+    } else {
+      shown += (scrolled - shown) * (1 - Math.exp(-dt * EASE));
+      if (Math.abs(scrolled - shown) < 0.0005) shown = scrolled;
+    }
+    const share = shareOf(shown);
+    world.rig.descent = share;
+    // While the name is read and nothing moves, the park as it will come out of the haze is drawn
+    // unseen a few times, once a second and a half: what it has made since it was ready (the near
+    // pictures arrive later) is prepared then, and not in the frame where it first shows.
+    if (share < 0.02 && warmed < 4 && performance.now() - warmedAt > 1500) {
+      warmed++;
+      warmedAt = performance.now();
+      warm();
+    }
+    // Pictures that came later still change programs: on the way to the fork every program the park
+    // needs is made in the background.
+    if (!prepared && share > 0.3) {
+      prepared = true;
+      world.renderer.compileAsync(world.scene, world.camera).catch((error) => console.warn(error));
+    }
+    const park = smoothstep(share, PARK, 1);
+    world.camera.layers.mask = park > 0 ? 3 : 2;
+    const { fog } = world.scene;
+    fog.near *= park;
+    fog.far = Math.max(1, fog.far * park * park);
+    // The planets are drawn on the arrival's layer too, unseen until the park comes: they arrive late,
+    // and so their programs are made up here and not in the frame where they first show.
+    for (const planet of planets) {
+      planet.layers.enable(1);
+      fade(planet.material, park);
+    }
+    const gone = 1 - smoothstep(share, ...FADE);
+    for (const key of ['portal', 'islet', 'tree', 'bench']) fade(decor[key].mesh.material, gone);
+    decor.portal.mesh.visible = decor.islet.mesh.visible = gone > 0;
+    decor.tree.mesh.visible = decor.bench.mesh.visible = gone > 0;
+    if (shown < 0.95) armed = true;
+    if (armed && shown >= 0.999) arrive();
+  }
+
+  // After the eyes have moved: the name rising away, and the words under the two things of the fork.
+  function frame() {
+    const share = shareOf(shown);
+    const lift = smoothstep(share, 0, 0.1);
+    name.style.transform = `translateY(${-lift * 18}vh)`;
+    name.style.opacity = String(1 - lift);
+    name.style.visibility = lift < 1 ? '' : 'hidden';
+    document.documentElement.classList.toggle('is-named', lift >= 1);
+    const seen = smoothstep(share, 0.45, 0.49) * (1 - smoothstep(share, 0.56, FADE[0]));
+    const { portal, islet } = decor;
+    hold(works, portal.spots[0].x, portal.spots[0].y, portal.spots[0].z, seen);
+    hold(enter, islet.spots[0].x, islet.spots[0].y, islet.spots[0].z, seen);
+  }
+
+  function arrive() {
+    root.hidden = true;
+    decor.group.visible = false;
+    world.camera.layers.set(0);
+    document.documentElement.classList.remove('is-named');
+    world.rig.go('walk');
+    onArrive();
+  }
+
+  // The sun pressed: a wave of light leaves it and the way goes down by itself to the fork. The
+  // portal itself opens the page of all the works, as its name under it does.
   function wave(x, y) {
     if (still.matches) return;
     for (let i = 0; i < 3; i++) {
@@ -151,51 +242,39 @@ export function createThreshold(root, { onBegin, onSound, onArrive }) {
       root.append(ring);
     }
   }
-
-  let press;
-  root.addEventListener('pointerdown', (event) => {
-    if (!event.isPrimary || event.button || event.target.closest('a, button')) return;
-    if (event.target.closest('.sole__cuore') && want < FORK) {
-      wave(event.clientX, event.clientY);
-      wake();
-      to(FORK, 2.4);
-      return;
-    }
-    press = { y: event.clientY, from: want };
-    root.setPointerCapture(event.pointerId);
+  const nearSun = (x, y) => {
+    const spot = sun && scrolled < FORK && sunOnScreen();
+    return spot && Math.hypot(spot.x - x, spot.y - y) < 56 ? spot : undefined;
+  };
+  root.addEventListener('click', (event) => {
+    wake();
+    if (!world || event.target.closest('a, button')) return;
+    const spot = nearSun(event.clientX, event.clientY);
+    if (spot) {
+      wave(spot.x, spot.y);
+      scrollTo(FORK);
+    } else if (!works.inert && world.hit(event.clientX, event.clientY, [decor.portal.mesh])) works.click();
+    else if (!enter.inert && world.hit(event.clientX, event.clientY, [decor.islet.mesh, decor.tree.mesh, decor.bench.mesh])) scrollTo(1);
   });
   root.addEventListener('pointermove', (event) => {
-    if (press && event.isPrimary) to(press.from + (press.y - event.clientY) / (innerHeight * SWIPE));
-  });
-  const release = (event) => {
-    if (!press || !event.isPrimary) return;
-    press = undefined;
-    wake();
-  };
-  root.addEventListener('pointerup', release);
-  root.addEventListener('pointercancel', release);
+    if (event.pointerType === 'mouse') root.classList.toggle('is-over', Boolean(nearSun(event.clientX, event.clientY)));
+  }, { passive: true });
 
+  // Space is «Avanti» (with Shift, back up); the arrows and the page keys scroll the page by themselves.
+  // On a button or a link Space is its own click; a key the park has taken (the step back from its
+  // first stop) is not taken twice.
   addEventListener('keydown', (event) => {
-    // On a button or a link, Space and Enter are its own click.
-    // A key the park has taken (the step back from its first stop) is not taken twice.
-    if (root.hidden || event.defaultPrevented || ((event.key === ' ' || event.key === 'Enter') && event.target.closest?.('a, button'))) return;
-    const way = { ArrowDown: 1, ArrowRight: 1, PageDown: 1, ' ': 1, ArrowUp: -1, ArrowLeft: -1, PageUp: -1 }[event.key];
-    if (way) {
-      event.preventDefault();
-      wake();
-      if (!event.repeat) step(way);
-    } else if (event.key === 'End') to(1);
-    else if (event.key === 'Home') to(0);
+    if (root.hidden || event.defaultPrevented) return;
+    wake();
+    if (event.key !== ' ' || event.target.closest?.('a, button')) return;
+    event.preventDefault();
+    if (event.repeat) return;
+    if (event.shiftKey) scrollTo(scrolled > FORK + 0.01 ? FORK : 0);
+    else step();
   });
 
-  avanti.addEventListener('click', () => {
-    wake();
-    step(1);
-  });
-  root.querySelector('.bivio--parco').addEventListener('click', () => {
-    wake();
-    to(1);
-  });
+  avanti.addEventListener('click', step);
+  enter.addEventListener('click', () => scrollTo(1));
   sound.addEventListener('click', () => {
     sound.setAttribute('aria-checked', String(!heard()));
     if (soundOn !== heard()) {
@@ -203,42 +282,64 @@ export function createThreshold(root, { onBegin, onSound, onArrive }) {
       onSound(soundOn);
     }
   });
-  // The page of all the works starts from the same shapes and takes them on.
-  root.querySelector('.bivio--lavori').addEventListener('click', () => {
-    try {
-      sessionStorage.setItem('athena-flusso', '1');
-    } catch {
-      // Without storage that page simply opens at its start.
-    }
-  });
-
-  addEventListener('resize', () => {
-    if (root.hidden) return;
-    measure();
-    draw();
-  });
-  requestAnimationFrame(() => {
-    measure();
-    draw();
-  });
 
   return {
-    // The park has arrived: the way may go on past the fork.
+    // The things of the arrival, made from the pictures of the park, out of the haze and on a layer of
+    // their own; resolves when they are drawn.
+    prepare(park, pictures) {
+      world = park;
+      const make = (entry, count = 1) => createSprite(entry, count, { renderer: world.renderer, fog: false });
+      decor = { portal: make(pictures.portal), islet: make(pictures.islet), tree: make(pictures.tree), bench: make(pictures.bench), clouds: make(pictures.cloud, CLOUDS.length), group: new THREE.Group() };
+      const sprites = [decor.portal, decor.islet, decor.tree, decor.bench, decor.clouds];
+      for (const sprite of sprites) {
+        sprite.mesh.layers.set(1);
+        decor.group.add(sprite.mesh);
+      }
+      // The sky, and the lights, so that the light of the park is the same before and after the fork
+      // (a change of lights would prepare every program of the park again, in one long frame).
+      for (const thing of [world.land.sky, world.sky, world.sun]) thing.layers.enable(1);
+      sun = world.land.sky.material.uniforms.uSun;
+      place();
+      world.add({
+        object: decor.group,
+        update(dt, time, state, camera) {
+          if (root.hidden) return;
+          planets = world.scene.children.filter((mesh) => mesh.userData.planet);
+          update(dt);
+          for (const sprite of sprites) sprite.face(camera);
+        },
+      });
+      world.on({
+        frame() {
+          if (!root.hidden) frame();
+        },
+      });
+      return Promise.all(sprites.map((sprite) => sprite.use('small')));
+    },
+    // The park is ready: high in the sky, the page may be scrolled.
     ready() {
-      ready = true;
+      world.rig.go('arrive');
+      world.start();
+      // The light way, if this machine takes it, is in place now: its programs are prepared too, here,
+      // and not in the frame where the park first comes out of the haze.
+      world.camera.layers.mask = 3;
+      world.renderer.compile(world.scene, world.camera);
+      read();
       root.classList.add('is-ready');
-      if (root.classList.contains('is-waiting')) to(1);
+      root.focus({ preventScroll: true });
     },
-    // Without a park (no WebGL), going on past the fork leads to the page of all the works.
-    noPark() {
-      park = false;
-    },
-    // «Indietro» from the first stop: back to the fork.
+    // «Indietro» from the first stop: up from where the walk begins, back to the fork.
     back() {
       root.hidden = false;
-      measure();
-      gone = 1;
-      to(FORK);
+      place();
+      decor.group.visible = true;
+      world.rig.go('arrive');
+      root.scrollTop = room();
+      read();
+      shown = 1;
+      armed = false;
+      root.focus({ preventScroll: true });
+      scrollTo(FORK);
     },
   };
 }

@@ -91,7 +91,6 @@ p { margin: 0; }
 .cart-note.is-done { color: var(--ink); font-weight: 600; }
 .cart-pay { width: 100%; }
 
-.foot-concept { font-weight: 600; }
 
 @font-face { font-family: "Fraunces"; src: url("../fonts/fraunces-latin.woff2") format("woff2"); font-weight: 300 600; font-display: swap; }
 :root {

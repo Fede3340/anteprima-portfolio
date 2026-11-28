@@ -13,7 +13,9 @@ export function createSkyMaterial() {
     vertexShader: `
       varying vec3 vDirection;
       void main() {
-        vDirection = normalize((modelMatrix * vec4(position, 1.0)).xyz - cameraPosition);
+        // Not normalised here: across the large faces of the sphere only the difference itself is
+        // linear, and normalising each corner bent the glow of the sun along their edges.
+        vDirection = (modelMatrix * vec4(position, 1.0)).xyz - cameraPosition;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         // On the far plane, drawn after everything else: only where nothing else is.
         gl_Position.z = gl_Position.w;
@@ -35,7 +37,11 @@ export function createSkyMaterial() {
         s8 *= s8;
         s8 *= s8;
         float s32 = s8 * s8;
-        c = mix(c, uGlow, min(1.0, s8 * low * 0.55 + s32 * 0.5));
+        // The glow of the sun fades out just under the horizon: lower down the haze has the horizon's own colour
+        // (light.js), so whatever the haze covers down there (the sea of clouds, far islands) meets
+        // the sky without an edge, from the ground and from high up.
+        float above = smoothstep(-0.07, 0.0, d.y);
+        c = mix(c, uGlow, min(1.0, (s8 * low * 0.55 + s32 * 0.5) * above));
         c = mix(c, uDisc, smoothstep(0.99955, 0.99966, s));
         if (uStars > 0.0) {
           vec3 at = d * 260.0;

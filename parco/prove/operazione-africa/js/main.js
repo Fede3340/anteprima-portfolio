@@ -128,7 +128,7 @@ if (form) {
   update();
 }
 
-document.querySelectorAll("form").forEach((demo) => demo.addEventListener("submit", (event) => {
+document.querySelectorAll("form").forEach((form) => form.addEventListener("submit", (event) => {
   event.preventDefault();
-  demo.querySelector(".form-status").hidden = false;
+  form.querySelector(".form-status").hidden = false;
 }));

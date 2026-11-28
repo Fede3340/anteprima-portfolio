@@ -1,13 +1,12 @@
 import { catalogue } from '../../js/works.js';
 import { element, logo, reducedMotion } from '../../js/media.js';
-import { createForma, fromScreen, mix, place, shapes, smooth as settle } from '../../js/forma.js';
 
 // The park seen flat: the same islands one under the other, each with its sky, its sculpture and its
 // works standing on the cloud like the pictures of the park. A work opens in the same close view.
 
 const $ = (selector) => document.querySelector(selector);
 const page = location.href.split('#')[0];
-const silent = { play() {} };
+const silent = { play() {}, quiet() {} };
 
 // The accent of each island and the hour of its light, as in js/world/layout.js (MOODS).
 const MOODS = {
@@ -203,13 +202,19 @@ function build(data, texts) {
   const root = $('.pianta');
   const sections = [arrival(texts.who)];
 
-  for (const chapter of data.chapters) {
+  // The works of a chapter on their island, in a row of frames.
+  const shelf = (items) => {
+    const list = element('ol', { className: 'isola__opere' }, items.map(work));
+    list.style.setProperty('--many', items.length > 8 ? 0.78 : 1);
+    return list;
+  };
+  // The chapter of the campaigns is the island built by hand below, with its card.
+  const campaigns = data.chapters.find((chapter) => chapter.id === 'google');
+  for (const chapter of data.chapters.filter((each) => each !== campaigns)) {
     const items = chapter.works.map((id) => works[id]);
     const lines = new Set(items.map((item) => item.line));
     const shared = items.length > 1 && lines.size === 1;
-    const list = element('ol', { className: 'isola__opere' }, items.map(work));
-    list.style.setProperty('--many', items.length > 8 ? 0.78 : 1);
-    sections.push(island(chapter.id, chapter.title, [list], {
+    sections.push(island(chapter.id, chapter.title, [shelf(items)], {
       count: counted(items.length),
       note: shared ? element('p', { className: 'isola__nota', textContent: items[0].line }) : undefined,
     }));
@@ -227,7 +232,7 @@ function build(data, texts) {
     line ? element('h3', { textContent: line }) : '',
     element('ul', { className: 'card__facts' }, google.facts.map((fact) => element('li', { textContent: fact }))),
     element('a', { className: 'card__go', href: `${page}#lavoro/${shop.id}`, textContent: `Apri ${shop.title}` }),
-  ], 'isola__carta--google')]));
+  ], 'isola__carta--google'), campaigns ? shelf(campaigns.works.map((id) => works[id])) : '']));
 
   sections.push(island('contatti', 'Contatti', [card([
     element('h3', { textContent: texts.contact.title }),
@@ -356,71 +361,6 @@ function travel(id, smooth = true) {
   target.scrollIntoView({ behavior: smooth && !reducedMotion.matches ? 'smooth' : 'auto', block: 'start' });
 }
 
-// The opening, as at the start of the park: the shapes over the sky of the arrival. Scrolling down the
-// first screen each goes to its thing on the first island (the circle to the globe of the lamp, the
-// arc to the rim of the island, the crescent into the portal, the line onto the first work, the dots
-// onto the things beside) and melts there; scrolling up they come back. Come from the fork of the
-// park, the page takes the way on by itself.
-function opening(first) {
-  const layer = createForma(false);
-  layer.classList.add('apertura');
-  document.body.append(layer);
-  const span = () => innerHeight * 0.8;
-  const find = (part) => [...first.querySelectorAll('img.cosa')].find((img) => (img.getAttribute('src') ?? img.dataset.src ?? '').includes(part));
-  const square = (rect, share) => ({ left: rect.left + (rect.width * (1 - share)) / 2, top: rect.top, width: rect.width * share, height: rect.width * share });
-  function places(view) {
-    const land = first.querySelector('.isola__terra').getBoundingClientRect();
-    const lamp = find('lampione')?.getBoundingClientRect();
-    const statue = first.querySelector('.cosa--statua')?.getBoundingClientRect();
-    const work = first.querySelector('.opera__cornice')?.getBoundingClientRect();
-    const things = [...first.querySelectorAll('.cosa:not(.cosa--statua)')].map((img) => img.getBoundingClientRect());
-    const box = (rect) => rect && rect.width && fromScreen(rect, view);
-    return {
-      sole: box(lamp && square(lamp, 0.8)),
-      arco: box({ left: land.left, top: land.top, width: land.width, height: innerWidth < 768 ? 64 : 90 }),
-      luna: box(statue && square(statue, 0.5)),
-      linea: box(work && { left: work.left, top: work.top, width: work.width, height: 1 }),
-      ...Object.fromEntries(things.slice(0, 3).map((rect, i) => [`stella${i}`, box(square(rect, 0.3))])),
-    };
-  }
-  let drawn;
-  function draw() {
-    const gone = scrollY / span();
-    layer.hidden = gone >= 1;
-    if (layer.hidden) return;
-    drawn ??= shapes(layer);
-    if (!drawn) return;
-    const view = drawn.view();
-    const at = places(view);
-    const t = reducedMotion.matches ? 0 : settle(gone);
-    for (const shape of drawn.list) place(shape, mix(shape.start, at[shape.name] || shape.start, t), view);
-    layer.style.opacity = String(1 - settle((gone - 0.7) / 0.3));
-  }
-  let queued = false;
-  const later = () => {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(() => {
-      queued = false;
-      draw();
-    });
-  };
-  addEventListener('scroll', later, { passive: true });
-  addEventListener('resize', () => {
-    drawn = undefined;
-    later();
-  });
-  draw();
-  let handed = false;
-  try {
-    handed = sessionStorage.getItem('athena-flusso') === '1';
-    sessionStorage.removeItem('athena-flusso');
-  } catch {
-    // Without storage the page waits at its start.
-  }
-  if (handed && !location.hash && !reducedMotion.matches) setTimeout(() => scrollTo({ top: span(), behavior: 'smooth' }), 400);
-}
-
 async function start() {
   const json = (path) => fetch(path).then((response) => response.json());
   const [data, texts, manifest] = await Promise.all([json('data/works.json'), json('data/racconto.json'), json('img/sprites/manifest.json')]);
@@ -428,7 +368,6 @@ async function start() {
   const { works, sections } = build(data, texts);
   wake(sections);
   bar(sections);
-  opening(sections[1]);
 
   // The close view of the park, fetched when a work is first near the finger or the pointer. Opening a
   // work adds an entry to the history, so that Back closes it, as in the park.

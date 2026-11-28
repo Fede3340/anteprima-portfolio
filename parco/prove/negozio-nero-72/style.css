@@ -459,10 +459,6 @@ button {
   font-size: var(--size-s);
 }
 
-.foot__info .foot__concept {
-  color: var(--cream);
-  font-size: 1.0625rem;
-}
 
 .foot__top {
   justify-self: start;

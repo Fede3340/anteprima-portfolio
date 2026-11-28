@@ -1,5 +1,5 @@
 {
-  "count": 53,
+  "count": 54,
   "chapters": [
     {
       "id": "siti",
@@ -94,6 +94,13 @@
         "la-quintana",
         "festa-del-redentore",
         "oh-bej-oh-bej"
+      ]
+    },
+    {
+      "id": "google",
+      "title": "Campagne",
+      "works": [
+        "pippi-corto"
       ]
     }
   ],
@@ -996,12 +1003,12 @@
         "desktop": {
           "src": "media/works/operazione-africa/intera-desktop.webp",
           "w": 1440,
-          "h": 3894
+          "h": 3834
         },
         "phone": {
           "src": "media/works/operazione-africa/intera-phone.webp",
           "w": 780,
-          "h": 8774
+          "h": 8612
         }
       },
       "live": "prove/operazione-africa/"
@@ -2776,12 +2783,12 @@
         "desktop": {
           "src": "media/works/negozio-nero-72/intera-desktop.webp",
           "w": 1440,
-          "h": 2578
+          "h": 2514
         },
         "phone": {
           "src": "media/works/negozio-nero-72/intera-phone.webp",
           "w": 780,
-          "h": 6612
+          "h": 6318
         }
       },
       "live": "prove/negozio-nero-72/"
@@ -3060,7 +3067,7 @@
         "phone": {
           "src": "media/works/negozio-il-gatto/intera-phone.webp",
           "w": 780,
-          "h": 6394
+          "h": 6128
         }
       },
       "live": "prove/negozio-il-gatto/"
@@ -3327,12 +3334,12 @@
         "desktop": {
           "src": "media/works/negozio-mandorla/intera-desktop.webp",
           "w": 1440,
-          "h": 3744
+          "h": 3678
         },
         "phone": {
           "src": "media/works/negozio-mandorla/intera-phone.webp",
           "w": 780,
-          "h": 8956
+          "h": 8776
         }
       },
       "live": "prove/negozio-mandorla/"
@@ -3583,12 +3590,12 @@
         "desktop": {
           "src": "media/works/negozio-cerchi/intera-desktop.webp",
           "w": 1440,
-          "h": 3922
+          "h": 3848
         },
         "phone": {
           "src": "media/works/negozio-cerchi/intera-phone.webp",
           "w": 780,
-          "h": 11704
+          "h": 11342
         }
       },
       "live": "prove/negozio-cerchi/"
@@ -3676,7 +3683,7 @@
                     0.41,
                     0.5
                   ],
-                  "caption": "I fiori di croco e i fili già separati"
+                  "caption": "I fiori di croco nel campo"
                 }
               ]
             }
@@ -3802,14 +3809,14 @@
         "srcThumb": "media/works/negozio-tre-fili/cover-240.webp",
         "w": 1920,
         "h": 1200,
-        "alt": "Apertura del negozio di Tre Fili: «Ogni fiore ne dà tre fili. Li vendiamo interi.» e la fotografia dei fiori di croco con i fili separati"
+        "alt": "Apertura del negozio di Tre Fili: «Ogni fiore ne dà tre fili. Li vendiamo interi.» e la fotografia dei fiori di croco nel campo"
       },
       "gallery": [
         {
           "src": "media/works/negozio-tre-fili/01-2880.webp",
           "w": 2880,
           "h": 1800,
-          "alt": "Apertura del negozio di Tre Fili: «Ogni fiore ne dà tre fili. Li vendiamo interi.» e la fotografia dei fiori di croco con i fili separati",
+          "alt": "Apertura del negozio di Tre Fili: «Ogni fiore ne dà tre fili. Li vendiamo interi.» e la fotografia dei fiori di croco nel campo",
           "caption": "",
           "srcset": "media/works/negozio-tre-fili/01-1440.webp 1440w, media/works/negozio-tre-fili/01-2880.webp 2880w"
         },
@@ -3860,7 +3867,7 @@
         "phone": {
           "src": "media/works/negozio-tre-fili/intera-phone.webp",
           "w": 780,
-          "h": 10418
+          "h": 10176
         }
       },
       "live": "prove/negozio-tre-fili/"
@@ -4127,12 +4134,12 @@
         "desktop": {
           "src": "media/works/negozio-serra/intera-desktop.webp",
           "w": 1440,
-          "h": 3336
+          "h": 3298
         },
         "phone": {
           "src": "media/works/negozio-serra/intera-phone.webp",
           "w": 780,
-          "h": 9694
+          "h": 9554
         }
       },
       "live": "prove/negozio-serra/"
@@ -4220,7 +4227,7 @@
                     0.46,
                     0.6
                   ],
-                  "caption": "La sughera scortecciata e le lastre a terra"
+                  "caption": "Le sughere scortecciate lungo il sentiero"
                 }
               ]
             }
@@ -4346,14 +4353,14 @@
         "srcThumb": "media/works/negozio-scorza/cover-240.webp",
         "w": 1920,
         "h": 1200,
-        "alt": "Apertura del negozio di Scorza: «Il sughero si toglie all’albero. L’albero resta.» e la fotografia di una sughera scortecciata"
+        "alt": "Apertura del negozio di Scorza: «Il sughero si toglie all’albero. L’albero resta.» e la fotografia di un bosco di sughere scortecciate"
       },
       "gallery": [
         {
           "src": "media/works/negozio-scorza/01-2880.webp",
           "w": 2880,
           "h": 1800,
-          "alt": "Apertura del negozio di Scorza: «Il sughero si toglie all’albero. L’albero resta.» e la fotografia di una sughera scortecciata",
+          "alt": "Apertura del negozio di Scorza: «Il sughero si toglie all’albero. L’albero resta.» e la fotografia di un bosco di sughere scortecciate",
           "caption": "",
           "srcset": "media/works/negozio-scorza/01-1440.webp 1440w, media/works/negozio-scorza/01-2880.webp 2880w"
         },
@@ -4404,7 +4411,7 @@
         "phone": {
           "src": "media/works/negozio-scorza/intera-phone.webp",
           "w": 780,
-          "h": 8698
+          "h": 8456
         }
       },
       "live": "prove/negozio-scorza/"
@@ -4497,7 +4504,7 @@
                     0.47,
                     0.58
                   ],
-                  "caption": "Tazze e ciotole mezze smaltate ad asciugare"
+                  "caption": "Le mani che tirano su un vaso al tornio"
                 }
               ]
             }
@@ -4628,14 +4635,14 @@
         "srcThumb": "media/works/negozio-cotta/cover-240.webp",
         "w": 1920,
         "h": 1200,
-        "alt": "Apertura del negozio di Cotta: «Metà smalto, metà terra.» e le tazze ad asciugare sul banco"
+        "alt": "Apertura del negozio di Cotta: «Metà smalto, metà terra.» e le mani che tirano su un vaso al tornio"
       },
       "gallery": [
         {
           "src": "media/works/negozio-cotta/01-2880.webp",
           "w": 2880,
           "h": 1800,
-          "alt": "Apertura del negozio di Cotta: «Metà smalto, metà terra.» e le tazze ad asciugare sul banco",
+          "alt": "Apertura del negozio di Cotta: «Metà smalto, metà terra.» e le mani che tirano su un vaso al tornio",
           "caption": "",
           "srcset": "media/works/negozio-cotta/01-1440.webp 1440w, media/works/negozio-cotta/01-2880.webp 2880w"
         },
@@ -4686,7 +4693,7 @@
         "phone": {
           "src": "media/works/negozio-cotta/intera-phone.webp",
           "w": 780,
-          "h": 8650
+          "h": 8408
         }
       },
       "live": "prove/negozio-cotta/"
@@ -4774,7 +4781,7 @@
                     0.55,
                     0.66
                   ],
-                  "caption": "Il telaio col tappeto a metà e la spola"
+                  "caption": "Il telaio col tessuto a metà"
                 }
               ]
             }
@@ -4900,14 +4907,14 @@
         "srcThumb": "media/works/negozio-spola/cover-240.webp",
         "w": 1920,
         "h": 1200,
-        "alt": "Apertura del negozio di Spola: «Si tesse dopo il tuo ordine.» accanto al telaio col tappeto a metà"
+        "alt": "Apertura del negozio di Spola: «Si tesse dopo il tuo ordine.» accanto al telaio col tessuto a metà"
       },
       "gallery": [
         {
           "src": "media/works/negozio-spola/01-2880.webp",
           "w": 2880,
           "h": 1800,
-          "alt": "Apertura del negozio di Spola: «Si tesse dopo il tuo ordine.» accanto al telaio col tappeto a metà",
+          "alt": "Apertura del negozio di Spola: «Si tesse dopo il tuo ordine.» accanto al telaio col tessuto a metà",
           "caption": "",
           "srcset": "media/works/negozio-spola/01-1440.webp 1440w, media/works/negozio-spola/01-2880.webp 2880w"
         },
@@ -4953,12 +4960,12 @@
         "desktop": {
           "src": "media/works/negozio-spola/intera-desktop.webp",
           "w": 1440,
-          "h": 3378
+          "h": 3362
         },
         "phone": {
           "src": "media/works/negozio-spola/intera-phone.webp",
           "w": 780,
-          "h": 9112
+          "h": 8868
         }
       },
       "live": "prove/negozio-spola/"
@@ -12765,6 +12772,90 @@
           "srcset": "media/works/oh-bej-oh-bej/01-600.webp 600w, media/works/oh-bej-oh-bej/01-1200.webp 1200w, media/works/oh-bej-oh-bej/01-1744.webp 1744w"
         }
       ]
+    },
+    "pippi-corto": {
+      "index": 54,
+      "title": "pippi.store, il corto",
+      "kind": "cliente",
+      "tag": "",
+      "year": "2026",
+      "place": "",
+      "line": "Corto animato di 1 minuto e 24 per un negozio online: la vita di un cane accanto a una bambina che cresce, in un mondo di feltro.",
+      "facts": [
+        "Il cono blu torna lungo gli anni, sullo sfondo o in mano a lei."
+      ],
+      "story": [
+        {
+          "h": "L'idea",
+          "p": "Il film racconta un cucciolo che arriva nel letto di una bambina e la vita che fanno insieme: le corse per casa, la partenza di lei, il matrimonio, la casa nuova, un figlio."
+        },
+        {
+          "h": "Le scelte",
+          "p": "Il mondo del film è tutto di feltro, in miniatura, con la luce calda di una finestra; la camera sta quasi sempre all’altezza del cane, perché è la vita di lei vista da lui."
+        },
+        {
+          "h": "Dove si vede",
+          "p": "Dura 1 minuto e 24, in verticale, per il telefono."
+        }
+      ],
+      "cover": {
+        "src": "media/works/pippi-corto/cover-1920.webp",
+        "srcMobile": "media/works/pippi-corto/cover-960.webp",
+        "srcThumb": "media/works/pippi-corto/cover-240.webp",
+        "w": 1920,
+        "h": 1200,
+        "alt": "Tre fotogrammi del corto affiancati: un cucciolo di feltro su una coperta a maglia, una bambina con la mantellina rossa che lo porta a spasso di sera, una ragazza e il cane che corrono sulla spiaggia al tramonto"
+      },
+      "gallery": [
+        {
+          "src": "media/works/pippi-corto/01-720.webp",
+          "w": 720,
+          "h": 1280,
+          "alt": "Un cucciolo di feltro color crema accucciato su una coperta a maglia",
+          "caption": ""
+        },
+        {
+          "src": "media/works/pippi-corto/02-720.webp",
+          "w": 720,
+          "h": 1280,
+          "alt": "Una bambina di feltro con mantellina e stivali rossi porta a spasso il cucciolo davanti a casa, di sera",
+          "caption": ""
+        },
+        {
+          "src": "media/works/pippi-corto/03-720.webp",
+          "w": 720,
+          "h": 1280,
+          "alt": "La ragazza e il cane corrono sulla spiaggia al tramonto, visti di spalle",
+          "caption": ""
+        },
+        {
+          "src": "media/works/pippi-corto/04-720.webp",
+          "w": 720,
+          "h": 1280,
+          "alt": "Gli sposi di feltro uno di fronte all’altra, con le bandierine dietro",
+          "caption": ""
+        },
+        {
+          "src": "media/works/pippi-corto/05-720.webp",
+          "w": 720,
+          "h": 1280,
+          "alt": "La famiglia addormentata sul letto vista dall’alto: il cane, lei e lui",
+          "caption": ""
+        }
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/pippi-corto/intera-desktop.webp",
+          "w": 1440,
+          "h": 900
+        },
+        "phone": {
+          "src": "media/works/pippi-corto/intera-phone.webp",
+          "w": 780,
+          "h": 1800
+        }
+      },
+      "live": "prove/pippi-corto/"
     }
   }
 }

@@ -505,12 +505,25 @@ export function createStory(root, { works, sound, onClose }) {
   function wake(screen) {
     if (!screen.live || screen.querySelector('iframe')) return;
     const frame = element('iframe', { src: screen.live, title: `${work.title}, versione da usare` });
-    frame.addEventListener('load', () => screen.classList.add('is-live'), { once: true });
+    frame.addEventListener('load', () => {
+      screen.classList.add('is-live');
+      // While one of its videos plays, the park is quiet.
+      for (const video of frame.contentDocument?.querySelectorAll('video') ?? []) {
+        video.addEventListener('play', () => sound.quiet(true));
+        for (const type of ['pause', 'ended']) video.addEventListener(type, () => sound.quiet(false));
+      }
+    }, { once: true });
     screen.querySelector('.case-screen__view').append(frame);
   }
+  // The videos of the working versions stopped, and the park's sound back.
+  const hush = () => {
+    for (const frame of root.querySelectorAll('iframe')) frame.contentDocument?.querySelectorAll('video').forEach((video) => video.pause());
+    sound.quiet(false);
+  };
   const unfull = () => {
     const open = root.querySelector('.case-screen.is-full');
     open?.classList.remove('is-full');
+    if (open) hush();
     return Boolean(open);
   };
   frame.addEventListener('click', (event) => {
@@ -927,6 +940,7 @@ export function createStory(root, { works, sound, onClose }) {
     async close(point) {
       if (root.hidden) return;
       unzoom();
+      hush();
       sound.play('whoosh');
       await grow(point, false);
       root.hidden = true;

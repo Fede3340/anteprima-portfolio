@@ -225,7 +225,6 @@ button.cell:not(:disabled) { cursor: pointer; }
 .foot-body { padding: 40px var(--gutter) 48px; background: var(--bosco); color: var(--glassa); }
 .foot-word { width: auto; height: 40px; }
 .foot-notes { display: grid; gap: 12px; margin-top: 24px; max-width: 40rem; font-size: var(--t-s); }
-.foot-concept { font-weight: 600; }
 
 /* Cart */
 .scrim { position: fixed; inset: 0; z-index: 30; background: rgba(33, 54, 41, .45); opacity: 0; transition: opacity .3s; }

@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { placed } from './instances.js';
 import { createStones, heightAt, islandAt } from './land.js';
 import { mouth } from './layout.js';
-import { createSprite, forming } from './sprites.js';
+import { createSprite } from './sprites.js';
 import { createWater } from './water.js';
 
 // What grows on each island: a few groups, each a thing and what grows at its foot ([pictures, the
@@ -408,7 +408,7 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   // Pictures that move by themselves are turned to the eyes every frame; the others only when the
   // eyes have moved.
   const moving = new Set([high, swingCloud, seat, lit, dark]);
-  const eyes = { x: Infinity, z: Infinity };
+  const eyes = { x: Infinity, y: Infinity, z: Infinity };
 
   return {
     object,
@@ -480,9 +480,9 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
         dark.spots[index].hidden = spot.level >= 0.5;
       });
       pools.level.needsUpdate = true;
-      const moved = Math.hypot(camera.position.x - eyes.x, camera.position.z - eyes.z) > 1e-4;
+      const moved = Math.hypot(camera.position.x - eyes.x, camera.position.y - eyes.y, camera.position.z - eyes.z) > 1e-4;
       if (moved) {
-        Object.assign(eyes, { x: camera.position.x, z: camera.position.z });
+        Object.assign(eyes, { x: camera.position.x, y: camera.position.y, z: camera.position.z });
         // The body of an island hangs on the side facing the eyes; seen from on it, in its middle.
         for (const { drawn, spots } of bodies) {
           spots.forEach(({ island, forward }, index) => {
@@ -494,7 +494,7 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
           });
         }
       }
-      for (const drawn of made) if (moved || moving.has(drawn) || forming.value < 1) drawn.face(camera);
+      for (const drawn of made) if (moved || moving.has(drawn)) drawn.face(camera);
     },
   };
 }

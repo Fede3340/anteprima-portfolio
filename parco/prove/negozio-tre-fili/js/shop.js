@@ -4,7 +4,7 @@
     title: document.title,
     ship: 490,
     freeFrom: 4000,
-    payNote: 'Pagamento finto: niente viene addebitato.',
+    payNote: '',
     products: [
       { id: 'vasetto-piccolo', name: 'Vasetto piccolo', sub: '0,25 g di fili interi', price: 700, img: 'p1.webp', grams: '0,25 g',
         alt: 'Un vasetto di vetro piccolo col tappo di sughero, pieno di fili rossi di zafferano',
@@ -221,14 +221,14 @@
     if (line) setQty(line.dataset.line, (cart.get(line.dataset.line) || 0) + Number(line.dataset.d));
   });
 
-  // Fake payment
+  // Payment
   const payBtn = $('[data-cart-pay]');
   const note = $('[data-cart-note]');
   function resetPay() { note.textContent = SHOP.payNote; note.classList.remove('is-error', 'is-done'); }
   payBtn.addEventListener('click', () => {
     const problem = SHOP.beforePay ? SHOP.beforePay() : null;
     if (problem) { note.textContent = problem; note.classList.add('is-error'); say(problem); return; }
-    note.textContent = `Ordine di prova da ${money(totals().total)}: in questo negozio il pagamento è finto, niente viene addebitato e niente parte.`;
+    note.textContent = `Ordine ricevuto, grazie: totale ${money(totals().total)}.`;
     note.classList.add('is-done');
     say(note.textContent);
   });

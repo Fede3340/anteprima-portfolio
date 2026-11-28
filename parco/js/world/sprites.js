@@ -20,10 +20,6 @@ const RANK = { light: 0, small: 1, large: 2 };
 // Every cut-out made, by the name the park gives it, so that the light can give it an accent.
 export const drawn = new Set();
 
-// How far the park has taken shape, 0 to 1: the cut-outs grow from their foot as it rises (the door
-// sets it while one goes in).
-export const forming = { value: 1 };
-
 export function createSprite(entry, count, { renderer, fog = true, anchor = entry.anchor ?? [0.5, 0] }) {
   // Cut out at half alpha and drawn as solid: no pale rim, and pictures in front hide those behind
   // instead of being added on top of them.
@@ -83,8 +79,7 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
         }
         q.setFromAxisAngle(up, Math.atan2(camera.position.x - spot.x, camera.position.z - spot.z));
         if (spot.roll) q.multiply(roll.setFromAxisAngle(forward, spot.roll));
-        const height = spot.height * forming.value;
-        mesh.setMatrixAt(index, m.compose(p.set(spot.x, spot.y, spot.z), q, s.set(height * aspect, height, 1)));
+        mesh.setMatrixAt(index, m.compose(p.set(spot.x, spot.y, spot.z), q, s.set(spot.height * aspect, spot.height, 1)));
       });
       mesh.instanceMatrix.needsUpdate = true;
       mesh.computeBoundingSphere();

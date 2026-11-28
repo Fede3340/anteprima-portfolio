@@ -409,7 +409,7 @@
   };
 
   cartDialog.querySelector(".pay").addEventListener("click", () => {
-    payNote.textContent = `Pagamento finto: questo negozio è un concept, quindi non parte nessun ordine e non si paga niente. Il totale sarebbe ${money(totals().all)}.`;
+    payNote.textContent = `Ordine ricevuto, grazie: totale ${money(totals().all)}.`;
   });
   document.querySelector(".cart-toggle").addEventListener("click", () => cartDialog.showModal());
 

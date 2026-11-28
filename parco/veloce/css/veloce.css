@@ -38,11 +38,15 @@ html.veloce:has(.story:not([hidden])) {
   scroll-margin-top: calc(var(--top) + 52px);
 }
 
-/* The arrival: who, in one sentence, and at once the first island. */
+/* The arrival: who, in one sentence, and at once the first island. The sun of the dawn is only
+   light in its sky, low and to the side: part of the background, it scrolls away with it and never
+   crosses a word or a work. */
 .arrivo {
   position: relative;
   padding: calc(var(--top) + 80px) var(--gutter) 4px;
-  background: linear-gradient(var(--h-top), var(--next-top));
+  background:
+    radial-gradient(circle at calc(100% - var(--gutter) - 40px) calc(var(--top) + 96px), #fff4dc 0, #ffd9a0 20px, rgb(255 170 100 / 0.35) 50px, rgb(255 170 100 / 0) 180px),
+    linear-gradient(var(--h-top), var(--next-top));
 }
 
 .arrivo__dentro {
@@ -364,8 +368,11 @@ html.veloce:has(.story:not([hidden])) {
   visibility: hidden;
 }
 
+/* Before its picture comes, the words that stand for it take no room: the frame keeps its shape and
+   nothing under it moves when the picture arrives. */
 .opera__immagine:not([src]) {
   color: transparent;
+  font-size: 0;
 }
 
 /* The cards of the arrival, of Google and of the contacts, as in the park. */
@@ -568,17 +575,4 @@ html.veloce:has(.story:not([hidden])) {
     transform: none;
     transition: opacity 0.3s ease;
   }
-}
-
-/* The opening (js/forma.js) over the sky of the arrival, under its words: scrolling down the first
-   screen its shapes go to their things on the first island. */
-.apertura {
-  position: fixed;
-  z-index: 1;
-  inset: 0;
-  pointer-events: none;
-}
-
-.arrivo__dentro {
-  z-index: 2;
 }

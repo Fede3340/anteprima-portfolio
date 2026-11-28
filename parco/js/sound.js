@@ -38,6 +38,8 @@ export function createSound(button) {
   let context;
   let master;
   let on = false;
+  // Silenced while a video of a work plays (js/story.js).
+  let hushed = false;
   let lastDrop = -Infinity;
 
   function ramp(param, value, seconds) {
@@ -82,7 +84,7 @@ export function createSound(button) {
     }
     context.resume();
     for (const bed of Object.values(beds)) bed.audio.play().catch((error) => console.warn(error));
-    ramp(master.gain, MASTER, BED_RISE);
+    ramp(master.gain, hushed ? 0 : MASTER, BED_RISE);
   }
 
   function set(value) {
@@ -115,8 +117,13 @@ export function createSound(button) {
     begin(wanted) {
       set(wanted && remembered() !== 'off');
     },
+    // A video of a work playing: everything goes quiet, as with the switch, and comes back after.
+    quiet(value) {
+      hushed = value;
+      if (on && context) ramp(master.gain, hushed ? 0 : MASTER, SWITCH_FADE);
+    },
     play(name) {
-      if (!on || !decoded[name] || context.state !== 'running') return false;
+      if (!on || hushed || !decoded[name] || context.state !== 'running') return false;
       if (name === 'drop') {
         if (context.currentTime - lastDrop < DROP_GAP) return false;
         lastDrop = context.currentTime;

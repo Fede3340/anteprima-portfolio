@@ -20,7 +20,7 @@
     title: document.title,
     ship: 990,
     freeFrom: 15000,
-    payNote: 'Pagamento finto: niente viene addebitato.',
+    payNote: '',
     products: [
       { id: 'corno-8', name: 'Coltello da tasca, corno', sub: 'Lama 8 cm, manico in corno di montone', price: 12000, img: 'p1.webp', r: { blade: 8, closed: 11, open: 19 },
         alt: 'Un coltello a serramanico aperto con la lama a foglia e il manico di corno color miele, su ardesia scura',
@@ -49,20 +49,20 @@
       return document.querySelector('[data-age]').checked ? null : 'Per comprare un coltello conferma di avere almeno 18 anni.';
     },
     init() {
-      const box = document.querySelector('[data-demo-ruler]');
-      const read = document.querySelector('[data-demo-read]');
-      const buttons = [...document.querySelectorAll('[data-demo]')];
+      const box = document.querySelector('[data-pick-ruler]');
+      const read = document.querySelector('[data-pick-read]');
+      const buttons = [...document.querySelectorAll('[data-pick]')];
       const knives = SHOP.products.filter((p) => p.r.blade);
       const show = (blade) => {
         const p = knives.find((k) => k.r.blade === blade);
         box.innerHTML = ruler(p.r, true);
         read.textContent = `${p.name}: ${reading(p.r)}`;
-        buttons.forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.demo) === blade)));
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.pick) === blade)));
         const bar = box.querySelector('.r-blade');
         bar.classList.add('is-opening');
         requestAnimationFrame(() => requestAnimationFrame(() => bar.classList.remove('is-opening')));
       };
-      buttons.forEach((b) => b.addEventListener('click', () => show(Number(b.dataset.demo))));
+      buttons.forEach((b) => b.addEventListener('click', () => show(Number(b.dataset.pick))));
       show(8);
     },
   };
@@ -222,14 +222,14 @@
     if (line) setQty(line.dataset.line, (cart.get(line.dataset.line) || 0) + Number(line.dataset.d));
   });
 
-  // Fake payment
+  // Payment
   const payBtn = $('[data-cart-pay]');
   const note = $('[data-cart-note]');
   function resetPay() { note.textContent = SHOP.payNote; note.classList.remove('is-error', 'is-done'); }
   payBtn.addEventListener('click', () => {
     const problem = SHOP.beforePay ? SHOP.beforePay() : null;
     if (problem) { note.textContent = problem; note.classList.add('is-error'); say(problem); return; }
-    note.textContent = `Ordine di prova da ${money(totals().total)}: in questo negozio il pagamento è finto, niente viene addebitato e niente parte.`;
+    note.textContent = `Ordine ricevuto, grazie: totale ${money(totals().total)}.`;
     note.classList.add('is-done');
     say(note.textContent);
   });

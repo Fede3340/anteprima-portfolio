@@ -12,6 +12,23 @@ const BOB = 0.025;
 const HELD = 0.42;
 
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+const { smoothstep } = THREE.MathUtils;
+
+// THE ARRIVAL (js/threshold.js): the way down from the sky to where the walk begins, at a share of it
+// from 0 to 1. At 0 the eyes are HIGH metres over that point and BACK metres behind it, looking up a
+// little towards the sun of dawn, TURN aside; halfway they look down at the island ahead; at 1 they
+// stand where the walk begins, looking where it looks. Down steeply first, then gliding in.
+const HIGH = 150;
+const BACK = 150;
+const TURN = -0.2;
+export function descend(state, share, pos, look) {
+  const back = BACK * (1 - share) ** 1.4;
+  pos.set(state.x - Math.cos(state.heading) * back, state.y + EYE + HIGH * (1 - share) ** 2.2, state.z - Math.sin(state.heading) * back);
+  const pitch = 0.16 - 0.38 * smoothstep(share, 0.04, 0.42) + (state.pitch + 0.22) * smoothstep(share, 0.62, 1);
+  const angle = state.heading + TURN * (1 - smoothstep(share, 0.04, 0.6));
+  const flat = Math.cos(pitch);
+  look.set(pos.x + Math.cos(angle) * flat * 10, pos.y + Math.sin(pitch) * 10, pos.z + Math.sin(angle) * flat * 10);
+}
 
 export function createRig(camera, plan) {
   const pos = new THREE.Vector3(0, 80, 160);
@@ -22,6 +39,7 @@ export function createRig(camera, plan) {
   let tween;
   let mode = 'far';
   let held;
+  let descent = 0;
   const tanHalf = () => Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
 
   function walk(state) {
@@ -60,6 +78,10 @@ export function createRig(camera, plan) {
     get mode() {
       return mode;
     },
+    // How far down the way from the sky the eyes are, in 'arrive' (0 to 1).
+    set descent(share) {
+      descent = share;
+    },
     fit(width, height) {
       camera.aspect = width / height;
       camera.fov = camera.aspect < 1 ? 72 : 55;
@@ -79,6 +101,7 @@ export function createRig(camera, plan) {
       if (mode === 'far') far(time);
       else if (mode === 'above') above();
       else if (mode === 'hold') hold();
+      else if (mode === 'arrive') descend(state, descent, wantPos, wantLook);
       else walk(state);
       if (tween) {
         const t = Math.min(1, (performance.now() - tween.start) / (tween.seconds * 1000));
