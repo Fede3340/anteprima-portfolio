@@ -18,7 +18,7 @@ const GARDENS = {
   ingresso: { groups: 4, of: [['albero-medio'], ['cespuglio-1'], ['ciuffo-2']], also: [[['albero-grande'], 2, 0.5], [['albero-piccolo'], 3, 0.3]] },
   siti: { groups: 6, of: [['albero-grande'], ['albero-medio'], ['albero-piccolo'], ['cespuglio-1'], ['ciuffo-2']], also: [[['tronco-alto'], 3, 0.6]] },
   negozi: { groups: 5, of: [['albero-frutti'], ['albero-frutti'], ['cassette'], ['ciuffo-2']] },
-  programmi: { groups: 5, of: [['siepe-squadrata'], ['siepe-squadrata'], ['sasso'], ['sasso'], ['ciuffo-1']], also: [[['gradini'], 2, 0.5]] },
+  programmi: { groups: 6, of: [['siepe-squadrata'], ['siepe-squadrata'], ['siepe-squadrata'], ['sasso'], ['ciuffo-1']], also: [[['gradini'], 2, 0.5]] },
   app: { groups: 3, of: [['albero-medio'], ['cespuglio-1'], ['ciuffo-2']] },
   videogioco: { groups: 3, of: [['cespuglio-2'], ['nuvola-a-terra'], ['ciuffo-2']], also: [[['scivolo'], 1, 0.3], [['aquilone'], 3, 0.6]] },
   marchi: { groups: 6, of: [['aiuola'], ['fiore-1'], ['fiore-2'], ['fiore-2']] },
@@ -26,6 +26,8 @@ const GARDENS = {
   google: { groups: 2, of: [['albero-piccolo'], ['sasso'], ['ciuffo-1']], also: [[['panchina'], 1, 0.9]] },
   contatti: { groups: 2, of: [['albero-medio'], ['cespuglio-1'], ['ciuffo-2']], also: [[['cassetta-posta'], 1, 0.4]] },
 };
+// Pictures drawn taller than their own height, to be seen from the next island: the square hedges.
+const TALLER = { 'siepe-squadrata': 1.7 };
 // The islets around the first island, each its own little garden; their trees stand close together.
 const ISLETS = {
   stagno: { also: [[['albero-medio'], 1], [['albero-piccolo'], 2], [['cespuglio-1'], 3], [['ciuffo-2'], 6]] },
@@ -212,7 +214,8 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
       const at = (r) => ({ x: pond.x + Math.cos(a) * r, z: pond.z + Math.sin(a) * r });
       if (behind > -0.2 && i % 2) plant(['nuvola-a-terra'], at(pond.r + 0.45 + roll() * 0.3), 0.6 + 0.4 * behind + roll() * 0.2);
       else if (behind <= -0.2) plant(['ciuffo-1'], at(pond.r + 0.5), 0.3);
-      if (i % 3 === 1 && behind > -0.5) plant(['tifa', 'canne'], at(pond.r + 0.1), 1.6 + roll() * 0.6);
+      // Reeds as tall as the pond is wide: on the App's island they are seen from the next one.
+      if (i % 3 === 1 && behind > -0.5) plant(['tifa', 'canne'], at(pond.r + 0.1), 0.9 + pond.r * 0.45 + roll() * 0.6);
     }
     for (const [dx, dz] of [[0.3, -0.35], [-0.45, 0.2]]) plant(['ninfea'], { x: pond.x + dx * pond.r, z: pond.z + dz * pond.r, y: pond.level }, 0.45);
     // On the App's island a jetty runs from the near rim into the water.
@@ -220,7 +223,7 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   }
   // Each island's and islet's garden (GARDENS); spacing: how far apart single things stand, as a share
   // of the width of their picture.
-  const put = (name, spot, home) => (gardens[name] ??= []).push({ ...spot, home, height: (picture(name).metres ?? 1) * (0.8 + roll() * 0.4) });
+  const put = (name, spot, home) => (gardens[name] ??= []).push({ ...spot, home, height: (picture(name).metres ?? 1) * (TALLER[name] ?? 1) * (0.8 + roll() * 0.4) });
   const grow = (island, { groups = 0, of = [], also = [] }, spacing, home) => {
     for (let g = 0; g < groups; g++) {
       const centre = freeSpot(island, 1.2, undefined, 0.45);
@@ -357,10 +360,10 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   }
   ['sbuffo-2', 'sbuffo-1', 'sbuffo-3'].forEach((name, k) => sprite(name, beside.filter((_, i) => i % 3 === k)));
   const bodies = Object.entries(sheets).map(([name, spots]) => ({ drawn: sprite(name, spots), spots }));
-  // Grass of cloud, in little tufts all over the floors.
+  // Grass of cloud, a few little tufts over the floors, with free ground between.
   const tufts = [];
   for (const island of plan.islands) {
-    for (let i = 0; i < island.radius * 5; i++) {
+    for (let i = 0; i < island.radius * 2; i++) {
       const spot = freeSpot(island, 0.25);
       if (spot) tufts.push({ ...spot, height: 0.3 + roll() * 0.5 });
     }

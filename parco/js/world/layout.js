@@ -124,10 +124,10 @@ export function planPark(data, texts) {
   const across = (p) => Math.min(...Array.from({ length: 11 }, (_, k) => p.distanceTo(app.arrival.clone().lerp(mouth(null, app, app.out), k / 10).setY(app.centre.y))));
   const [spot] = Array.from({ length: 24 }, (_, i) => {
     const a = (i / 24) * Math.PI * 2;
-    const p = v(app.centre.x + Math.cos(a) * app.radius * 0.45, app.centre.y, app.centre.z + Math.sin(a) * app.radius * 0.45);
+    const p = v(app.centre.x + Math.cos(a) * app.radius * 0.42, app.centre.y, app.centre.z + Math.sin(a) * app.radius * 0.42);
     return { p, room: Math.min(across(p), ...keep.map((at) => Math.hypot(p.x - at.x, p.z - at.z))) };
   }).sort((a, b) => b.room - a.room);
-  ponds.push({ island: app, ...pick(spot.p), r: 2.6, level: app.centre.y - 0.05 });
+  ponds.push({ island: app, ...pick(spot.p), r: 3.4, level: app.centre.y - 0.05 });
   return { islands, zones, works, paths, landing: first, islets, links, ponds };
 }
 
