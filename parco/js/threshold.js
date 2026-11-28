@@ -42,6 +42,20 @@ const PARK = 0.56;
 const shareOf = (scrolled) => scrolled + (SLOW * Math.sin(2 * Math.PI * scrolled)) / (2 * Math.PI);
 const { smoothstep } = THREE.MathUtils;
 
+// The cut-outs of the arrival turned wholly to the eyes, up and down too (those of the park turn only
+// round the vertical, sprites.js): seen from above or below on the way down they would shrink in
+// height and look stretched.
+const turned = new THREE.Matrix4();
+const at3 = new THREE.Vector3();
+const size = new THREE.Vector3();
+function faceWholly(sprite, camera) {
+  sprite.spots.forEach((spot, index) => {
+    sprite.mesh.setMatrixAt(index, turned.compose(at3.set(spot.x, spot.y, spot.z), camera.quaternion, size.set(spot.height * sprite.aspect, spot.height, 1)));
+  });
+  sprite.mesh.instanceMatrix.needsUpdate = true;
+  sprite.mesh.computeBoundingSphere();
+}
+
 // A cut-out faded to a share of itself: drawn see-through while it is not whole.
 function fade(material, k) {
   material.opacity = k;
@@ -337,7 +351,7 @@ export function createThreshold(root, { onSound, onArrive }) {
           if (root.hidden) return;
           planets = world.scene.children.filter((mesh) => mesh.userData.planet);
           update(dt);
-          for (const sprite of sprites) sprite.face(camera);
+          for (const sprite of sprites) faceWholly(sprite, camera);
         },
       });
       world.on({
