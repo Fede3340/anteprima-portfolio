@@ -1,8 +1,9 @@
 // The sculpted things of the park are pictures: cut-outs standing on the ground that always turn to
 // whoever walks, around the vertical axis only. They are already lit in the picture, so the scene's
-// light does not touch them; the mood brightens or dims them all a little. Each picture has a small
-// and a large file: the large one is fetched only where it is needed.
+// light does not touch them; the three tones of the hour colour them (grade.js). Each picture has a
+// small and a large file: the large one is fetched only where it is needed.
 import * as THREE from 'three';
+import { grade, ownTones } from './grade.js';
 import { fadeIn, loadTexture } from './textures.js';
 
 const m = new THREE.Matrix4();
@@ -15,19 +16,15 @@ const forward = new THREE.Vector3(0, 0, 1);
 // A plane one metre high with its foot at the origin; the pivot of a piece can move its origin.
 const plane = (ax = 0.5, ay = 0) => new THREE.PlaneGeometry(1, 1).translate(0.5 - ax, 0.5 - ay, 0);
 
-export const tint = { value: 1 };
-const materials = new Set();
-
-export function setTint(value) {
-  tint.value = value;
-  for (const material of materials) material.color.setScalar(value);
-}
+// Every cut-out made, by the name the park gives it, so that the light can give it an accent.
+export const drawn = new Set();
 
 export function createSprite(entry, count, { renderer, fog = true, anchor = entry.anchor ?? [0.5, 0] }) {
   // Cut out at half alpha and drawn as solid: no pale rim, and pictures in front hide those behind
   // instead of being added on top of them.
-  const material = new THREE.MeshBasicMaterial({ alphaTest: 0.5, fog, color: new THREE.Color().setScalar(tint.value) });
-  materials.add(material);
+  const material = new THREE.MeshBasicMaterial({ alphaTest: 0.5, fog });
+  const tone = ownTones();
+  grade(material, tone);
   const mesh = new THREE.InstancedMesh(plane(...anchor), material, count);
   // Nothing shows until its picture has arrived.
   mesh.visible = false;
@@ -52,8 +49,9 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
       if (first) fadeIn(material, { alphaTest: 0.5 });
     }, (error) => console.warn(error));
   }
-  return {
+  const sprite = {
     mesh,
+    tone,
     spots,
     use,
     // The picture let go, until it is asked for again.
@@ -80,4 +78,6 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
       mesh.computeBoundingSphere();
     },
   };
+  drawn.add(sprite);
+  return sprite;
 }

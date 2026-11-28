@@ -1,31 +1,204 @@
-// The mood of each island, told only by light: the height and strength of the sun and of the sky, the
-// brightness of the pictures, the lamps, how far the haze lets one see. Walking a path from one island
-// to the next the light passes from one to the other, never in a jump; colours stay what they are.
+// The light of the park is the hour of the day: each island has its hour (MOODS in layout.js) and the
+// light passes from one to the next along the paths, never in a jump. The hour gives the sky, the sun,
+// the sea of clouds, the haze, the lamps, the planets, and the three tones every plaster surface takes
+// (grade.js). Standing before a work, the light leans a little to the colour of its cover.
 import * as THREE from 'three';
-import { LIGHT } from './world.js';
-import { setTint } from './sprites.js';
+import { grade, pools, tones } from './grade.js';
+import { LENGTH, hourLight } from './hours.js';
+import { MOODS } from './layout.js';
+import { createSkyMaterial } from './sky.js';
+import { createSprite, drawn } from './sprites.js';
+import { asset } from '../media.js';
 
-const AZIMUTH = Math.atan2(LIGHT.sunDirection[2], LIGHT.sunDirection[0]);
+// Less sky and more sun than world.js gives: the side towards the sun reaches the light tone, the
+// side away from it the half tone, the folds and undersides the shade.
+const SKY = 1.9;
+const SUN = 2.4;
+// Planets: [name, degrees to the right of the arrival's look, degrees above the horizon], far away.
+const PLANETS = [['pianeta-anello', -33, 13], ['pianeta-luna', -10, 19], ['pianeta-fasce', 150, 16], ['pianeta-piccolo', 70, 24]];
+const PLANET_DISTANCE = 650;
+// Before a work: how much each tone leans to the cover's colour, and how soon (seconds).
+const LEAN = { lit: 0.16, half: 0.12, shade: 0.07, time: 0.17 };
+const STAND = 7.5;
+const LAMP_GLOW = new THREE.Color('#ffc887');
 
-export function createLight({ plan, sky, sun, fog, park }) {
-  const mix = (a, b, t) => a + (b - a) * t;
-  const now = { ...plan.islands[0].mood };
+export function createLight({ plan, sky, sun, fog, park, renderer }) {
+  const scene = sky.parent;
+  const meshes = scene.children;
+  // The sky's sphere wears the sky of the hour.
+  const dome = meshes.find((mesh) => mesh.renderOrder === -1 && mesh.material.uniforms?.horizon);
+  const heavens = createSkyMaterial();
+  dome.material = heavens;
+  const u = heavens.uniforms;
+  const sea = meshes.find((mesh) => mesh.material?.uniforms?.uCloud);
+  // Ground, bodies and stones; on the light way their materials change, and the new ones are graded too.
+  const ground = meshes.filter((mesh) => mesh.material?.isMeshLambertMaterial);
+  const graded = new WeakSet();
+  const [shadows, patches] = [1, 2].map((order) => park.object.children.find((mesh) => mesh.renderOrder === order && mesh.material.uniforms?.colour));
+  // The pools of the lamps are painted by the floor itself (grade.js), following its bumps; the flat
+  // patches park.js lays for them would sink into the floor, so they are not drawn.
+  patches.visible = false;
+  const lamps = Array.from({ length: patches.count }, (_, index) => {
+    const at = new THREE.Matrix4();
+    patches.getMatrixAt(index, at);
+    return { x: at.elements[12], z: at.elements[14], index, d: 0 };
+  });
+  const lampLevels = patches.geometry.attributes.level.array;
+  const screens = [];
+  scene.traverse((mesh) => {
+    if (mesh.userData.index !== undefined && mesh.isMesh && !mesh.isInstancedMesh) screens[mesh.userData.index] = mesh;
+  });
+
+  // The look on arrival, read on the first frame: the sun of dawn stands just left of it, low over the
+  // sea of clouds, in sight on a phone too, and the planets are placed from it.
+  let ahead;
+  const direction = (right, up, out = new THREE.Vector3()) => {
+    const a = ahead + THREE.MathUtils.degToRad(right);
+    const e = THREE.MathUtils.degToRad(up);
+    return out.set(Math.cos(a) * Math.cos(e), Math.sin(e), Math.sin(a) * Math.cos(e));
+  };
+
+  // The island's colours on its cut-outs, and a warm globe on the lit lamps.
+  const toned = (sprite) => {
+    sprite.mesh.material.userData.toned = true;
+    sprite.mesh.material.needsUpdate = true;
+  };
+  for (const sprite of drawn) {
+    const colour = Object.values(MOODS).find((mood) => mood.on?.[sprite.name])?.on[sprite.name];
+    if (colour) {
+      sprite.tone.uAccent.value.set(...new THREE.Color(colour).toArray(), 0.72);
+      toned(sprite);
+    }
+    if (sprite.name === 'lampione') {
+      sprite.tone.uAccent.value.set(...LAMP_GLOW.toArray(), 1);
+      sprite.tone.uAccentFrom.value = 0.8;
+      toned(sprite);
+    }
+  }
+
+  // The planets, still in the sky, as far as the sky goes; they need the renderer to be fetched.
+  const planets = [];
+  const makePlanets = (drawer) => fetch(asset('img/sprites/manifest.json')).then((answer) => answer.json()).then((manifest) => {
+    for (const [name, right, up] of PLANETS) {
+      const entry = manifest[name];
+      if (!entry) continue;
+      const width = 2 * PLANET_DISTANCE * Math.tan(THREE.MathUtils.degToRad(entry.larghezza_gradi / 2));
+      const planet = createSprite({ w: entry.larghezza, h: entry.altezza, small: { file: `img/sprites/${entry.file_1024}` } }, 1, { renderer: drawer, fog: false, anchor: [0.5, 0.5] });
+      const at = direction(right, up).multiplyScalar(PLANET_DISTANCE);
+      Object.assign(planet.spots[0], { x: at.x, y: at.y, z: at.z, height: width * (entry.altezza / entry.larghezza) });
+      planet.mesh.renderOrder = -1;
+      toned(planet);
+      scene.add(planet.mesh);
+      planet.use('small');
+      planets.push(planet);
+    }
+  }, (error) => console.warn(error));
+  // Without the renderer given, the sky hands it over when first drawn.
+  if (!renderer) dome.onBeforeRender = (drawer) => {
+    dome.onBeforeRender = () => {};
+    makePlanets(drawer);
+  };
+
+  // The colour of a cover: its picture taken down to 8 by 8, each pixel counting as much as it is
+  // coloured, so that a white page with a red mark gives the red (story.js takes a palette's liveliest).
+  const covers = {};
+  const sample = Object.assign(document.createElement('canvas'), { width: 8, height: 8 }).getContext('2d', { willReadFrequently: true });
+  function coverColour(spot) {
+    if (covers[spot.id]) return covers[spot.id];
+    const image = screens[plan.works.indexOf(spot)]?.material.map?.image;
+    if (!image) return undefined;
+    sample.drawImage(image, 0, 0, 8, 8);
+    const data = sample.getImageData(0, 0, 8, 8).data;
+    const sum = [0, 0, 0, 0];
+    for (let at = 0; at < data.length; at += 4) {
+      const [r, g, b] = data.slice(at, at + 3);
+      const weight = (Math.max(r, g, b) - Math.min(r, g, b)) / 255 + 0.05;
+      for (let c = 0; c < 3; c++) sum[c] += (data[at + c] / 255) * weight;
+      sum[3] += weight;
+    }
+    covers[spot.id] = new THREE.Color().setRGB(sum[0] / sum[3], sum[1] / sum[3], sum[2] / sum[3], THREE.SRGBColorSpace);
+    return covers[spot.id];
+  }
+
+  const hourOf = (index) => MOODS[plan.islands[index].id].hour;
+  let hour = hourOf(plan.landing.index);
+  const now = hourLight(hour);
+  const cover = new THREE.Color();
+  // A tone leans to the cover's colour brought to the tone's own lightness: a dark cover warms or
+  // cools the light, it never dims it.
+  const luma = (c) => 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
+  const toward = new THREE.Color();
+  const leanTo = (out, base, amount) => {
+    toward.copy(cover).multiplyScalar(luma(base) / Math.max(luma(cover), 0.02));
+    toward.setRGB(Math.min(1, toward.r), Math.min(1, toward.g), Math.min(1, toward.b));
+    out.copy(base).lerp(toward, amount);
+  };
+  let lean = 0;
   const { near, far } = fog;
+
   return {
-    update(dt, time, state) {
-      const from = state.path ? plan.islands[state.path.from].mood : state.island.mood;
-      const to = state.path ? plan.islands[state.path.to].mood : from;
-      const t = state.path ? THREE.MathUtils.smoothstep(state.t / state.path.length, 0.2, 0.8) : 0;
-      const k = Math.min(1, dt * 1.2);
-      for (const key of Object.keys(now)) now[key] += (mix(from[key], to[key], t) - now[key]) * k;
-      sky.intensity = LIGHT.skyIntensity * now.sky;
-      sun.intensity = LIGHT.sunIntensity * now.sunLight;
-      setTint(0.9 + 0.1 * now.sky);
-      const height = THREE.MathUtils.degToRad(now.sun);
-      sun.position.set(Math.cos(AZIMUTH) * Math.cos(height), Math.sin(height), Math.sin(AZIMUTH) * Math.cos(height)).multiplyScalar(100);
+    update(dt, time, state, camera) {
+      if (ahead === undefined) {
+        ahead = state.heading;
+        if (renderer) makePlanets(renderer);
+      }
+      // The hour wanted here: an island's, or between two along a path; the hour turns forward round
+      // the wheel, so the path back to the first island goes through the night to dawn.
+      let want = hourOf(state.path ? state.path.from : state.island.index);
+      if (state.path) {
+        let next = hourOf(state.path.to);
+        if (next < want - LENGTH / 2) next += LENGTH;
+        want += (next - want) * THREE.MathUtils.smoothstep(state.t / state.path.length, 0.2, 0.8);
+      }
+      const gap = ((((want - hour) % LENGTH) + LENGTH * 1.5) % LENGTH) - LENGTH / 2;
+      hour = (hour + gap * Math.min(1, dt * 1.2) + LENGTH) % LENGTH;
+      hourLight(hour, now);
+
+      // Standing before a work, the light leans to its cover, over about half a second.
+      const spot = state.nearest;
+      const standing = spot && Math.abs(state.speed) < 0.3 && Math.hypot(state.x - spot.place.x, state.z - spot.place.z) < STAND;
+      const colour = standing && coverColour(spot);
+      if (colour) cover.copy(colour);
+      lean += ((colour ? 1 : 0) - lean) * (1 - Math.exp(-dt / LEAN.time));
+      leanTo(tones.uShade.value, now.shade, LEAN.shade * lean);
+      leanTo(tones.uHalf.value, now.mid, LEAN.half * lean);
+      leanTo(tones.uLit.value, now.lit, LEAN.lit * lean);
+
+      for (const mesh of ground) {
+        if (graded.has(mesh.material)) continue;
+        graded.add(grade(mesh.material, undefined, Boolean(mesh.userData.island)));
+      }
+
+      u.uTop.value.copy(now.top);
+      u.uQuarter.value.copy(now.quarter);
+      u.uHalf.value.copy(now.half);
+      u.uHorizon.value.copy(now.horizon);
+      u.uGlow.value.copy(now.glow);
+      u.uDisc.value.copy(now.disc);
+      u.uBand.value.copy(now.band);
+      u.uBandAmount.value = now.bandAmount;
+      u.uStars.value = now.stars;
+      direction(now.sun[0], now.sun[1], u.uSun.value);
+      direction(now.shape[0], now.shape[1], sun.position).multiplyScalar(100);
+      sky.intensity = SKY * now.light;
+      sun.intensity = SUN * now.light;
+
+      fog.color.copy(now.horizon);
       fog.near = near * now.haze;
       fog.far = far * now.haze;
+      if (sea.material.uniforms) {
+        sea.material.uniforms.uCloud.value.copy(now.seaNear);
+        sea.material.uniforms.uGap.value.copy(now.shade);
+      } else sea.material.color.copy(now.seaNear);
+      shadows.material.uniforms.colour.value.copy(now.shade).multiplyScalar(0.8);
       park.lamps = now.lamps;
+      for (const lamp of lamps) lamp.d = Math.hypot(lamp.x - state.x, lamp.z - state.z);
+      lamps.sort((a, b) => a.d - b.d);
+      pools.uPools.value.forEach((pool, i) => pool.set(lamps[i].x, lamps[i].z, lampLevels[lamps[i].index], 0));
+      for (const planet of planets) {
+        planet.tone.uVeil.value.set(...now.quarter.toArray(), now.veil);
+        planet.face(camera);
+      }
     },
   };
 }
