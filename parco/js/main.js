@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { fillList } from './list.js';
 import { element, reducedMotion } from './media.js';
 import { createSound } from './sound.js';
@@ -19,6 +20,16 @@ const NEAR_ENOUGH = 6.5;
 const FLIGHT = 1.4;
 // A click on the sky: this many metres ahead.
 const STEP_AHEAD = 4;
+// Round a work's frame on the screen, a click still opens it rather than walking (pixels).
+const MARGIN = 40;
+// Round a name in the sky, the look stops (pixels).
+const NAME_MARGIN = 100;
+// Where «Avanti» goes next, said in full.
+const VERSO = { apertura: "verso l'Apertura", siti: 'verso i Siti', negozi: 'verso i Negozi online', programmi: 'verso i Programmi', app: 'verso le App', videogioco: 'verso il Videogioco', marchi: 'verso i Marchi', manifesti: 'verso i Manifesti', google: 'verso Google', contatti: 'verso i Contatti' };
+// The three steps shown one at a time at the start, each gone once it has been done.
+const COACH = matchMedia('(pointer: coarse)').matches
+  ? { look: 'Trascina col dito: ti guardi attorno', go: 'Tocca dove vuoi andare', open: 'Tocca un quadro per aprirlo, oppure premi Avanti' }
+  : { look: 'Muovi il mouse: ti guardi attorno', go: 'Clicca dove vuoi andare', open: 'Clicca un quadro per aprirlo, oppure premi Avanti' };
 // Where a click on the name of an island takes one, said in full.
 const TOWARD = { apertura: "all'Apertura", siti: 'ai Siti', negozi: 'ai Negozi online', programmi: 'ai Programmi', app: 'alle App', videogioco: 'al Videogioco', marchi: 'ai Marchi', manifesti: 'ai Manifesti', google: 'a Google', contatti: 'ai Contatti' };
 
@@ -70,7 +81,8 @@ const run = (target, point) => {
   return chain;
 };
 
-function open(id, point) {
+export function open(id, point) {
+  done('open');
   if (story.work === id) return;
   history.pushState({ work: id }, '', `#lavoro/${id}`);
   run({ work: id }, point);
@@ -136,15 +148,78 @@ const above = $('.above');
 let unveil = () => {};
 let here;
 let flying = false;
-// The work a click far away is walking to, to open on arrival.
+// The work a click far away, or «Avanti», is walking to: { spot, open }, turned to (and opened) on arrival.
 let arriving;
+// The last stop of «Avanti», and how many times the ground has been clicked (the label says «here»
+// the first three).
+let lastStop;
+let goneHere = 0;
+const verb = () => (matchMedia('(pointer: coarse)').matches ? 'Tocca' : 'Clicca');
+
+// The steps at the start.
+const doneSteps = new Set();
+function coach() {
+  const next = Object.keys(COACH).find((step) => !doneSteps.has(step));
+  hint.textContent = next ? COACH[next] : '';
+  hint.classList.toggle('is-gone', !next);
+}
+function done(step) {
+  if (doneSteps.has(step)) return;
+  doneSteps.add(step);
+  coach();
+}
+// Moving the mouse over the park a little is the first step done.
+let looked = 0;
+document.addEventListener('pointermove', (event) => {
+  if (event.pointerType !== 'mouse' || event.target !== $('.park')) return;
+  looked += Math.abs(event.movementX) + Math.abs(event.movementY);
+  if (looked > 160) done('look');
+});
+
+// Walks to stand before a work; there the look turns to it and, if asked, it opens.
+function walkTo(spot, opening) {
+  const { x, z, fx, fz } = exhibits.standing(spot);
+  world.goTo(plan.islands[spot.island], x + fx * 3, z + fz * 3);
+  arriving = { spot, open: opening };
+}
+
+// «Avanti»: the next work of the island, one after the other, then the next island.
+export function nextStop() {
+  const island = world.here();
+  const list = plan.works.filter((spot) => spot.island === island.index);
+  // After the work one stands before, or else after the last stop.
+  const work = list[list.indexOf(front() ?? lastStop) + 1];
+  return work ? { work, label: works[work.id].title } : { island: plan.islands[(island.index + 1) % plan.islands.length], get label() { return VERSO[this.island.zones[0].id] ?? `verso ${this.island.zones[0].title}`; } };
+}
+export function advance() {
+  if (!world || world.rig.mode !== 'walk' || story.work) return;
+  const stop = nextStop();
+  done('open');
+  if (stop.work) {
+    lastStop = stop.work;
+    walkTo(stop.work, false);
+  } else {
+    lastStop = undefined;
+    jump(stop.island.zones[0].id);
+  }
+}
+// The work one stands before, near enough to open it from the bar.
+export const front = () => {
+  const spot = world?.state.nearest;
+  return spot && Math.hypot(world.state.x - spot.x, world.state.z - spot.z) < NEAR_ENOUGH ? spot : undefined;
+};
 
 // The label next to the mouse that says what a click does there; not on a phone.
 const label = element('div', { className: 'pointer-label', hidden: true });
 document.body.append(label);
 document.addEventListener('pointermove', (event) => {
-  if (event.pointerType === 'mouse') label.style.transform = `translate(${event.clientX + 18}px, ${event.clientY + 24}px)`;
+  // Beside the hand, never past the right edge of the screen.
+  if (event.pointerType === 'mouse') label.style.transform = `translate(${Math.min(event.clientX + 18, innerWidth - label.offsetWidth - 8)}px, ${event.clientY + 24}px)`;
 });
+const toward = (zone, title) => TOWARD[zone] ?? `a ${title}`;
+// The jump to an island, which the travel bar makes.
+const jump = (zone) => document.dispatchEvent(new CustomEvent('travel:jump', { detail: { zone } }));
+
 function say(text) {
   if (label.textContent === text) return;
   label.textContent = text;
@@ -185,6 +260,7 @@ function build(texts, pictures, sprites) {
   world.add(exhibits);
   world.add(park);
   world.block([...exhibits.solid, ...park.solid]);
+  const tappable = [...exhibits.targets, ...park.tappable];
   anchors.avoid(() => exhibits.inSight());
   world.add(createLight({ plan, sky: world.sky, sun: world.sun, fog: world.scene.fog, park }));
   createSigns({
@@ -198,58 +274,116 @@ function build(texts, pictures, sprites) {
     // A name in the sky: the jump there (the travel bar makes it).
     onZone(id) {
       if (world.rig.mode === 'above') fly(false, id);
-      else document.dispatchEvent(new CustomEvent('travel:jump', { detail: { zone: id } }));
+      else jump(id);
     },
     onWork: (id) => open(id),
   });
-  // What a click does where the mouse rests, written next to the hand: the work it opens, the island
-  // it takes one to; the hand presses over what answers a click. Nothing for the ground and the sky.
+  // What lies under a point of the screen, for a click and for the hand: a work (it wins over the
+  // ground, with a wide margin round its frame), a thing of the park, the ground or a stone.
+  const pick = (x, y) => {
+    // The frame the point is in, or else the nearest whose margin it is in.
+    const off = (r) => Math.max(r.left - x, x - r.left - r.width, r.top - y, y - r.top - r.height, 0);
+    const near = exhibits.inSight()
+      .filter((r) => r.distance < 22 && off(r) < MARGIN)
+      .sort((a, b) => off(a) - off(b) || a.distance - b.distance)[0];
+    if (near) return { work: near.spot };
+    const hit = world.hit(x, y, [...tappable, ...world.land.floors, ...world.land.stones]);
+    if (!hit) return {};
+    if (exhibits.targets.includes(hit.object)) return { work: exhibits.spotOf(hit) };
+    if (park.tappable.includes(hit.object)) return { thing: hit };
+    return { ground: hit };
+  };
+
+  // The ring on the ground under the hand: «here», before the click.
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.32, 0.46, 40).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.85, depthWrite: false }));
+  ring.renderOrder = 3;
+  ring.visible = false;
+  world.scene.add(ring);
+
+  // Under the hand, one frame in three: the look holds still over what a click opens; the hand presses
+  // there; the label says what a click does; the ring marks the ground.
   let frame = 0;
+  let underHand = {};
   const point = () => {
     const at = world.controls.pointer();
-    // Every other frame is enough for a label that follows the hand.
-    if (!at || world.rig.mode !== 'walk' || frame++ % 2) return;
-    const hit = world.hit(at.x, at.y, [...exhibits.targets, ...park.tappable]);
-    const work = hit && exhibits.targets.includes(hit.object) && works[exhibits.spotOf(hit).id];
-    $('.park').classList.toggle('is-over', Boolean(hit));
-    say(work ? `Apri ${work.title}` : '');
+    // Nothing to point at while walking: no ring, and no cost.
+    if (!at || world.rig.mode !== 'walk' || world.moving()) {
+      ring.visible = false;
+      world.controls.hold(false);
+      return;
+    }
+    if (frame++ % 3) return;
+    underHand = pick(at.x, at.y);
+    const { work, thing, ground } = underHand;
+    world.controls.hold(Boolean(work || thing));
+    $('.park').classList.toggle('is-over', Boolean(work || thing));
+    ring.visible = Boolean(ground);
+    if (ground) ring.position.copy(ground.point).setY(ground.point.y + 0.04);
+    say(work ? `${verb()} per aprire: ${works[work.id].title}` : ground && goneHere < 3 ? `${verb()} per andare qui` : '');
   };
+
+  // Coming near a name in the sky, the look stops, so that the name stays where the hand is going: the
+  // look turning towards the pointer brings the name towards it, and stopped this far out it has not
+  // yet slid past.
+  world.controls.holdNear((x, y) => [...document.querySelectorAll('.anchor.zone-name.is-on:not(.is-covered)')].some((node) => {
+    const r = node.getBoundingClientRect();
+    return x > r.left - NAME_MARGIN && x < r.right + NAME_MARGIN && y > r.top - NAME_MARGIN && y < r.bottom + NAME_MARGIN;
+  }));
+
+  // Lost: for more than three seconds no ground to go to in sight. A button turns the look back.
+  let lostFor = 0;
+  const lost = element('button', { className: 'pill lost', type: 'button', textContent: 'Riportami sul sentiero', hidden: true });
+  document.body.append(lost);
+  lost.addEventListener('click', () => {
+    const island = world.here();
+    world.state.pitch = -0.1;
+    world.face(island.centre.x, island.centre.z);
+    lost.hidden = true;
+    lostFor = 0;
+  });
+  let tick = 0;
+  const lookout = (dt) => {
+    if (world.rig.mode !== 'walk' || story.work || tick++ % 15) return;
+    const ground = [[0.5, 0.6], [0.3, 0.75], [0.7, 0.75], [0.5, 0.9], [0.5, 0.45]].some(([fx, fy]) => world.hit(innerWidth * fx, innerHeight * fy, [...world.land.floors, ...world.land.stones]));
+    lostFor = ground ? 0 : lostFor + dt * 15;
+    lost.hidden = lostFor < 3;
+  };
+
   world.add({
-    update() {
+    update(dt) {
       keep();
       anchors.update();
       point();
-      // A far work clicked opens once one stands before it.
+      lookout(dt);
+      // A far work clicked, or the next stop of «Avanti»: once one stands before it, the look turns to
+      // it, and a work clicked opens.
       if (arriving && !world.moving()) {
-        const spot = workSpot(arriving);
+        const { spot, open: opening } = arriving;
         arriving = undefined;
-        if (Math.hypot(world.state.x - spot.x, world.state.z - spot.z) < NEAR_ENOUGH + 2) open(spot.id);
+        if (Math.hypot(world.state.x - spot.x, world.state.z - spot.z) > NEAR_ENOUGH + 2) return;
+        if (opening) open(spot.id);
+        else world.face(spot.x, spot.z);
       }
     },
   });
   $('.anchors').addEventListener('pointerover', (event) => {
     const name = event.pointerType === 'mouse' && event.target.closest('.zone-name');
-    if (name) say(`Vai ${TOWARD[name.dataset.zone] ?? `a ${name.textContent}`}`);
+    if (name) say(`${verb()} per andare ${toward(name.dataset.zone, name.textContent)}`);
   });
   $('.anchors').addEventListener('pointerout', (event) => {
     if (event.target.closest('.zone-name')) say('');
   });
-  // Room kept for the buttons at the top, the invitation under them while it shows, and the travel
-  // bar at the foot; read every frame, as the invitation comes and goes.
+  // Room kept for the buttons at the top and for the travel bar and the steps at the foot; read every
+  // frame, as they come and go.
   const keep = () => {
-    const hint = $('.hint');
-    const shown = !hint.hidden && !hint.classList.contains('is-gone');
-    const bar = $('.travel__bar')?.getBoundingClientRect();
+    const low = [$('.travel__bar'), hint].filter((node) => node && !node.hidden && !node.classList.contains('is-gone')).map((node) => node.getBoundingClientRect().top);
     anchors.keep({
-      top: Math.max($('.hud').getBoundingClientRect().bottom, shown ? hint.getBoundingClientRect().bottom : 0) + 8,
-      bottom: bar?.height ? innerHeight - bar.top + 8 : 8,
+      top: $('.hud').getBoundingClientRect().bottom + 8,
+      bottom: low.length ? innerHeight - Math.min(...low) + 8 : 8,
     });
   };
   addEventListener('resize', () => anchors.remeasure());
-  const welcome = matchMedia('(pointer: coarse)').matches
-    ? 'Tocca dove vuoi andare. Trascina per guardarti attorno.'
-    : 'Muovi il mouse per guardare. Clic per andare avanti.';
-  hint.textContent = welcome;
+  coach();
   unveil = () => {
     exhibits.island(here);
     park.island(here);
@@ -262,9 +396,7 @@ function build(texts, pictures, sprites) {
       if (story.work || !$('.threshold').hidden) return;
       history.replaceState(null, '', island.index === 0 ? location.pathname + location.search : `#${island.zones[0].id}`);
     },
-    walk() {
-      if (hint.textContent === welcome) hint.classList.add('is-gone');
-    },
+    walk: () => done('look'),
     // A slow machine: the park goes the light way; too slow even so, the list of the works is the
     // page, with a way back to the park.
     light(on) {
@@ -275,8 +407,7 @@ function build(texts, pictures, sprites) {
       world.pause(true);
       showList(true);
     },
-    // One click, one obvious thing: a near work opens, a far one is walked to and opens there, a
-    // thing of the park answers, the ground or a stone is walked to (with rings where it was
+    // One click, one obvious thing: a work near opens, one far is walked to and opens there, a thing of the park answers, the ground or a stone is walked to (with rings where it was
     // touched), the sky takes a few steps ahead. On a phone a tap while walking stops, as before.
     tap(x, y, kind) {
       if (world.rig.mode !== 'walk') return;
@@ -285,30 +416,23 @@ function build(texts, pictures, sprites) {
         world.stop();
         return;
       }
-      if (hint.textContent === welcome) hint.classList.add('is-gone');
-      const hit = world.hit(x, y, [...exhibits.targets, ...park.tappable, ...world.land.floors, ...world.land.stones]);
-      if (!hit) {
-        world.ahead(STEP_AHEAD);
-        return;
-      }
-      if (exhibits.targets.includes(hit.object)) {
-        const spot = exhibits.spotOf(hit);
+      const { work, thing, ground } = pick(x, y);
+      if (work) {
         sound.play('tap');
-        if (Math.hypot(world.camera.position.x - spot.x, world.camera.position.z - spot.z) < NEAR_ENOUGH) open(spot.id, { x, y });
+        if (Math.hypot(world.camera.position.x - work.x, world.camera.position.z - work.z) < NEAR_ENOUGH) open(work.id, { x, y });
+        else walkTo(work, true);
+      } else if (thing) {
+        if (park.touch(thing)) sound.play('tap');
+      } else if (ground) {
+        goneHere++;
+        done('go');
+        sound.play('drop');
+        if (world.land.stones.includes(ground.object)) world.goAlong(...stoneAt(ground.point));
         else {
-          const { x: wx, z: wz, fx, fz } = exhibits.standing(spot);
-          world.goTo(plan.islands[spot.island], wx + fx * 3, wz + fz * 3);
-          arriving = spot.id;
+          world.land.ripple(ground.point.x, ground.point.z);
+          world.goTo(ground.object.userData.island, ground.point.x, ground.point.z);
         }
-      } else if (park.touch(hit)) sound.play('tap');
-      else if (world.land.stones.includes(hit.object)) {
-        sound.play('drop');
-        world.goAlong(...stoneAt(hit.point));
-      } else {
-        world.land.ripple(hit.point.x, hit.point.z);
-        sound.play('drop');
-        world.goTo(hit.object.userData.island, hit.point.x, hit.point.z);
-      }
+      } else world.ahead(STEP_AHEAD);
     },
   });
   // The door opens when the first island is drawn, in its light pictures (tools/build-light.py).
@@ -345,12 +469,11 @@ addEventListener('keydown', (event) => {
     event.preventDefault();
     world.stop();
     arriving = undefined;
-    hint.classList.add('is-gone');
   }
-  else if (event.key === 'Enter' && world.state.nearest) open(world.state.nearest.id);
+  else if (event.key === 'Enter' && front()) open(front().id);
   else if (event.key === ' ') {
     event.preventDefault();
-    world.jump();
+    advance();
   }
 });
 addEventListener('keyup', (event) => world?.controls.key(event, false));

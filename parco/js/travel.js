@@ -1,7 +1,10 @@
-// Getting anywhere at once. The bar at the foot says where one is and steps to the place before and
-// after, in the order of the walk; «I mondi» shows the ten places on the orbit of the day and finds
-// any work by its words. A jump goes through a ring of light that closes and opens again.
-// Keys: Q and E before and after, 1 to 9 and 0 the places, F search, Tab «I mondi», Esc closes.
+// Getting anywhere at once. The bar at the foot says where one is; its large «Avanti» takes one to the
+// next stop of the walk, work after work and then the next place, saying where under its name, and
+// «Apri» opens the work one stands before; the small buttons step to the place before and after.
+// «I mondi» shows the ten places on the orbit of the day and finds any work by its words. A jump goes
+// through a ring of light that closes and opens again.
+// Keys: Space «Avanti», Q and E before and after, 1 to 9 and 0 the places, F search, Tab «I mondi»,
+// Esc closes.
 import { asset, element, reducedMotion } from './media.js';
 
 const version = document.documentElement.dataset.version;
@@ -60,7 +63,13 @@ async function start(root) {
   next.setAttribute('aria-keyshortcuts', 'E');
   here.setAttribute('aria-keyshortcuts', 'Tab');
   here.setAttribute('aria-haspopup', 'dialog');
-  const bar = element('nav', { className: 'travel__bar', ariaLabel: 'Tipi di lavoro', hidden: true }, [prev, here, next]);
+  const goTo = element('span', { className: 'travel__go-to' });
+  const forward = element('button', { type: 'button', className: 'travel__go' }, [element('strong', { textContent: 'Avanti' }), goTo]);
+  forward.setAttribute('aria-keyshortcuts', 'Space');
+  forward.addEventListener('click', () => main.advance());
+  const apri = element('button', { type: 'button', className: 'travel__open', textContent: 'Apri', hidden: true });
+  apri.addEventListener('click', () => main.front() && main.open(main.front().id));
+  const bar = element('nav', { className: 'travel__bar', ariaLabel: 'Tipi di lavoro', hidden: true }, [prev, here, apri, forward, next]);
 
   // «I mondi»: the places on the orbit, the search beside them.
   const focusName = element('strong', { className: 'travel__focus-name' });
@@ -333,8 +342,26 @@ async function start(root) {
     }
   }, true);
 
+  // «Avanti» says where it goes; «Apri» shows before a work. Written only when they change.
+  function tell() {
+    const label = main.nextStop().label;
+    if (goTo.textContent !== label) {
+      goTo.textContent = label;
+      forward.setAttribute('aria-label', `Avanti: ${label}`);
+    }
+    const work = main.front();
+    apri.hidden = !work;
+    const open = work && `Apri ${works.find((entry) => entry.id === work.id)?.work.title ?? ''}`;
+    if (work && apri.getAttribute('aria-label') !== open) apri.setAttribute('aria-label', open);
+  }
+
   // The bar follows where one is, every frame of the park; it appears once the door is passed.
-  world.add({ update: show });
+  world.add({
+    update() {
+      show();
+      tell();
+    },
+  });
   show();
   const door = $('.threshold');
   const reveal = () => {

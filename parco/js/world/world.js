@@ -10,6 +10,12 @@ import { islandOf, mouth } from './layout.js';
 const WALK = 2.8;
 const HURRY = 4.2;
 const ACCEL = 36;
+// How softly a walk to a point comes to its end (m/s²), and the look's rest walking: just below level.
+const SETTLE = 12;
+const LEVEL = -0.05;
+// A walk to a point on the same island takes 1.5 s from near, 2.5 at most from far: the pace for a
+// distance, never below a walk, never above 16 m/s.
+const paceFor = (metres) => Math.min(16, Math.max(WALK, metres / Math.min(2.1, 1 + metres * 0.045)));
 // A notch of the wheel: 1.1 m, walked at once in about a sixth of a second.
 const NOTCH = 1.1;
 const NOTCH_SPEED = 7;
@@ -59,7 +65,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   // Where the visitor is: on an island, or at t metres along a path. Heading and pitch of the look.
-  const state = { island: plan.landing, path: undefined, t: 0, x: 0, y: 0, z: 0, heading: 0, pitch: -0.1, speed: 0, walked: 0, hop: 0, rise: 0, pending: 0, hold: false, route: [], near: [], still: !reducedMotion.matches };
+  const state = { island: plan.landing, path: undefined, t: 0, x: 0, y: 0, z: 0, heading: 0, pitch: -0.1, lookYaw: 0, lookPitch: 0, speed: 0, walked: 0, hop: 0, rise: 0, pending: 0, hold: false, route: [], near: [], still: !reducedMotion.matches };
   const parts = [];
   let running = false;
   let paused = false;
@@ -80,6 +86,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   const stop = () => {
     state.route = [];
     state.pending = 0;
+    state.turnTo = undefined;
   };
 
   // Stands at a point of an island at once, looking at its works, or, where it has none, along the
@@ -131,7 +138,8 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   // The way the look faces along the path one is on: 1 towards its end, -1 towards its start.
   function facing() {
     state.path.curve.getTangentAt(Math.min(1, Math.max(0, state.t / state.path.length)), tangent);
-    return Math.sign(Math.cos(state.heading) * tangent.x + Math.sin(state.heading) * tangent.z) || 1;
+    const view = state.heading + state.lookYaw;
+    return Math.sign(Math.cos(view) * tangent.x + Math.sin(view) * tangent.z) || 1;
   }
 
   // From an island to a point of another, across the islands along the loop, forward or back,
@@ -215,19 +223,32 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   }
 
   const ramp = (value, want, dt) => value + Math.max(-ACCEL * dt, Math.min(ACCEL * dt, want - value));
+  // Turns the way one faces so that the look (with the pointer's share) goes towards a direction.
   const steer = (toward, dt) => {
-    const turn = toward - state.heading;
+    const turn = toward - state.lookYaw - state.heading;
     state.heading += Math.max(-STEER * dt, Math.min(STEER * dt, Math.atan2(Math.sin(turn), Math.cos(turn))));
   };
 
   function move(dt) {
     const keys = controls.held(dt);
     state.heading += keys.turn;
+    // The look follows the pointer; walking, it comes back level to the horizon.
+    const walking = Math.abs(state.speed) > 0.3;
+    const gaze = controls.gaze(dt, walking);
+    state.lookYaw = gaze.yaw;
+    state.lookPitch = gaze.pitch;
+    if (walking) state.pitch += (LEVEL - state.pitch) * (1 - Math.exp(-dt / 0.3));
+    if (state.turnTo !== undefined) {
+      steer(state.turnTo, dt);
+      if (Math.abs(Math.atan2(Math.sin(state.turnTo - state.lookYaw - state.heading), Math.cos(state.turnTo - state.lookYaw - state.heading))) < 0.01) state.turnTo = undefined;
+    }
     const step = state.route[0];
     let want = 0;
     if (state.hold) want = HURRY;
     else if (keys.walk) want = keys.walk * WALK;
     else if (step) want = step.speed ?? WALK;
+    // Coming to the end of a walk to a point, softly.
+    if (step?.island && !state.route[1]) want = Math.min(want, Math.sqrt(2 * SETTLE * Math.hypot(step.x - state.x, step.z - state.z)) + 0.4);
     if (want) state.pending = 0;
     state.speed = ramp(state.speed, want, dt);
     let metres = state.speed * dt;
@@ -268,7 +289,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     }
 
     const { island } = state;
-    let way = state.heading;
+    let way = state.heading + state.lookYaw;
     if (step?.island) {
       const dx = step.x - state.x;
       const dz = step.z - state.z;
@@ -409,7 +430,16 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       place(typeof id === 'string' ? islandOf(plan, id) : id, at);
     },
     // Walks to a point of an island, along the paths if it is another one.
-    goTo: (island, x, z) => go(route(island, { x, z })),
+    // On the island one is on, at the pace that brings one there in a moment.
+    goTo(island, x, z) {
+      const steps = route(island, { x, z });
+      if (steps.length === 1) steps[0].speed = paceFor(Math.hypot(x - state.x, z - state.z));
+      go(steps);
+    },
+    // Turns the look, at the steering pace, towards a point.
+    face(x, z) {
+      state.turnTo = Math.atan2(z - state.z, x - state.x);
+    },
     // Walks to a point along a path.
     goAlong(path, t) {
       if (state.path === path) return go([{ path, to: t }]);

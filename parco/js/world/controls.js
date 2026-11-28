@@ -1,13 +1,22 @@
-// How the visitor moves, with nothing to learn and nothing to get out of. Mouse: the look turns while
-// the pointer rests in a band at the left or right edge of the park (faster towards the edge, still
-// in the middle), dragging looks around, a click does the obvious thing where it points (main.js).
+// How the visitor moves, with nothing to learn. Mouse: the look follows the pointer without pressing
+// anything (straight ahead in the middle, about 25 degrees halfway to an edge, about 65 at the edge,
+// up to 15 up and down), and in the last 8% towards a side the way one faces turns slowly too; over a
+// work, a name, a portal or a button the look stays still, so that a hand not quite steady can reach
+// it. A click does the obvious thing where it points (main.js). Dragging turns the way one faces.
 // Finger: dragging looks, a tap goes, holding the lower part of the screen walks ahead. Keys: W and S
 // or the up and down arrows walk, A and D or the side arrows turn. The wheel walks a notch.
 const LOOK = { mouse: 0.0035, touch: 0.00225 };
 const TURN_SPEED = 1.7;
-// The bands at the sides: their share of the width, and the turn at the very edge (50 degrees a second).
-const BAND = 0.14;
-const BAND_SPEED = (50 * Math.PI) / 180;
+const deg = (value) => (value * Math.PI) / 180;
+// The look away from the way one faces, for a pointer at n (-1 to 1) from the middle of the screen:
+// 35|n| + 30n² degrees, so 25 at halfway and 65 at the edge; and up and down.
+const AWAY = (n) => Math.sign(n) * deg(35 * Math.abs(n) + 30 * n * n);
+const UPDOWN = deg(15);
+// The last stretch towards a side, and how fast the way one faces turns at the very edge.
+const EDGE = 0.92;
+const EDGE_TURN = deg(40);
+// The look follows in about 150 ms, so that it never trembles.
+const FOLLOW = 0.05;
 const SLOP = 9;
 const TAP_TIME = 350;
 const HOLD_TIME = 260;
@@ -24,6 +33,8 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
   const keys = { walk: 0, turn: 0 };
   // Where the mouse rests over the park itself (not over a button, the bar or a panel), if it does.
   let mouse;
+  // The look away from the way one faces, as it is and as the pointer asks; still while held.
+  const gaze = { yaw: 0, pitch: 0, wantYaw: 0, wantPitch: 0, held: false };
   let press;
   let holdTimer;
   let lastTap = 0;
@@ -31,8 +42,24 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
   let way = 0;
   let scrollTime = -Infinity;
 
+  // The look the pointer asks for, where it rests. Over a button, the bar, a panel or a name, or
+  // coming near a name (near), the look stops where it is at once, so that what one reaches for does
+  // not slide away from under the hand.
+  let near = () => false;
+  const freeze = () => {
+    gaze.wantYaw = gaze.yaw;
+    gaze.wantPitch = gaze.pitch;
+  };
+  const follow = () => {
+    if (press) return;
+    if (!mouse || gaze.held || near(mouse.x, mouse.y)) return freeze();
+    gaze.wantYaw = AWAY((mouse.x / innerWidth) * 2 - 1);
+    gaze.wantPitch = -((mouse.y / innerHeight) * 2 - 1) * UPDOWN;
+  };
   document.addEventListener('pointermove', (event) => {
-    if (event.pointerType === 'mouse') mouse = event.target === surface ? { x: event.clientX, y: event.clientY } : undefined;
+    if (event.pointerType !== 'mouse') return;
+    mouse = event.target === surface ? { x: event.clientX, y: event.clientY } : undefined;
+    follow();
   });
   document.documentElement.addEventListener('pointerleave', () => { mouse = undefined; });
   addEventListener('blur', () => { mouse = undefined; });
@@ -94,13 +121,11 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
   surface.addEventListener('pointerup', release);
   surface.addEventListener('pointercancel', release);
 
-  // The turn of the bands at the sides, in radians a second: none while a button is pressed.
-  function band() {
-    if (mouse === undefined || press) return 0;
-    const edge = innerWidth * BAND;
-    if (mouse.x < edge) return -(1 - mouse.x / edge) * BAND_SPEED;
-    if (mouse.x > innerWidth - edge) return (1 - (innerWidth - mouse.x) / edge) * BAND_SPEED;
-    return 0;
+  // In the last stretch towards a side, the way one faces turns, slowly at first.
+  function edge() {
+    if (!mouse || press || gaze.held) return 0;
+    const n = (mouse.x / innerWidth) * 2 - 1;
+    return Math.abs(n) > EDGE ? Math.sign(n) * ((Math.abs(n) - EDGE) / (1 - EDGE)) * EDGE_TURN : 0;
   }
 
   return {
@@ -118,8 +143,30 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
       if (RIGHT.has(event.key)) return set('turn', 1);
       return false;
     },
-    // Held keys and the bands: the walk wanted (-1, 0, 1) and the turn to make this frame, in radians.
-    held: (dt) => ({ walk: keys.walk, turn: (keys.turn * TURN_SPEED + band()) * dt }),
+    // Held keys and the edge: the walk wanted (-1, 0, 1) and the turn to make this frame, in radians.
+    held: (dt) => ({ walk: keys.walk, turn: (keys.turn * TURN_SPEED + edge()) * dt }),
+    // The look away from the way one faces, following the pointer; level: the up and down asked for
+    // goes back to the horizon (one is walking).
+    gaze(dt, level) {
+      const k = 1 - Math.exp(-dt / FOLLOW);
+      if (level) gaze.wantPitch = 0;
+      gaze.yaw += (gaze.wantYaw - gaze.yaw) * k;
+      gaze.pitch += (gaze.wantPitch - gaze.pitch) * k;
+      // Settled: exactly where it was asked, so that nothing goes on moving by a hair.
+      if (Math.abs(gaze.wantYaw - gaze.yaw) < 1e-5) gaze.yaw = gaze.wantYaw;
+      if (Math.abs(gaze.wantPitch - gaze.pitch) < 1e-5) gaze.pitch = gaze.wantPitch;
+      return gaze;
+    },
+    // Over something to click the look holds still, until the pointer leaves it.
+    hold(on) {
+      if (on === gaze.held) return;
+      gaze.held = on;
+      follow();
+    },
+    // What else holds the look still when the pointer comes near it: fn(x, y).
+    holdNear(fn) {
+      near = fn;
+    },
     // Where the mouse rests over the park, for the label that says what a click does there.
     pointer: () => mouse,
     stop() {

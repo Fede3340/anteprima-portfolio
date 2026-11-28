@@ -86,18 +86,62 @@ body:has(.story:not([hidden])) .travel__bar {
   transform: translateY(-1px);
 }
 
-/* Forward is the way of the walk: the one filled button. */
-.travel__bar .travel__step--next {
+/* «Avanti» is the way of the walk: the one large, filled button, with where it goes under its name. */
+.travel__bar .travel__go {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  min-height: 56px;
+  padding: 4px 24px 6px;
+  border-radius: 24px;
   background: var(--ink);
   color: var(--light);
 }
 
-.travel__bar .travel__step--next:hover {
+.travel__bar .travel__go:hover {
   background: #0b2a72;
 }
 
-.travel__step--next .travel__key {
-  border-color: rgb(246 248 251 / 0.4);
+.travel__go strong {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.15;
+}
+
+.travel__go-to {
+  max-width: 14em;
+  overflow: hidden;
+  font-size: var(--small);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  opacity: 0.85;
+}
+
+.travel__bar .travel__open {
+  min-height: 56px;
+  padding: 0 22px;
+  border: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.travel__bar .travel__open[hidden] {
+  display: none;
+}
+
+/* On a phone the steps before and after keep only their arrows, and «I mondi» only its dot. */
+@media (max-width: 560px) {
+  .travel__step .travel__to,
+  .travel__worlds-label,
+  .travel__name {
+    display: none;
+  }
+
+  .travel__bar .travel__go {
+    padding-inline: 18px;
+  }
 }
 
 .travel__here {

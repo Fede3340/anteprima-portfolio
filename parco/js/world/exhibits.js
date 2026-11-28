@@ -240,7 +240,7 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     // The rectangles of the works in sight, their frames and plates included.
     inSight: () => items.filter((item) => item.distance < SIGHT && inFront(item)).map((item) => {
       const r = rectOf(item);
-      return { left: r.left - 12, top: r.top - 12, width: r.width + 24, height: r.height + 90 };
+      return { left: r.left - 12, top: r.top - 12, width: r.width + 24, height: r.height + 90, spot: item.spot, distance: item.distance };
     }),
     // Where the eyes stand to look at a work: in front of it, as it faces now.
     standing(spot) {
