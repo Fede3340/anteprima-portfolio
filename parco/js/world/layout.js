@@ -4,7 +4,7 @@
 import * as THREE from 'three';
 
 const LOOP = 64;
-const STONE_EVERY = 1.25;
+const STONE_EVERY = 1.5;
 // 16:10 like the covers, the middle of the picture at about eye height.
 export const FRAME = { width: 2, height: 1.25 };
 
@@ -117,6 +117,17 @@ export function planPark(data, texts) {
     const curve = new THREE.CubicBezierCurve3(start, start.clone().addScaledVector(way, 5).add(side), end.clone().addScaledVector(way, -5).add(side), end);
     return { curve, stones: Math.round(curve.getLength() / STONE_EVERY), index: count + index };
   });
+  // The island of the App has a pond of its own, where it is furthest from the works, the sculpture
+  // and the way across.
+  const app = islands.find((island) => island.id === 'app');
+  const keep = [...works.filter((work) => work.island === app.index), ...app.zones.map((zone) => zone.mark), app.arrival, mouth(null, app, app.in), mouth(null, app, app.out)];
+  const across = (p) => Math.min(...Array.from({ length: 11 }, (_, k) => p.distanceTo(app.arrival.clone().lerp(mouth(null, app, app.out), k / 10).setY(app.centre.y))));
+  const [spot] = Array.from({ length: 24 }, (_, i) => {
+    const a = (i / 24) * Math.PI * 2;
+    const p = v(app.centre.x + Math.cos(a) * app.radius * 0.45, app.centre.y, app.centre.z + Math.sin(a) * app.radius * 0.45);
+    return { p, room: Math.min(across(p), ...keep.map((at) => Math.hypot(p.x - at.x, p.z - at.z))) };
+  }).sort((a, b) => b.room - a.room);
+  ponds.push({ island: app, ...pick(spot.p), r: 2.6, level: app.centre.y - 0.05 });
   return { islands, zones, works, paths, landing: first, islets, links, ponds };
 }
 

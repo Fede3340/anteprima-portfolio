@@ -9,26 +9,29 @@ import { mouth } from './layout.js';
 import { createSprite } from './sprites.js';
 import { createWater } from './water.js';
 
-// What grows on each island, as [picture, how many]; spread over the island away from the works.
+// What grows on each island: a few groups, each a thing and what grows at its foot ([pictures, the
+// first that exists is used]), towards the rim and behind the works, with free ground between them;
+// and single things: [pictures, how many, how far towards the rim, as a share of the radius]. Each
+// island is known from far by one thing: the tall trunks of the wood, the rows of the orchard, the
+// square hedges, the pond, the kites, the flower beds, the flags, the bench at the edge, the letterbox.
 const GARDENS = {
-  ingresso: [['albero-grande', 2], ['albero-medio', 4], ['albero-piccolo', 4], ['cespuglio-1', 3], ['cespuglio-2', 1], ['nuvola-a-terra', 3]],
-  siti: [['albero-grande', 9], ['albero-medio', 9], ['albero-piccolo', 5], ['cespuglio-2', 2], ['cespuglio-1', 2], ['nuvola-a-terra', 3]],
-  negozi: [['albero-frutti', 9], ['cassette', 4], ['cespuglio-1', 2], ['nuvola-a-terra', 2]],
-  programmi: [['siepe-squadrata', 6], ['gradini', 2], ['sasso', 8], ['albero-piccolo', 2]],
-  app: [['canne', 8], ['albero-medio', 3], ['cespuglio-1', 2], ['nuvola-a-terra', 2]],
-  videogioco: [['scivolo', 1], ['aquilone', 3], ['nuvola-a-terra', 4], ['cespuglio-2', 2]],
-  marchi: [['fiore-1', 7], ['fiore-2', 8], ['aiuola', 4], ['cespuglio-1', 3]],
-  manifesti: [['erba-alta', 16], ['bandiera', 4], ['nuvola-a-terra', 1]],
-  google: [['albero-piccolo', 3], ['panchina', 1], ['sasso', 4], ['nuvola-a-terra', 1]],
-  contatti: [['cassetta-posta', 1], ['albero-medio', 2], ['nuvola-a-terra', 2], ['cespuglio-1', 2]],
+  ingresso: { groups: 4, of: [['albero-medio'], ['cespuglio-1'], ['ciuffo-2']], also: [[['albero-grande'], 2, 0.5], [['albero-piccolo'], 3, 0.3]] },
+  siti: { groups: 6, of: [['albero-grande'], ['albero-medio'], ['albero-piccolo'], ['cespuglio-1'], ['ciuffo-2']], also: [[['tronco-alto'], 3, 0.6]] },
+  negozi: { groups: 5, of: [['albero-frutti'], ['albero-frutti'], ['cassette'], ['ciuffo-2']] },
+  programmi: { groups: 5, of: [['siepe-squadrata'], ['siepe-squadrata'], ['sasso'], ['sasso'], ['ciuffo-1']], also: [[['gradini'], 2, 0.5]] },
+  app: { groups: 3, of: [['albero-medio'], ['cespuglio-1'], ['ciuffo-2']] },
+  videogioco: { groups: 3, of: [['cespuglio-2'], ['nuvola-a-terra'], ['ciuffo-2']], also: [[['scivolo'], 1, 0.3], [['aquilone'], 3, 0.6]] },
+  marchi: { groups: 6, of: [['aiuola'], ['fiore-1'], ['fiore-2'], ['fiore-2']] },
+  manifesti: { groups: 4, of: [['bandiera'], ['erba-alta'], ['erba-alta'], ['erba-alta']], also: [[['erba-alta'], 6, 0.5]] },
+  google: { groups: 2, of: [['albero-piccolo'], ['sasso'], ['ciuffo-1']], also: [[['panchina'], 1, 0.9]] },
+  contatti: { groups: 2, of: [['albero-medio'], ['cespuglio-1'], ['ciuffo-2']], also: [[['cassetta-posta'], 1, 0.4]] },
 };
-// The islets around the first island, each its own little garden: [pictures, the first that exists
-// is used; how many]. Their trees stand close together.
+// The islets around the first island, each its own little garden; their trees stand close together.
 const ISLETS = {
-  stagno: [[['albero-medio'], 1], [['albero-piccolo'], 2], [['cespuglio-1'], 3], [['ciuffo-2'], 6]],
-  boschetto: [[['boschetto'], 2], [['albero-grande'], 4], [['albero-medio'], 7], [['albero-piccolo'], 7], [['cespuglio-2'], 3], [['ciuffo-2'], 6]],
-  altalena: [[['aquilone'], 2], [['cespugli-gruppo', 'cespuglio-2'], 2], [['ciuffo-2'], 5]],
-  lampione: [[['albero-doppio', 'albero-medio'], 1], [['cespuglio-1'], 2], [['ciuffo-2'], 4]],
+  stagno: { also: [[['albero-medio'], 1], [['albero-piccolo'], 2], [['cespuglio-1'], 3], [['ciuffo-2'], 6]] },
+  boschetto: { also: [[['boschetto'], 2], [['albero-grande'], 4], [['albero-medio'], 7], [['albero-piccolo'], 7], [['cespuglio-2'], 3], [['ciuffo-2'], 6]] },
+  altalena: { also: [[['aquilone'], 2], [['cespugli-gruppo', 'cespuglio-2'], 2], [['ciuffo-2'], 5]] },
+  lampione: { also: [[['albero-doppio', 'albero-medio'], 1], [['cespuglio-1'], 2], [['ciuffo-2'], 4]] },
 };
 // The ground seen on arrival, composed as in the picture of the door: [pictures, metres ahead of the
 // look, metres to its right, height]. A great tree on the left and one on the right, the bench, and in
@@ -37,18 +40,17 @@ const ISLETS = {
 const FRONT = [
   [['ciuffo-2'], 2.8, -0.5, 0.3], [['nuvola-a-terra'], 3.4, 0.9, 0.4], [['ciuffo-1'], 4.2, 0.3, 0.25], [['ciuffo-1'], 3.6, -0.9, 0.25],
   [['cespuglio-1'], 4.8, -1.3, 0.5], [['nuvola-a-terra'], 6, -0.8, 0.45], [['ciuffo-2'], 6.5, 0.6, 0.35],
-  [['albero-grande'], 9, -8.5], [['albero-doppio', 'albero-medio'], 13, 8.5], [['panchina'], 7, -2.1],
+  [['albero-grande'], 9, -8.5], [['albero-doppio', 'albero-medio'], 10.5, 6.5], [['panchina'], 7, -2.1],
   [['cespuglio-1'], 3.6, -2.8, 0.55], [['ciuffo-2'], 2.5, -1.3, 0.35], [['ciuffo-1'], 3.1, -0.9, 0.25],
   [['cespugli-gruppo', 'cespuglio-2'], 4.5, 2.6, 0.7], [['ciuffo-2'], 3, 1.4, 0.35], [['ciuffo-1'], 2.4, 1.9, 0.25],
   [['cespuglio-2'], 6, -4.6, 0.9], [['ciuffo-2'], 5.2, -2.5, 0.45], [['ciuffo-1'], 7.5, -1.2, 0.3],
   [['nuvola-a-terra'], 9.5, -3.2, 0.8], [['ciuffo-2'], 8.5, 1.1, 0.5], [['cespuglio-1'], 12, -9],
 ];
-// The sheets of cloud under an island and under an islet: [picture, how far towards the eyes it hangs,
-// depth of its top edge, its width, all as shares of the island's radius].
-const BODY = [['falda-1', 0.75, 0.005, 2.15], ['falda-2', 0.35, 0.1, 1.5]];
-const ISLET_BODY = [['falda-3', 0.75, 0.005, 2.1]];
-// The cushions near the way in: [picture, how many, height in metres].
-const CUSHIONS = [['nuvola-a-terra', 2, 0.9], ['cespuglio-1', 2, 0.8], ['ciuffo-2', 6, 0.6]];
+// The sheets of cloud under an island and under an islet: [picture, how far towards the eyes it hangs
+// and its width, as shares of the island's radius; depth of its top edge in metres, under the lowest
+// dip of the floor].
+const BODY = [['falda-1', 0.75, 1, 2.15], ['falda-2', 0.35, 2, 1.5]];
+const ISLET_BODY = [['falda-3', 0.75, 1, 2.1]];
 
 function random(seed) {
   let a = seed >>> 0;
@@ -139,23 +141,45 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     }
   }
   for (const pond of plan.ponds) taken.push({ x: pond.x, z: pond.z, r: pond.r + 1 });
-  // near: { x, z, from, to } to look only between from and to metres of a point, ahead of it.
-  function freeSpot(island, size, near) {
+  // The clearing between where one arrives and the works stays empty: nothing stands in front of them.
+  const clearings = plan.islands.map((island) => {
+    const spots = plan.works.filter((work) => work.island === island.index);
+    if (!spots.length) return undefined;
+    const { x, z } = island.arrival;
+    const ahead = Math.atan2(island.centre.z - z, island.centre.x - x);
+    const turns = spots.map((work) => {
+      const a = Math.atan2(work.z - z, work.x - x) - ahead;
+      return Math.atan2(Math.sin(a), Math.cos(a));
+    });
+    return { x, z, ahead, from: Math.min(...turns) - 0.3, to: Math.max(...turns) + 0.3, reach: Math.max(...spots.map((work) => Math.hypot(work.x - x, work.z - z))) + 1.2 };
+  });
+  const inClearing = (island, x, z) => {
+    const c = clearings[island.index];
+    if (!c || Math.hypot(x - c.x, z - c.z) > c.reach) return false;
+    const a = Math.atan2(z - c.z, x - c.x) - c.ahead;
+    const turn = Math.atan2(Math.sin(a), Math.cos(a));
+    return turn > c.from && turn < c.to;
+  };
+  // near: { x, z, heading, spread, from, to } to look only between from and to metres of a point,
+  // within spread radians round heading (low: things low enough to stand in the clearing); rim: how
+  // far towards the rim, as a share of the radius.
+  function freeSpot(island, size, near, rim = 0) {
     for (let tries = 0; tries < 40; tries++) {
       let x;
       let z;
       if (near) {
-        const a = near.heading + (roll() - 0.5) * 2.6;
+        const a = near.heading + (roll() - 0.5) * (near.spread ?? 2.6);
         const r = near.from + roll() * (near.to - near.from);
         x = near.x + Math.cos(a) * r;
         z = near.z + Math.sin(a) * r;
         if (Math.hypot(x - island.centre.x, z - island.centre.z) > island.radius - 2.2) continue;
       } else {
         const a = roll() * Math.PI * 2;
-        const r = Math.sqrt(roll()) * (island.radius - 2.2);
+        const r = (rim + (1 - rim) * Math.sqrt(roll())) * (island.radius - 2.2);
         x = island.centre.x + Math.cos(a) * r;
         z = island.centre.z + Math.sin(a) * r;
       }
+      if (island.out && !near?.low && inClearing(island, x, z)) continue;
       if (taken.some((other) => Math.hypot(other.x - x, other.z - z) < other.r + size)) continue;
       taken.push({ x, z, r: size });
       return { x, z };
@@ -179,7 +203,8 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   // Round each pond: cushions and reeds on the far rim and the sides, only low tufts on the near rim,
   // so that the water is seen from the arrival; a water lily or two.
   for (const pond of plan.ponds) {
-    const far = Math.atan2(pond.z - first.start.z, pond.x - first.start.x);
+    const viewer = pond.island.out && pond.island !== first ? pond.island.arrival : first.start;
+    const far = Math.atan2(pond.z - viewer.z, pond.x - viewer.x);
     const many = Math.round((2 * Math.PI * (pond.r + 0.6)) / 0.9);
     for (let i = 0; i < many; i++) {
       const a = (i / many) * Math.PI * 2;
@@ -190,34 +215,43 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
       if (i % 3 === 1 && behind > -0.5) plant(['tifa', 'canne'], at(pond.r + 0.1), 1.6 + roll() * 0.6);
     }
     for (const [dx, dz] of [[0.3, -0.35], [-0.45, 0.2]]) plant(['ninfea'], { x: pond.x + dx * pond.r, z: pond.z + dz * pond.r, y: pond.level }, 0.45);
+    // On the App's island a jetty runs from the near rim into the water.
+    if (pond.island.id === 'app') plant(['pontile'], { x: pond.x - Math.cos(far) * (pond.r - 0.4), z: pond.z - Math.sin(far) * (pond.r - 0.4), y: pond.level });
   }
-  // Each island's and islet's garden: [pictures, how many], away from what stands there already;
-  // spacing: how far apart, as a share of the width of the picture.
-  const grow = (island, list, spacing, home) => {
-    for (const [names, many] of list) {
-      const name = pick(...[names].flat());
+  // Each island's and islet's garden (GARDENS); spacing: how far apart single things stand, as a share
+  // of the width of their picture.
+  const put = (name, spot, home) => (gardens[name] ??= []).push({ ...spot, home, height: (picture(name).metres ?? 1) * (0.8 + roll() * 0.4) });
+  const grow = (island, { groups = 0, of = [], also = [] }, spacing, home) => {
+    for (let g = 0; g < groups; g++) {
+      const centre = freeSpot(island, 1.2, undefined, 0.45);
+      if (!centre) continue;
+      of.forEach((names, k) => {
+        const name = pick(...names);
+        const spot = k ? freeSpot(island, 0.4, { ...centre, heading: 0, spread: Math.PI * 2, from: 0.9, to: 2.4 }) : centre;
+        if (name && spot) put(name, spot, home);
+      });
+    }
+    for (const [names, many, rim = 0] of also) {
+      const name = pick(...names);
       if (!name) continue;
       const entry = picture(name);
-      const width = (entry.metres ?? 1) * (entry.w / entry.h);
       for (let i = 0; i < many; i++) {
-        const spot = freeSpot(island, Math.max(0.4, width * spacing));
-        if (spot) (gardens[name] ??= []).push({ ...spot, home, height: (entry.metres ?? 1) * (0.8 + roll() * 0.4) });
+        const spot = freeSpot(island, Math.max(0.4, (entry.metres ?? 1) * (entry.w / entry.h) * spacing), undefined, rim);
+        if (spot) put(name, spot, home);
       }
     }
   };
-  // Low cushions of cloud a few steps ahead of where one arrives: on a phone held upright the lower
-  // third of the screen is that ground.
+  // A few low tufts a few steps ahead of where one arrives, under the works: on a phone held upright
+  // the lower third of the screen is that ground.
   for (const island of plan.islands) {
     if (island !== first) {
-      const near = { x: island.arrival.x, z: island.arrival.z, heading: Math.atan2(island.centre.z - island.arrival.z, island.centre.x - island.arrival.x), from: 2.6, to: 7.5 };
-      for (const [name, many, height] of CUSHIONS) {
-        for (let i = 0; i < many; i++) {
-          const spot = freeSpot(island, 0.5, near);
-          if (spot) (gardens[name] ??= []).push({ ...spot, height: height * (0.75 + roll() * 0.5) });
-        }
+      const near = { x: island.arrival.x, z: island.arrival.z, heading: Math.atan2(island.centre.z - island.arrival.z, island.centre.x - island.arrival.x), from: 2.6, to: 5, low: true };
+      for (let i = 0; i < 4; i++) {
+        const spot = freeSpot(island, 0.5, near);
+        if (spot) (gardens['ciuffo-2'] ??= []).push({ ...spot, height: 0.3 + roll() * 0.2 });
       }
     }
-    grow(island, GARDENS[island.id] ?? [], 0.45);
+    grow(island, GARDENS[island.id], 0.45);
   }
   for (const islet of plan.islets) grow(islet, ISLETS[islet.id], 0.22, 0);
   // Things one cannot walk through, and how near one may come: about a metre from their edge.
@@ -250,7 +284,8 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     sprite(`${zone.id}-cerchio`, [zone.mark]);
   }
 
-  // Lamps by the mouths of the paths, and one on its islet.
+  // Lamps by the mouths of the paths, one right of the arrival's look, where a phone held upright sees
+  // it, and one on its islet.
   const lampSpots = plan.islands.flatMap((island) => [island.in, island.out].map((path) => {
     const at = mouth(plan, island, path);
     const r = island.radius - 3.2;
@@ -263,7 +298,9 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     return plan.ponds.some((pond) => Math.hypot(spot.x - pond.x, spot.z - pond.z) < pond.r + 4) ? beside(-0.5) : spot;
   }));
   const lampIslet = plan.islets.find((islet) => islet.id === 'lampione').centre;
-  lampSpots.push({ x: lampIslet.x + 0.6, z: lampIslet.z, home: 0 });
+  lampSpots.push({ ...seen(7.5, 1.9), home: 0 }, { x: lampIslet.x + 0.6, z: lampIslet.z, home: 0 });
+  // The letterbox of the Contacts has its lamp beside it.
+  for (const box of gardens['cassetta-posta'] ?? []) lampSpots.push({ x: box.x + 1.1, z: box.z + 0.4 });
   lampSpots.forEach((spot) => Object.assign(spot, { on: undefined, level: 0 }));
   const lit = sprite('lampione', lampSpots);
   const dark = sprite('lampione-spento', lampSpots);
@@ -299,7 +336,7 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     for (const [name, forward, top, width] of island.out ? BODY : ISLET_BODY) {
       const entry = picture(name);
       const height = (R * width * entry.h) / entry.w;
-      (sheets[name] ??= []).push({ island, forward: R * forward, x: island.centre.x, z: island.centre.z, y: island.centre.y - R * top, height, home: island.out ? undefined : 0 });
+      (sheets[name] ??= []).push({ island, forward: R * forward, x: island.centre.x, z: island.centre.z, y: island.centre.y - top, height, home: island.out ? undefined : 0 });
     }
     // Two or three small clouds apart from it, away from its paths.
     const mouths = island.out ? [island.in, island.out].map((path) => mouth(plan, island, path)) : [];
@@ -357,7 +394,7 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   // The water of the ponds, and the stones hanging between the islets.
   const water = createWater(plan.ponds);
   object.add(ground.mesh, pools.mesh, water, ...createStones(plan.links));
-  for (const pond of plan.ponds) if (pond.island === first) solid.push({ x: pond.x, z: pond.z, r: pond.r + 0.5 });
+  for (const pond of plan.ponds) if (pond.island.out) solid.push({ x: pond.x, z: pond.z, r: pond.r + 0.5 });
 
   let lampLevel = 0;
   // Pictures that move by themselves are turned to the eyes every frame; the others only when the

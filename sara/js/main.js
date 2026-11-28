@@ -28,7 +28,7 @@ const PHONE_WIDTHS = [64, 58, 62, 56];
 const PHONE_ROT = [-3, 2.5, -1.5, 3.5, -2.5, 1.5];
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const board = document.querySelector('[data-board]');
+const walls = document.querySelector('[data-walls]');
 const viewer = document.querySelector('[data-viewer]');
 const stage = viewer.querySelector('[data-stage]');
 const countEl = viewer.querySelector('[data-count]');
@@ -123,59 +123,82 @@ function sheetMarkup(work, i) {
   const sheet = document.createElement('button');
   sheet.type = 'button';
   sheet.className = 'sheet';
-  const label = work.title || 'in arrivo';
-  sheet.setAttribute('aria-label', `Foglio ${work.number}, ${label}${work.example ? ', esempio' : ''}`);
+  sheet.setAttribute('aria-label', `${work.series}, foglio ${work.number}, ${work.title || 'in arrivo'}`);
   sheet.innerHTML = `<span class="sheet__fibre"></span><span class="sheet__face"><span class="sheet__number">${work.number}</span><span class="sheet__state">in arrivo</span></span>`;
   if (work.file) {
     const img = new Image();
-    img.src = work.file;
+    img.dataset.src = work.file;
     img.alt = '';
     img.decoding = 'async';
-    img.loading = 'lazy';
-    img.addEventListener('load', () => { works[i].ratio = img.naturalHeight / img.naturalWidth; layout(); });
+    if (!work.ratio) img.addEventListener('load', () => { works[i].ratio = img.naturalHeight / img.naturalWidth; layout(); });
     sheet.querySelector('.sheet__face').append(img);
     sheet.classList.add('has-image');
   }
-  if (work.example) sheet.insertAdjacentHTML('beforeend', '<span class="sheet__tag">Esempio</span>');
   return sheet;
 }
 
-function buildBoard() {
-  works.forEach((work, i) => {
-    const [bg, fg] = PALETTE[i % PALETTE.length];
-    const li = document.createElement('li');
-    li.className = 'slot';
-    li.style.setProperty('--c', `var(${bg})`);
-    li.style.setProperty('--t', `var(${fg})`);
-    if (work.file) {
-      li.classList.add('has-image');
-      li.style.setProperty('--img', `url("${new URL(work.file, location.href)}")`);
-    }
-    li.innerHTML = '<span class="slot__scrap slot__scrap--a"></span><span class="slot__scrap slot__scrap--b"></span><span class="slot__tape slot__tape--a"></span><span class="slot__tape slot__tape--b"></span>';
-    const sheet = sheetMarkup(work, i);
-    li.insertBefore(sheet, li.querySelector('.slot__tape'));
-    const slot = { li, sheet, rotation: 0, index: i };
-    makeDraggable(sheet, {
-      angle: () => slot.rotation,
-      onStart: () => { li.style.zIndex = ++zTop; li.classList.add('is-torn'); },
+function buildBoard(series) {
+  series.forEach((group) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'wall__group';
+    wrap.innerHTML = `<h3 class="label label--series">${group.name}</h3><ol class="wall__board" data-qa-overlap-ok></ol>`;
+    const board = wrap.querySelector('ol');
+    walls.append(wrap);
+    group.works.forEach((entry, local) => {
+      const i = works.push({ ...entry, series: group.name, total: group.works.length }) - 1;
+      const work = works[i];
+      const [bg, fg] = PALETTE[local % PALETTE.length];
+      const li = document.createElement('li');
+      li.className = 'slot';
+      li.style.setProperty('--c', `var(${bg})`);
+      li.style.setProperty('--t', `var(${fg})`);
+      if (work.file) {
+        li.classList.add('has-image');
+        li.style.setProperty('--img', `url("${new URL(work.file, location.href)}")`);
+      }
+      li.innerHTML = '<span class="slot__scrap slot__scrap--a"></span><span class="slot__scrap slot__scrap--b"></span><span class="slot__tape slot__tape--a"></span><span class="slot__tape slot__tape--b"></span>';
+      const sheet = sheetMarkup(work, i);
+      li.insertBefore(sheet, li.querySelector('.slot__tape'));
+      const slot = { li, sheet, board, local, rotation: 0, index: i };
+      makeDraggable(sheet, {
+        angle: () => slot.rotation,
+        onStart: () => { li.style.zIndex = ++zTop; li.classList.add('is-torn'); },
+      });
+      sheet.addEventListener('click', () => {
+        if (sheet.dataset.dragged === '1') return;
+        li.style.zIndex = ++zTop;
+        openViewer(i);
+      });
+      slots.push(slot);
+      board.append(li);
+      loader.observe(li);
     });
-    sheet.addEventListener('click', () => {
-      if (sheet.dataset.dragged === '1') return;
-      li.style.zIndex = ++zTop;
-      openViewer(i);
-    });
-    slots.push(slot);
-    board.append(li);
   });
+  document.getElementById('wall-title').textContent = `${works.length} fogli`;
 }
 
-function layout() {
+// Each drawing is fetched only when its sheet comes near the screen.
+const loader = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    loader.unobserve(entry.target);
+    loadImage(entry.target);
+  });
+}, { rootMargin: '300px 0px' });
+
+function loadImage(root) {
+  const img = root.querySelector('img[data-src]:not([src])');
+  if (img) img.src = img.dataset.src;
+}
+
+function layoutBoard(board, boardSlots) {
   const W = board.clientWidth;
   const phone = W <= 700;
   const vw = W / 100;
   let bottom = 0;
   let y = 4;
-  slots.forEach((slot, i) => {
+  boardSlots.forEach((slot) => {
+    const i = slot.local;
     let spec;
     if (phone) {
       const landscape = i === 5 || i === 9;
@@ -184,7 +207,7 @@ function layout() {
     } else {
       spec = DESK_SLOTS[i % DESK_SLOTS.length];
     }
-    const ratio = works[i].ratio || (spec.landscape ? 0.707 : 1.414);
+    const ratio = works[slot.index].ratio || (spec.landscape ? 0.707 : 1.414);
     const w = spec.w * vw;
     const h = w * ratio;
     if (phone) y += (h / vw) * 0.8;
@@ -196,6 +219,10 @@ function layout() {
     bottom = Math.max(bottom, spec.y * vw + h);
   });
   board.style.setProperty('--board-h', `${bottom + 6 * vw}px`);
+}
+
+function layout() {
+  walls.querySelectorAll('.wall__board').forEach((board) => layoutBoard(board, slots.filter((slot) => slot.board === board)));
 }
 
 function revealBoard() {
@@ -230,7 +257,7 @@ function introHero() {
 const state = { index: -1, figure: null, busy: false, opener: null };
 
 function targetBox(ratio) {
-  const reserveBottom = innerWidth <= 700 ? 150 : 130;
+  const reserveBottom = innerWidth <= 700 ? 210 : 130;
   const maxW = Math.min(innerWidth - 32, 980);
   const maxH = innerHeight - reserveBottom - 32;
   const w = Math.min(maxW, maxH / ratio);
@@ -250,6 +277,7 @@ function makeFigure(i) {
   sheet.style.setProperty('--num', `${Math.round(box.w * 0.18)}px`);
   sheet.setAttribute('tabindex', '-1');
   sheet.setAttribute('aria-hidden', 'true');
+  loadImage(sheet);
   fig.append(sheet);
   stage.append(fig);
   swipe(fig);
@@ -257,7 +285,7 @@ function makeFigure(i) {
 }
 
 function updateInfo(i) {
-  countEl.textContent = `${works[i].number} / ${String(works.length).padStart(2, '0')}`;
+  countEl.textContent = `${works[i].series} ${works[i].number} / ${String(works[i].total).padStart(2, '0')}`;
   titleEl.textContent = works[i].title || 'in arrivo';
 }
 
@@ -379,8 +407,7 @@ addEventListener('resize', () => {
 async function init() {
   buildName();
   introHero();
-  works = await fetch('data/works.json').then((r) => r.json());
-  buildBoard();
+  buildBoard(await fetch('data/works.json').then((r) => r.json()));
   layout();
   revealBoard();
 }

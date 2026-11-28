@@ -73,7 +73,12 @@ const NOISE = `
     return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
   }`;
 
-// The sea of clouds far below: white billows with patches of blue between them, drifting.
+// The sea of clouds far below: white billows with patches of blue between them, drifting, over broad
+// low swells, so that from above it is soft and not a flat sheet.
+const SWELL = `
+  float swell(vec2 p) {
+    return (sin(p.x * 0.017 + 1.3) * cos(p.y * 0.014) * 0.6 + sin((p.x - p.y) * 0.009) * 0.4) * 9.0;
+  }`;
 function createSea() {
   const material = new THREE.ShaderMaterial({
     fog: true,
@@ -85,9 +90,10 @@ function createSea() {
     vertexShader: `
       varying vec2 vAt;
       #include <fog_pars_vertex>
+      ${SWELL}
       void main() {
         vAt = position.xy;
-        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+        vec4 mvPosition = modelViewMatrix * vec4(position.xy, swell(position.xy), 1.0);
         gl_Position = projectionMatrix * mvPosition;
         #include <fog_vertex>
       }`,
@@ -97,16 +103,21 @@ function createSea() {
       varying vec2 vAt;
       #include <fog_pars_fragment>
       ${NOISE}
+      ${SWELL}
       void main() {
         vec2 at = vAt * 0.012 + vec2(uTime * 0.004, 0.0);
         float n = noise(at) * 0.6 + noise(at * 2.7) * 0.3 + noise(at * 7.0) * 0.1;
         float cloud = smoothstep(0.38, 0.62, n);
-        gl_FragColor = vec4(mix(uGap, uCloud, cloud) * mix(0.86, 1.0, noise(at * 9.0)), 1.0);
+        // The swells lit from above and a little aside.
+        float h = swell(vAt);
+        vec3 normal = normalize(vec3(h - swell(vAt + vec2(4.0, 0.0)), 4.0, h - swell(vAt + vec2(0.0, 4.0))));
+        float lit = mix(0.84, 1.04, clamp(dot(normal, normalize(vec3(-0.5, 1.0, 0.4))), 0.0, 1.0));
+        gl_FragColor = vec4(mix(uGap, uCloud, cloud) * mix(0.86, 1.0, noise(at * 9.0)) * lit, 1.0);
         #include <colorspace_fragment>
         #include <fog_fragment>
       }`,
   });
-  const sea = new THREE.Mesh(new THREE.CircleGeometry(1500, 64), material);
+  const sea = new THREE.Mesh(new THREE.RingGeometry(0, 1500, 96, 48), material);
   sea.rotation.x = -Math.PI / 2;
   sea.position.y = -95;
   return sea;
@@ -160,8 +171,8 @@ function floorMaterial(uniforms) {
         vec2 at = vGround.xz;
         // A very fine felt, only where its grain is larger than a pixel; soft billows of light and shade.
         float felt = noise(at * 16.0) * 0.6 + noise(at * 45.0) * 0.4;
-        float grain = 1.0 - smoothstep(0.015, 0.06, fwidth(at.x));
-        vec3 colour = diffuseColor.rgb * (1.0 + (felt - 0.5) * 0.08 * grain) * mix(0.93, 1.04, noise(at * 0.35));
+        float grain = 1.0 - smoothstep(0.03, 0.12, fwidth(at.x));
+        vec3 colour = diffuseColor.rgb * (1.0 + (felt - 0.5) * 0.2 * grain) * mix(0.93, 1.04, noise(at * 0.35));
         // Shadows of the clouds going by.
         float cloud = noise(at * 0.045 + vec2(uTime * 0.015, uTime * 0.007));
         colour *= 1.0 - smoothstep(0.6, 0.74, cloud) * 0.16;
@@ -177,18 +188,18 @@ function floorMaterial(uniforms) {
 }
 
 // The stones of the given paths: thick round plaster discs with a soft edge, a little uneven.
-export function createStones(paths) {
+export function createStones(paths, material = new THREE.MeshLambertMaterial({ color: '#edf2f9', emissive: '#6f82a3' })) {
   // From the foot up to the middle of the top, so that the faces look outwards.
   // Closed underneath, and light there too: a stone overhead is plaster, not a grey disc.
   // Thick and soft: a rounded belly under a flat top, as in the pictures.
   const profile = [[0, -0.24], [0.5, -0.22], [0.78, -0.16], [0.94, -0.07], [1, 0.01], [0.97, 0.065], [0.9, 0.085], [0, 0.085]].map(([x, y]) => new THREE.Vector2(x, y));
-  const template = new THREE.Mesh(new THREE.LatheGeometry(profile, 28), new THREE.MeshLambertMaterial({ color: '#edf2f9', emissive: '#6f82a3' }));
+  const template = new THREE.Mesh(new THREE.LatheGeometry(profile, 28), material);
   const q = new THREE.Quaternion();
   const up = new THREE.Vector3(0, 1, 0);
   const spots = paths.flatMap((path) => Array.from({ length: path.stones + 1 }, (_, i) => {
     const f = Math.abs(Math.sin((path.index * 31 + i) * 12.9898) * 43758.5453) % 1;
     const at = path.curve.getPointAt(i / path.stones);
-    const size = 0.5 + f * 0.14;
+    const size = 0.42 + f * 0.1;
     return { x: at.x, z: at.z, matrix: new THREE.Matrix4().compose(at, q.setFromAxisAngle(up, f * 6.28), new THREE.Vector3(size, 1, size)) };
   }));
   return instances(template, spots, { slices: 16 }).drawn;
@@ -263,7 +274,11 @@ export function createGround(plan) {
     return floor;
   });
   const sea = createSea();
-  const stones = createStones(plan.paths);
+  // The stones of the paths wear the felt of the floor too.
+  const plaster = floorMaterial(uniforms);
+  plaster.color.set('#edf2f9');
+  plaster.emissive.set('#6f82a3');
+  const stones = createStones(plan.paths, plaster);
   // The billows wear the felt of the floor; on the light way, plain and fewer.
   // Lit a little from within, as cloud is, so that from below it stays white and not grey.
   const felt = floorMaterial(uniforms);
