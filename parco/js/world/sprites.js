@@ -39,7 +39,7 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
     const which = entry[wanted] ? wanted : 'small';
     if (size === which || !entry[which]) return Promise.resolve();
     size = which;
-    return loadTexture(entry[which].file, renderer).then((texture) => {
+    return loadTexture(entry[which].file, renderer, { cutOut: true }).then((texture) => {
       if (size === undefined || (size !== which && material.map)) return texture.dispose();
       const first = !material.map;
       material.map?.dispose();

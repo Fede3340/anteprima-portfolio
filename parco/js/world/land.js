@@ -108,7 +108,7 @@ function createSea() {
   });
   const sea = new THREE.Mesh(new THREE.CircleGeometry(1500, 64), material);
   sea.rotation.x = -Math.PI / 2;
-  sea.position.y = -46;
+  sea.position.y = -95;
   return sea;
 }
 
@@ -194,9 +194,9 @@ export function createStones(paths) {
   return instances(template, spots, { slices: 16 }).drawn;
 }
 
-// The body of every island and islet: a few round billows under the floor, merged in one mesh, so
-// that from below an island is a full cloud. Its outline is broken by the cut-out clouds of the rim and
-// the underside (park.js), so the billows stay few and plain. Where a billow sinks into another its
+// The core of every island: a few round billows under the floor, merged in one mesh, so that from
+// below one does not see through it. What is seen of the island are the cut-out clouds around and under
+// it (park.js), so the billows stay few and plain; the islets, never seen from below, have none. Where a billow sinks into another its
 // colour goes to the soft blue of the folds. light: fewer and coarser billows, for slow machines.
 const FOLD = new THREE.Color('#a9bbdb');
 const PUFF = new THREE.Color('#ffffff');
@@ -208,12 +208,9 @@ function createBodies(list, light) {
     const c = island.centre;
     const seed = (n) => Math.abs(Math.sin((island.index * 131 + n) * 12.9898) * 43758.5453) % 1;
     let n = 0;
-    // Under each mouth of a path, a billow just under the floor, so that its edge never shows there.
-    for (const m of island.out ? [island.out.curve.getPoint(0), island.in.curve.getPoint(1)] : []) {
-      balls.push({ x: m.x, y: m.y - 0.25 - 2.2 * 0.6, z: m.z, r: 2.2, squash: 0.6, detail: light ? 1 : 2 });
-    }
-    // Rings from under the rim down: radius from the middle, size of the billows, their top's depth.
-    const rings = [[R * 0.62, R * 0.3, 0.5], [R * 0.3, R * 0.28, R * 0.22], [0, R * 0.26, R * 0.42]];
+    // Rings from under the floor down, well inside the cut-out billows that make the outline:
+    // radius from the middle, size of the billows, their top's depth.
+    const rings = [[R * 0.35, R * 0.17, 1.4], [0, R * 0.2, R * 0.22]];
     for (const [r, size, top] of rings) {
       const count = r ? Math.max(4, Math.round((2 * Math.PI * r) / (size * (light ? 1.7 : 1.2)))) : 1;
       for (let i = 0; i < count; i++, n++) {
@@ -273,14 +270,13 @@ export function createGround(plan) {
   felt.vertexColors = true;
   felt.emissive.set('#7487a8');
   // The islets' floors go with the bodies: seen, never walked on nor touched.
-  const all = [...plan.islands, ...plan.islets];
   const tops = plan.islets.map((islet) => {
     const top = createFloor(plan, islet).toNonIndexed();
     top.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(top.attributes.position.count * 3).fill(1), 3));
     return top;
   });
-  const bodies = new THREE.Mesh(mergeGeometries([createBodies(all, false), ...tops]), felt);
-  const shapes = { full: bodies.geometry, light: mergeGeometries([createBodies(all, true), ...tops]) };
+  const bodies = new THREE.Mesh(mergeGeometries([createBodies(plan.islands, false), ...tops]), felt);
+  const shapes = { full: bodies.geometry, light: mergeGeometries([createBodies(plan.islands, true), ...tops]) };
   // The light way: the floor in its plain colour, the sea of clouds as one soft colour, nothing
   // worked out pixel by pixel.
   const plain = { floor: new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#2f3e58' }), sea: new THREE.MeshBasicMaterial({ color: '#c9dcf2' }), bodies: new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#7487a8', vertexColors: true }), shape: shapes.light };

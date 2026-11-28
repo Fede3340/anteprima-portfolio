@@ -820,5 +820,50 @@
       "y": 0.9917
     },
     "larghezza_m": 3.0
+  },
+  "falda-1": {
+    "file": "falda-1.webp",
+    "larghezza": 2048,
+    "altezza": 450,
+    "file_1024": "falda-1-1024.webp",
+    "larghezza_1024": 1024,
+    "altezza_1024": 225,
+    "altezza_m": 3.08,
+    "appoggio": {
+      "x": 0.5,
+      "y": 0.0378
+    },
+    "larghezza_m": 14.0,
+    "uso": "corpo delle isole: il punto d'appoggio e' il centro del bordo alto"
+  },
+  "falda-2": {
+    "file": "falda-2.webp",
+    "larghezza": 2048,
+    "altezza": 638,
+    "file_1024": "falda-2-1024.webp",
+    "larghezza_1024": 1024,
+    "altezza_1024": 319,
+    "altezza_m": 3.12,
+    "appoggio": {
+      "x": 0.5,
+      "y": 0.0298
+    },
+    "larghezza_m": 10.0,
+    "uso": "corpo delle isole: il punto d'appoggio e' il centro del bordo alto"
+  },
+  "falda-3": {
+    "file": "falda-3.webp",
+    "larghezza": 2048,
+    "altezza": 295,
+    "file_1024": "falda-3-1024.webp",
+    "larghezza_1024": 1024,
+    "altezza_1024": 148,
+    "altezza_m": 1.01,
+    "appoggio": {
+      "x": 0.5,
+      "y": 0.061
+    },
+    "larghezza_m": 7.0,
+    "uso": "corpo delle isole: il punto d'appoggio e' il centro del bordo alto"
   }
 }

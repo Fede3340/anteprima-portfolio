@@ -11,23 +11,23 @@ import { createWater } from './water.js';
 
 // What grows on each island, as [picture, how many]; spread over the island away from the works.
 const GARDENS = {
-  ingresso: [['albero-grande', 2], ['albero-medio', 4], ['albero-piccolo', 4], ['cespuglio-1', 6], ['cespuglio-2', 3], ['nuvola-a-terra', 9]],
-  siti: [['albero-grande', 9], ['albero-medio', 9], ['albero-piccolo', 5], ['cespuglio-2', 5], ['cespuglio-1', 4], ['nuvola-a-terra', 7]],
-  negozi: [['albero-frutti', 9], ['cassette', 4], ['cespuglio-1', 3], ['nuvola-a-terra', 4]],
+  ingresso: [['albero-grande', 2], ['albero-medio', 4], ['albero-piccolo', 4], ['cespuglio-1', 3], ['cespuglio-2', 1], ['nuvola-a-terra', 3]],
+  siti: [['albero-grande', 9], ['albero-medio', 9], ['albero-piccolo', 5], ['cespuglio-2', 2], ['cespuglio-1', 2], ['nuvola-a-terra', 3]],
+  negozi: [['albero-frutti', 9], ['cassette', 4], ['cespuglio-1', 2], ['nuvola-a-terra', 2]],
   programmi: [['siepe-squadrata', 6], ['gradini', 2], ['sasso', 8], ['albero-piccolo', 2]],
-  app: [['canne', 8], ['albero-medio', 3], ['cespuglio-1', 4], ['nuvola-a-terra', 4]],
-  videogioco: [['scivolo', 1], ['aquilone', 3], ['nuvola-a-terra', 8], ['cespuglio-2', 3]],
+  app: [['canne', 8], ['albero-medio', 3], ['cespuglio-1', 2], ['nuvola-a-terra', 2]],
+  videogioco: [['scivolo', 1], ['aquilone', 3], ['nuvola-a-terra', 4], ['cespuglio-2', 2]],
   marchi: [['fiore-1', 7], ['fiore-2', 8], ['aiuola', 4], ['cespuglio-1', 3]],
-  manifesti: [['erba-alta', 16], ['bandiera', 4], ['nuvola-a-terra', 3]],
-  google: [['albero-piccolo', 3], ['panchina', 1], ['sasso', 4], ['nuvola-a-terra', 3]],
-  contatti: [['cassetta-posta', 1], ['albero-medio', 2], ['nuvola-a-terra', 5], ['cespuglio-1', 3]],
+  manifesti: [['erba-alta', 16], ['bandiera', 4], ['nuvola-a-terra', 1]],
+  google: [['albero-piccolo', 3], ['panchina', 1], ['sasso', 4], ['nuvola-a-terra', 1]],
+  contatti: [['cassetta-posta', 1], ['albero-medio', 2], ['nuvola-a-terra', 2], ['cespuglio-1', 2]],
 };
 // The islets around the first island, each its own little garden: [pictures, the first that exists
 // is used; how many]. Their trees stand close together.
 const ISLETS = {
   stagno: [[['albero-medio'], 1], [['albero-piccolo'], 2], [['cespuglio-1'], 3], [['ciuffo-2'], 6]],
   boschetto: [[['boschetto'], 2], [['albero-grande'], 4], [['albero-medio'], 7], [['albero-piccolo'], 7], [['cespuglio-2'], 3], [['ciuffo-2'], 6]],
-  altalena: [[['aquilone'], 2], [['cespugli-gruppo', 'cespuglio-2'], 3], [['nuvola-a-terra'], 3], [['ciuffo-2'], 5]],
+  altalena: [[['aquilone'], 2], [['cespugli-gruppo', 'cespuglio-2'], 2], [['ciuffo-2'], 5]],
   lampione: [[['albero-doppio', 'albero-medio'], 1], [['cespuglio-1'], 2], [['ciuffo-2'], 4]],
 };
 // The ground seen on arrival, composed as in the picture of the door: [pictures, metres ahead of the
@@ -38,14 +38,17 @@ const FRONT = [
   [['ciuffo-2'], 2.8, -0.5, 0.3], [['nuvola-a-terra'], 3.4, 0.9, 0.4], [['ciuffo-1'], 4.2, 0.3, 0.25], [['ciuffo-1'], 3.6, -0.9, 0.25],
   [['cespuglio-1'], 4.8, -1.3, 0.5], [['nuvola-a-terra'], 6, -0.8, 0.45], [['ciuffo-2'], 6.5, 0.6, 0.35],
   [['albero-grande'], 9, -8.5], [['albero-doppio', 'albero-medio'], 13, 8.5], [['panchina'], 7, -2.1],
-  [['nuvola-a-terra'], 3, -1.8, 0.45], [['cespuglio-1'], 3.6, -2.8, 0.55], [['ciuffo-2'], 2.5, -1.3, 0.35], [['ciuffo-1'], 3.1, -0.9, 0.25],
-  [['cespugli-gruppo', 'cespuglio-2'], 4.5, 2.6, 0.7], [['ciuffo-2'], 3, 1.4, 0.35], [['nuvola-a-terra'], 5, 1.6, 0.45], [['ciuffo-1'], 2.4, 1.9, 0.25],
-  [['cespuglio-2'], 6, -4.6, 0.9], [['nuvola-a-terra'], 6.2, -3.4, 0.6], [['ciuffo-2'], 5.2, -2.5, 0.45], [['ciuffo-1'], 7.5, -1.2, 0.3],
-  [['nuvola-a-terra'], 9.5, -3.2, 0.8], [['cespuglio-1'], 10, -2.2], [['ciuffo-2'], 8.5, 1.1, 0.5], [['cespuglio-1'], 12, -9],
+  [['cespuglio-1'], 3.6, -2.8, 0.55], [['ciuffo-2'], 2.5, -1.3, 0.35], [['ciuffo-1'], 3.1, -0.9, 0.25],
+  [['cespugli-gruppo', 'cespuglio-2'], 4.5, 2.6, 0.7], [['ciuffo-2'], 3, 1.4, 0.35], [['ciuffo-1'], 2.4, 1.9, 0.25],
+  [['cespuglio-2'], 6, -4.6, 0.9], [['ciuffo-2'], 5.2, -2.5, 0.45], [['ciuffo-1'], 7.5, -1.2, 0.3],
+  [['nuvola-a-terra'], 9.5, -3.2, 0.8], [['ciuffo-2'], 8.5, 1.1, 0.5], [['cespuglio-1'], 12, -9],
 ];
-const RIM_EVERY = 3.2;
+// The sheets of cloud under an island and under an islet: [picture, how far towards the eyes it hangs,
+// depth of its top edge, its width, all as shares of the island's radius].
+const BODY = [['falda-1', 0.75, 0.005, 2.15], ['falda-2', 0.35, 0.1, 1.5]];
+const ISLET_BODY = [['falda-3', 0.75, 0.005, 2.1]];
 // The cushions near the way in: [picture, how many, height in metres].
-const CUSHIONS = [['nuvola-a-terra', 5, 0.9], ['cespuglio-1', 3, 0.8], ['ciuffo-2', 6, 0.6]];
+const CUSHIONS = [['nuvola-a-terra', 2, 0.9], ['cespuglio-1', 2, 0.8], ['ciuffo-2', 6, 0.6]];
 
 function random(seed) {
   let a = seed >>> 0;
@@ -182,8 +185,8 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
       const a = (i / many) * Math.PI * 2;
       const behind = Math.cos(a - far);
       const at = (r) => ({ x: pond.x + Math.cos(a) * r, z: pond.z + Math.sin(a) * r });
-      if (behind > -0.2) plant(['nuvola-a-terra'], at(pond.r + 0.45 + roll() * 0.3), 0.6 + 0.4 * behind + roll() * 0.2);
-      else plant(['ciuffo-1'], at(pond.r + 0.5), 0.3);
+      if (behind > -0.2 && i % 2) plant(['nuvola-a-terra'], at(pond.r + 0.45 + roll() * 0.3), 0.6 + 0.4 * behind + roll() * 0.2);
+      else if (behind <= -0.2) plant(['ciuffo-1'], at(pond.r + 0.5), 0.3);
       if (i % 3 === 1 && behind > -0.5) plant(['tifa', 'canne'], at(pond.r + 0.1), 1.6 + roll() * 0.6);
     }
     for (const [dx, dz] of [[0.3, -0.35], [-0.45, 0.2]]) plant(['ninfea'], { x: pond.x + dx * pond.r, z: pond.z + dz * pond.r, y: pond.level }, 0.45);
@@ -284,50 +287,39 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   shadows.push({ x: swingSpots[0].x, z: swingSpots[0].z, size: 1.6 });
   solid.push({ x: swingSpots[0].x, z: swingSpots[0].z, r: 1.6 });
 
-  // Clouds: the rims and undersides of the islands and islets, the sea far below, the sky around.
-  const rims = [];
-  const unders = [];
+  // Clouds: the body of each island and islet, a few small clouds beside it, the sea far below, the
+  // sky around.
+  const sheets = {};
+  const beside = [];
   for (const island of [...plan.islands, ...plan.islets]) {
-    // The paths come in at the edge, some from below: no billow stands in their way.
-    const mouths = island.out ? [island.in, island.out].map((path) => mouth(plan, island, path)) : [];
-    const clear = (x, z, room) => mouths.every((at) => Math.hypot(x - at.x, z - at.z) > room);
     const R = island.radius;
-    const y = island.centre.y;
-    const push = (list, a, r, height, foot, room) => {
+    // The body: one or two broad sheets of cloud, flat on top and soft underneath, hung by their top
+    // edge just under the floor on the side facing the eyes (see update), so that against the sky the
+    // island is one clear shape: a flat floor over a belly of cloud.
+    for (const [name, forward, top, width] of island.out ? BODY : ISLET_BODY) {
+      const entry = picture(name);
+      const height = (R * width * entry.h) / entry.w;
+      (sheets[name] ??= []).push({ island, forward: R * forward, x: island.centre.x, z: island.centre.z, y: island.centre.y - R * top, height, home: island.out ? undefined : 0 });
+    }
+    // Two or three small clouds apart from it, away from its paths.
+    const mouths = island.out ? [island.in, island.out].map((path) => mouth(plan, island, path)) : [];
+    for (let i = 0; i < (island.out ? 3 : 1); i++) {
+      const a = roll() * Math.PI * 2;
+      const r = R + 3 + roll() * 4;
       const x = island.centre.x + Math.cos(a) * r;
       const z = island.centre.z + Math.sin(a) * r;
-      if (clear(x, z, room)) list.push({ x, z, y: foot, height });
-    };
-    const many = Math.max(8, Math.round((Math.PI * 2 * R) / RIM_EVERY));
-    for (let i = 0; i < many; i++) {
-      // Over the edge of the floor, so that the island ends in billows, not in a line.
-      const height = (1 + roll() * 0.5) * (1.3 + roll()) * Math.min(1, R / 10);
-      push(rims, (i / many) * Math.PI * 2 + roll() * 0.2, R - 1.3 + roll() * 0.6, height, y - height * 0.45, 2.8);
-    }
-    // The visible body of the island: big cut-out billows overlapping in rings from under the rim down
-    // to the bottom, over a plain core hidden inside them (land.js), so that from the side and from
-    // below the island is a soft cloud, as in the pictures: [share of the radius, depth under the
-    // floor, height of the billows], both as shares of the radius.
-    for (const [share, depth, size] of [[0.95, 0.14, 0.28], [0.78, 0.33, 0.3], [0.5, 0.52, 0.3], [0.15, 0.68, 0.28]]) {
-      const count = Math.max(3, Math.round((Math.PI * 2 * share) / (size * 1.2)));
-      for (let i = 0; i < count; i++) {
-        const height = R * size * (0.85 + roll() * 0.4);
-        push(unders, ((i + roll() * 0.6) / count) * Math.PI * 2, R * share * (0.9 + roll() * 0.15), height, y - R * depth - height * 0.5, 3 + height * 0.5);
-      }
+      if (mouths.every((at) => Math.hypot(x - at.x, z - at.z) > 8)) beside.push({ x, z, y: island.centre.y - 1.5 - roll() * 3, height: 1 + roll() * 0.8 });
     }
   }
-  // A small billow under every stone, so that the stones float on cloud.
+  // A small cloud under one stone in seven: the stones hang in clear sky.
   for (const path of [...plan.paths, ...plan.links]) {
-    for (let i = 0; i <= path.stones; i++) {
+    for (let i = 3; i < path.stones; i += 7) {
       const at = path.curve.getPointAt(i / path.stones);
-      unders.push({ x: at.x, z: at.z, y: at.y - 0.55, height: 0.42 + roll() * 0.12 });
+      beside.push({ x: at.x, z: at.z, y: at.y - 0.6, height: 0.45 });
     }
   }
-  // The billows shared among the three pictures, every third one each; every third one first, so that
-  // the light way, which draws the first third of them, thins them evenly.
-  const third = (list, k) => list.filter((_, i) => i % 3 === k);
-  const evenly = (list) => [0, 1, 2].flatMap((k) => third(list, k));
-  ['sbuffo-2', 'sbuffo-1', 'sbuffo-3'].forEach((name, k) => sprite(name, evenly(third([...rims, ...unders], k))));
+  ['sbuffo-2', 'sbuffo-1', 'sbuffo-3'].forEach((name, k) => sprite(name, beside.filter((_, i) => i % 3 === k)));
+  const bodies = Object.entries(sheets).map(([name, spots]) => ({ drawn: sprite(name, spots), spots }));
   // Grass of cloud, in little tufts all over the floors.
   const tufts = [];
   for (const island of plan.islands) {
@@ -339,18 +331,19 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   sprite('ciuffo-1', [...(gardens['ciuffo-1'] ?? []), ...tufts.filter((_, i) => i % 2)]);
   sprite('ciuffo-2', [...(gardens['ciuffo-2'] ?? []), ...tufts.filter((_, i) => !(i % 2))]);
   const sky = [];
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 7; i++) {
     const a = roll() * Math.PI * 2;
     const r = 120 + roll() * 260;
     sky.push({ x: Math.cos(a) * r, z: Math.sin(a) * r, y: 15 + roll() * 45, height: 8 + roll() * 12, angle: a, r });
   }
-  // The sea of clouds as a band all round far below, and other islands far away, out of reach.
+  // The sea of clouds as a band all round, far below the islands, and other islands far away, out of
+  // reach: between the islands one sees the sky.
   const sea = Array.from({ length: 14 }, (_, i) => {
     const a = (i / 14) * Math.PI * 2;
-    return { x: Math.cos(a) * 330, z: Math.sin(a) * 330, y: -58, height: 70 };
+    return { x: Math.cos(a) * 420, z: Math.sin(a) * 420, y: -120, height: 60 };
   });
-  const distant = Array.from({ length: 6 }, (_, i) => {
-    const a = (i / 6) * Math.PI * 2 + 0.4;
+  const distant = Array.from({ length: 4 }, (_, i) => {
+    const a = (i / 4) * Math.PI * 2 + 0.4;
     const r = 190 + roll() * 90;
     return { x: Math.cos(a) * r, z: Math.sin(a) * r, y: -6 + roll() * 22, height: 11 + roll() * 6 };
   });
@@ -399,12 +392,12 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
         else drawn.use(away <= 1 && !light && sculptures.has(drawn) ? 'large' : 'small');
       }
     },
-    // The light way for slow machines: half the gardens and the grass, a third of the billows, no
-    // large pictures.
+    // The light way for slow machines: half the gardens, the grass and the small clouds, no large
+    // pictures.
     light(on) {
       light = on;
       for (const drawn of made) {
-        const share = /^sbuffo/.test(drawn.name) ? 3 : halved.has(drawn) || /^ciuffo/.test(drawn.name) ? 2 : 1;
+        const share = halved.has(drawn) || /^(ciuffo|sbuffo)/.test(drawn.name) ? 2 : 1;
         drawn.mesh.count = on ? Math.ceil(drawn.spots.length / share) : drawn.spots.length;
       }
       if (here) this.island(here);
@@ -442,7 +435,19 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
       });
       pools.level.needsUpdate = true;
       const moved = Math.hypot(camera.position.x - eyes.x, camera.position.z - eyes.z) > 1e-4;
-      if (moved) Object.assign(eyes, { x: camera.position.x, z: camera.position.z });
+      if (moved) {
+        Object.assign(eyes, { x: camera.position.x, z: camera.position.z });
+        // The body of an island hangs on the side facing the eyes; seen from on it, in its middle.
+        for (const { drawn, spots } of bodies) {
+          spots.forEach(({ island, forward }, index) => {
+            const dx = eyes.x - island.centre.x;
+            const dz = eyes.z - island.centre.z;
+            const d = Math.hypot(dx, dz);
+            const k = d > island.radius ? forward / d : 0;
+            Object.assign(drawn.spots[index], { x: island.centre.x + dx * k, z: island.centre.z + dz * k });
+          });
+        }
+      }
       for (const drawn of made) if (moved || moving.has(drawn)) drawn.face(camera);
     },
   };

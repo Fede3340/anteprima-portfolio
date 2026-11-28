@@ -18,7 +18,7 @@ const SUN = 2.4;
 const PLANETS = [['pianeta-anello', -33, 13], ['pianeta-luna', -10, 19], ['pianeta-fasce', 150, 16], ['pianeta-piccolo', 70, 24]];
 const PLANET_DISTANCE = 650;
 // Before a work: how much each tone leans to the cover's colour, and how soon (seconds).
-const LEAN = { lit: 0.16, half: 0.12, shade: 0.07, time: 0.17 };
+const LEAN = { lit: 0.08, half: 0.07, shade: 0.04, time: 0.17 };
 const STAND = 7.5;
 const LAMP_GLOW = new THREE.Color('#ffc887');
 
@@ -44,10 +44,15 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
     return { x: at.elements[12], z: at.elements[14], index, d: 0 };
   });
   const lampLevels = patches.geometry.attributes.level.array;
+  // The covers of the works, and their plaster frames, which take the tones of the hour like the rest.
   const screens = [];
+  const frames = new Set();
+  const cutOuts = new Set([...drawn].map((sprite) => sprite.mesh.material));
   scene.traverse((mesh) => {
     if (mesh.userData.index !== undefined && mesh.isMesh && !mesh.isInstancedMesh) screens[mesh.userData.index] = mesh;
+    if (mesh.isInstancedMesh && mesh.material.isMeshBasicMaterial && !cutOuts.has(mesh.material)) frames.add(mesh.material);
   });
+  for (const material of frames) grade(material);
 
   // The look on arrival, read on the first frame: the sun of dawn stands just left of it, low over the
   // sea of clouds, in sight on a phone too, and the planets are placed from it.
@@ -75,6 +80,14 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
       toned(sprite);
     }
   }
+
+  // The planes kept apart, as in the door's picture: the sea of clouds below darker, bluer and flatter
+  // than the islands, the far islands sunk into it, the clouds of the sky sunk into the sky.
+  const behind = [[/^mare-di-nuvole$/, 'sea', 0.65], [/^isola-lontana/, 'sea', 0.45], [/^nuvola-\d$/, 'quarter', 0.4]]
+    .flatMap(([pattern, colour, amount]) => [...drawn].filter((sprite) => pattern.test(sprite.name)).map((sprite) => {
+      toned(sprite);
+      return { sprite, colour, amount };
+    }));
 
   // The planets, still in the sky, as far as the sky goes; they need the renderer to be fetched.
   const planets = [];
@@ -123,6 +136,8 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
   const hourOf = (index) => MOODS[plan.islands[index].id].hour;
   let hour = hourOf(plan.landing.index);
   const now = hourLight(hour);
+  // The colour of the sea of clouds below, worked out from the hour each frame.
+  const below = { sea: new THREE.Color() };
   const cover = new THREE.Color();
   // A tone leans to the cover's colour brought to the tone's own lightness: a dark cover warms or
   // cools the light, it never dims it.
@@ -186,11 +201,22 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
       fog.color.copy(now.horizon);
       fog.near = near * now.haze;
       fog.far = far * now.haze;
+      below.sea.copy(now.seaNear).multiplyScalar(0.8).lerp(now.shade, 0.35);
       if (sea.material.uniforms) {
-        sea.material.uniforms.uCloud.value.copy(now.seaNear);
-        sea.material.uniforms.uGap.value.copy(now.shade);
-      } else sea.material.color.copy(now.seaNear);
+        sea.material.uniforms.uCloud.value.copy(below.sea);
+        sea.material.uniforms.uGap.value.copy(below.sea).multiplyScalar(0.85);
+      } else sea.material.color.copy(below.sea);
+      for (const { sprite, colour, amount } of behind) sprite.tone.uVeil.value.set(...(below[colour] ?? now[colour]).toArray(), amount);
       shadows.material.uniforms.colour.value.copy(now.shade).multiplyScalar(0.8);
+      // The ponds give back the sky of the hour: its top in the middle, its middle at the rim, the
+      // light of the plaster in the rings and the sun's glow in the glint.
+      if (park.water) {
+        const w = park.water.uniforms;
+        w.uDeep.value.copy(now.top).lerp(now.shade, 0.3);
+        w.uShallow.value.copy(now.half);
+        w.uRing.value.copy(now.lit);
+        w.uGlint.value.copy(now.glow);
+      }
       park.lamps = now.lamps;
       for (const lamp of lamps) lamp.d = Math.hypot(lamp.x - state.x, lamp.z - state.z);
       lamps.sort((a, b) => a.d - b.d);
