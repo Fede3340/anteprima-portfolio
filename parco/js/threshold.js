@@ -18,14 +18,14 @@ const EASE = 22;
 // The two things of the fork, seen from the eyes there: metres ahead, to the right and down to their
 // foot. On a wide screen side by side at the same height; on a tall one the portal above the islet.
 const SPOTS = {
-  wide: { portal: [16, -4.4, 4.6], islet: [16, 4.4, 4.6] },
+  wide: { portal: [16, -4.4, 4.6], islet: [16, 4, 4.6] },
   tall: { portal: [21, 0, 1.2], islet: [17, 0, 10.5] },
 };
 const PORTAL_HEIGHT = 6;
-// The islet: an island of the park in miniature, a cloud with its little trees in plaster, as the
-// portal is; the crowns of the trees in soft sage, the rest in the plaster of the hour. Height in
-// metres; where the crowns are in its picture (from its foot up), as js/world/light.js gives a point.
-const ISLET = { height: 5.2, green: '#7f9e6f', crowns: [0.5, 0.68, 0.56, 0.36] };
+// The islet: the park in miniature (img/sprites/isola-parco), a cloud with three trees, a pond and a
+// stretch of path, in plaster as the portal is but in its own colours: green crowns and blue water
+// against the night blue of the portal. Height in metres.
+const ISLET = { height: 6.2 };
 // The far edge of the sea of clouds, as low as it is seen from the eyes (js/world/land.js): its depth and
 // reach in metres.
 const SEA = { y: -95, reach: 1500 };
@@ -314,12 +314,18 @@ export function createThreshold(root, { onSound, onArrive }) {
         mesh.layers.set(1);
         decor.group.add(mesh);
       }
-      // The crowns of the islet's trees in green, fading out before the cloud (js/world/grade.js).
-      const { tone } = decor.islet;
-      tone.uAccent.value.set(...new THREE.Color(ISLET.green).toArray(), 0.95);
-      tone.uAccentAt.value.set(...ISLET.crowns);
-      decor.islet.mesh.material.userData.toned = true;
-      decor.islet.mesh.material.needsUpdate = true;
+      // The islet keeps the colours of its picture: of the tones of the hour (js/world/grade.js) only
+      // the reading of a cut-out's picture, back to its own colour, is kept.
+      const material = decor.islet.mesh.material;
+      material.onBeforeCompile = (shader) => {
+        shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', `#include <map_fragment>
+          #ifdef USE_MAP
+          diffuseColor.rgb /= max(sampledDiffuseColor.a, 0.004);
+          diffuseColor.rgb *= diffuseColor.rgb;
+          #endif`);
+      };
+      material.customProgramCacheKey = () => 'cut-own-colours';
+      material.needsUpdate = true;
       // The sky, and the lights, so that the light of the park is the same before and after the fork
       // (a change of lights would prepare every program of the park again, in one long frame).
       for (const thing of [world.land.sky, world.sky, world.sun]) thing.layers.enable(1);

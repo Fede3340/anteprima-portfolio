@@ -1,869 +1,883 @@
 {
-  "apertura": {
-    "file": "apertura.webp",
-    "larghezza": 1038,
-    "altezza": 1573,
-    "file_1024": "apertura-1024.webp",
-    "larghezza_1024": 519,
-    "altezza_1024": 786,
-    "altezza_m": 9.0,
-    "appoggio": {
-      "x": 0.6561,
-      "y": 0.9943
-    }
-  },
-  "negozi": {
-    "file": "negozi.webp",
-    "larghezza": 1355,
-    "altezza": 1421,
-    "file_1024": "negozi-1024.webp",
-    "larghezza_1024": 678,
-    "altezza_1024": 710,
-    "altezza_m": 3.5,
-    "appoggio": {
-      "x": 0.5446,
-      "y": 0.9944
-    }
-  },
-  "chi": {
-    "file": "chi.webp",
-    "larghezza": 1406,
-    "altezza": 899,
-    "file_1024": "chi-1024.webp",
-    "larghezza_1024": 703,
-    "altezza_1024": 450,
-    "altezza_m": 3.0,
-    "appoggio": {
-      "x": 0.4989,
-      "y": 0.99
-    }
-  },
-  "servizi": {
-    "file": "servizi.webp",
-    "larghezza": 777,
-    "altezza": 1840,
-    "file_1024": "servizi-1024.webp",
-    "larghezza_1024": 388,
-    "altezza_1024": 920,
-    "altezza_m": 4.0,
-    "appoggio": {
-      "x": 0.5058,
-      "y": 0.9951
-    }
-  },
-  "programmi": {
-    "file": "programmi.webp",
-    "larghezza": 1214,
-    "altezza": 1051,
-    "file_1024": "programmi-1024.webp",
-    "larghezza_1024": 607,
-    "altezza_1024": 526,
-    "altezza_m": 3.5,
-    "appoggio": {
-      "x": 0.4843,
-      "y": 0.9924
-    }
-  },
-  "app": {
-    "file": "app.webp",
-    "larghezza": 721,
-    "altezza": 1290,
-    "file_1024": "app-1024.webp",
-    "larghezza_1024": 360,
-    "altezza_1024": 645,
-    "altezza_m": 4.0,
-    "appoggio": {
-      "x": 0.5028,
-      "y": 0.9938
-    }
-  },
-  "videogioco": {
-    "file": "videogioco.webp",
-    "larghezza": 1319,
-    "altezza": 922,
-    "file_1024": "videogioco-1024.webp",
-    "larghezza_1024": 660,
-    "altezza_1024": 461,
-    "altezza_m": 3.0,
-    "appoggio": {
-      "x": 0.5034,
-      "y": 0.9913
-    }
-  },
-  "marchi": {
-    "file": "marchi.webp",
-    "larghezza": 1009,
-    "altezza": 1230,
-    "file_1024": "marchi-1024.webp",
-    "larghezza_1024": 504,
-    "altezza_1024": 615,
-    "altezza_m": 3.5,
-    "appoggio": {
-      "x": 0.5015,
-      "y": 0.9927
-    },
-    "sospesa_m": 0.8
-  },
-  "marchi-cerchio": {
-    "file": "marchi-cerchio.webp",
-    "larghezza": 1259,
-    "altezza": 341,
-    "file_1024": "marchi-cerchio-1024.webp",
-    "larghezza_1024": 630,
-    "altezza_1024": 170,
-    "altezza_m": 0.81,
-    "appoggio": {
-      "x": 0.4936,
-      "y": 0.9765
-    },
-    "larghezza_m": 3.0
-  },
-  "manifesti": {
-    "file": "manifesti.webp",
-    "larghezza": 953,
-    "altezza": 1698,
-    "file_1024": "manifesti-1024.webp",
-    "larghezza_1024": 476,
-    "altezza_1024": 849,
-    "altezza_m": 4.0,
-    "appoggio": {
-      "x": 0.5063,
-      "y": 0.9953
-    }
-  },
-  "contatti": {
-    "file": "contatti.webp",
-    "larghezza": 1070,
-    "altezza": 571,
-    "file_1024": "contatti-1024.webp",
-    "larghezza_1024": 535,
-    "altezza_1024": 286,
-    "altezza_m": 1.2,
-    "appoggio": {
-      "x": 0.4995,
-      "y": 0.986
-    },
-    "sospesa_m": 2.0
-  },
-  "siti": {
-    "file": "siti.webp",
-    "larghezza": 1080,
-    "altezza": 1393,
-    "file_1024": "siti-1024.webp",
-    "larghezza_1024": 540,
-    "altezza_1024": 696,
-    "altezza_m": 4.27,
-    "appoggio": {
-      "x": 0.5,
-      "y": 0.9914
-    }
-  },
-  "google": {
-    "file": "google.webp",
-    "larghezza": 434,
-    "altezza": 1919,
-    "file_1024": "google-1024.webp",
-    "larghezza_1024": 217,
-    "altezza_1024": 960,
-    "altezza_m": 4.0,
-    "appoggio": {
-      "x": 0.4942,
-      "y": 0.9953
-    }
-  },
-  "albero-grande": {
-    "file": "albero-grande.webp",
-    "larghezza": 1107,
-    "altezza": 1677,
-    "file_1024": "albero-grande-1024.webp",
-    "larghezza_1024": 554,
-    "altezza_1024": 838,
-    "altezza_m": 6.0,
-    "appoggio": {
-      "x": 0.5059,
-      "y": 0.9952
-    }
-  },
-  "albero-medio": {
-    "file": "albero-medio.webp",
-    "larghezza": 907,
-    "altezza": 1476,
-    "file_1024": "albero-medio-1024.webp",
-    "larghezza_1024": 454,
-    "altezza_1024": 738,
-    "altezza_m": 4.0,
-    "appoggio": {
-      "x": 0.516,
-      "y": 0.9939
-    }
-  },
-  "albero-piccolo": {
-    "file": "albero-piccolo.webp",
-    "larghezza": 634,
-    "altezza": 1097,
-    "file_1024": "albero-piccolo-1024.webp",
-    "larghezza_1024": 317,
-    "altezza_1024": 548,
-    "altezza_m": 2.2,
-    "appoggio": {
-      "x": 0.4708,
-      "y": 0.9918
-    }
-  },
-  "quadro": {
-    "file": "quadro.webp",
-    "larghezza": 794,
-    "altezza": 1690,
-    "file_1024": "quadro-1024.webp",
-    "larghezza_1024": 397,
-    "altezza_1024": 845,
-    "altezza_m": 2.4,
-    "appoggio": {
-      "x": 0.505,
-      "y": 0.9953
-    }
-  },
-  "cespuglio-1": {
-    "file": "cespuglio-1.webp",
-    "larghezza": 1009,
-    "altezza": 628,
-    "file_1024": "cespuglio-1-1024.webp",
-    "larghezza_1024": 504,
-    "altezza_1024": 314,
-    "altezza_m": 0.93,
-    "appoggio": {
-      "x": 0.4851,
-      "y": 0.9873
-    },
-    "larghezza_m": 1.5
-  },
-  "cespuglio-2": {
-    "file": "cespuglio-2.webp",
-    "larghezza": 1173,
-    "altezza": 702,
-    "file_1024": "cespuglio-2-1024.webp",
-    "larghezza_1024": 586,
-    "altezza_1024": 351,
-    "altezza_m": 1.5,
-    "appoggio": {
-      "x": 0.5085,
-      "y": 0.9886
-    },
-    "larghezza_m": 2.5
-  },
-  "nuvola-a-terra": {
-    "file": "nuvola-a-terra.webp",
-    "larghezza": 1180,
-    "altezza": 672,
-    "file_1024": "nuvola-a-terra-1024.webp",
-    "larghezza_1024": 590,
-    "altezza_1024": 336,
-    "altezza_m": 1.14,
-    "appoggio": {
-      "x": 0.4992,
-      "y": 0.9881
-    },
-    "larghezza_m": 2.0
-  },
-  "sasso": {
-    "file": "sasso.webp",
-    "larghezza": 1334,
-    "altezza": 657,
-    "file_1024": "sasso-1024.webp",
-    "larghezza_1024": 667,
-    "altezza_1024": 328,
-    "altezza_m": 0.39,
-    "appoggio": {
-      "x": 0.4858,
-      "y": 0.9878
-    },
-    "larghezza_m": 0.8
-  },
-  "tronco-alto": {
-    "file": "tronco-alto.webp",
-    "larghezza": 293,
-    "altezza": 2048,
-    "file_1024": "tronco-alto-1024.webp",
-    "larghezza_1024": 146,
-    "altezza_1024": 1024,
-    "altezza_m": 8.0,
-    "appoggio": {
-      "x": 0.4983,
-      "y": 0.9971
-    },
-    "zona": "siti"
-  },
-  "albero-frutti": {
-    "file": "albero-frutti.webp",
-    "larghezza": 1095,
-    "altezza": 1552,
-    "file_1024": "albero-frutti-1024.webp",
-    "larghezza_1024": 548,
-    "altezza_1024": 776,
-    "altezza_m": 3.0,
-    "appoggio": {
-      "x": 0.4785,
-      "y": 0.9948
-    },
-    "zona": "negozi"
-  },
-  "cassette": {
-    "file": "cassette.webp",
-    "larghezza": 1153,
-    "altezza": 1312,
-    "file_1024": "cassette-1024.webp",
-    "larghezza_1024": 576,
-    "altezza_1024": 656,
-    "altezza_m": 1.37,
-    "appoggio": {
-      "x": 0.5022,
-      "y": 0.9931
-    },
-    "larghezza_m": 1.2,
-    "zona": "negozi"
-  },
-  "siepe-squadrata": {
-    "file": "siepe-squadrata.webp",
-    "larghezza": 1726,
-    "altezza": 668,
-    "file_1024": "siepe-squadrata-1024.webp",
-    "larghezza_1024": 863,
-    "altezza_1024": 334,
-    "altezza_m": 1.16,
-    "appoggio": {
-      "x": 0.4983,
-      "y": 0.988
-    },
-    "larghezza_m": 3.0,
-    "zona": "programmi"
-  },
-  "gradini": {
-    "file": "gradini.webp",
-    "larghezza": 1309,
-    "altezza": 743,
-    "file_1024": "gradini-1024.webp",
-    "larghezza_1024": 654,
-    "altezza_1024": 372,
-    "altezza_m": 1.42,
-    "appoggio": {
-      "x": 0.5011,
-      "y": 0.9892
-    },
-    "larghezza_m": 2.5,
-    "zona": "programmi"
-  },
-  "canne": {
-    "file": "canne.webp",
-    "larghezza": 754,
-    "altezza": 1462,
-    "file_1024": "canne-1024.webp",
-    "larghezza_1024": 377,
-    "altezza_1024": 731,
-    "altezza_m": 2.0,
-    "appoggio": {
-      "x": 0.4947,
-      "y": 0.9945
-    },
-    "zona": "app"
-  },
-  "scivolo": {
-    "file": "scivolo.webp",
-    "larghezza": 1592,
-    "altezza": 1323,
-    "file_1024": "scivolo-1024.webp",
-    "larghezza_1024": 796,
-    "altezza_1024": 662,
-    "altezza_m": 2.5,
-    "appoggio": {
-      "x": 0.4997,
-      "y": 0.994
-    },
-    "zona": "videogioco"
-  },
-  "aquilone": {
-    "file": "aquilone.webp",
-    "larghezza": 675,
-    "altezza": 1769,
-    "file_1024": "aquilone-1024.webp",
-    "larghezza_1024": 338,
-    "altezza_1024": 884,
-    "altezza_m": 4.0,
-    "appoggio": {
-      "x": 0.2437,
-      "y": 0.9949
-    },
-    "zona": "videogioco"
-  },
-  "fiore-1": {
-    "file": "fiore-1.webp",
-    "larghezza": 765,
-    "altezza": 1629,
-    "file_1024": "fiore-1-1024.webp",
-    "larghezza_1024": 382,
-    "altezza_1024": 814,
-    "altezza_m": 1.8,
-    "appoggio": {
-      "x": 0.5092,
-      "y": 0.9951
-    },
-    "zona": "marchi"
-  },
-  "fiore-2": {
-    "file": "fiore-2.webp",
-    "larghezza": 669,
-    "altezza": 1219,
-    "file_1024": "fiore-2-1024.webp",
-    "larghezza_1024": 334,
-    "altezza_1024": 610,
-    "altezza_m": 1.2,
-    "appoggio": {
-      "x": 0.4694,
-      "y": 0.9934
-    },
-    "zona": "marchi"
-  },
-  "aiuola": {
-    "file": "aiuola.webp",
-    "larghezza": 1377,
-    "altezza": 842,
-    "file_1024": "aiuola-1024.webp",
-    "larghezza_1024": 688,
-    "altezza_1024": 421,
-    "altezza_m": 1.53,
-    "appoggio": {
-      "x": 0.4982,
-      "y": 0.9905
-    },
-    "larghezza_m": 2.5,
-    "zona": "marchi"
-  },
-  "erba-alta": {
-    "file": "erba-alta.webp",
-    "larghezza": 1219,
-    "altezza": 1206,
-    "file_1024": "erba-alta-1024.webp",
-    "larghezza_1024": 610,
-    "altezza_1024": 603,
-    "altezza_m": 1.0,
-    "appoggio": {
-      "x": 0.1985,
-      "y": 0.9934
-    },
-    "zona": "manifesti"
-  },
-  "bandiera": {
-    "file": "bandiera.webp",
-    "larghezza": 604,
-    "altezza": 1675,
-    "file_1024": "bandiera-1024.webp",
-    "larghezza_1024": 302,
-    "altezza_1024": 838,
-    "altezza_m": 4.0,
-    "appoggio": {
-      "x": 0.1126,
-      "y": 0.9946
-    },
-    "zona": "manifesti"
-  },
-  "pontile": {
-    "file": "pontile.webp",
-    "larghezza": 1739,
-    "altezza": 1091,
-    "file_1024": "pontile-1024.webp",
-    "larghezza_1024": 870,
-    "altezza_1024": 546,
-    "altezza_m": 2.51,
-    "appoggio": {
-      "x": 0.4954,
-      "y": 0.9918
-    },
-    "larghezza_m": 4.0,
-    "zona": "contatti"
-  },
-  "cassetta-posta": {
-    "file": "cassetta-posta.webp",
-    "larghezza": 757,
-    "altezza": 1478,
-    "file_1024": "cassetta-posta-1024.webp",
-    "larghezza_1024": 378,
-    "altezza_1024": 739,
-    "altezza_m": 1.3,
-    "appoggio": {
-      "x": 0.4901,
-      "y": 0.9946
-    },
-    "zona": "contatti"
-  },
-  "ciuffo-1": {
-    "file": "ciuffo-1.webp",
-    "larghezza": 959,
-    "altezza": 630,
-    "file_1024": "ciuffo-1-1024.webp",
-    "larghezza_1024": 480,
-    "altezza_1024": 315,
-    "altezza_m": 0.4,
-    "appoggio": {
-      "x": 0.4891,
-      "y": 0.9857
-    }
-  },
-  "ciuffo-2": {
-    "file": "ciuffo-2.webp",
-    "larghezza": 1162,
-    "altezza": 1207,
-    "file_1024": "ciuffo-2-1024.webp",
-    "larghezza_1024": 581,
-    "altezza_1024": 604,
-    "altezza_m": 0.7,
-    "appoggio": {
-      "x": 0.4557,
-      "y": 0.9925
-    }
-  },
-  "sbuffo-1": {
-    "file": "sbuffo-1.webp",
-    "larghezza": 1341,
-    "altezza": 687,
-    "file_1024": "sbuffo-1-1024.webp",
-    "larghezza_1024": 670,
-    "altezza_1024": 344,
-    "altezza_m": 1.02,
-    "appoggio": {
-      "x": 0.5011,
-      "y": 0.9723
-    },
-    "larghezza_m": 2.0
-  },
-  "sbuffo-2": {
-    "file": "sbuffo-2.webp",
-    "larghezza": 1937,
-    "altezza": 759,
-    "file_1024": "sbuffo-2-1024.webp",
-    "larghezza_1024": 968,
-    "altezza_1024": 380,
-    "altezza_m": 1.37,
-    "appoggio": {
-      "x": 0.4956,
-      "y": 0.975
-    },
-    "larghezza_m": 3.5
-  },
-  "sbuffo-3": {
-    "file": "sbuffo-3.webp",
-    "larghezza": 2048,
-    "altezza": 412,
-    "file_1024": "sbuffo-3-1024.webp",
-    "larghezza_1024": 1024,
-    "altezza_1024": 206,
-    "altezza_m": 1.21,
-    "appoggio": {
-      "x": 0.4988,
-      "y": 0.9636
-    },
-    "larghezza_m": 6.0
-  },
-  "isola-lontana-1": {
-    "file": "isola-lontana-1.webp",
-    "larghezza": 1427,
-    "altezza": 996,
-    "file_1024": "isola-lontana-1-1024.webp",
-    "larghezza_1024": 714,
-    "altezza_1024": 498,
-    "altezza_m": 13.96,
-    "appoggio": {
-      "x": 0.4891,
-      "y": 0.9809
-    },
-    "larghezza_m": 20.0
-  },
-  "isola-lontana-2": {
-    "file": "isola-lontana-2.webp",
-    "larghezza": 1707,
-    "altezza": 942,
-    "file_1024": "isola-lontana-2-1024.webp",
-    "larghezza_1024": 854,
-    "altezza_1024": 471,
-    "altezza_m": 11.04,
-    "appoggio": {
-      "x": 0.4979,
-      "y": 0.9798
-    },
-    "larghezza_m": 20.0
-  },
-  "mare-di-nuvole": {
-    "file": "mare-di-nuvole.webp",
-    "larghezza": 2048,
-    "altezza": 466,
-    "file_1024": "mare-di-nuvole-1024.webp",
-    "larghezza_1024": 1024,
-    "altezza_1024": 233,
-    "altezza_m": null,
-    "appoggio": {
-      "x": 0.4998,
-      "y": 0.9657
-    },
-    "uso": "fondo: fascia da stendere sotto le isole, misura libera; le valli tra le nuvole sono semitrasparenti e vanno sul celeste del cielo"
-  },
-  "pianeta-anello": {
-    "file": "pianeta-anello.webp",
-    "larghezza": 1443,
-    "altezza": 938,
-    "file_1024": "pianeta-anello-1024.webp",
-    "larghezza_1024": 722,
-    "altezza_1024": 469,
-    "larghezza_gradi": 10,
-    "uso": "cielo, lontano"
-  },
-  "pianeta-luna": {
-    "file": "pianeta-luna.webp",
-    "larghezza": 1058,
-    "altezza": 1071,
-    "file_1024": "pianeta-luna-1024.webp",
-    "larghezza_1024": 529,
-    "altezza_1024": 536,
-    "larghezza_gradi": 8,
-    "uso": "cielo, lontano"
-  },
-  "pianeta-fasce": {
-    "file": "pianeta-fasce.webp",
-    "larghezza": 1005,
-    "altezza": 1028,
-    "file_1024": "pianeta-fasce-1024.webp",
-    "larghezza_1024": 502,
-    "altezza_1024": 514,
-    "larghezza_gradi": 6,
-    "uso": "cielo, lontano"
-  },
-  "pianeta-piccolo": {
-    "file": "pianeta-piccolo.webp",
-    "larghezza": 808,
-    "altezza": 701,
-    "file_1024": "pianeta-piccolo-1024.webp",
-    "larghezza_1024": 404,
-    "altezza_1024": 350,
-    "larghezza_gradi": 5,
-    "uso": "cielo, lontano"
-  },
-  "indice": {
-    "file": "indice.webp",
-    "larghezza": 345,
-    "altezza": 512,
-    "punta": [
-      28,
-      3
-    ],
-    "file_64": "indice-64.png",
-    "punta_64": [
-      3,
-      0
-    ],
-    "file_32": "indice-32.png",
-    "punta_32": [
-      1,
-      0
-    ],
-    "uso": "puntatore del mouse"
-  },
-  "indice-preme": {
-    "file": "indice-preme.webp",
-    "larghezza": 369,
-    "altezza": 512,
-    "punta": [
-      30,
-      3
-    ],
-    "file_64": "indice-preme-64.png",
-    "punta_64": [
-      3,
-      0
-    ],
-    "file_32": "indice-preme-32.png",
-    "punta_32": [
-      1,
-      0
-    ],
-    "uso": "puntatore del mouse"
-  },
-  "lampione": {
-    "file": "lampione.webp",
-    "larghezza": 398,
-    "altezza": 2048,
-    "file_1024": "lampione-1024.webp",
-    "larghezza_1024": 199,
-    "altezza_1024": 1024,
-    "altezza_m": 3.6,
-    "appoggio": {
-      "x": 0.5038,
-      "y": 0.9966
-    }
-  },
-  "panchina": {
-    "file": "panchina.webp",
-    "larghezza": 1191,
-    "altezza": 818,
-    "file_1024": "panchina-1024.webp",
-    "larghezza_1024": 596,
-    "altezza_1024": 409,
-    "altezza_m": 0.95,
-    "appoggio": {
-      "x": 0.4987,
-      "y": 0.9902
-    }
-  },
-  "altalena-nuvola": {
-    "file": "altalena-nuvola.webp",
-    "larghezza": 950,
-    "altezza": 448,
-    "file_1024": "altalena-nuvola-1024.webp",
-    "larghezza_1024": 475,
-    "altezza_1024": 224,
-    "altezza_m": 1.412,
-    "appoggio": {
-      "x": 0.5039,
-      "y": 0.9955
-    }
-  },
-  "altalena-sedile": {
-    "file": "altalena-sedile.webp",
-    "larghezza": 679,
-    "altezza": 859,
-    "file_1024": "altalena-sedile-1024.webp",
-    "larghezza_1024": 340,
-    "altezza_1024": 430,
-    "altezza_m": 2.708,
-    "perno": {
-      "x": 0.4917,
-      "y": 0.0303,
-      "px": [
-        334,
-        26
-      ]
-    }
-  },
-  "lampione-spento": {
-    "file": "lampione-spento.webp",
-    "larghezza": 398,
-    "altezza": 2048,
-    "file_1024": "lampione-spento-1024.webp",
-    "larghezza_1024": 199,
-    "altezza_1024": 1024,
-    "altezza_m": 3.6,
-    "appoggio": {
-      "x": 0.5038,
-      "y": 0.9966
-    }
-  },
-  "tifa": {
-    "file": "tifa.webp",
-    "larghezza": 859,
-    "altezza": 1458,
-    "file_1024": "tifa-1024.webp",
-    "larghezza_1024": 430,
-    "altezza_1024": 729,
-    "altezza_m": 2.0,
-    "appoggio": {
-      "x": 0.521,
-      "y": 0.9945
-    }
-  },
-  "ninfea": {
-    "file": "ninfea.webp",
-    "larghezza": 1386,
-    "altezza": 846,
-    "file_1024": "ninfea-1024.webp",
-    "larghezza_1024": 693,
-    "altezza_1024": 423,
-    "altezza_m": 0.98,
-    "appoggio": {
-      "x": 0.4996,
-      "y": 0.9905
-    },
-    "larghezza_m": 1.6
-  },
-  "albero-doppio": {
-    "file": "albero-doppio.webp",
-    "larghezza": 1028,
-    "altezza": 1811,
-    "file_1024": "albero-doppio-1024.webp",
-    "larghezza_1024": 514,
-    "altezza_1024": 906,
-    "altezza_m": 5.0,
-    "appoggio": {
-      "x": 0.4932,
-      "y": 0.9956
-    }
-  },
-  "boschetto": {
-    "file": "boschetto.webp",
-    "larghezza": 1557,
-    "altezza": 1122,
-    "file_1024": "boschetto-1024.webp",
-    "larghezza_1024": 778,
-    "altezza_1024": 561,
-    "altezza_m": 5.76,
-    "appoggio": {
-      "x": 0.4997,
-      "y": 0.9848
-    },
-    "larghezza_m": 8.0
-  },
-  "cespugli-gruppo": {
-    "file": "cespugli-gruppo.webp",
-    "larghezza": 1383,
-    "altezza": 969,
-    "file_1024": "cespugli-gruppo-1024.webp",
-    "larghezza_1024": 692,
-    "altezza_1024": 484,
-    "altezza_m": 2.1,
-    "appoggio": {
-      "x": 0.4996,
-      "y": 0.9917
-    },
-    "larghezza_m": 3.0
-  },
-  "falda-1": {
-    "file": "falda-1.webp",
-    "larghezza": 2048,
-    "altezza": 450,
-    "file_1024": "falda-1-1024.webp",
-    "larghezza_1024": 1024,
-    "altezza_1024": 225,
-    "altezza_m": 3.08,
-    "appoggio": {
-      "x": 0.5,
-      "y": 0.0378
-    },
-    "larghezza_m": 14.0,
-    "uso": "corpo delle isole: il punto d'appoggio e' il centro del bordo alto"
-  },
-  "falda-2": {
-    "file": "falda-2.webp",
-    "larghezza": 2048,
-    "altezza": 638,
-    "file_1024": "falda-2-1024.webp",
-    "larghezza_1024": 1024,
-    "altezza_1024": 319,
-    "altezza_m": 3.12,
-    "appoggio": {
-      "x": 0.5,
-      "y": 0.0298
-    },
-    "larghezza_m": 10.0,
-    "uso": "corpo delle isole: il punto d'appoggio e' il centro del bordo alto"
-  },
-  "falda-3": {
-    "file": "falda-3.webp",
-    "larghezza": 2048,
-    "altezza": 295,
-    "file_1024": "falda-3-1024.webp",
-    "larghezza_1024": 1024,
-    "altezza_1024": 148,
-    "altezza_m": 1.01,
-    "appoggio": {
-      "x": 0.5,
-      "y": 0.061
-    },
-    "larghezza_m": 7.0,
-    "uso": "corpo delle isole: il punto d'appoggio e' il centro del bordo alto"
+ "apertura": {
+  "file": "apertura.webp",
+  "larghezza": 1038,
+  "altezza": 1573,
+  "file_1024": "apertura-1024.webp",
+  "larghezza_1024": 519,
+  "altezza_1024": 786,
+  "altezza_m": 9.0,
+  "appoggio": {
+   "x": 0.6561,
+   "y": 0.9943
   }
+ },
+ "negozi": {
+  "file": "negozi.webp",
+  "larghezza": 1355,
+  "altezza": 1421,
+  "file_1024": "negozi-1024.webp",
+  "larghezza_1024": 678,
+  "altezza_1024": 710,
+  "altezza_m": 3.5,
+  "appoggio": {
+   "x": 0.5446,
+   "y": 0.9944
+  }
+ },
+ "chi": {
+  "file": "chi.webp",
+  "larghezza": 1406,
+  "altezza": 899,
+  "file_1024": "chi-1024.webp",
+  "larghezza_1024": 703,
+  "altezza_1024": 450,
+  "altezza_m": 3.0,
+  "appoggio": {
+   "x": 0.4989,
+   "y": 0.99
+  }
+ },
+ "servizi": {
+  "file": "servizi.webp",
+  "larghezza": 777,
+  "altezza": 1840,
+  "file_1024": "servizi-1024.webp",
+  "larghezza_1024": 388,
+  "altezza_1024": 920,
+  "altezza_m": 4.0,
+  "appoggio": {
+   "x": 0.5058,
+   "y": 0.9951
+  }
+ },
+ "programmi": {
+  "file": "programmi.webp",
+  "larghezza": 1214,
+  "altezza": 1051,
+  "file_1024": "programmi-1024.webp",
+  "larghezza_1024": 607,
+  "altezza_1024": 526,
+  "altezza_m": 3.5,
+  "appoggio": {
+   "x": 0.4843,
+   "y": 0.9924
+  }
+ },
+ "app": {
+  "file": "app.webp",
+  "larghezza": 721,
+  "altezza": 1290,
+  "file_1024": "app-1024.webp",
+  "larghezza_1024": 360,
+  "altezza_1024": 645,
+  "altezza_m": 4.0,
+  "appoggio": {
+   "x": 0.5028,
+   "y": 0.9938
+  }
+ },
+ "videogioco": {
+  "file": "videogioco.webp",
+  "larghezza": 1319,
+  "altezza": 922,
+  "file_1024": "videogioco-1024.webp",
+  "larghezza_1024": 660,
+  "altezza_1024": 461,
+  "altezza_m": 3.0,
+  "appoggio": {
+   "x": 0.5034,
+   "y": 0.9913
+  }
+ },
+ "marchi": {
+  "file": "marchi.webp",
+  "larghezza": 1009,
+  "altezza": 1230,
+  "file_1024": "marchi-1024.webp",
+  "larghezza_1024": 504,
+  "altezza_1024": 615,
+  "altezza_m": 3.5,
+  "appoggio": {
+   "x": 0.5015,
+   "y": 0.9927
+  },
+  "sospesa_m": 0.8
+ },
+ "marchi-cerchio": {
+  "file": "marchi-cerchio.webp",
+  "larghezza": 1259,
+  "altezza": 341,
+  "file_1024": "marchi-cerchio-1024.webp",
+  "larghezza_1024": 630,
+  "altezza_1024": 170,
+  "altezza_m": 0.81,
+  "appoggio": {
+   "x": 0.4936,
+   "y": 0.9765
+  },
+  "larghezza_m": 3.0
+ },
+ "manifesti": {
+  "file": "manifesti.webp",
+  "larghezza": 953,
+  "altezza": 1698,
+  "file_1024": "manifesti-1024.webp",
+  "larghezza_1024": 476,
+  "altezza_1024": 849,
+  "altezza_m": 4.0,
+  "appoggio": {
+   "x": 0.5063,
+   "y": 0.9953
+  }
+ },
+ "contatti": {
+  "file": "contatti.webp",
+  "larghezza": 1070,
+  "altezza": 571,
+  "file_1024": "contatti-1024.webp",
+  "larghezza_1024": 535,
+  "altezza_1024": 286,
+  "altezza_m": 1.2,
+  "appoggio": {
+   "x": 0.4995,
+   "y": 0.986
+  },
+  "sospesa_m": 2.0
+ },
+ "siti": {
+  "file": "siti.webp",
+  "larghezza": 1080,
+  "altezza": 1393,
+  "file_1024": "siti-1024.webp",
+  "larghezza_1024": 540,
+  "altezza_1024": 696,
+  "altezza_m": 4.27,
+  "appoggio": {
+   "x": 0.5,
+   "y": 0.9914
+  }
+ },
+ "google": {
+  "file": "google.webp",
+  "larghezza": 434,
+  "altezza": 1919,
+  "file_1024": "google-1024.webp",
+  "larghezza_1024": 217,
+  "altezza_1024": 960,
+  "altezza_m": 4.0,
+  "appoggio": {
+   "x": 0.4942,
+   "y": 0.9953
+  }
+ },
+ "albero-grande": {
+  "file": "albero-grande.webp",
+  "larghezza": 1107,
+  "altezza": 1677,
+  "file_1024": "albero-grande-1024.webp",
+  "larghezza_1024": 554,
+  "altezza_1024": 838,
+  "altezza_m": 6.0,
+  "appoggio": {
+   "x": 0.5059,
+   "y": 0.9952
+  }
+ },
+ "albero-medio": {
+  "file": "albero-medio.webp",
+  "larghezza": 907,
+  "altezza": 1476,
+  "file_1024": "albero-medio-1024.webp",
+  "larghezza_1024": 454,
+  "altezza_1024": 738,
+  "altezza_m": 4.0,
+  "appoggio": {
+   "x": 0.516,
+   "y": 0.9939
+  }
+ },
+ "albero-piccolo": {
+  "file": "albero-piccolo.webp",
+  "larghezza": 634,
+  "altezza": 1097,
+  "file_1024": "albero-piccolo-1024.webp",
+  "larghezza_1024": 317,
+  "altezza_1024": 548,
+  "altezza_m": 2.2,
+  "appoggio": {
+   "x": 0.4708,
+   "y": 0.9918
+  }
+ },
+ "quadro": {
+  "file": "quadro.webp",
+  "larghezza": 794,
+  "altezza": 1690,
+  "file_1024": "quadro-1024.webp",
+  "larghezza_1024": 397,
+  "altezza_1024": 845,
+  "altezza_m": 2.4,
+  "appoggio": {
+   "x": 0.505,
+   "y": 0.9953
+  }
+ },
+ "cespuglio-1": {
+  "file": "cespuglio-1.webp",
+  "larghezza": 1009,
+  "altezza": 628,
+  "file_1024": "cespuglio-1-1024.webp",
+  "larghezza_1024": 504,
+  "altezza_1024": 314,
+  "altezza_m": 0.93,
+  "appoggio": {
+   "x": 0.4851,
+   "y": 0.9873
+  },
+  "larghezza_m": 1.5
+ },
+ "cespuglio-2": {
+  "file": "cespuglio-2.webp",
+  "larghezza": 1173,
+  "altezza": 702,
+  "file_1024": "cespuglio-2-1024.webp",
+  "larghezza_1024": 586,
+  "altezza_1024": 351,
+  "altezza_m": 1.5,
+  "appoggio": {
+   "x": 0.5085,
+   "y": 0.9886
+  },
+  "larghezza_m": 2.5
+ },
+ "nuvola-a-terra": {
+  "file": "nuvola-a-terra.webp",
+  "larghezza": 1180,
+  "altezza": 672,
+  "file_1024": "nuvola-a-terra-1024.webp",
+  "larghezza_1024": 590,
+  "altezza_1024": 336,
+  "altezza_m": 1.14,
+  "appoggio": {
+   "x": 0.4992,
+   "y": 0.9881
+  },
+  "larghezza_m": 2.0
+ },
+ "sasso": {
+  "file": "sasso.webp",
+  "larghezza": 1334,
+  "altezza": 657,
+  "file_1024": "sasso-1024.webp",
+  "larghezza_1024": 667,
+  "altezza_1024": 328,
+  "altezza_m": 0.39,
+  "appoggio": {
+   "x": 0.4858,
+   "y": 0.9878
+  },
+  "larghezza_m": 0.8
+ },
+ "tronco-alto": {
+  "file": "tronco-alto.webp",
+  "larghezza": 293,
+  "altezza": 2048,
+  "file_1024": "tronco-alto-1024.webp",
+  "larghezza_1024": 146,
+  "altezza_1024": 1024,
+  "altezza_m": 8.0,
+  "appoggio": {
+   "x": 0.4983,
+   "y": 0.9971
+  },
+  "zona": "siti"
+ },
+ "albero-frutti": {
+  "file": "albero-frutti.webp",
+  "larghezza": 1095,
+  "altezza": 1552,
+  "file_1024": "albero-frutti-1024.webp",
+  "larghezza_1024": 548,
+  "altezza_1024": 776,
+  "altezza_m": 3.0,
+  "appoggio": {
+   "x": 0.4785,
+   "y": 0.9948
+  },
+  "zona": "negozi"
+ },
+ "cassette": {
+  "file": "cassette.webp",
+  "larghezza": 1153,
+  "altezza": 1312,
+  "file_1024": "cassette-1024.webp",
+  "larghezza_1024": 576,
+  "altezza_1024": 656,
+  "altezza_m": 1.37,
+  "appoggio": {
+   "x": 0.5022,
+   "y": 0.9931
+  },
+  "larghezza_m": 1.2,
+  "zona": "negozi"
+ },
+ "siepe-squadrata": {
+  "file": "siepe-squadrata.webp",
+  "larghezza": 1726,
+  "altezza": 668,
+  "file_1024": "siepe-squadrata-1024.webp",
+  "larghezza_1024": 863,
+  "altezza_1024": 334,
+  "altezza_m": 1.16,
+  "appoggio": {
+   "x": 0.4983,
+   "y": 0.988
+  },
+  "larghezza_m": 3.0,
+  "zona": "programmi"
+ },
+ "gradini": {
+  "file": "gradini.webp",
+  "larghezza": 1309,
+  "altezza": 743,
+  "file_1024": "gradini-1024.webp",
+  "larghezza_1024": 654,
+  "altezza_1024": 372,
+  "altezza_m": 1.42,
+  "appoggio": {
+   "x": 0.5011,
+   "y": 0.9892
+  },
+  "larghezza_m": 2.5,
+  "zona": "programmi"
+ },
+ "canne": {
+  "file": "canne.webp",
+  "larghezza": 754,
+  "altezza": 1462,
+  "file_1024": "canne-1024.webp",
+  "larghezza_1024": 377,
+  "altezza_1024": 731,
+  "altezza_m": 2.0,
+  "appoggio": {
+   "x": 0.4947,
+   "y": 0.9945
+  },
+  "zona": "app"
+ },
+ "scivolo": {
+  "file": "scivolo.webp",
+  "larghezza": 1592,
+  "altezza": 1323,
+  "file_1024": "scivolo-1024.webp",
+  "larghezza_1024": 796,
+  "altezza_1024": 662,
+  "altezza_m": 2.5,
+  "appoggio": {
+   "x": 0.4997,
+   "y": 0.994
+  },
+  "zona": "videogioco"
+ },
+ "aquilone": {
+  "file": "aquilone.webp",
+  "larghezza": 675,
+  "altezza": 1769,
+  "file_1024": "aquilone-1024.webp",
+  "larghezza_1024": 338,
+  "altezza_1024": 884,
+  "altezza_m": 4.0,
+  "appoggio": {
+   "x": 0.2437,
+   "y": 0.9949
+  },
+  "zona": "videogioco"
+ },
+ "fiore-1": {
+  "file": "fiore-1.webp",
+  "larghezza": 765,
+  "altezza": 1629,
+  "file_1024": "fiore-1-1024.webp",
+  "larghezza_1024": 382,
+  "altezza_1024": 814,
+  "altezza_m": 1.8,
+  "appoggio": {
+   "x": 0.5092,
+   "y": 0.9951
+  },
+  "zona": "marchi"
+ },
+ "fiore-2": {
+  "file": "fiore-2.webp",
+  "larghezza": 669,
+  "altezza": 1219,
+  "file_1024": "fiore-2-1024.webp",
+  "larghezza_1024": 334,
+  "altezza_1024": 610,
+  "altezza_m": 1.2,
+  "appoggio": {
+   "x": 0.4694,
+   "y": 0.9934
+  },
+  "zona": "marchi"
+ },
+ "aiuola": {
+  "file": "aiuola.webp",
+  "larghezza": 1377,
+  "altezza": 842,
+  "file_1024": "aiuola-1024.webp",
+  "larghezza_1024": 688,
+  "altezza_1024": 421,
+  "altezza_m": 1.53,
+  "appoggio": {
+   "x": 0.4982,
+   "y": 0.9905
+  },
+  "larghezza_m": 2.5,
+  "zona": "marchi"
+ },
+ "erba-alta": {
+  "file": "erba-alta.webp",
+  "larghezza": 1219,
+  "altezza": 1206,
+  "file_1024": "erba-alta-1024.webp",
+  "larghezza_1024": 610,
+  "altezza_1024": 603,
+  "altezza_m": 1.0,
+  "appoggio": {
+   "x": 0.1985,
+   "y": 0.9934
+  },
+  "zona": "manifesti"
+ },
+ "bandiera": {
+  "file": "bandiera.webp",
+  "larghezza": 604,
+  "altezza": 1675,
+  "file_1024": "bandiera-1024.webp",
+  "larghezza_1024": 302,
+  "altezza_1024": 838,
+  "altezza_m": 4.0,
+  "appoggio": {
+   "x": 0.1126,
+   "y": 0.9946
+  },
+  "zona": "manifesti"
+ },
+ "pontile": {
+  "file": "pontile.webp",
+  "larghezza": 1739,
+  "altezza": 1091,
+  "file_1024": "pontile-1024.webp",
+  "larghezza_1024": 870,
+  "altezza_1024": 546,
+  "altezza_m": 2.51,
+  "appoggio": {
+   "x": 0.4954,
+   "y": 0.9918
+  },
+  "larghezza_m": 4.0,
+  "zona": "contatti"
+ },
+ "cassetta-posta": {
+  "file": "cassetta-posta.webp",
+  "larghezza": 757,
+  "altezza": 1478,
+  "file_1024": "cassetta-posta-1024.webp",
+  "larghezza_1024": 378,
+  "altezza_1024": 739,
+  "altezza_m": 1.3,
+  "appoggio": {
+   "x": 0.4901,
+   "y": 0.9946
+  },
+  "zona": "contatti"
+ },
+ "ciuffo-1": {
+  "file": "ciuffo-1.webp",
+  "larghezza": 959,
+  "altezza": 630,
+  "file_1024": "ciuffo-1-1024.webp",
+  "larghezza_1024": 480,
+  "altezza_1024": 315,
+  "altezza_m": 0.4,
+  "appoggio": {
+   "x": 0.4891,
+   "y": 0.9857
+  }
+ },
+ "ciuffo-2": {
+  "file": "ciuffo-2.webp",
+  "larghezza": 1162,
+  "altezza": 1207,
+  "file_1024": "ciuffo-2-1024.webp",
+  "larghezza_1024": 581,
+  "altezza_1024": 604,
+  "altezza_m": 0.7,
+  "appoggio": {
+   "x": 0.4557,
+   "y": 0.9925
+  }
+ },
+ "sbuffo-1": {
+  "file": "sbuffo-1.webp",
+  "larghezza": 1341,
+  "altezza": 687,
+  "file_1024": "sbuffo-1-1024.webp",
+  "larghezza_1024": 670,
+  "altezza_1024": 344,
+  "altezza_m": 1.02,
+  "appoggio": {
+   "x": 0.5011,
+   "y": 0.9723
+  },
+  "larghezza_m": 2.0
+ },
+ "sbuffo-2": {
+  "file": "sbuffo-2.webp",
+  "larghezza": 1937,
+  "altezza": 759,
+  "file_1024": "sbuffo-2-1024.webp",
+  "larghezza_1024": 968,
+  "altezza_1024": 380,
+  "altezza_m": 1.37,
+  "appoggio": {
+   "x": 0.4956,
+   "y": 0.975
+  },
+  "larghezza_m": 3.5
+ },
+ "sbuffo-3": {
+  "file": "sbuffo-3.webp",
+  "larghezza": 2048,
+  "altezza": 412,
+  "file_1024": "sbuffo-3-1024.webp",
+  "larghezza_1024": 1024,
+  "altezza_1024": 206,
+  "altezza_m": 1.21,
+  "appoggio": {
+   "x": 0.4988,
+   "y": 0.9636
+  },
+  "larghezza_m": 6.0
+ },
+ "isola-lontana-1": {
+  "file": "isola-lontana-1.webp",
+  "larghezza": 1427,
+  "altezza": 996,
+  "file_1024": "isola-lontana-1-1024.webp",
+  "larghezza_1024": 714,
+  "altezza_1024": 498,
+  "altezza_m": 13.96,
+  "appoggio": {
+   "x": 0.4891,
+   "y": 0.9809
+  },
+  "larghezza_m": 20.0
+ },
+ "isola-lontana-2": {
+  "file": "isola-lontana-2.webp",
+  "larghezza": 1707,
+  "altezza": 942,
+  "file_1024": "isola-lontana-2-1024.webp",
+  "larghezza_1024": 854,
+  "altezza_1024": 471,
+  "altezza_m": 11.04,
+  "appoggio": {
+   "x": 0.4979,
+   "y": 0.9798
+  },
+  "larghezza_m": 20.0
+ },
+ "mare-di-nuvole": {
+  "file": "mare-di-nuvole.webp",
+  "larghezza": 2048,
+  "altezza": 466,
+  "file_1024": "mare-di-nuvole-1024.webp",
+  "larghezza_1024": 1024,
+  "altezza_1024": 233,
+  "altezza_m": null,
+  "appoggio": {
+   "x": 0.4998,
+   "y": 0.9657
+  },
+  "uso": "fondo: fascia da stendere sotto le isole, misura libera; le valli tra le nuvole sono semitrasparenti e vanno sul celeste del cielo"
+ },
+ "pianeta-anello": {
+  "file": "pianeta-anello.webp",
+  "larghezza": 1443,
+  "altezza": 938,
+  "file_1024": "pianeta-anello-1024.webp",
+  "larghezza_1024": 722,
+  "altezza_1024": 469,
+  "larghezza_gradi": 10,
+  "uso": "cielo, lontano"
+ },
+ "pianeta-luna": {
+  "file": "pianeta-luna.webp",
+  "larghezza": 1058,
+  "altezza": 1071,
+  "file_1024": "pianeta-luna-1024.webp",
+  "larghezza_1024": 529,
+  "altezza_1024": 536,
+  "larghezza_gradi": 8,
+  "uso": "cielo, lontano"
+ },
+ "pianeta-fasce": {
+  "file": "pianeta-fasce.webp",
+  "larghezza": 1005,
+  "altezza": 1028,
+  "file_1024": "pianeta-fasce-1024.webp",
+  "larghezza_1024": 502,
+  "altezza_1024": 514,
+  "larghezza_gradi": 6,
+  "uso": "cielo, lontano"
+ },
+ "pianeta-piccolo": {
+  "file": "pianeta-piccolo.webp",
+  "larghezza": 808,
+  "altezza": 701,
+  "file_1024": "pianeta-piccolo-1024.webp",
+  "larghezza_1024": 404,
+  "altezza_1024": 350,
+  "larghezza_gradi": 5,
+  "uso": "cielo, lontano"
+ },
+ "indice": {
+  "file": "indice.webp",
+  "larghezza": 345,
+  "altezza": 512,
+  "punta": [
+   28,
+   3
+  ],
+  "file_64": "indice-64.png",
+  "punta_64": [
+   3,
+   0
+  ],
+  "file_32": "indice-32.png",
+  "punta_32": [
+   1,
+   0
+  ],
+  "uso": "puntatore del mouse"
+ },
+ "indice-preme": {
+  "file": "indice-preme.webp",
+  "larghezza": 369,
+  "altezza": 512,
+  "punta": [
+   30,
+   3
+  ],
+  "file_64": "indice-preme-64.png",
+  "punta_64": [
+   3,
+   0
+  ],
+  "file_32": "indice-preme-32.png",
+  "punta_32": [
+   1,
+   0
+  ],
+  "uso": "puntatore del mouse"
+ },
+ "lampione": {
+  "file": "lampione.webp",
+  "larghezza": 398,
+  "altezza": 2048,
+  "file_1024": "lampione-1024.webp",
+  "larghezza_1024": 199,
+  "altezza_1024": 1024,
+  "altezza_m": 3.6,
+  "appoggio": {
+   "x": 0.5038,
+   "y": 0.9966
+  }
+ },
+ "panchina": {
+  "file": "panchina.webp",
+  "larghezza": 1191,
+  "altezza": 818,
+  "file_1024": "panchina-1024.webp",
+  "larghezza_1024": 596,
+  "altezza_1024": 409,
+  "altezza_m": 0.95,
+  "appoggio": {
+   "x": 0.4987,
+   "y": 0.9902
+  }
+ },
+ "altalena-nuvola": {
+  "file": "altalena-nuvola.webp",
+  "larghezza": 950,
+  "altezza": 448,
+  "file_1024": "altalena-nuvola-1024.webp",
+  "larghezza_1024": 475,
+  "altezza_1024": 224,
+  "altezza_m": 1.412,
+  "appoggio": {
+   "x": 0.5039,
+   "y": 0.9955
+  }
+ },
+ "altalena-sedile": {
+  "file": "altalena-sedile.webp",
+  "larghezza": 679,
+  "altezza": 859,
+  "file_1024": "altalena-sedile-1024.webp",
+  "larghezza_1024": 340,
+  "altezza_1024": 430,
+  "altezza_m": 2.708,
+  "perno": {
+   "x": 0.4917,
+   "y": 0.0303,
+   "px": [
+    334,
+    26
+   ]
+  }
+ },
+ "lampione-spento": {
+  "file": "lampione-spento.webp",
+  "larghezza": 398,
+  "altezza": 2048,
+  "file_1024": "lampione-spento-1024.webp",
+  "larghezza_1024": 199,
+  "altezza_1024": 1024,
+  "altezza_m": 3.6,
+  "appoggio": {
+   "x": 0.5038,
+   "y": 0.9966
+  }
+ },
+ "tifa": {
+  "file": "tifa.webp",
+  "larghezza": 859,
+  "altezza": 1458,
+  "file_1024": "tifa-1024.webp",
+  "larghezza_1024": 430,
+  "altezza_1024": 729,
+  "altezza_m": 2.0,
+  "appoggio": {
+   "x": 0.521,
+   "y": 0.9945
+  }
+ },
+ "ninfea": {
+  "file": "ninfea.webp",
+  "larghezza": 1386,
+  "altezza": 846,
+  "file_1024": "ninfea-1024.webp",
+  "larghezza_1024": 693,
+  "altezza_1024": 423,
+  "altezza_m": 0.98,
+  "appoggio": {
+   "x": 0.4996,
+   "y": 0.9905
+  },
+  "larghezza_m": 1.6
+ },
+ "albero-doppio": {
+  "file": "albero-doppio.webp",
+  "larghezza": 1028,
+  "altezza": 1811,
+  "file_1024": "albero-doppio-1024.webp",
+  "larghezza_1024": 514,
+  "altezza_1024": 906,
+  "altezza_m": 5.0,
+  "appoggio": {
+   "x": 0.4932,
+   "y": 0.9956
+  }
+ },
+ "boschetto": {
+  "file": "boschetto.webp",
+  "larghezza": 1557,
+  "altezza": 1122,
+  "file_1024": "boschetto-1024.webp",
+  "larghezza_1024": 778,
+  "altezza_1024": 561,
+  "altezza_m": 5.76,
+  "appoggio": {
+   "x": 0.4997,
+   "y": 0.9848
+  },
+  "larghezza_m": 8.0
+ },
+ "cespugli-gruppo": {
+  "file": "cespugli-gruppo.webp",
+  "larghezza": 1383,
+  "altezza": 969,
+  "file_1024": "cespugli-gruppo-1024.webp",
+  "larghezza_1024": 692,
+  "altezza_1024": 484,
+  "altezza_m": 2.1,
+  "appoggio": {
+   "x": 0.4996,
+   "y": 0.9917
+  },
+  "larghezza_m": 3.0
+ },
+ "falda-1": {
+  "file": "falda-1.webp",
+  "larghezza": 2048,
+  "altezza": 450,
+  "file_1024": "falda-1-1024.webp",
+  "larghezza_1024": 1024,
+  "altezza_1024": 225,
+  "altezza_m": 3.08,
+  "appoggio": {
+   "x": 0.5,
+   "y": 0.0378
+  },
+  "larghezza_m": 14.0,
+  "uso": "corpo delle isole: il punto d'appoggio e' il centro del bordo alto"
+ },
+ "falda-2": {
+  "file": "falda-2.webp",
+  "larghezza": 2048,
+  "altezza": 638,
+  "file_1024": "falda-2-1024.webp",
+  "larghezza_1024": 1024,
+  "altezza_1024": 319,
+  "altezza_m": 3.12,
+  "appoggio": {
+   "x": 0.5,
+   "y": 0.0298
+  },
+  "larghezza_m": 10.0,
+  "uso": "corpo delle isole: il punto d'appoggio e' il centro del bordo alto"
+ },
+ "falda-3": {
+  "file": "falda-3.webp",
+  "larghezza": 2048,
+  "altezza": 295,
+  "file_1024": "falda-3-1024.webp",
+  "larghezza_1024": 1024,
+  "altezza_1024": 148,
+  "altezza_m": 1.01,
+  "appoggio": {
+   "x": 0.5,
+   "y": 0.061
+  },
+  "larghezza_m": 7.0,
+  "uso": "corpo delle isole: il punto d'appoggio e' il centro del bordo alto"
+ },
+ "isola-parco": {
+  "file": "isola-parco.webp",
+  "larghezza": 1400,
+  "altezza": 1242,
+  "file_1024": "isola-parco-1024.webp",
+  "larghezza_1024": 700,
+  "altezza_1024": 621,
+  "altezza_m": 7.1,
+  "appoggio": {
+   "x": 0.485,
+   "y": 0.9928
+  },
+  "larghezza_m": 8
+ }
 }

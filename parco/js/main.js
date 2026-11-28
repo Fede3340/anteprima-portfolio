@@ -532,7 +532,7 @@ if (world) {
   const target = read();
   if (target.work) world.place(plan.islands[workSpot(target.work).island]);
   else if (target.zone) world.place(target.zone);
-  await Promise.all([loaded, threshold.prepare(world, { portal: sprites.siti, cloud: pictures['nuvola-2'], islet: sprites['isola-lontana-1'] })]);
+  await Promise.all([loaded, threshold.prepare(world, { portal: sprites.siti, cloud: pictures['nuvola-2'], islet: sprites['isola-parco'] })]);
   world.renderer.compile(world.scene, world.camera);
   // Hook of the drawing (world.js): one frame drawn now, under the name, so that nothing is prepared
   // when the park first shows.
