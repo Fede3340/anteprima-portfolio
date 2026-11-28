@@ -14,6 +14,7 @@ export const tones = {
 export const pools = {
   uPools: { value: Array.from({ length: 4 }, () => new THREE.Vector4()) },
   uPoolColour: { value: new THREE.Color('#ffa95e') },
+  uFloorLight: { value: 0.9 },
 };
 const POOLS = `
   uniform vec4 uPools[4];
@@ -28,6 +29,9 @@ const POOL_VERTEX = `
 // cut-outs add a colour of their own (an accent) or a veil.
 const GLSL = `
   uniform vec3 uShade, uHalf, uLit;
+  #ifdef GRADE_FLOOR
+  uniform float uFloorLight;
+  #endif
   #ifdef GRADE_OWN
   uniform vec4 uAccent, uVeil, uAccentAt;
   uniform float uAccentFrom;
@@ -37,12 +41,17 @@ const GLSL = `
   vec3 grade(vec3 c) {
     #ifdef GRADE_FLOOR
     // The floor faces the sky square on: brought down onto the slope from half tone to light, where
-    // its felt and its soft billows show, instead of all at the light.
-    c *= 0.9;
+    // its felt and its soft billows show, instead of all at the light; at dusk and at night less so
+    // (light.js), so that it stays the calmest plane and never sinks into the shade.
+    c *= uFloorLight;
     #endif
     float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
     vec3 g = mix(uShade * min(1.0, l * 3.33), uHalf, clamp((l - 0.3) * 3.85, 0.0, 1.0));
     g = mix(g, uLit, clamp((l - 0.56) * 3.28, 0.0, 1.0));
+    #ifdef GRADE_FLOOR
+    // Calmer than the things on it: almost half of the hour's colour taken out.
+    g = mix(g, vec3(dot(g, vec3(0.2126, 0.7152, 0.0722))), 0.45);
+    #endif
     #ifdef GRADE_OWN
     g = mix(g, uAccent.rgb * (0.4 + 0.7 * l), uAccent.a * accentNear * smoothstep(uAccentFrom - 0.12, uAccentFrom, l));
     g = mix(g, uVeil.rgb, uVeil.a);

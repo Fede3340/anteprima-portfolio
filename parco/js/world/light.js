@@ -230,6 +230,8 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
       direction(now.sun[0], now.sun[1], u.uSun.value);
       direction(now.shape[0], now.shape[1], sun.position).multiplyScalar(100);
       sky.intensity = SKY * now.light;
+      // The floor makes up for half the light the hour takes away.
+      pools.uFloorLight.value = 0.9 / (0.5 + 0.5 * now.light);
       sun.intensity = SUN * now.light;
 
       fog.color.copy(now.horizon);

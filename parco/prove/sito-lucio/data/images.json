@@ -1,0 +1,362 @@
+[
+  {
+    "id": "giorni",
+    "title": "Giorni",
+    "items": [
+      {
+        "n": "01",
+        "file": "giorni-01-1280.webp",
+        "srcset": "giorni-01-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Bar, la mattina"
+      },
+      {
+        "n": "02",
+        "file": "giorni-02-853.webp",
+        "srcset": "giorni-02-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Cortile coi panni"
+      },
+      {
+        "n": "03",
+        "file": "giorni-03-1280.webp",
+        "srcset": "giorni-03-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Fermata nella nebbia"
+      },
+      {
+        "n": "04",
+        "file": "giorni-04-853.webp",
+        "srcset": "giorni-04-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Banco del pesce"
+      },
+      {
+        "n": "05",
+        "file": "giorni-05-1280.webp",
+        "srcset": "giorni-05-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Dopo cena"
+      },
+      {
+        "n": "06",
+        "file": "giorni-06-853.webp",
+        "srcset": "giorni-06-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Lavatoio"
+      },
+      {
+        "n": "07",
+        "file": "giorni-07-1280.webp",
+        "srcset": "giorni-07-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Piazza alle due"
+      },
+      {
+        "n": "08",
+        "file": "giorni-08-1280.webp",
+        "srcset": "giorni-08-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Treno vuoto"
+      },
+      {
+        "n": "09",
+        "file": "giorni-09-1280.webp",
+        "srcset": "giorni-09-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Campo in terra"
+      },
+      {
+        "n": "10",
+        "file": "giorni-10-1280.webp",
+        "srcset": "giorni-10-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Festa finita"
+      }
+    ]
+  },
+  {
+    "id": "sardegna",
+    "title": "Sardegna",
+    "items": [
+      {
+        "n": "01",
+        "file": "sardegna-01-1280.webp",
+        "srcset": "sardegna-01-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Mare d'inverno"
+      },
+      {
+        "n": "02",
+        "file": "sardegna-02-1280.webp",
+        "srcset": "sardegna-02-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Stagno coi fenicotteri"
+      },
+      {
+        "n": "03",
+        "file": "sardegna-03-853.webp",
+        "srcset": "sardegna-03-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Sughereta nella nebbia"
+      },
+      {
+        "n": "04",
+        "file": "sardegna-04-1280.webp",
+        "srcset": "sardegna-04-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Strada bianca"
+      },
+      {
+        "n": "05",
+        "file": "sardegna-05-853.webp",
+        "srcset": "sardegna-05-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Miniera"
+      },
+      {
+        "n": "06",
+        "file": "sardegna-06-1280.webp",
+        "srcset": "sardegna-06-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Dune a novembre"
+      },
+      {
+        "n": "07",
+        "file": "sardegna-07-1280.webp",
+        "srcset": "sardegna-07-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Ovile sotto le rocce"
+      },
+      {
+        "n": "08",
+        "file": "sardegna-08-853.webp",
+        "srcset": "sardegna-08-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Torre sul capo"
+      },
+      {
+        "n": "09",
+        "file": "sardegna-09-1280.webp",
+        "srcset": "sardegna-09-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Stoppie a luglio"
+      },
+      {
+        "n": "10",
+        "file": "sardegna-10-853.webp",
+        "srcset": "sardegna-10-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Spiaggia a gennaio"
+      }
+    ]
+  },
+  {
+    "id": "muri",
+    "title": "Muri e pietre",
+    "items": [
+      {
+        "n": "01",
+        "file": "muri-01-1280.webp",
+        "srcset": "muri-01-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Murale coi pastori"
+      },
+      {
+        "n": "02",
+        "file": "muri-02-853.webp",
+        "srcset": "muri-02-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Casa dipinta"
+      },
+      {
+        "n": "03",
+        "file": "muri-03-1280.webp",
+        "srcset": "muri-03-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Spiga e contatore"
+      },
+      {
+        "n": "04",
+        "file": "muri-04-1280.webp",
+        "srcset": "muri-04-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Nuraghe nel pascolo"
+      },
+      {
+        "n": "05",
+        "file": "muri-05-853.webp",
+        "srcset": "muri-05-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Dentro la torre"
+      },
+      {
+        "n": "06",
+        "file": "muri-06-853.webp",
+        "srcset": "muri-06-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Pozzo sacro"
+      },
+      {
+        "n": "07",
+        "file": "muri-07-1280.webp",
+        "srcset": "muri-07-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Tomba dei giganti"
+      },
+      {
+        "n": "08",
+        "file": "muri-08-853.webp",
+        "srcset": "muri-08-853.webp 853w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Bronzetto in vetrina"
+      },
+      {
+        "n": "09",
+        "file": "muri-09-1280.webp",
+        "srcset": "muri-09-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Pietre nella luce bassa"
+      },
+      {
+        "n": "10",
+        "file": "muri-10-1280.webp",
+        "srcset": "muri-10-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Telaio sul garage"
+      }
+    ]
+  },
+  {
+    "id": "architetture",
+    "title": "Architetture",
+    "items": [
+      {
+        "n": "01",
+        "file": "architetture-01-1024.webp",
+        "srcset": "architetture-01-1024.webp 1024w",
+        "w": 1792,
+        "h": 2240,
+        "title": "Scala nell'acqua"
+      },
+      {
+        "n": "02",
+        "file": "architetture-02-1280.webp",
+        "srcset": "architetture-02-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Muro con arco"
+      },
+      {
+        "n": "03",
+        "file": "architetture-03-1280.webp",
+        "srcset": "architetture-03-1280.webp 1280w",
+        "w": 2048,
+        "h": 2048,
+        "title": "Porta sulla duna"
+      },
+      {
+        "n": "04",
+        "file": "architetture-04-850.webp",
+        "srcset": "architetture-04-850.webp 850w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Colonna in cinque parti"
+      },
+      {
+        "n": "05",
+        "file": "architetture-05-1280.webp",
+        "srcset": "architetture-05-1280.webp 1280w",
+        "w": 2688,
+        "h": 1520,
+        "title": "Stanza senza tetto"
+      },
+      {
+        "n": "06",
+        "file": "architetture-06-1024.webp",
+        "srcset": "architetture-06-1024.webp 1024w",
+        "w": 1792,
+        "h": 2240,
+        "title": "Rampa sospesa"
+      },
+      {
+        "n": "07",
+        "file": "architetture-07-1280.webp",
+        "srcset": "architetture-07-1280.webp 1280w",
+        "w": 2336,
+        "h": 1744,
+        "title": "Muro con finestra"
+      },
+      {
+        "n": "08",
+        "file": "architetture-08-956.webp",
+        "srcset": "architetture-08-956.webp 956w",
+        "w": 1744,
+        "h": 2336,
+        "title": "Torre sottile"
+      },
+      {
+        "n": "09",
+        "file": "architetture-09-1280.webp",
+        "srcset": "architetture-09-1280.webp 1280w",
+        "w": 2048,
+        "h": 2048,
+        "title": "Sfera sui gradini"
+      },
+      {
+        "n": "10",
+        "file": "architetture-10-850.webp",
+        "srcset": "architetture-10-850.webp 850w",
+        "w": 1360,
+        "h": 2048,
+        "title": "Arco nella nebbia"
+      },
+      {
+        "n": "11",
+        "file": "architetture-11-1280.webp",
+        "srcset": "architetture-11-1280.webp 1280w",
+        "w": 2048,
+        "h": 1360,
+        "title": "Vasca sotto l'arco"
+      },
+      {
+        "n": "12",
+        "file": "architetture-12-1024.webp",
+        "srcset": "architetture-12-1024.webp 1024w",
+        "w": 1792,
+        "h": 2240,
+        "title": "Casa nella sabbia"
+      }
+    ]
+  }
+]

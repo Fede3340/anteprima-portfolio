@@ -1,0 +1,564 @@
+/* The park seen flat. Colours, letters, pills, plates and the bar come from css/main.css and
+   css/travel.css of the park; here only what a page that scrolls needs on top of them. The colours
+   of each island (--h-*, --accent) are set from the hours and moods of the park. */
+
+html.veloce {
+  height: auto;
+  overflow-x: clip;
+  overflow-y: auto;
+  overscroll-behavior: auto;
+  background: #6c9ff6;
+}
+
+.veloce body {
+  height: auto;
+  overflow: visible;
+  overflow-x: clip;
+}
+
+html.veloce:has(.story:not([hidden])) {
+  overflow: hidden;
+}
+
+.pianta {
+  padding-bottom: calc(var(--bottom) + 72px);
+}
+
+.pianta__senza {
+  padding: 120px var(--gutter);
+}
+
+/* An island: its sky from the top of the hour down to its horizon, and at the foot the colour of the
+   next sky, so that one island hands over to the next. */
+.isola {
+  position: relative;
+  padding: 8px var(--gutter) 0;
+  overflow-x: clip;
+  background: linear-gradient(var(--h-top), var(--h-quarter) 12%, var(--h-half) 30%, var(--h-horizon) 52%, var(--next-top));
+  scroll-margin-top: calc(var(--top) + 52px);
+}
+
+/* The arrival: who, in one sentence, and at once the first island. */
+.arrivo {
+  position: relative;
+  padding: calc(var(--top) + 80px) var(--gutter) 4px;
+  background: linear-gradient(var(--h-top), var(--next-top));
+}
+
+.arrivo__dentro {
+  position: relative;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.arrivo .zone-name {
+  width: fit-content;
+  margin-bottom: 12px;
+  font-size: 1.125rem;
+}
+
+.arrivo__testo {
+  max-width: 22em;
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.isola__cielo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.nuvola {
+  position: absolute;
+  width: clamp(150px, 34vw, 420px);
+  height: auto;
+  opacity: 0.94;
+  animation: drift 38s ease-in-out infinite alternate;
+}
+
+.nuvola:first-child {
+  top: 6%;
+  left: -8%;
+}
+
+.nuvola:last-child {
+  top: 38%;
+  right: -10%;
+  width: clamp(120px, 26vw, 320px);
+  animation-duration: 52s;
+  animation-direction: alternate-reverse;
+}
+
+.nuvola:not([src]) {
+  visibility: hidden;
+}
+
+@keyframes drift {
+  to {
+    transform: translate3d(56px, -6px, 0);
+  }
+}
+
+/* The name of the island, on the side the sculpture leaves free, standing just above the cloud. */
+.isola__nome {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 8px;
+  max-width: 1240px;
+  min-height: max(var(--room), 96px);
+  margin: 0 auto;
+  padding-bottom: 30px;
+}
+
+.isola--right .isola__nome {
+  align-items: flex-start;
+}
+
+.isola__nome .zone-name {
+  white-space: normal;
+}
+
+.isola__conta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 14px;
+  border-radius: 16px;
+  background: var(--paper);
+  font-size: var(--small);
+  font-weight: 600;
+  box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.45);
+}
+
+.isola__conta::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1.5px var(--ink);
+}
+
+/* The cloud the works stand on: lit from above as the floor of the park, its body under it in puffs. */
+.isola__terra {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 44px 14px 56px;
+  border-radius: 50% 50% 40px 40px / 64px 64px 40px 40px;
+  background:
+    radial-gradient(120% 70% at 30% 0%, var(--h-lit), transparent 70%),
+    linear-gradient(var(--h-lit), var(--h-mid));
+  box-shadow: inset 0 -40px 60px -40px var(--h-shade);
+}
+
+.isola__suolo {
+  position: absolute;
+  z-index: -1;
+  top: 30px;
+  left: 0;
+  right: 0;
+  height: 0;
+}
+
+.cosa {
+  position: absolute;
+  bottom: 0;
+  left: var(--x);
+  width: var(--w);
+  height: var(--h);
+  max-width: none;
+  translate: var(--anchor) var(--foot);
+  opacity: 0;
+  transform: translateY(18px);
+  transform-origin: 50% 100%;
+  transition: opacity 0.6s ease, transform 0.9s var(--ease);
+}
+
+.cosa--statua {
+  z-index: 1;
+}
+
+.isola__suolo.is-in .cosa {
+  opacity: 1;
+  transform: none;
+}
+
+.isola__suolo.is-in .cosa:not(.cosa--statua) {
+  transition-delay: 0.12s;
+}
+
+.isola__pancia {
+  position: absolute;
+  z-index: -2;
+  left: -3%;
+  right: -3%;
+  bottom: 0;
+  height: 0;
+}
+
+.isola__pancia img {
+  position: absolute;
+  bottom: 0;
+  left: calc(var(--i) * 16.5% - 2%);
+  width: 24%;
+  height: auto;
+  translate: 0 46%;
+}
+
+.isola__pancia img:not([src]) {
+  visibility: hidden;
+}
+
+.isola__nota {
+  align-self: center;
+  max-width: 34em;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* The works: each in its frame on two legs, turned a little towards the middle, of its own size and
+   standing back as much as its place in the rhythm says. */
+.isola__opere,
+.mondi__lista {
+  margin: 0;
+  padding: 0;
+}
+
+.isola__opere {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  list-style: none;
+}
+
+.opera {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(var(--phone) * 100%);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.9s var(--ease);
+}
+
+.opera[data-side="start"] {
+  align-self: flex-start;
+}
+
+.opera[data-side="end"] {
+  align-self: flex-end;
+}
+
+.opera[data-side="center"] {
+  align-self: center;
+}
+
+.opera.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.opera:nth-child(3n + 2) {
+  transition-delay: 0.08s;
+}
+
+.opera:nth-child(3n) {
+  transition-delay: 0.16s;
+}
+
+.opera__quadro {
+  display: block;
+  width: 100%;
+  perspective: 900px;
+  text-decoration: none;
+  border-radius: 12px;
+  cursor: url("../../img/sprites/indice-32.png") 1 0, pointer;
+}
+
+.opera__quadro:active {
+  cursor: url("../../img/sprites/indice-preme-32.png") 1 0, pointer;
+}
+
+.opera__cornice {
+  position: relative;
+  z-index: 1;
+  display: block;
+  padding: var(--frame);
+  border-radius: 10px;
+  background: var(--light);
+  box-shadow: 0 22px 34px -22px rgb(0 23 80 / 0.55), inset 0 -2px 0 rgb(0 23 80 / 0.08);
+  transform: rotateY(var(--turn));
+  transition: transform 0.5s var(--ease);
+}
+
+.opera__quadro:hover .opera__cornice,
+.opera__quadro:focus-visible .opera__cornice {
+  transform: translateY(-6px);
+}
+
+.opera__immagine {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  border-radius: 5px;
+  background: var(--h-mid);
+  object-fit: cover;
+}
+
+/* Two thin plaster legs, and the soft shadow they leave on the cloud. */
+.opera__gambe {
+  position: relative;
+  display: block;
+  height: 26px;
+  margin: -2px 18% 0;
+  background: linear-gradient(90deg, var(--light) 0 5px, transparent 5px calc(100% - 5px), var(--light) calc(100% - 5px));
+}
+
+.opera__gambe::after {
+  content: '';
+  position: absolute;
+  left: -14%;
+  right: -14%;
+  bottom: -7px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 23 80 / 0.22), transparent);
+}
+
+.opera__targa {
+  max-width: 100%;
+  margin-top: 6px;
+}
+
+.opera[data-side="start"] .opera__targa {
+  align-self: flex-start;
+}
+
+.opera[data-side="end"] .opera__targa {
+  align-self: flex-end;
+}
+
+.work-label__logo:not([src]) {
+  visibility: hidden;
+}
+
+.opera__immagine:not([src]) {
+  color: transparent;
+}
+
+/* The cards of the arrival, of Google and of the contacts, as in the park. */
+.isola__carta {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 34em;
+}
+
+.isola__carta h3 {
+  margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: var(--title);
+  line-height: 1.25;
+}
+
+.isola__carta--servizi,
+.isola__carta--contatti {
+  align-self: flex-end;
+}
+
+.card__facts li {
+  margin-top: 6px;
+}
+
+/* The stones of the path to the next island, peach as in the park. */
+.sentiero {
+  position: relative;
+  height: 112px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.sentiero span {
+  position: absolute;
+  width: 34px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(70% 60% at 40% 30%, #ffd9c2, #f4a982 70%);
+  box-shadow: 0 6px 8px -6px rgb(0 23 80 / 0.4);
+}
+
+.sentiero span:nth-child(1) { top: 34px; left: 48%; }
+.sentiero span:nth-child(2) { top: 52px; left: 55%; transform: scale(0.9); }
+.sentiero span:nth-child(3) { top: 68px; left: 50%; transform: scale(0.82); }
+.sentiero span:nth-child(4) { top: 82px; left: 43%; transform: scale(0.74); }
+.sentiero span:nth-child(5) { top: 94px; left: 49%; transform: scale(0.66); }
+
+.isola:last-child .sentiero {
+  height: 90px;
+}
+
+.isola:last-child .sentiero span {
+  display: none;
+}
+
+/* «I mondi»: every island, with its colour and how many works it holds. */
+.mondi {
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  padding: 18px 16px 16px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 24px 60px -24px rgb(0 23 80 / 0.6);
+}
+
+.mondi::backdrop {
+  background: rgb(0 23 80 / 0.36);
+}
+
+.mondi__testa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding-left: 6px;
+}
+
+.mondi__titolo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: var(--title);
+}
+
+.mondi__chiudi {
+  cursor: pointer;
+}
+
+.mondi__lista {
+  list-style: none;
+}
+
+.mondi__voce {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  text-decoration: none;
+}
+
+.mondi__voce:hover,
+.mondi__voce.is-here {
+  background: rgb(0 23 80 / 0.07);
+}
+
+.mondi__punto {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 3.5px var(--ink);
+}
+
+.mondi__nome {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.mondi__conta {
+  margin-left: auto;
+  font-size: var(--small);
+}
+
+/* Behind a work seen closely the page goes back into the sky of the dawn. */
+.veloce body::after {
+  content: '';
+  position: fixed;
+  z-index: 69;
+  inset: 0;
+  background: linear-gradient(rgb(108 159 246 / 0.9), rgb(221 184 207 / 0.9));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.veloce body:has(.story:not([hidden]))::after {
+  opacity: 1;
+}
+
+@media (min-width: 768px) {
+  .isola__terra {
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: flex-start;
+    column-gap: 40px;
+    padding: 64px 40px 80px;
+    border-radius: 50% 50% 64px 64px / 90px 90px 64px 64px;
+  }
+
+  .isola__opere,
+  .isola__nota {
+    flex-basis: 100%;
+  }
+
+  .isola__opere {
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: flex-start;
+    column-gap: 5%;
+    row-gap: 36px;
+  }
+
+  .opera,
+  .opera[data-side] {
+    align-self: auto;
+    width: calc(var(--wide) * var(--many) * 100%);
+    margin-top: var(--back);
+  }
+
+  .opera[data-side] .opera__targa {
+    align-self: center;
+  }
+
+  .sentiero {
+    height: 160px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nuvola {
+    animation: none;
+  }
+
+  .cosa,
+  .opera,
+  .opera__cornice {
+    transform: none;
+    transition: opacity 0.3s ease;
+  }
+}

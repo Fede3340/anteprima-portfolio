@@ -145,6 +145,7 @@ button {
 .brand,
 .sound,
 .above,
+.fast,
 .threshold__enter,
 .threshold__quiet,
 .hint {
@@ -220,7 +221,7 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   display: none;
 }
 
-/* On a phone the two buttons stand one above the other, and the switch shows its dot and its name
+/* On a phone the buttons stand one above the other, and the switch shows its dot and its name
    (its state is in aria-checked for screen readers). */
 @media (max-width: 560px) {
   .hud {
@@ -233,7 +234,7 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   }
 }
 
-/* The steps at the start: one at a time, large, over the travel bar. */
+/* The words at the start, large, over the travel bar, gone at the first «Avanti». */
 .hint {
   position: fixed;
   z-index: 40;
@@ -254,20 +255,11 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   transition: opacity 0.25s ease;
 }
 
-/* «Riportami sul sentiero», over the steps when one has lost the ground. */
-.lost {
-  position: fixed;
-  z-index: 41;
-  left: 50%;
-  bottom: calc(var(--bottom) + 156px);
-  min-height: 48px;
-  font-size: 1.125rem;
-  transform: translateX(-50%);
-  cursor: pointer;
-}
-
-.lost[hidden] {
-  display: none;
+/* On a phone or a tablet the bar has two lines (travel.css): the words stand over both. */
+@media (max-width: 900px) {
+  .hint {
+    bottom: calc(var(--bottom) + 128px);
+  }
 }
 
 .hint[hidden] {
@@ -625,6 +617,8 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 
 .card {
   max-width: min(360px, calc(100vw - 32px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .card h2 {
@@ -667,6 +661,21 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 
 .card__links .card__go {
   margin-top: 0;
+}
+
+/* On a phone the ways of «Che cosa faccio» stand side by side, so that the card keeps clear of the
+   buttons at the top and the bar at the foot. */
+@media (max-width: 560px) {
+  .card ul:not(.card__facts) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .card ul:not(.card__facts) li + li,
+  .card ul:not(.card__facts) .card__go {
+    margin-top: 0;
+  }
 }
 
 /* Every work as a plain link, for keys and screen readers; shown when a key brings focus into it. */

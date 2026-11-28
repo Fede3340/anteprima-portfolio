@@ -15,6 +15,7 @@ const roll = new THREE.Quaternion();
 const forward = new THREE.Vector3(0, 0, 1);
 // A plane one metre high with its foot at the origin; the pivot of a piece can move its origin.
 const plane = (ax = 0.5, ay = 0) => new THREE.PlaneGeometry(1, 1).translate(0.5 - ax, 0.5 - ay, 0);
+const RANK = { light: 0, small: 1, large: 2 };
 
 // Every cut-out made, by the name the park gives it, so that the light can give it an accent.
 export const drawn = new Set();
@@ -29,18 +30,22 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
   // Nothing shows until its picture has arrived.
   mesh.visible = false;
   const aspect = entry.w / entry.h;
+  // The size asked for last, and the one drawn.
   let size;
+  let shown;
   const spots = Array.from({ length: count }, () => ({ x: 0, y: 0, z: 0, height: entry.metres ?? 1, roll: 0, hidden: false }));
 
-  // The picture at the size given, swapped in once decoded; resolves when it is drawn. The first to
-  // arrive is drawn even if a larger one has been asked for since, and comes in softly.
+  // The picture at the size given, swapped in once decoded; resolves when it is drawn. One asked for
+  // earlier that arrives first is drawn meanwhile if it is sharper than what is drawn and smaller
+  // than what is asked for now. The first comes in softly.
   // Where there is no light version the small one stands for it.
   function use(wanted) {
     const which = entry[wanted] ? wanted : 'small';
     if (size === which || !entry[which]) return Promise.resolve();
     size = which;
     return loadTexture(entry[which].file, renderer, { cutOut: true }).then((texture) => {
-      if (size === undefined || (size !== which && material.map)) return texture.dispose();
+      if (size === undefined || (size !== which && !((RANK[shown] ?? -1) < RANK[which] && RANK[which] < RANK[size]))) return texture.dispose();
+      shown = which;
       const first = !material.map;
       material.map?.dispose();
       material.map = texture;
@@ -59,6 +64,7 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
     release() {
       if (!material.map) return;
       size = undefined;
+      shown = undefined;
       material.map.dispose();
       material.map = null;
       material.needsUpdate = true;

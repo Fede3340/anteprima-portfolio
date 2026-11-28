@@ -1222,7 +1222,7 @@
       "line": "Sito personale per i disegni di un’ingegnere: un muro di strada coperto di manifesti.",
       "facts": [
         "Il nome è fatto di lettere ritagliate, ognuna col suo colore.",
-        "Dodici fogli attaccati col nastro, uno per disegno.",
+        "Ventisette fogli in tre serie, uno per disegno.",
         "Tre voci sole: Muro, Lei, Contatti."
       ],
       "story": [
@@ -1236,7 +1236,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È un’anteprima: i fogli sono segnaposto numerati, in attesa dei suoi disegni. Va online sul suo dominio quando lei lo approva."
+          "p": "È un’anteprima, con ventisette disegni in tre serie: Città, Spray e China. Va online sul suo dominio quando lei lo approva."
         }
       ],
       "link": {
@@ -1320,13 +1320,13 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un’anteprima, all’indirizzo fede3340.github.io/anteprima-portfolio/sara: i fogli sono segnaposto numerati, in attesa dei suoi disegni. Va online sul suo dominio quando lei lo approva."
+              "p": "È un’anteprima, all’indirizzo fede3340.github.io/anteprima-portfolio/sara: sul muro ci sono ventisette disegni in tre serie, Città, Spray e China. Va online sul suo dominio quando lei lo approva."
             },
             {
               "kind": "facts",
               "items": [
                 "Il nome è fatto di lettere ritagliate, ognuna col suo colore.",
-                "Dodici fogli attaccati col nastro, uno per disegno.",
+                "Ventisette fogli in tre serie, uno per disegno.",
                 "Tre voci sole: Muro, Lei, Contatti."
               ]
             },
@@ -1361,8 +1361,8 @@
           "src": "media/works/sito-sara/02-2880.webp",
           "w": 2880,
           "h": 1800,
-          "alt": "Il muro con i fogli colorati attaccati col nastro, numerati e segnati «in arrivo»",
-          "caption": "Anteprima: i fogli sono segnaposto",
+          "alt": "Il muro della serie «Città» su computer: i disegni colorati di una gru, di una torre di case, di un palazzo con la sciarpa e di una betoniera, attaccati col nastro",
+          "caption": "Anteprima",
           "srcset": "media/works/sito-sara/02-1440.webp 1440w, media/works/sito-sara/02-2880.webp 2880w"
         },
         {
@@ -1376,23 +1376,23 @@
           "src": "media/works/sito-sara/04-1170.webp",
           "w": 1170,
           "h": 2532,
-          "alt": "Il muro sul telefono, con i primi tre fogli",
-          "caption": "Anteprima: i fogli sono segnaposto"
+          "alt": "Il muro sul telefono: «27 fogli», la serie «Città» e i primi disegni uno sopra l’altro",
+          "caption": "Anteprima"
         }
       ],
       "full": {
         "desktop": {
           "src": "media/works/sito-sara/intera-desktop.webp",
           "w": 1440,
-          "h": 3760
+          "h": 5792
         },
         "phone": {
           "src": "media/works/sito-sara/intera-phone.webp",
           "w": 780,
-          "h": 10040
+          "h": 13928
         }
       },
-      "live": "https://fede3340.github.io/anteprima-portfolio/sara/"
+      "live": "prove/sito-sara/"
     },
     "sito-lucio": {
       "index": 6,
@@ -1403,22 +1403,22 @@
       "place": "Cagliari",
       "line": "Sito personale per le immagini di Lucio: una pila di stampe da sfogliare una per volta.",
       "facts": [
-        "Venticinque stampe, una per volta.",
+        "Quarantadue immagini in quattro serie, una per volta.",
         "Una fila di tacche dice a che punto della pila si è.",
-        "Due voci sole: Chi è e Contatti."
+        "Due voci sole: Chi sono e Contatti."
       ],
       "story": [
         {
           "h": "L'idea",
-          "p": "Lucio Giannottu fa immagini, a Cagliari. Il suo sito è una pila di venticinque stampe su un tavolo chiaro: se ne guarda una per volta, grande, e si sfoglia come si sfogliano le stampe vere."
+          "p": "Lucio Giannottu fa immagini, a Cagliari. Il suo sito è una pila di stampe su un tavolo chiaro: se ne guarda una per volta, grande, e si sfoglia come si sfogliano le stampe vere."
         },
         {
           "h": "Le scelte",
-          "p": "Attorno quasi niente: il nome in un carattere con le grazie, due voci, il numero della stampa e una fila di tacche che dice a che punto della pila si è. La stampa di prima resta di lato, piccola. Tutto il colore lo porteranno le immagini."
+          "p": "Attorno quasi niente: il nome in un carattere con le grazie, due voci, i nomi delle serie, il numero della stampa e una fila di tacche che dice a che punto della pila si è. La stampa di prima resta di lato, piccola. Tutto il colore lo portano le immagini."
         },
         {
           "h": "Dove si vede",
-          "p": "È un’anteprima: le stampe sono segnaposto, in attesa delle sue immagini."
+          "p": "È un’anteprima, con quarantadue immagini in quattro serie: Giorni, Sardegna, Muri e pietre, Architetture."
         }
       ],
       "link": {
@@ -1428,7 +1428,7 @@
       "study": [
         {
           "title": "Da dove nasce",
-          "p": "Le immagini di Lucio sono circa venticinque e vanno guardate una per volta. Una griglia le avrebbe rimpicciolite e messe in gara tra loro; una pila le dà una alla volta, grandi, con lo stesso gesto delle stampe sul tavolo."
+          "p": "Le immagini di Lucio sono quarantadue, in quattro serie, e vanno guardate una per volta. Una griglia le avrebbe rimpicciolite e messe in gara tra loro; una pila le dà una alla volta, grandi, con lo stesso gesto delle stampe sul tavolo."
         }
       ],
       "process": [
@@ -1439,7 +1439,7 @@
             {
               "kind": "text",
               "title": "Per chi",
-              "p": "Lucio Giannottu fa immagini, a Cagliari, e per il sito ne darà circa venticinque. La richiesta per il suo sito era una frase sola: «molto artistico, elegante, minimale»."
+              "p": "Lucio Giannottu fa immagini, a Cagliari, e il sito ne raccoglie quarantadue, in quattro serie. La richiesta per il suo sito era una frase sola: «molto artistico, elegante, minimale»."
             },
             {
               "kind": "images",
@@ -1472,14 +1472,14 @@
                 },
                 {
                   "name": "La pila",
-                  "p": "Venticinque stampe su un tavolo chiaro: se ne guarda una per volta, grande, e si sfoglia come si sfogliano le stampe vere.",
+                  "p": "Le stampe su un tavolo chiaro: se ne guarda una per volta, grande, e si sfoglia come si sfogliano le stampe vere.",
                   "chosen": true
                 }
               ]
             },
             {
               "kind": "text",
-              "p": "Le immagini di Lucio sono circa venticinque e vanno guardate una per volta. Una griglia le avrebbe rimpicciolite e messe in gara tra loro; una pila le dà una alla volta, grandi, con lo stesso gesto delle stampe sul tavolo."
+              "p": "Le immagini di Lucio sono quarantadue, in quattro serie, e vanno guardate una per volta. Una griglia le avrebbe rimpicciolite e messe in gara tra loro; una pila le dà una alla volta, grandi, con lo stesso gesto delle stampe sul tavolo."
             }
           ]
         },
@@ -1489,7 +1489,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Attorno quasi niente: il nome in un carattere con le grazie, due voci, il numero della stampa e una fila di tacche che dice a che punto della pila si è. La stampa di prima resta di lato, piccola. Tutto il colore lo porteranno le immagini."
+              "p": "Attorno quasi niente: il nome in un carattere con le grazie, due voci, i nomi delle serie, il numero della stampa e una fila di tacche che dice a che punto della pila si è. La stampa di prima resta di lato, piccola. Tutto il colore lo portano le immagini."
             },
             {
               "kind": "images",
@@ -1506,20 +1506,21 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un’anteprima, all’indirizzo fede3340.github.io/anteprima-portfolio/lucio, e si sfoglia su computer e telefono. Le stampe sono segnaposto, in attesa delle sue immagini."
+              "p": "È un’anteprima, all’indirizzo fede3340.github.io/anteprima-portfolio/lucio, e si sfoglia su computer e telefono: quattro serie, Giorni, Sardegna, Muri e pietre e Architetture, da scegliere sotto il nome."
             },
             {
               "kind": "facts",
               "items": [
-                "Venticinque stampe, una per volta.",
+                "Quarantadue immagini in quattro serie, una per volta.",
                 "Una fila di tacche dice a che punto della pila si è.",
-                "Due voci sole: Chi è e Contatti."
+                "Due voci sole: Chi sono e Contatti."
               ]
             },
             {
               "kind": "images",
               "items": [
-                2
+                2,
+                3
               ]
             }
           ]
@@ -1531,31 +1532,38 @@
         "srcThumb": "media/works/sito-lucio/cover-240.webp",
         "w": 1920,
         "h": 1200,
-        "alt": "Il sito di Lucio Giannottu: il nome in alto a sinistra e una stampa grande al centro, ancora vuota"
+        "alt": "Il sito di Lucio Giannottu: il nome e le quattro serie a sinistra, al centro la stampa grande di un bar la mattina"
       },
       "gallery": [
         {
           "src": "media/works/sito-lucio/01-2880.webp",
           "w": 2880,
           "h": 1800,
-          "alt": "La seconda stampa della pila su computer, con la prima rimasta piccola di lato",
-          "caption": "Anteprima: le stampe sono segnaposto",
+          "alt": "La terza stampa della serie «Sardegna» su computer, una sughereta nella nebbia, con la stampa di prima rimasta piccola di lato",
+          "caption": "Anteprima",
           "srcset": "media/works/sito-lucio/01-1440.webp 1440w, media/works/sito-lucio/01-2880.webp 2880w"
         },
         {
           "src": "media/works/sito-lucio/02-2880.webp",
           "w": 2880,
           "h": 1800,
-          "alt": "L’arrivo sul sito: il nome, due voci e la prima stampa",
-          "caption": "Anteprima: le stampe sono segnaposto",
+          "alt": "L’arrivo sul sito: il nome, due voci, le quattro serie e la prima stampa, «Bar, la mattina»",
+          "caption": "Anteprima",
           "srcset": "media/works/sito-lucio/02-1440.webp 1440w, media/works/sito-lucio/02-2880.webp 2880w"
         },
         {
           "src": "media/works/sito-lucio/03-1170.webp",
           "w": 1170,
           "h": 2532,
-          "alt": "La prima stampa sul telefono, col numero e la fila di tacche",
-          "caption": "Anteprima: le stampe sono segnaposto"
+          "alt": "La prima stampa sul telefono, con le serie in alto, il numero e la fila di tacche",
+          "caption": "Anteprima"
+        },
+        {
+          "src": "media/works/sito-lucio/04-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "La serie «Architetture» sul telefono: «Muro con arco», la seconda di dodici",
+          "caption": "Anteprima"
         }
       ],
       "full": {
@@ -1570,7 +1578,7 @@
           "h": 1800
         }
       },
-      "live": "https://fede3340.github.io/anteprima-portfolio/lucio/"
+      "live": "prove/sito-lucio/"
     },
     "pippi-store": {
       "index": 7,

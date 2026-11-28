@@ -1,6 +1,9 @@
-/* The door: the park at dawn as a picture, the name above and the two ways in at the centre of the
-   screen, where the picture leaves the sky free. At a tap the picture dissolves into the park. */
+/* The door: the park at dawn as a picture, the name and, under it, the two ways: into the park or
+   straight to the works. At a tap on the first the picture dissolves into the park. */
 .threshold {
+  justify-content: center;
+  align-items: center;
+  gap: clamp(28px, 5vh, 56px);
   transition: opacity 1.1s ease;
 }
 
@@ -37,31 +40,55 @@
   }
 }
 
+/* The name, held by one plain cloud of the park in the light of the door picture: the sign large
+   above, the name in the spaced capitals of the official lockup under it, on the cloud. */
 .threshold__name {
-  position: absolute;
-  right: var(--gutter);
-  bottom: calc(50% + 84px);
-  left: var(--gutter);
+  position: relative;
+  isolation: isolate;
   max-width: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.28em;
+  gap: 0.35em;
+  padding-bottom: 1.6em;
   font-size: clamp(1.5rem, 0.9rem + 1.5vw, 2.25rem);
   line-height: 1;
-  text-align: center;
   white-space: nowrap;
 }
 
-/* The mark is ink shaped like the plaster around it, lit by the same dawn; its slit is as wide as
-   the stems of the name, which is set like the buttons. */
+.threshold__name::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  bottom: -0.9em;
+  width: 11em;
+  aspect-ratio: 900 / 400;
+  translate: -50% 0;
+  background: url(../img/door/nuvola-marchio.webp) center / 100% 100% no-repeat;
+}
+
+/* The official sign, flat and untouched, with more than a nib's width free around it. */
 .threshold__mark {
   width: auto;
-  height: clamp(88px, 15vh, 136px);
+  height: clamp(96px, 16vh, 150px);
+  margin-bottom: 0.4em;
+}
+
+.threshold__word,
+.brand {
+  font-family: var(--font-text);
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .threshold__word {
-  font-size: 1.25em;
+  margin-right: -0.42em;
+  letter-spacing: 0.42em;
+}
+
+.brand {
+  letter-spacing: 0.3em;
 }
 
 .threshold__by {
@@ -78,14 +105,106 @@
   vertical-align: -0.38em;
 }
 
-/* On a tall screen the free sky lies a little below the middle, between the pond and the cursor. */
-@media (orientation: portrait) {
+/* Two ways of the same weight, side by side (one above the other on a phone), and the sound under. */
+.threshold__ways {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 20rem));
+  align-items: stretch;
+  gap: 16px;
+  transform: none;
+}
+
+/* A way in is a card: one plaster icon of where it leads, and its name. */
+.threshold__way {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 24px 26px;
+  border: 0;
+  border-radius: 28px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.45);
+  cursor: pointer;
+}
+
+.threshold__way img {
+  width: 128px;
+  height: 128px;
+}
+
+/* The works are there from the first moment; the park once it has arrived. */
+.threshold__ways > .threshold__way {
+  opacity: 1;
+}
+
+.threshold__enter:disabled {
+  opacity: 0.55;
+}
+
+.threshold:not(.is-ready) .threshold__ways::before {
+  grid-area: 1 / 1;
+  z-index: 1;
+}
+
+.threshold__sound {
+  grid-column: 1 / -1;
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 22px;
+  background: rgb(255 255 255 / 0.6);
+  color: var(--ink);
+  font-size: var(--small);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.threshold__sound[aria-checked="true"] .sound__dot {
+  background: currentColor;
+}
+
+@media (max-width: 720px) {
   .threshold__ways {
-    top: calc(50% + 30px);
+    grid-template-columns: minmax(0, 22rem);
+    gap: 12px;
   }
 
+  .threshold__way {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    align-items: center;
+    column-gap: 16px;
+    padding: 10px 20px 10px 12px;
+    font-size: 1.25rem;
+    text-align: left;
+  }
+
+  .threshold__way img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (orientation: portrait) {
   .threshold__name {
-    bottom: calc(50% + 40px);
     font-size: clamp(1.375rem, 6vw, 1.875rem);
   }
 }

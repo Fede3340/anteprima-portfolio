@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sara Sanna</title>
+  <meta name="description" content="Sara Sanna, Cagliari. I disegni.">
+  <meta name="theme-color" content="#b8afa3">
+  <link rel="preload" href="fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/bungee.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <header class="bar">
+    <nav class="bar__nav" aria-label="Sezioni">
+      <a href="#muro">Muro</a>
+      <a href="#lei">Lei</a>
+      <a href="#contatti">Contatti</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="name">
+      <h1 id="name" class="name" aria-label="Sara Sanna">
+        <span class="name__row" aria-hidden="true" data-word="SARA"></span>
+        <span class="name__row" aria-hidden="true" data-word="SANNA"></span>
+      </h1>
+      <p class="sticker sticker--city">Cagliari</p>
+      <p class="slip slip--drawings"><span>Disegni</span></p>
+      <a class="scroll-cue" href="#muro">Scorri</a>
+    </section>
+
+    <section class="wall" id="muro" aria-labelledby="wall-title">
+      <div class="wall__head">
+        <h2 id="wall-title" class="label">Fogli</h2>
+        <p class="label label--hint">Trascina i fogli. Toccane uno per staccarlo.</p>
+      </div>
+      <div data-walls></div>
+    </section>
+
+    <section class="about" id="lei" aria-labelledby="about-title">
+      <div class="poster">
+        <h2 id="about-title" class="poster__title">Sara Sanna</h2>
+        <p>Sono ingegnere e vivo a&nbsp;Cagliari. Del mio lavoro mi piaceva soprattutto spiegare un progetto con un disegno chiaro. Dal 2024 faccio grafica, e le griglie le imposto ancora da ingegnere.</p>
+      </div>
+    </section>
+
+    <section class="contact" id="contatti" aria-labelledby="contact-title">
+      <div class="strip">
+        <h2 id="contact-title" class="strip__title">Contatti</h2>
+        <p class="strip__mail"><a href="mailto:sannasanna@gmail.com">sannasanna@gmail.com</a></p>
+      </div>
+    </section>
+  </main>
+
+
+  <div class="viewer" data-viewer hidden>
+    <div class="viewer__stage" data-stage></div>
+    <div class="viewer__info">
+      <p class="viewer__count" data-count></p>
+      <p class="viewer__title" data-title></p>
+    </div>
+    <div class="viewer__controls">
+      <button type="button" class="btn" data-prev aria-label="Foglio precedente">&larr;</button>
+      <button type="button" class="btn" data-next aria-label="Foglio successivo">&rarr;</button>
+      <button type="button" class="btn btn--close" data-close>Chiudi</button>
+    </div>
+  </div>
+
+  <script src="js/vendor/gsap.min.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

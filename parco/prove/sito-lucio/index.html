@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Lucio Giannottu</title>
+<meta name="description" content="Lucio Giannottu, Cagliari. Immagini.">
+<meta name="theme-color" content="#efece6">
+<link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<header class="masthead">
+  <h1 class="name">Lucio Giannottu</h1>
+  <p class="place">Cagliari</p>
+  <nav class="nav" aria-label="Sezioni">
+    <button type="button" class="nav-link" data-open="about">Chi sono</button>
+    <button type="button" class="nav-link" data-open="contact">Contatti</button>
+  </nav>
+  <nav class="series" id="series" aria-label="Serie"></nav>
+</header>
+
+<main class="room" aria-label="Immagini">
+  <div class="table" id="table" aria-live="polite"></div>
+  <div class="count" aria-hidden="true"><span class="count-now" id="countNow">01</span><span class="count-all" id="countAll"></span></div>
+  <p class="caption" id="caption"></p>
+  <div class="steps">
+    <button type="button" class="step" id="prev" aria-label="Immagine precedente">&larr;</button>
+    <button type="button" class="step" id="next" aria-label="Immagine successiva">&rarr;</button>
+  </div>
+  <ol class="ticks" id="ticks" aria-label="Indice delle immagini"></ol>
+</main>
+
+<div class="viewer" id="viewer" hidden>
+  <button type="button" class="viewer-close" id="viewerClose">Chiudi</button>
+</div>
+
+<aside class="sheet" id="sheet" aria-hidden="true" inert>
+  <button type="button" class="sheet-close" id="sheetClose">Chiudi</button>
+  <section class="sheet-part" id="about" aria-labelledby="aboutTitle">
+    <h2 id="aboutTitle">Chi sono</h2>
+    <p>Mi chiamo Lucio e vivo a Cagliari.</p>
+    <p>Insegno alle superiori. La fotografia è la mia passione.</p>
+  </section>
+  <section class="sheet-part" id="contact" aria-labelledby="contactTitle">
+    <h2 id="contactTitle">Contatti</h2>
+    <p><a class="mail" href="mailto:lucianogiannottu@gmail.com">lucianogiannottu@gmail.com</a></p>
+  </section>
+</aside>
+
+
+<script src="js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+[
+  {
+    "name": "Città",
+    "works": [
+      {
+        "number": "01",
+        "file": "media/citta-01.webp",
+        "ratio": 1.3389,
+        "title": "Gru con casetta",
+        "width": 960
+      },
+      {
+        "number": "02",
+        "file": "media/citta-02.webp",
+        "ratio": 1.3389,
+        "title": "Torre di case",
+        "width": 960
+      },
+      {
+        "number": "03",
+        "file": "media/citta-03.webp",
+        "ratio": 1.3389,
+        "title": "Ponteggio con sciarpa",
+        "width": 960
+      },
+      {
+        "number": "04",
+        "file": "media/citta-04.webp",
+        "ratio": 1.3389,
+        "title": "Betoniera a righe",
+        "width": 960
+      },
+      {
+        "number": "05",
+        "file": "media/citta-05.webp",
+        "ratio": 1.3389,
+        "title": "Tetti con bucato",
+        "width": 960
+      },
+      {
+        "number": "06",
+        "file": "media/citta-06.webp",
+        "ratio": 0.7469,
+        "title": "Il cono",
+        "width": 960
+      },
+      {
+        "number": "07",
+        "file": "media/citta-07.webp",
+        "ratio": 1.3389,
+        "title": "Casco con fiori",
+        "width": 960
+      },
+      {
+        "number": "08",
+        "file": "media/citta-08.webp",
+        "ratio": 1.3389,
+        "title": "Scala fino alle nuvole",
+        "width": 960
+      },
+      {
+        "number": "09",
+        "file": "media/citta-09.webp",
+        "ratio": 1.3389,
+        "title": "Rullo e strisce",
+        "width": 960
+      },
+      {
+        "number": "10",
+        "file": "media/citta-10.webp",
+        "ratio": 0.7469,
+        "title": "Ponte a metà",
+        "width": 960
+      },
+      {
+        "number": "11",
+        "file": "media/citta-11.webp",
+        "ratio": 1.3389,
+        "title": "Carriola di case",
+        "width": 960
+      },
+      {
+        "number": "12",
+        "file": "media/citta-12.webp",
+        "ratio": 1.3389,
+        "title": "Finestra sul mare",
+        "width": 960
+      }
+    ]
+  },
+  {
+    "name": "Spray",
+    "layout": "muro",
+    "works": [
+      {
+        "number": "01",
+        "file": "media/spray-01.webp",
+        "width": 960,
+        "ratio": 0.9406,
+        "title": "Gru e nuvola"
+      },
+      {
+        "number": "02",
+        "file": "media/spray-02.webp",
+        "width": 960,
+        "ratio": 1.3389,
+        "title": "Cono in cammino"
+      },
+      {
+        "number": "03",
+        "file": "media/spray-03.webp",
+        "width": 960,
+        "ratio": 0.7469,
+        "title": "Bolle"
+      },
+      {
+        "number": "04",
+        "file": "media/spray-04.webp",
+        "width": 960,
+        "ratio": 1.25,
+        "title": "Tre case"
+      },
+      {
+        "number": "05",
+        "file": "media/spray-05.webp",
+        "width": 960,
+        "ratio": 1.5066,
+        "title": "Pila di case"
+      },
+      {
+        "number": "06",
+        "file": "media/spray-06.webp",
+        "width": 960,
+        "ratio": 0.5656,
+        "title": "Fila di case"
+      },
+      {
+        "number": "07",
+        "file": "media/spray-07.webp",
+        "width": 960,
+        "ratio": 1.3389,
+        "title": "Frecce"
+      },
+      {
+        "number": "08",
+        "file": "media/spray-08.webp",
+        "width": 960,
+        "ratio": 1.25,
+        "title": "Betoniera"
+      },
+      {
+        "number": "09",
+        "file": "media/spray-09.webp",
+        "width": 960,
+        "ratio": 0.6637,
+        "title": "Prova di stencil"
+      },
+      {
+        "number": "10",
+        "file": "media/spray-10.webp",
+        "width": 960,
+        "ratio": 0.7469,
+        "title": "Ruspa e stelle"
+      }
+    ]
+  },
+  {
+    "name": "China",
+    "layout": "mucchio",
+    "works": [
+      {
+        "number": "01",
+        "file": "media/china-01.webp",
+        "width": 960,
+        "ratio": 1.25,
+        "title": "Casa aperta"
+      },
+      {
+        "number": "02",
+        "file": "media/china-02.webp",
+        "width": 960,
+        "ratio": 0.7469,
+        "title": "Gru con pianta"
+      },
+      {
+        "number": "03",
+        "file": "media/china-03.webp",
+        "width": 960,
+        "ratio": 1.5066,
+        "title": "Scala e palla"
+      },
+      {
+        "number": "04",
+        "file": "media/china-04.webp",
+        "width": 960,
+        "ratio": 1.5066,
+        "title": "Finestra con calzini"
+      },
+      {
+        "number": "05",
+        "file": "media/china-05.webp",
+        "width": 960,
+        "ratio": 0.67,
+        "title": "Tetti dall’alto"
+      }
+    ]
+  }
+]

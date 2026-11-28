@@ -59,6 +59,12 @@ export function createAnchors(layer, camera) {
             item.node.style.maxWidth = `${widest}px`;
             measure(item);
           }
+        } else if (item.rank === 0 && item.room !== innerHeight - top - bottom) {
+          // A card never taller than the room between the buttons at the top and the bar: on a small
+          // screen what does not fit scrolls inside it.
+          item.room = innerHeight - top - bottom;
+          item.node.style.maxHeight = `${item.room}px`;
+          measure(item);
         }
         const x = (point.x * 0.5 + 0.5) * innerWidth;
         const y = (-point.y * 0.5 + 0.5) * innerHeight;

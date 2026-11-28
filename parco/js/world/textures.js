@@ -1,4 +1,4 @@
-// Pictures for the park, decoded away from the drawing, four at a time in the order asked, so that
+// Pictures for the park, decoded away from the drawing, a few at a time in the order asked, so that
 // what is asked first comes first and a zone full of covers arriving at once never stalls a step.
 import * as THREE from 'three';
 import { asset } from '../media.js';
@@ -7,12 +7,24 @@ const loader = new THREE.ImageBitmapLoader().setOptions({ imageOrientation: 'fli
 // Cut-outs come premultiplied and undecoded, so that the hidden colour of their transparent pixels
 // never bleeds into their edges; their shader divides by alpha and decodes (grade.js).
 const cutLoader = new THREE.ImageBitmapLoader().setOptions({ imageOrientation: 'flipY', premultiplyAlpha: 'premultiply' });
-const AT_ONCE = 4;
+// Enough at once that a slow line is never waiting on its own delay between small pictures.
+const AT_ONCE = 8;
 const waiting = [];
 let busy = 0;
+let holding = false;
+
+// What `ask` asks for goes before everything already waiting.
+export function ahead(ask) {
+  const before = waiting.length;
+  holding = true;
+  ask();
+  holding = false;
+  waiting.unshift(...waiting.splice(before));
+  next();
+}
 
 function next() {
-  while (busy < AT_ONCE && waiting.length) {
+  while (!holding && busy < AT_ONCE && waiting.length) {
     busy++;
     waiting.shift()().then(() => {
       busy--;

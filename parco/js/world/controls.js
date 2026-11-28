@@ -1,12 +1,16 @@
-// How the visitor moves, with nothing to learn. Mouse: the look follows the pointer without pressing
-// anything, calmly: still in the middle of the screen, up to about 40 degrees at the edge and 8 up and
-// down; over a work, a name, a portal or a button the look stays still, so that a hand not quite steady
-// can reach it. To turn round there are two large arrows at the sides, «Girati a sinistra» and «Girati
-// a destra»: resting the mouse on one, or holding a finger on it, turns; so does the last 8% of the
-// screen towards a side, and so do the side arrow keys. A click does the obvious thing where it points
-// (main.js). Dragging turns the way one faces. Finger: dragging looks, a tap goes, holding the lower
-// part of the screen walks ahead. Keys: W and S or the up and down arrows walk, A and D or the side
-// arrows turn. The wheel walks a notch.
+// How the visitor moves, with nothing to learn. On the guided visit (the start, for everyone) there is
+// one action, «Avanti», and its opposite: the wheel takes one stop for each gesture, a swipe up on the
+// screen the next stop and down the one before; the mouse resting moves nothing; dragging looks round,
+// and on letting go the look goes back to the stop. A click does the obvious thing where it points
+// (main.js).
+// Walking freely, chosen in the bar: the look follows the pointer without pressing anything, calmly:
+// still in the middle of the screen, up to about 40 degrees at the edge and 8 up and down; over a
+// work, a name, a portal or a button the look stays still, so that a hand not quite steady can reach
+// it. To turn round there are two large arrows at the sides, «Girati a sinistra» and «Girati a
+// destra»: resting the mouse on one, or holding a finger on it, turns; so does the last 8% of the
+// screen towards a side, and so do the side arrow keys. Dragging turns the way one faces. Finger:
+// dragging looks, a tap goes, holding the lower part of the screen walks ahead. Keys: W and S or the up
+// and down arrows walk, A and D or the side arrows turn. The wheel walks a notch.
 const LOOK = { mouse: 0.0035, touch: 0.00225 };
 const deg = (value) => (value * Math.PI) / 180;
 // The middle of the screen where the look stays still: 12% of its width (and of its height).
@@ -53,8 +57,14 @@ function arrow(side, text) {
   return node;
 }
 
-export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold }) {
+// A swipe that takes a stop: mostly up or down, this long (pixels), this quick (ms).
+const SWIPE = 50;
+const SWIPE_TIME = 600;
+
+export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold, onStep, onLookEnd }) {
   const keys = { walk: 0, turn: 0 };
+  // Walking freely (the look follows the mouse) or on the guided visit.
+  let free = false;
   // The way an arrow at the side asks to turn (-1, 0, 1), and for how long one has been turning.
   let arrowTurn = 0;
   let turning = 0;
@@ -79,6 +89,11 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
   };
   const follow = () => {
     if (press) return;
+    if (!free) {
+      gaze.wantYaw = 0;
+      gaze.wantPitch = 0;
+      return;
+    }
     if (!mouse || gaze.held || near(mouse.x, mouse.y)) return freeze();
     gaze.wantYaw = AWAY((mouse.x / innerWidth) * 2 - 1);
     gaze.wantPitch = -UPDOWN((mouse.y / innerHeight) * 2 - 1);
@@ -96,11 +111,18 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
     const scale = event.deltaMode === 1 ? 40 : event.deltaMode === 2 ? innerHeight : 1;
     const delta = (Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX) * scale;
     if (!delta) return;
-    if (event.timeStamp - scrollTime > 200 || Math.sign(delta) !== way) {
+    // A new gesture: the first event after a pause, or the other way.
+    const fresh = event.timeStamp - scrollTime > 250 || Math.sign(delta) !== way;
+    scrollTime = event.timeStamp;
+    if (!free) {
+      way = Math.sign(delta);
+      if (fresh) onStep(way);
+      return;
+    }
+    if (fresh) {
       way = Math.sign(delta);
       scrolled = NOTCH;
     } else scrolled += Math.abs(delta);
-    scrollTime = event.timeStamp;
     if (scrolled < NOTCH) return;
     scrolled = 0;
     onWalk(way);
@@ -110,8 +132,8 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
     if (!event.isPrimary || event.button) return;
     press = { x: event.clientX, y: event.clientY, lastX: event.clientX, lastY: event.clientY, t: event.timeStamp, moved: false, holding: false, look: LOOK[event.pointerType] ?? LOOK.mouse };
     surface.setPointerCapture(event.pointerId);
-    // Held still in the lower part of the screen, the press becomes a walk ahead.
-    if (event.clientY > innerHeight * LOWER) {
+    // Walking freely, held still in the lower part of the screen, the press becomes a walk ahead.
+    if (free && event.clientY > innerHeight * LOWER) {
       holdTimer = setTimeout(() => {
         if (!press || press.moved) return;
         press.holding = true;
@@ -133,9 +155,15 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
   const release = (event) => {
     if (!press || !event.isPrimary) return;
     clearTimeout(holdTimer);
+    const dx = event.clientX - press.x;
+    const dy = event.clientY - press.y;
     if (press.holding) onHold(false);
-    else if (!press.moved && event.timeStamp - press.t < TAP_TIME && event.type === 'pointerup') {
-      if (event.pointerType !== 'mouse' && event.timeStamp - lastTap < DOUBLE_TAP) {
+    else if (press.moved && !free) {
+      // On the visit: a quick swipe up or down takes a stop; any other drag gives the look back.
+      if (Math.abs(dy) > SWIPE && Math.abs(dy) > Math.abs(dx) * 1.5 && event.timeStamp - press.t < SWIPE_TIME) onStep(dy < 0 ? 1 : -1);
+      else onLookEnd();
+    } else if (!press.moved && event.timeStamp - press.t < TAP_TIME && event.type === 'pointerup') {
+      if (free && event.pointerType !== 'mouse' && event.timeStamp - lastTap < DOUBLE_TAP) {
         lastTap = 0;
         onJump();
       } else {
@@ -188,6 +216,7 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
   // Which way one is asked to turn: an arrow at the side, a side key, or the mouse in the last
   // stretch towards a side.
   function asked() {
+    if (!free) return 0;
     if (arrowTurn) return arrowTurn;
     if (keys.turn) return keys.turn;
     if (!mouse || press || gaze.held) return 0;
@@ -202,10 +231,20 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
   }
 
   return {
+    // Walking freely or on the guided visit.
+    get free() {
+      return free;
+    },
+    setFree(on) {
+      free = on;
+      follow();
+    },
     // The mouse is never captured; the travel bar still calls these.
     lock() {},
     unlock() {},
+    // Keys that walk and turn, only walking freely; on the visit the arrows are «Avanti» (main.js).
     key(event, down) {
+      if (!free) return false;
       const set = (name, value) => {
         keys[name] = down ? value : keys[name] === value ? 0 : keys[name];
         return true;

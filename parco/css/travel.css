@@ -35,7 +35,8 @@
   }
 }
 
-/* The bar: where one is in the middle, the place before and after either side. */
+/* The bar: «Cammina libero», «Indietro», where one is, «Apri» before a work, «Avanti»; every item on
+   one middle line. */
 .travel__bar {
   position: fixed;
   z-index: 58;
@@ -43,7 +44,10 @@
   bottom: var(--bottom);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2px;
+  /* As wide as what it holds: set at the middle of the screen, it would otherwise get only half. */
+  width: max-content;
   max-width: calc(100vw - 32px);
   padding: 4px;
   border-radius: 28px;
@@ -59,6 +63,7 @@ body:has(.story:not([hidden])) .travel__bar {
 }
 
 .travel__bar button {
+  flex: none;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -86,12 +91,15 @@ body:has(.story:not([hidden])) .travel__bar {
   transform: translateY(-1px);
 }
 
-/* «Avanti» is the way of the walk: the one large, filled button, with where it goes under its name.
-   It may be narrower than its words on a phone: they go on a second line, never out of it. */
+/* «Avanti» is the way of the visit: the one large, filled button, with where it goes under its name,
+   both in the middle. It may be narrower than its words on a phone: they go on a second line, never
+   out of it. */
 .travel__bar .travel__go {
+  flex: 0 1 auto;
   min-width: 0;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   justify-content: center;
   gap: 0;
   min-height: 56px;
@@ -138,27 +146,35 @@ body:has(.story:not([hidden])) .travel__bar {
   display: none;
 }
 
-/* On a phone the steps before and after keep only their arrows, and «I mondi» only its dot. */
-@media (max-width: 560px) {
-  .travel__step .travel__to,
+/* «Cammina libero»: plain, a line round it, the way out of the visit and back. */
+.travel__bar .travel__free {
+  box-shadow: inset 0 0 0 1.5px rgb(0 23 80 / 0.35);
+}
+
+/* On a phone or a tablet, where the whole bar does not fit one line, «Indietro» keeps only its arrow
+   and «I mondi» only its dot; the bar takes the width of the screen, «Cammina libero» a line of its
+   own above, and «Avanti» all the room left. */
+@media (max-width: 900px) {
+  .travel__back-label,
   .travel__worlds-label,
   .travel__name {
     display: none;
   }
 
-  /* The bar takes the width of the screen and «Avanti» all the room left; before a work, where «Apri»
-     shows, the step back gives it its place. */
   .travel__bar {
+    flex-wrap: wrap;
     width: calc(100vw - 32px);
+  }
+
+  .travel__bar .travel__free {
+    flex: 1 0 100%;
+    justify-content: center;
+    margin-bottom: 4px;
   }
 
   .travel__bar .travel__go {
     flex: 1 1 0;
     padding-inline: 14px;
-  }
-
-  .travel__bar:has(.travel__open:not([hidden])) .travel__step--prev {
-    display: none;
   }
 }
 
@@ -586,7 +602,6 @@ body:has(.story:not([hidden])) .travel__bar {
     padding: 0 12px;
   }
 
-  .travel__step--prev .travel__to,
   .travel__worlds-label {
     display: none;
   }

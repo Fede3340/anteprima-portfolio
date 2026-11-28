@@ -3,6 +3,7 @@
 // names become the way to the islands.
 import * as THREE from 'three';
 import { element } from '../media.js';
+import { MOODS } from './layout.js';
 
 const NAME_NEAR = 120;
 const CARD_NEAR = 11;
@@ -26,9 +27,11 @@ function card(zone, texts, works, { onZone, onWork }) {
 }
 
 export function createSigns({ plan, texts, works, anchors, rig, state, camera, onZone, onWork }) {
-  const name = (title, id, position, visible, className = 'zone-name') => {
-    // A real button, reached with Tab too while it shows.
+  const name = (title, id, island, position, visible, className = 'zone-name') => {
+    // A real button, reached with Tab too while it shows; before the name a dot in the island's colour,
+    // the colour of the stones that lead there, ringed in the colour of the text.
     const node = element('button', { className, type: 'button', textContent: title });
+    node.prepend(element('span', { ariaHidden: 'true', style: `display:inline-block;width:0.6em;height:0.6em;margin-right:0.4em;border-radius:50%;vertical-align:0.05em;background:${MOODS[island.id].accent};box-shadow:0 0 0 2px currentColor` }));
     node.dataset.zone = id;
     node.addEventListener('click', () => onZone(id));
     anchors.add(node, position, { visible, rank: 1 });
@@ -39,8 +42,8 @@ export function createSigns({ plan, texts, works, anchors, rig, state, camera, o
     // High in the sky over the island, clear of what stands on it.
     const over = island.centre.clone().setY(island.centre.y + 11);
     // Seen from another island or from the path, the name floats over the island; on it, it goes.
-    name(first.title, first.id, over, () => rig.mode === 'walk' && state.island !== island && away(over) < NAME_NEAR);
-    name(first.title, first.id, island.centre, () => rig.mode === 'above', 'zone-name zone-name--above');
+    name(first.title, first.id, island, over, () => rig.mode === 'walk' && state.island !== island && away(over) < NAME_NEAR);
+    name(first.title, first.id, island, island.centre, () => rig.mode === 'above', 'zone-name zone-name--above');
   }
   for (const zone of plan.zones.filter((each) => each.card)) {
     // Held over the sculpture of the place, in sight while one stands on its island near it.

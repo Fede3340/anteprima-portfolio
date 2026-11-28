@@ -30,5 +30,13 @@
   {
     "id": "mirtifolia",
     "path": "prove/mirtifolia/"
+  },
+  {
+    "id": "sito-lucio",
+    "path": "prove/sito-lucio/"
+  },
+  {
+    "id": "sito-sara",
+    "path": "prove/sito-sara/"
   }
 ]

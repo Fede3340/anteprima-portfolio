@@ -31,12 +31,18 @@ function createFrame(width, height) {
     box(outer, BORDER, 0, bottom - BORDER / 2),
     box(BORDER, height, -width / 2 - BORDER / 2, MIDDLE),
     box(BORDER, height, width / 2 + BORDER / 2, MIDDLE),
-    box(width, height, 0, MIDDLE, 0.02).translate(0, 0, -0.03),
     leg(-width * 0.32),
     leg(width * 0.32),
+    // Behind, the bars of a stretcher, in the colour of the frame: a cross and a bar across.
+    ...[1, -1].map((side) => box(Math.hypot(width, height) - 0.1, 0.06, 0, 0, 0.03).rotateZ(side * Math.atan2(height, width)).translate(0, MIDDLE, -0.05)),
+    box(width, 0.06, 0, MIDDLE, 0.03).translate(0, 0, -0.05),
   ].map((geometry) => geometry.toNonIndexed()));
+  // The back of the board, darker than the frame, so that seen from behind it is the back of a
+  // finished picture and not a blank one.
+  const back = box(width, height, 0, MIDDLE, 0.02).translate(0, 0, -0.03).toNonIndexed();
   const group = new THREE.Group();
   group.add(new THREE.Mesh(frame, new THREE.MeshBasicMaterial({ color: '#f2f6fb' })));
+  group.add(new THREE.Mesh(back, new THREE.MeshBasicMaterial({ color: '#8f93c4' })));
   const screen = new THREE.Mesh(new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({ color: '#dce8f5' }));
   screen.position.set(0, MIDDLE, 0.012);
   group.add(screen);
@@ -242,6 +248,14 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     standing(spot) {
       const item = items.find((each) => each.spot === spot);
       return { ...spot.place, fx: Math.sin(item.yaw), fz: Math.cos(item.yaw) };
+    },
+    // A stop of the guided visit before a work: square in front of it (as it stands, never behind),
+    // far enough for the frame to take at most 45% of the screen's height and 86% of its width.
+    view(spot) {
+      const { x, z, fx, fz, cy } = spot.place;
+      const fit = (size, share, aspect = 1) => (size + BORDER * 2) / (2 * share * tanHalf() * aspect);
+      const away = Math.max(2.6, fit(FRAME.height, 0.45), fit(FRAME.width, 0.86, camera.aspect));
+      return { x: x + fx * away, z: z + fz * away, look: { x, y: cy + LIFT, z } };
     },
   };
 }

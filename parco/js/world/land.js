@@ -2,9 +2,9 @@
 // ground of an island is a soft white floor, a little uneven, with a very fine felt; its rim and its
 // underside are clouds (see park.js). The stones are thick round plaster discs hanging in the sky.
 import * as THREE from 'three';
-import { mergeGeometries } from 'three/addons/BufferGeometryUtils.js';
+import { mergeGeometries, mergeVertices } from 'three/addons/BufferGeometryUtils.js';
 import { instances } from './instances.js';
-import { mouth } from './layout.js';
+import { MOODS, mouth } from './layout.js';
 
 // The haze far away, light blue, and the sea of clouds under it.
 export const HAZE = '#cfe3f6';
@@ -154,39 +154,62 @@ function createFloor(plan, island) {
   return floor;
 }
 
-// The way on each island, warmer and a little darker than the floor, the clearest line of the place:
-// from where the path comes in to where one arrives, from there to where the next path leaves, and a
-// few steps towards the works. Drawn once into a picture of the whole park seen from above (about
-// 0.3 m a pixel), which the floor reads with one look-up.
+// The way on each island, a little darker than the floor, the clearest line of the place: peach from
+// where one arrives to where the next path leaves and a few steps towards the works; in the island's
+// own colour (MOODS) on its last stretch, from where the path comes in to where one arrives, like the
+// stones of the path that brings one there. Worked out once into a picture of the whole park seen from
+// above (about 0.3 m a pixel) holding, for each pixel, how far it is from the edge of the way and the
+// colour of the nearest stretch; the floor reads it with one look-up and cuts a clean edge from it.
 const WAY_WIDTH = 1.5;
-const WAY_COLOUR = new THREE.Color('#f4a982');
+const WAY_COLOUR = '#f4a982';
 const WAY_PIXELS = 1024;
+// Metres of distance from the edge across the whole of the picture's 0-255 range.
+const WAY_RAMP = 1.2;
+const accentOf = (island) => MOODS[island.id].accent;
 function ways(plan) {
-  const segments = [];
+  const reach = Math.max(...plan.islands.map((island) => Math.hypot(island.centre.x, island.centre.z) + island.radius)) + 2;
+  const metres = (2 * reach) / WAY_PIXELS;
+  const data = new Uint8Array(WAY_PIXELS * WAY_PIXELS * 4);
   for (const island of plan.islands) {
     const here = island.arrival;
-    segments.push([mouth(plan, island, island.in), here], [here, mouth(plan, island, island.out)]);
-    if (island === plan.landing) segments.push([island.start, mouth(plan, island, island.out)]);
+    // [from, to, colour], the island's own stretch last, so that it wins where they meet.
+    const segments = [[here, mouth(plan, island, island.out), WAY_COLOUR]];
+    if (island === plan.landing) segments.push([island.start, mouth(plan, island, island.out), WAY_COLOUR]);
     const works = plan.works.filter((work) => work.island === island.index);
     if (works.length) {
       const x = works.reduce((sum, work) => sum + work.x, 0) / works.length;
       const z = works.reduce((sum, work) => sum + work.z, 0) / works.length;
-      segments.push([here, { x: here.x + (x - here.x) * 0.6, z: here.z + (z - here.z) * 0.6 }]);
+      segments.push([here, { x: here.x + (x - here.x) * 0.6, z: here.z + (z - here.z) * 0.6 }, WAY_COLOUR]);
+    }
+    segments.push([mouth(plan, island, island.in), here, accentOf(island)]);
+    const rgb = segments.map(([, , hex]) => hex.slice(1).match(/../g).map((pair) => parseInt(pair, 16)));
+    const from = (v) => Math.max(0, Math.floor((v - island.radius - 2 + reach) / metres));
+    const to = (v) => Math.min(WAY_PIXELS - 1, Math.ceil((v + island.radius + 2 + reach) / metres));
+    for (let row = from(island.centre.z); row <= to(island.centre.z); row++) {
+      for (let column = from(island.centre.x); column <= to(island.centre.x); column++) {
+        const px = (column + 0.5) * metres - reach;
+        const pz = (row + 0.5) * metres - reach;
+        let best = Infinity;
+        let nearest = 0;
+        segments.forEach(([a, b], k) => {
+          const dx = b.x - a.x;
+          const dz = b.z - a.z;
+          const t = Math.min(1, Math.max(0, ((px - a.x) * dx + (pz - a.z) * dz) / (dx * dx + dz * dz)));
+          const d = Math.hypot(px - a.x - dx * t, pz - a.z - dz * t);
+          if (d <= best) {
+            best = d;
+            nearest = k;
+          }
+        });
+        const at = (row * WAY_PIXELS + column) * 4;
+        const inside = Math.min(1, Math.max(0, 0.5 + (WAY_WIDTH / 2 - best) / WAY_RAMP));
+        if (inside <= data[at + 3] / 255) continue;
+        data.set([...rgb[nearest], Math.round(inside * 255)], at);
+      }
     }
   }
-  const reach = Math.max(...plan.islands.map((island) => Math.hypot(island.centre.x, island.centre.z) + island.radius)) + 2;
-  const scale = WAY_PIXELS / (2 * reach);
-  const canvas = Object.assign(document.createElement('canvas'), { width: WAY_PIXELS, height: WAY_PIXELS });
-  const pen = canvas.getContext('2d');
-  Object.assign(pen, { strokeStyle: '#fff', lineCap: 'round', lineWidth: WAY_WIDTH * scale });
-  for (const [a, b] of segments) {
-    pen.beginPath();
-    pen.moveTo((a.x + reach) * scale, (a.z + reach) * scale);
-    pen.lineTo((b.x + reach) * scale, (b.z + reach) * scale);
-    pen.stroke();
-  }
-  const map = new THREE.CanvasTexture(canvas);
-  map.flipY = false;
+  const map = new THREE.DataTexture(data, WAY_PIXELS, WAY_PIXELS);
+  Object.assign(map, { colorSpace: THREE.SRGBColorSpace, magFilter: THREE.LinearFilter, minFilter: THREE.LinearMipmapLinearFilter, generateMipmaps: true, needsUpdate: true });
   return { map, box: new THREE.Vector3(-reach, -reach, 2 * reach) };
 }
 
@@ -207,8 +230,9 @@ function floorMaterial(uniforms, { way, plain = false } = {}) {
         uniform vec3 uLine;
         uniform vec4 uRipples[${RIPPLES}];
         uniform sampler2D uWayMap;
-        uniform vec3 uWayBox, uWayColour;
+        uniform vec3 uWayBox;
         float onWay;
+        vec3 wayHue;
         ${NOISE}
         float line(float d, float pixels) {
           return 1.0 - smoothstep(pixels * 0.5, pixels * 0.5 + 1.0, abs(d) / max(fwidth(d), 1e-5));
@@ -227,9 +251,16 @@ function floorMaterial(uniforms, { way, plain = false } = {}) {
         #endif
         onWay = 0.0;
         #ifdef WAY_ALL
+        // A stone wears the colour of the island its path leads to (its instance colour), only here.
         onWay = 1.0;
+        wayHue = vColor.rgb;
+        colour /= max(vColor.rgb, vec3(0.01));
         #elif defined(WAY_FLOOR)
-        onWay = texture2D(uWayMap, (at - uWayBox.xy) / uWayBox.z).r;
+        vec4 wayAt = texture2D(uWayMap, (at - uWayBox.xy) / uWayBox.z);
+        // A clean edge at every distance: the middle of the picture's soft edge, a pixel wide.
+        float edge = max(fwidth(wayAt.a) * 0.75, 0.01);
+        onWay = smoothstep(0.5 - edge, 0.5 + edge, wayAt.a);
+        wayHue = wayAt.rgb;
         #endif
         #ifndef PLAIN
         // Rings spreading from where the visitor touched.
@@ -244,8 +275,8 @@ function floorMaterial(uniforms, { way, plain = false } = {}) {
       // The way's warmth after the tones of the hour (grade.js), which would take it back to white.
       .replace('#include <tonemapping_fragment>', `// The way's colour at the floor's own lightness, a little darker.
         vec3 wayLuma = vec3(0.2126, 0.7152, 0.0722);
-        vec3 wayColour = min(vec3(1.0), uWayColour * (0.9 * dot(gl_FragColor.rgb, wayLuma) / dot(uWayColour, wayLuma)));
-        gl_FragColor.rgb = mix(gl_FragColor.rgb, wayColour, onWay * 0.85);
+        vec3 wayColour = min(vec3(1.0), wayHue * (0.9 * dot(gl_FragColor.rgb, wayLuma) / max(dot(wayHue, wayLuma), 0.01)));
+        gl_FragColor.rgb = mix(gl_FragColor.rgb, wayColour, onWay * 0.92);
         #include <tonemapping_fragment>`);
     const defines = { all: ['WAY_ALL'], floor: ['WAY_FLOOR'] }[way] ?? [];
     if (plain) defines.push('PLAIN');
@@ -255,7 +286,8 @@ function floorMaterial(uniforms, { way, plain = false } = {}) {
 }
 
 // The stones of the given paths: thick round plaster discs with a soft edge, a little uneven.
-export function createStones(paths, material = new THREE.MeshLambertMaterial({ color: '#edf2f9', emissive: '#6f82a3' })) {
+// colourOf(path), if given: the colour of each path's stones.
+export function createStones(paths, material = new THREE.MeshLambertMaterial({ color: '#edf2f9', emissive: '#6f82a3' }), colourOf) {
   // From the foot up to the middle of the top, so that the faces look outwards.
   // Closed underneath, and light there too: a stone overhead is plaster, not a grey disc.
   // Thick and soft: a rounded belly under a flat top, as in the pictures.
@@ -267,63 +299,55 @@ export function createStones(paths, material = new THREE.MeshLambertMaterial({ c
     const f = Math.abs(Math.sin((path.index * 31 + i) * 12.9898) * 43758.5453) % 1;
     const at = path.curve.getPointAt(i / path.stones);
     const size = 0.42 + f * 0.1;
-    return { x: at.x, z: at.z, matrix: new THREE.Matrix4().compose(at, q.setFromAxisAngle(up, f * 6.28), new THREE.Vector3(size, 1, size)) };
+    return { x: at.x, z: at.z, path, matrix: new THREE.Matrix4().compose(at, q.setFromAxisAngle(up, f * 6.28), new THREE.Vector3(size, 1, size)) };
   }));
-  return instances(template, spots, { slices: 16 }).drawn;
+  const drawn = instances(template, spots, { slices: 16 });
+  if (colourOf) {
+    const colour = new THREE.Color();
+    drawn.each(template, (mesh, slot, index) => mesh.setColorAt(slot, colour.set(colourOf(spots[index].path))));
+  }
+  return drawn.drawn;
 }
 
-// The core of every island: a few round billows under the floor, merged in one mesh, so that from
-// below one does not see through it. What is seen of the island are the cut-out clouds around and under
-// it (park.js), so the billows stay few and plain; the islets, never seen from below, have none. Where a billow sinks into another its
-// colour goes to the soft blue of the folds. light: fewer and coarser billows, for slow machines.
+// The white of the billows and the soft blue of their folds.
 const FOLD = new THREE.Color('#a9bbdb');
 const PUFF = new THREE.Color('#ffffff');
 
-function createBodies(list, light) {
-  const balls = [];
-  for (const island of list) {
+// The belly of every island and islet: a closed mass under its whole floor, so that nothing is seen
+// through it from below. Just under the rim it is a thin lid; deeper down it draws in, behind the
+// cut-out sheets of cloud that make the island's outline (park.js), to a round bottom in billows, white
+// above and the soft blue of the folds below. [distance from the middle as a share of the radius,
+// depth under the centre in metres, more depth as a share of the radius].
+const BELLY = [[0.97, 0.7, 0], [0.82, 1.05, 0], [0.7, 1.6, 0], [0.6, 1.6, 0.15], [0.42, 1.6, 0.33], [0.2, 1.6, 0.42], [0, 1.6, 0.45]];
+function createBellies(list, light) {
+  const parts = list.map((island) => {
     const R = island.radius;
-    const c = island.centre;
-    const seed = (n) => Math.abs(Math.sin((island.index * 131 + n) * 12.9898) * 43758.5453) % 1;
-    let n = 0;
-    // Rings from under the floor down, well inside the cut-out billows that make the outline:
-    // radius from the middle, size of the billows, their top's depth.
-    const rings = [[R * 0.35, R * 0.17, 1.4], [0, R * 0.2, R * 0.22]];
-    for (const [r, size, top] of rings) {
-      const count = r ? Math.max(4, Math.round((2 * Math.PI * r) / (size * (light ? 1.7 : 1.2)))) : 1;
-      for (let i = 0; i < count; i++, n++) {
-        const a = ((i + seed(n) * 0.5) / count) * Math.PI * 2;
-        const s = size * (0.85 + seed(n + 500) * 0.3);
-        balls.push({ x: c.x + Math.cos(a) * r, y: c.y - top - s * 0.8, z: c.z + Math.sin(a) * r, r: s, squash: 0.8, detail: light || top > 1 ? 1 : 2 });
-      }
-    }
-  }
-  const shapes = [1, 2].map((detail) => {
-    const ball = new THREE.IcosahedronGeometry(1, detail);
-    // Round, not faceted: on a unit ball the normal is the point itself.
-    ball.setAttribute('normal', ball.attributes.position.clone());
-    ball.deleteAttribute('uv');
-    return ball;
-  });
-  const near = balls.map((ball) => balls.filter((other) => other !== ball && Math.hypot(other.x - ball.x, other.y - ball.y, other.z - ball.z) < ball.r + other.r));
-  const p = new THREE.Vector3();
-  const tint = new THREE.Color();
-  const parts = balls.map((ball, index) => {
-    const geometry = shapes[ball.detail - 1].clone().scale(ball.r, ball.r * ball.squash, ball.r).translate(ball.x, ball.y, ball.z);
-    const position = geometry.attributes.position;
+    const profile = BELLY.map(([r, metres, share]) => new THREE.Vector2(r * R, -(metres + share * R))).reverse();
+    const belly = new THREE.LatheGeometry(profile, light ? 24 : 48);
+    const position = belly.attributes.position;
     const colours = new Float32Array(position.count * 3);
+    const tint = new THREE.Color();
+    const seed = island.index * 1.7;
     for (let v = 0; v < position.count; v++) {
-      p.fromBufferAttribute(position, v);
-      // How far into the fold with a neighbour this point of the surface is.
-      let fold = 0;
-      for (const other of near[index]) {
-        const inside = Math.hypot(p.x - other.x, (p.y - other.y) / other.squash, p.z - other.z) / other.r;
-        fold = Math.max(fold, 1 - Math.min(1, (inside - 1) / 0.35));
-      }
-      tint.copy(PUFF).lerp(FOLD, fold * 0.85).toArray(colours, v * 3);
+      const x = position.getX(v);
+      const y = position.getY(v);
+      const z = position.getZ(v);
+      const u = x / R;
+      const w = z / R;
+      const down = Math.min(1, -y / (1.6 + 0.45 * R));
+      // Round swellings over the surface, growing towards the bottom.
+      const lump = Math.max(0, Math.sin(u * 7 + seed) * Math.sin(w * 6 + seed * 1.3)) * 0.6 + Math.max(0, Math.sin((u + w) * 11 + seed * 2) * Math.sin((u - w) * 9 - down * 5)) * 0.4;
+      const grow = 1 + lump * 0.22 * down;
+      position.setXYZ(v, island.centre.x + x * grow, island.centre.y + y - lump * down * R * 0.08, island.centre.z + z * grow);
+      tint.copy(PUFF).lerp(FOLD, Math.min(1, down * 0.8 + (1 - lump) * 0.2 * down)).toArray(colours, v * 3);
     }
-    geometry.setAttribute('color', new THREE.BufferAttribute(colours, 3));
-    return geometry;
+    belly.setAttribute('color', new THREE.BufferAttribute(colours, 3));
+    belly.deleteAttribute('uv');
+    belly.deleteAttribute('normal');
+    // One normal where the turns meet (the bottom point, the seam), not one per turn.
+    const joined = mergeVertices(belly);
+    joined.computeVertexNormals();
+    return joined.toNonIndexed();
   });
   return mergeGeometries(parts);
 }
@@ -336,7 +360,6 @@ export function createGround(plan) {
     uRipples: { value: Array.from({ length: RIPPLES }, () => new THREE.Vector4(0, 0, -99, 0)) },
     uWayMap: { value: way.map },
     uWayBox: { value: way.box },
-    uWayColour: { value: WAY_COLOUR },
   };
   const material = floorMaterial(uniforms, { way: 'floor' });
   const floors = plan.islands.map((island) => {
@@ -349,8 +372,8 @@ export function createGround(plan) {
   const plaster = floorMaterial(uniforms, { way: 'all' });
   plaster.color.set('#edf2f9');
   plaster.emissive.set('#6f82a3');
-  const stones = createStones(plan.paths, plaster);
-  // The billows wear the felt of the floor; on the light way, plain and fewer.
+  const stones = createStones(plan.paths, plaster, (path) => accentOf(plan.islands[path.to]));
+  // The bellies wear the felt of the floor; on the light way, plain and coarser.
   // Lit a little from within, as cloud is, so that from below it stays white and not grey.
   const felt = floorMaterial(uniforms);
   felt.vertexColors = true;
@@ -361,8 +384,9 @@ export function createGround(plan) {
     top.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(top.attributes.position.count * 3).fill(1), 3));
     return top;
   });
-  const bodies = new THREE.Mesh(mergeGeometries([createBodies(plan.islands, false), ...tops]), felt);
-  const shapes = { full: bodies.geometry, light: mergeGeometries([createBodies(plan.islands, true), ...tops]) };
+  const all = [...plan.islands, ...plan.islets];
+  const bodies = new THREE.Mesh(mergeGeometries([createBellies(all, false), ...tops]), felt);
+  const shapes = { full: bodies.geometry, light: mergeGeometries([createBellies(all, true), ...tops]) };
   // The light way: the floor in its plain colour with its way, the sea of clouds as one soft colour.
   const plain = { floor: floorMaterial(uniforms, { way: 'floor', plain: true }), sea: new THREE.MeshBasicMaterial({ color: '#c9dcf2' }), bodies: new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#7487a8', vertexColors: true }), shape: shapes.light };
   const full = { floor: material, sea: sea.material, bodies: felt, shape: shapes.full };
