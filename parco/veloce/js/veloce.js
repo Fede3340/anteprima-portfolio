@@ -1,5 +1,6 @@
 import { catalogue } from '../../js/works.js';
 import { element, logo, reducedMotion } from '../../js/media.js';
+import { createForma, fromScreen, mix, place, shapes, smooth as settle } from '../../js/forma.js';
 
 // The park seen flat: the same islands one under the other, each with its sky, its sculpture and its
 // works standing on the cloud like the pictures of the park. A work opens in the same close view.
@@ -91,6 +92,7 @@ function sprite(name, x, className) {
   img.style.setProperty('--foot', `${(1 - (info.appoggio?.y ?? 1)) * 100}%`);
   img.style.setProperty('--anchor', `${(info.appoggio?.x ?? 0.5) * -100}%`);
   img.style.setProperty('--x', `${x * 100}%`);
+  img.style.setProperty('--u', x);
   return img;
 }
 
@@ -221,7 +223,7 @@ function build(data, texts) {
   const google = texts.google;
   const shop = works[google.work];
   const line = texts.services.items.find((item) => item.stage === 'google')?.line;
-  sections.push(island('google', 'Google', [card([
+  sections.push(island('google', 'Campagne', [card([
     line ? element('h3', { textContent: line }) : '',
     element('ul', { className: 'card__facts' }, google.facts.map((fact) => element('li', { textContent: fact }))),
     element('a', { className: 'card__go', href: `${page}#lavoro/${shop.id}`, textContent: `Apri ${shop.title}` }),
@@ -354,46 +356,68 @@ function travel(id, smooth = true) {
   target.scrollIntoView({ behavior: smooth && !reducedMotion.matches ? 'smooth' : 'auto', block: 'start' });
 }
 
-// Come from the door (index.html of this folder lays its shapes over the page): the near land of the
-// shapes settles on the first island, the sun and the far islands rise away, the shapes fade into the
-// sky of the page, and the works rise onto the island.
-async function arrive(first) {
-  const cover = $('.forma-arrivo');
-  const svg = [...cover.querySelectorAll('svg.forma')].find((node) => node.getBoundingClientRect().width);
-  const land = first?.querySelector('.isola__terra');
-  const done = () => {
-    cover.remove();
-    document.documentElement.classList.remove('da-porta');
+// The opening, as at the start of the park: the shapes over the sky of the arrival. Scrolling down the
+// first screen each goes to its thing on the first island (the circle to the globe of the lamp, the
+// arc to the rim of the island, the crescent into the portal, the line onto the first work, the dots
+// onto the things beside) and melts there; scrolling up they come back. Come from the fork of the
+// park, the page takes the way on by itself.
+function opening(first) {
+  const layer = createForma(false);
+  layer.classList.add('apertura');
+  document.body.append(layer);
+  const span = () => innerHeight * 0.8;
+  const find = (part) => [...first.querySelectorAll('img.cosa')].find((img) => (img.getAttribute('src') ?? img.dataset.src ?? '').includes(part));
+  const square = (rect, share) => ({ left: rect.left + (rect.width * (1 - share)) / 2, top: rect.top, width: rect.width * share, height: rect.width * share });
+  function places(view) {
+    const land = first.querySelector('.isola__terra').getBoundingClientRect();
+    const lamp = find('lampione')?.getBoundingClientRect();
+    const statue = first.querySelector('.cosa--statua')?.getBoundingClientRect();
+    const work = first.querySelector('.opera__cornice')?.getBoundingClientRect();
+    const things = [...first.querySelectorAll('.cosa:not(.cosa--statua)')].map((img) => img.getBoundingClientRect());
+    const box = (rect) => rect && rect.width && fromScreen(rect, view);
+    return {
+      sole: box(lamp && square(lamp, 0.8)),
+      arco: box({ left: land.left, top: land.top, width: land.width, height: innerWidth < 768 ? 64 : 90 }),
+      luna: box(statue && square(statue, 0.5)),
+      linea: box(work && { left: work.left, top: work.top, width: work.width, height: 1 }),
+      ...Object.fromEntries(things.slice(0, 3).map((rect, i) => [`punto${i}`, box(square(rect, 0.3))])),
+    };
+  }
+  let drawn;
+  function draw() {
+    const gone = scrollY / span();
+    layer.hidden = gone >= 1;
+    if (layer.hidden) return;
+    drawn ??= shapes(layer);
+    if (!drawn) return;
+    const at = places(drawn.view());
+    const t = reducedMotion.matches ? 0 : settle(gone);
+    for (const shape of drawn.list) place(shape, mix(shape.start, at[shape.name] || shape.start, t));
+    layer.style.opacity = String(1 - settle((gone - 0.7) / 0.3));
+  }
+  let queued = false;
+  const later = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      draw();
+    });
   };
-  if (!svg || !land) return done();
-  // From the page to the user units of the shapes, drawn to cover the screen.
-  const box = svg.getBoundingClientRect();
-  const view = svg.viewBox.baseVal;
-  const k = Math.max(box.width / view.width, box.height / view.height);
-  const ox = box.left + (box.width - view.width * k) / 2;
-  const oy = box.top + (box.height - view.height * k) / 2;
-  const near = svg.querySelector('.forma__vicino');
-  const from = near.getBBox();
-  const to = land.getBoundingClientRect();
-  const s = to.width / k / from.width;
-  const settle = { duration: 900, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', fill: 'forwards' };
-  const start = getComputedStyle(near).transform;
-  near.style.transformBox = 'view-box';
-  near.style.transformOrigin = '0 0';
-  const moving = near.animate([
-    { transform: start === 'none' ? 'none' : start },
-    { transform: `translate(${(to.left - ox) / k - s * from.x}px, ${(to.top - oy) / k - s * from.y}px) scale(${s})` },
-  ], settle);
-  for (const node of svg.querySelectorAll('.forma__sole, .forma__lontano')) {
-    node.animate({ opacity: 0, translate: '0 -60px' }, settle);
+  addEventListener('scroll', later, { passive: true });
+  addEventListener('resize', () => {
+    drawn = undefined;
+    later();
+  });
+  draw();
+  let handed = false;
+  try {
+    handed = sessionStorage.getItem('athena-flusso') === '1';
+    sessionStorage.removeItem('athena-flusso');
+  } catch {
+    // Without storage the page waits at its start.
   }
-  // Of the near land only the ground goes on: the path, the pond and the islands beside it melt.
-  for (const node of near.querySelectorAll(':scope > :not(path:not([fill]))')) {
-    node.animate({ opacity: 0 }, { ...settle, duration: 500 });
-  }
-  await moving.finished;
-  await cover.animate({ opacity: 0 }, { duration: 400, fill: 'forwards' }).finished;
-  done();
+  if (handed && !location.hash && !reducedMotion.matches) setTimeout(() => scrollTo({ top: span(), behavior: 'smooth' }), 400);
 }
 
 async function start() {
@@ -403,7 +427,7 @@ async function start() {
   const { works, sections } = build(data, texts);
   wake(sections);
   bar(sections);
-  if (document.documentElement.classList.contains('da-porta')) arrive(sections[1]);
+  opening(sections[1]);
 
   // The close view of the park, fetched when a work is first near the finger or the pointer. Opening a
   // work adds an entry to the history, so that Back closes it, as in the park.

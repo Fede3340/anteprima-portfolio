@@ -25,11 +25,11 @@
         "stage": "marchi"
       },
       {
-        "title": "Campagne",
+        "title": "Manifesti",
         "stage": "manifesti"
       },
       {
-        "title": "Google",
+        "title": "Campagne",
         "line": "Più in alto nelle ricerche, più vendite dalle stesse visite.",
         "stage": "google"
       }
@@ -37,6 +37,7 @@
   },
   "hint": "Trascina per camminare",
   "google": {
+    "title": "pippi.store, campagna su Google",
     "work": "pippi-store",
     "facts": [
       "Il 16 ottobre pippi.store è passato al sito nuovo, e i 750 indirizzi del negozio di prima portano alle pagine nuove.",

@@ -234,7 +234,7 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   }
 }
 
-/* The words at the start, large, over the travel bar, gone at the first «Avanti». */
+/* The words at the start, large, over the travel bar, gone at the first «Avanti» or click. */
 .hint {
   position: fixed;
   z-index: 40;
@@ -255,118 +255,12 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
   transition: opacity 0.25s ease;
 }
 
-/* On a phone or a tablet the bar has two lines (travel.css): the words stand over both. */
-@media (max-width: 900px) {
-  .hint {
-    bottom: calc(var(--bottom) + 128px);
-  }
-}
-
 .hint[hidden] {
   display: none;
 }
 
 .hint.is-gone {
   opacity: 0;
-}
-
-/* The two arrows to turn round, at the middle of the sides: the mouse resting on one turns, and a
-   finger holding it. They show while the mouse moves, and always on a phone. */
-.turn {
-  position: fixed;
-  z-index: 42;
-  top: 50%;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 56px;
-  padding: 0 18px 0 6px;
-  border: 0;
-  border-radius: 28px;
-  background: var(--paper);
-  color: var(--ink);
-  font-size: var(--small);
-  font-weight: 600;
-  white-space: nowrap;
-  box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.45);
-  transform: translateY(-50%);
-  opacity: 0;
-  visibility: hidden;
-  cursor: pointer;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-  transition: opacity 0.3s ease, visibility 0s 0.3s;
-}
-
-.turn--left {
-  left: var(--gutter);
-}
-
-.turn--right {
-  right: var(--gutter);
-  flex-direction: row-reverse;
-  padding: 0 6px 0 18px;
-}
-
-.turn.is-on.is-shown {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.3s ease;
-}
-
-.turn.is-held {
-  background: var(--ink);
-  color: var(--light);
-}
-
-.turn__arrow {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  font-family: var(--font-display);
-  font-size: 2.25rem;
-  line-height: 1;
-}
-
-/* On a phone the arrows stay, round, and say their name only while held, above themselves. */
-@media (pointer: coarse) {
-  .turn {
-    min-height: 52px;
-    padding: 4px;
-  }
-
-  .turn--right {
-    padding: 4px;
-  }
-
-  .turn.is-on {
-    opacity: 0.92;
-    visibility: visible;
-  }
-
-  .turn__label {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    padding: 4px 10px 5px;
-    border-radius: 10px;
-    background: var(--paper);
-    color: var(--ink);
-    visibility: hidden;
-  }
-
-  .turn--left .turn__label {
-    left: 0;
-  }
-
-  .turn--right .turn__label {
-    right: 0;
-  }
-
-  .turn.is-held .turn__label {
-    visibility: visible;
-  }
 }
 
 /* The door: the name and the ways in over the island seen from far. */
@@ -765,7 +659,7 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 }
 
 /* Without WebGL, or on a machine too slow for the park, the list is the page. */
-:is(.no-webgl, .is-lean) :is(.park, .anchors, .hud .above, .threshold, .hint, .travel, .turn) {
+:is(.no-webgl, .is-lean) :is(.park, .anchors, .hud .above, .threshold, .hint, .travel) {
   display: none;
 }
 

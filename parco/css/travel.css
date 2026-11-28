@@ -35,8 +35,7 @@
   }
 }
 
-/* The bar: «Cammina libero», «Indietro», where one is, «Apri» before a work, «Avanti»; every item on
-   one middle line. */
+/* The bar: «Indietro», where one is, «Apri» before a work, «Avanti»; every item on one middle line. */
 .travel__bar {
   position: fixed;
   z-index: 58;
@@ -146,15 +145,9 @@ body:has(.story:not([hidden])) .travel__bar {
   display: none;
 }
 
-/* «Cammina libero»: plain, a line round it, the way out of the visit and back. */
-.travel__bar .travel__free {
-  box-shadow: inset 0 0 0 1.5px rgb(0 23 80 / 0.35);
-}
-
-/* On a phone or a tablet, where the whole bar does not fit one line, «Indietro» keeps only its arrow
-   and «I mondi» only its dot; the bar takes the width of the screen, «Cammina libero» a line of its
-   own above, and «Avanti» all the room left. */
-@media (max-width: 900px) {
+/* On a phone «Indietro» keeps only its arrow and «I mondi» only its dot; the bar takes the width of
+   the screen and «Avanti» all the room left. */
+@media (max-width: 560px) {
   .travel__back-label,
   .travel__worlds-label,
   .travel__name {
@@ -162,14 +155,7 @@ body:has(.story:not([hidden])) .travel__bar {
   }
 
   .travel__bar {
-    flex-wrap: wrap;
     width: calc(100vw - 32px);
-  }
-
-  .travel__bar .travel__free {
-    flex: 1 0 100%;
-    justify-content: center;
-    margin-bottom: 4px;
   }
 
   .travel__bar .travel__go {

@@ -1,6 +1,6 @@
 // Getting anywhere at once. The bar at the foot says where one is; its large «Avanti» takes one to the
-// next stop of the visit, saying where under its name, and «Indietro» to the one before; «Apri» opens
-// the work one stands before; «Cammina libero» gives the free walk, and takes one back to the visit.
+// next thing to see, saying where under its name, and «Indietro» to the one before; «Apri» opens the
+// work one stands before.
 // «I mondi» shows the ten places on the orbit of the day and finds any work by its words. A jump goes
 // through a ring of light that closes and opens again.
 // Keys: 1 to 9 and 0 the places, F search, Tab «I mondi», Esc closes (the park's own: main.js).
@@ -68,12 +68,7 @@ async function start(root) {
   forward.addEventListener('click', () => main.advance());
   const apri = element('button', { type: 'button', className: 'travel__open', textContent: 'Apri', hidden: true });
   apri.addEventListener('click', () => main.front() && main.open(main.front().id));
-  const walk = element('button', { type: 'button', className: 'travel__free', textContent: 'Cammina libero' });
-  walk.addEventListener('click', () => {
-    main.setFree(!main.free);
-    walk.textContent = main.free ? 'Torna alla visita guidata' : 'Cammina libero';
-  });
-  const bar = element('nav', { className: 'travel__bar', ariaLabel: 'La visita', hidden: true }, [walk, back, here, apri, forward]);
+  const bar = element('nav', { className: 'travel__bar', ariaLabel: 'La visita', hidden: true }, [back, here, apri, forward]);
 
   // «I mondi»: the places on the orbit, the search beside them.
   const focusName = element('strong', { className: 'travel__focus-name' });
@@ -130,7 +125,7 @@ async function start(root) {
   const shut = element('button', { type: 'button', className: 'travel__close', textContent: 'Chiudi' });
   shut.setAttribute('aria-keyshortcuts', 'Escape');
   const legend = element('p', { className: 'travel__legend', ariaHidden: 'true' }, [
-    kbd('1'), '…', kbd('0'), ' i mondi, ', kbd('F'), ' cerca',
+    kbd('W'), kbd('A'), kbd('S'), kbd('D'), ' o le frecce per camminare, ', kbd('1'), '…', kbd('0'), ' i mondi, ', kbd('F'), ' cerca',
   ]);
   const sheet = element('div', { className: 'travel__sheet' }, [
     element('div', { className: 'travel__head' }, [element('h2', { className: 'travel__title', id: 'travel-title', textContent: 'I mondi' }), legend, shut]),
@@ -335,9 +330,9 @@ async function start(root) {
   }, true);
 
   // «Avanti» says where it goes; «Apri» shows before a work. Written only when they change. On a phone
-  // or a tablet it says a work's title up to its first comma («Sagra del pesce», not «Sagra del pesce,
-  // Porto di Cagliari»), so that it fits the button; the whole title stays in the label read aloud.
-  const narrow = matchMedia('(max-width: 900px)');
+  // it says a work's title up to its first comma («Sagra del pesce», not «Sagra del pesce, Porto di
+  // Cagliari»), so that it fits the button; the whole title stays in the label read aloud.
+  const narrow = matchMedia('(max-width: 560px)');
   function tell() {
     const label = main.nextStop().label;
     const said = narrow.matches ? label.split(',')[0] : label;

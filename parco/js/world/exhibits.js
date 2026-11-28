@@ -183,9 +183,10 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
   return {
     object,
     items,
-    // One stops about a metre before a work, its frame in sight; narrower than the gap between two
-    // works (layout.js, 2.7 m), so that the space between them is never a wall.
-    solid: plan.works.map((work) => ({ x: work.x, z: work.z, r: 1.1 })),
+    // One stops before a work, its frame in sight; narrower than half the gap between two works
+    // (layout.js, 2.7 m) and the room kept round a thing (world.js, 0.3 m), so that one can stand
+    // between two works of the first row to see one of the second.
+    solid: plan.works.map((work) => ({ x: work.x, z: work.z, r: 0.9 })),
     // Small covers up to two islands away, large ones (not on the light way) on the island one is on
     // and those beside it; further, everything is let go.
     island(island) {

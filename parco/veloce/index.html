@@ -21,20 +21,6 @@
   <script type="module" src="veloce/js/veloce.js"></script>
 </head>
 <body>
-  <script>
-    // Come from the door: its shapes, handed over in the session, lie over the page from the first
-    // frame; veloce.js turns them into the sky and the first island. A direct link has none.
-    try {
-      const shapes = sessionStorage.getItem('athena-forma');
-      sessionStorage.removeItem('athena-forma');
-      if (shapes && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.classList.add('da-porta');
-        document.body.insertAdjacentHTML('afterbegin', `<div class="forma-arrivo" aria-hidden="true"><div class="threshold__forma">${shapes}</div></div>`);
-      }
-    } catch {
-      // Without storage the page opens plainly.
-    }
-  </script>
   <a class="brand" href="veloce/"><img class="brand__mark" src="img/brand/athena-96.webp" alt="" width="57" height="96">Athena</a>
   <div class="hud">
     <a class="pill" href="./">Entra nel parco</a>

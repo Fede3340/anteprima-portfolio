@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cotta · Ceramiche al tornio</title>
+  <meta name="description" content="Stoviglie al tornio in terracotta, mezze smaltate e mezze crude, per la tavola di tutti i giorni.">
+  <meta name="theme-color" content="#fbf8f2">
+  <link rel="preload" href="fonts/FunnelDisplay-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="bar">
+    <a class="bar-brand" href="#" aria-label="Cotta, torna all’inizio">
+      <img class="bar-mark" src="img/segno.png" alt="" width="212" height="240">
+      <img class="bar-word" src="img/scritta.png" alt="Cotta" width="330" height="96">
+    </a>
+    <button class="cart-toggle" type="button" aria-controls="cart" aria-expanded="false">Carrello <span class="cart-count" data-cart-count>0</span></button>
+  </header>
+
+  <main data-home>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-text">
+        <h1 id="hero-title">Metà smalto, metà terra.</h1>
+        <p class="lead">Tazze, ciotole, piatti e brocche fatti al tornio, per la tavola di tutti i giorni. Sopra lo smalto bianco, sotto la terracotta lasciata cruda: è lì che si vede la mano.</p>
+        <a class="button" href="#catalogo">Vedi i pezzi</a>
+      </div>
+      <figure class="hero-pic">
+        <img src="img/aperto-800.webp" srcset="img/aperto-800.webp 800w, img/aperto-1440.webp 1440w" sizes="(min-width: 960px) 55vw, 100vw" width="1440" height="1080" alt="Tazze e ciotole appena smaltate ad asciugare su un banco di legno, bianche sopra e color terracotta sotto, col tornio dietro" fetchpriority="high">
+      </figure>
+    </section>
+
+    <section class="dip" aria-labelledby="dip-title">
+      <div class="dip-text">
+        <h2 id="dip-title">Fin dove arriva lo smalto</h2>
+        <p>Ogni pezzo si tiene per il piede e si immerge a mano nello smalto. La riga dove finisce, e la goccia che scende, non sono mai uguali due volte. Prova a immergere questa tazza.</p>
+        <label class="dip-label" for="dip-range">Quanto la immergi</label>
+        <input id="dip-range" class="dip-range" type="range" min="20" max="85" value="62" data-dip>
+      </div>
+      <svg class="dip-art" viewBox="0 0 300 260" role="img" aria-label="Una tazza di terracotta: la parte alta è coperta di smalto bianco fin dove scegli">
+        <defs><clipPath id="above"><rect data-above x="0" y="0" width="300" height="0"/></clipPath><clipPath id="mug"><path d="M60 40h150v150c0 22-18 40-40 40H100c-22 0-40-18-40-40Z"/></clipPath></defs>
+        <path d="M208 80c40 0 52 22 52 44s-14 46-54 46" fill="none" stroke="#c8663d" stroke-width="18" stroke-linecap="round"/>
+        <path d="M208 80c40 0 52 22 52 44s-14 46-54 46" fill="none" stroke="#f6f1e8" stroke-width="18" stroke-linecap="round" clip-path="url(#above)"/>
+        <g clip-path="url(#mug)">
+          <rect x="50" y="30" width="180" height="210" fill="#c8663d"/>
+          <path d="M50 200h180" stroke="#b4532f" stroke-width="2" opacity=".6"/><path d="M50 210h180M50 220h180" stroke="#b4532f" stroke-width="1.5" opacity=".5"/>
+          <path data-glaze fill="#f6f1e8" d=""/>
+        </g>
+        <ellipse cx="135" cy="40" rx="75" ry="9" fill="#e9e1d3" stroke="#d8cdb9" stroke-width="2"/>
+      </svg>
+    </section>
+
+    <section class="raw" id="catalogo" aria-labelledby="shop-title">
+      <svg class="raw-edge" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true"><path fill="#fbf8f2" d="M0 0H1200V22C1140 26 1100 18 1040 24C1030 24 1028 48 1020 48S1012 26 1000 24C900 18 820 28 720 22C712 22 710 40 704 40S698 24 690 22C560 16 460 28 360 22C350 22 348 52 340 52S332 26 322 24C220 18 120 28 0 20Z"/></svg>
+      <div class="shop-head">
+        <h2 id="shop-title">I pezzi</h2>
+        <p>Si lavano a mano. Due pezzi non saranno mai identici. Spedizione 9,90 €, gratis da 80 €, imballati uno per uno.</p>
+      </div>
+      <ul class="grid" data-grid></ul>
+    </section>
+  </main>
+
+  <section class="detail" data-detail hidden></section>
+
+  <footer class="foot">
+    <img class="foot-mark" src="img/segno.png" alt="" width="212" height="240" loading="lazy">
+    <div class="foot-notes">
+      <p>Cotta, ceramiche al tornio.</p>
+      <p>Il pagamento è finto: nessun ordine parte e niente viene addebitato.</p>
+      <p class="foot-concept">Concept: marchio, prodotti e prezzi sono inventati.</p>
+    </div>
+  </footer>
+
+  <div class="scrim" data-scrim hidden></div>
+  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+    <div class="cart-head">
+      <h2 id="cart-title">Carrello</h2>
+      <button class="link" type="button" data-cart-close>Chiudi</button>
+    </div>
+    <div class="cart-body">
+      <p class="cart-empty" data-cart-empty>Il carrello è vuoto. Ogni pezzo arriva imballato da solo.</p>
+      <ul class="cart-lines" data-cart-lines></ul>
+    </div>
+    <div class="cart-foot" data-cart-foot>
+      <dl class="totals">
+        <div><dt>Prodotti</dt><dd data-total-items></dd></div>
+        <div><dt>Spedizione</dt><dd data-total-ship></dd></div>
+        <div class="totals-sum"><dt>Totale</dt><dd data-total-sum></dd></div>
+      </dl>
+      <p class="cart-free" data-cart-free></p>
+      <button class="button cart-pay" type="button" data-cart-pay>Vai al pagamento</button>
+      <p class="cart-note" data-cart-note aria-live="polite"></p>
+    </div>
+  </aside>
+  <p class="visually-hidden" aria-live="polite" data-live></p>
+  <script src="js/shop.js" defer></script>
+</body>
+</html>

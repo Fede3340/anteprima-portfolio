@@ -1,5 +1,5 @@
 // The written things of the park: the name of each island floating over it when seen from elsewhere,
-// and the cards of Chi sono, Che cosa faccio, Google and Contatti over their sculptures. From above, the
+// and the cards of Chi sono, Che cosa faccio, Campagne and Contatti over their sculptures. From above, the
 // names become the way to the islands.
 import * as THREE from 'three';
 import { element } from '../media.js';

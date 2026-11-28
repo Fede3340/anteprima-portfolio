@@ -1,20 +1,22 @@
-/* The door: the park drawn down to its bones, the name and, under it, the two ways: into the park
-   or straight to the works. At «Entra nel parco» the shapes settle where the park has them and the
-   park takes shape behind them. */
+/* The start of the flow (js/threshold.js): a few shapes in a calm field and the name; going on, the
+   shapes become the things of the park, the name goes to its corner, the way forks, and the door
+   fades on the park. Everything that moves here is set by js/threshold.js from the way gone. */
 .threshold {
   justify-content: center;
   align-items: center;
-  gap: clamp(28px, 5vh, 56px);
-  transition: opacity 1.1s ease;
+  touch-action: none;
+  user-select: none;
 }
 
 .threshold__forma {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: #ddb8cf;
+  background: linear-gradient(#b7b7ee, #ddb8cf);
 }
 
+/* The shapes (js/forma.js), drawn to cover the screen: one drawing for a wide screen, one for a tall. */
+.forma-campo,
 .forma {
   position: absolute;
   inset: 0;
@@ -36,70 +38,56 @@
   }
 }
 
-/* At the door the shapes stand a little apart from where the park has them: the sun higher, the
-   far islands wider, the near land lower. Going in, they settle, and the trees and the bodies of the
-   islands sink into them: the park grows them again. */
-.forma :is(.forma__sole, .forma__lontano > g, .forma__vicino, .forma__corpo) {
-  transform-box: fill-box;
-  transform-origin: 50% 0;
-  transition: transform 0.9s var(--ease);
+/* The disc is the invitation and the first gesture (js/threshold.js). */
+.forma [data-forma="sole"] {
+  cursor: pointer;
 }
 
-.forma__sole {
-  transform: translateY(-5%);
+.forma [data-forma="anello"] {
+  pointer-events: none;
 }
 
-.forma__sinistra {
-  transform: translate(-18%, -12%);
+/* Pressed, a wave of rings leaves from the point. */
+.threshold__onda {
+  position: absolute;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border: 1.5px solid #fff0e4;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: onda 1.4s cubic-bezier(0.2, 0.6, 0.3, 1) backwards;
 }
 
-.forma__alta {
-  transform: translate(16%, -18%);
-}
-
-.forma__destra {
-  transform: translate(8%, -6%);
-}
-
-.forma__vicino {
-  transform: translateY(5%);
-}
-
-.threshold.is-forming .forma :is(.forma__sole, .forma__lontano > g, .forma__vicino) {
-  transform: none;
-}
-
-.threshold.is-forming .forma__corpo {
-  transform: scale(1, 0);
-}
-
-/* The far islands breathe: a few pixels up and down, slowly. */
-.forma__lontano > g {
-  animation: forma-respiro 14s ease-in-out infinite alternate;
-}
-
-.forma__lontano > g:nth-child(2) {
-  animation-duration: 18s;
-  animation-direction: alternate-reverse;
-}
-
-@keyframes forma-respiro {
+@keyframes onda {
+  from {
+    transform: scale(0.4);
+    opacity: 0.9;
+  }
   to {
-    translate: 0 -6px;
+    transform: scale(14);
+    opacity: 0;
   }
 }
 
-/* Going in: the name and the ways step aside, the shapes settle, then the door fades into the park. */
-.threshold.is-forming {
-  transition: opacity 0.6s ease 0.9s;
+/* At rest the shapes drift a few pixels over tens of seconds. */
+.forma :is([data-forma="sole"], [data-forma="luna"], [data-forma="arco"]) {
+  animation: forma-deriva 40s ease-in-out infinite alternate;
 }
 
-.threshold.is-forming :is(.threshold__name, .threshold__ways) {
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.forma [data-forma="luna"] {
+  animation-duration: 55s;
 }
 
-/* The name: the sign large above, the name in the spaced capitals of the official lockup under it. */
+@keyframes forma-deriva {
+  to {
+    translate: 6px -4px;
+  }
+}
+
+/* The name: the sign large above, the name in the spaced capitals of the official lockup under it.
+   Going on it rises onto the name in the corner. */
 .threshold__name {
   position: relative;
   max-width: none;
@@ -110,6 +98,8 @@
   font-size: clamp(1.5rem, 0.9rem + 1.5vw, 2.25rem);
   line-height: 1;
   white-space: nowrap;
+  transform-origin: 50% clamp(48px, 8vh, 75px);
+  animation: none;
 }
 
 /* The official sign, flat and untouched, with more than a nib's width free around it. */
@@ -149,66 +139,158 @@
   vertical-align: -0.38em;
 }
 
-/* Two ways of the same weight, side by side (one above the other on a phone), and the sound under. */
-.threshold__ways {
-  position: relative;
-  top: auto;
-  left: auto;
-  right: auto;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 20rem));
-  align-items: stretch;
-  gap: 16px;
-  transform: none;
+/* The name in the corner stays laid out under the door (css/main.css hides it there), so that the
+   flow knows where it is, and shows once the name has risen to it. The selector outweighs that rule. */
+html body:has(.threshold:not([hidden])) .brand.brand {
+  display: inline-flex;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-/* A way in is a card: one plaster icon of where it leads, and its name. */
-.threshold__way {
+html.flusso-angolo body:has(.threshold:not([hidden])) .brand.brand {
+  opacity: 1;
+}
+
+/* The bar of the visit waits under the door, coming back to it from the first stop. */
+body:has(.threshold:not([hidden])) .travel {
+  visibility: hidden;
+}
+
+/* The fork, a moment of the way: straight on, the park taking shape; aside, the portal to all the
+   works on one page. Two things of the same weight standing in the space, not a menu. */
+.threshold__bivio {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bivio {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 24px 24px 26px;
+  gap: 16px;
+  min-height: 0;
+  padding: 0;
   border: 0;
-  border-radius: 28px;
-  background: var(--paper);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
   color: var(--ink);
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: 0;
-  font-size: 1.5rem;
+  font-size: 1.625rem;
   line-height: 1.2;
-  text-align: center;
   text-decoration: none;
-  white-space: normal;
+  cursor: pointer;
+  pointer-events: auto;
+  translate: -50% -50%;
+}
+
+.bivio img {
+  width: clamp(150px, 15vw, 210px);
+  height: clamp(150px, 15vw, 210px);
+  filter: drop-shadow(0 12px 10px rgb(0 23 80 / 0.25));
+  transition: transform 0.3s var(--ease);
+}
+
+.bivio:hover img,
+.bivio:focus-visible img {
+  transform: translateY(-4px);
+}
+
+.bivio span {
+  padding: 12px 26px 14px;
+  border-radius: 28px;
+  background: var(--paper);
   box-shadow: 0 10px 30px -14px rgb(0 23 80 / 0.45);
+  white-space: nowrap;
+}
+
+.bivio--parco {
+  left: 50%;
+  top: 50%;
+}
+
+.bivio--parco span::after {
+  content: ' ↓';
+}
+
+.bivio--lavori {
+  left: 79%;
+  top: 40%;
+}
+
+@media (orientation: portrait) {
+  .bivio img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .bivio {
+    font-size: 1.25rem;
+  }
+
+  .bivio--parco {
+    left: 50%;
+    top: 47%;
+  }
+
+  .bivio--lavori {
+    left: 50%;
+    top: 21%;
+  }
+}
+
+/* At the foot: «Avanti», the same command as all through the park, and the sound, small. */
+.threshold__piede {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--bottom) + 12px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  translate: -50% 0;
+}
+
+.threshold__avanti {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 56px;
+  padding: 4px 26px 6px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--ink);
+  color: var(--light);
+  font-size: var(--small);
+  font-weight: 500;
   cursor: pointer;
 }
 
-.threshold__way img {
-  width: 128px;
-  height: 128px;
-  /* A shadow where the plaster stands, so that white reads on the paper. */
-  filter: drop-shadow(0 10px 8px rgb(0 23 80 / 0.22));
+.threshold__avanti strong {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.15;
 }
 
-/* The works are there from the first moment; the park once it has arrived. */
-.threshold__ways > .threshold__way {
-  opacity: 1;
+.threshold__avanti:hover {
+  background: #0b2a72;
 }
 
-.threshold__enter:disabled {
-  opacity: 0.55;
+.threshold__verso:empty {
+  display: none;
 }
 
-.threshold:not(.is-ready) .threshold__ways::before {
-  grid-area: 1 / 1;
-  z-index: 1;
+/* The park still arriving: the foot breathes. */
+.threshold.is-waiting .threshold__avanti {
+  animation: wait 1.4s ease-in-out infinite;
 }
 
 .threshold__sound {
-  grid-column: 1 / -1;
-  justify-self: center;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -227,36 +309,15 @@
   background: currentColor;
 }
 
-@media (max-width: 720px) {
-  .threshold__ways {
-    grid-template-columns: minmax(0, 22rem);
-    gap: 12px;
-  }
-
-  .threshold__way {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    align-items: center;
-    column-gap: 16px;
-    padding: 10px 20px 10px 12px;
-    font-size: 1.25rem;
-    text-align: left;
-  }
-
-  .threshold__way img {
-    width: 80px;
-    height: 80px;
-  }
-}
-
-@media (orientation: portrait) {
-  .threshold__name {
-    font-size: clamp(1.375rem, 6vw, 1.875rem);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .forma__lontano > g {
+  .forma [data-forma],
+  .threshold__onda {
     animation: none;
+  }
+
+  .threshold,
+  .threshold__name,
+  .threshold__bivio {
+    transition: opacity 0.4s ease;
   }
 }

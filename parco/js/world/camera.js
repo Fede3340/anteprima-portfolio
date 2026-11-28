@@ -27,9 +27,8 @@ export function createRig(camera, plan) {
   function walk(state) {
     const bob = state.still ? Math.sin((state.walked / STEP) * Math.PI) ** 2 * BOB * Math.min(1, Math.abs(state.speed) / 1.2) : 0;
     wantPos.set(state.x, state.y + EYE + bob + state.hop, state.z);
-    // The way one faces, and the look away from it that follows the pointer.
-    const heading = state.heading + state.lookYaw;
-    const pitch = state.pitch + state.lookPitch;
+    // The way one faces.
+    const { heading, pitch } = state;
     const flat = Math.cos(pitch);
     wantLook.set(wantPos.x + Math.cos(heading) * flat * 10, wantPos.y + Math.sin(pitch) * 10, wantPos.z + Math.sin(heading) * flat * 10);
   }

@@ -29,17 +29,18 @@ export const MOODS = {
 const ISLANDS = [
   { id: 'ingresso', zones: ['apertura', 'chi', 'servizi'], radius: 16, height: 0, mood: 'morning', reach: 1.4 },
   { id: 'siti', zones: ['siti'], radius: 15, height: 5, mood: 'shade' },
-  { id: 'negozi', zones: ['negozi'], radius: 15, height: 2, mood: 'noon' },
+  { id: 'negozi', zones: ['negozi'], radius: 19, height: 2, mood: 'noon' },
   { id: 'programmi', zones: ['programmi'], radius: 13, height: 10, mood: 'clear' },
   { id: 'app', zones: ['app'], radius: 14, height: 4, mood: 'calm' },
   { id: 'videogioco', zones: ['videogioco'], radius: 14, height: 12, mood: 'dusk' },
-  { id: 'marchi', zones: ['marchi'], radius: 16, height: 3, mood: 'morning' },
-  { id: 'manifesti', zones: ['manifesti'], radius: 17, height: 9, mood: 'noon' },
+  { id: 'marchi', zones: ['marchi'], radius: 19, height: 3, mood: 'morning' },
+  { id: 'manifesti', zones: ['manifesti'], radius: 18, height: 9, mood: 'noon' },
   { id: 'google', zones: ['google'], radius: 12, height: 15, mood: 'far' },
   { id: 'contatti', zones: ['contatti'], radius: 13, height: 5, mood: 'dusk' },
 ];
 
-const NAMES = { apertura: 'Apertura', google: 'Google', contatti: 'Contatti' };
+// The island of the campaigns keeps the id google: the campaign on Google is its first.
+const NAMES = { apertura: 'Apertura', google: 'Campagne', contatti: 'Contatti' };
 const CARDS = { chi: 'who', servizi: 'services', google: 'google', contatti: 'contact' };
 
 const v = (x, y, z) => new THREE.Vector3(x, y, z);
@@ -150,41 +151,69 @@ function joinIslands(from, to, index) {
 }
 
 // The works of an island in an arc a few steps in front of where one arrives, facing that point, as
-// pictures in a clearing; with many works, a second arc behind the first. The sculpture of each place
-// stands at an end of the arc; cards stand by their sculptures.
-const ROWS = [7, 10];
+// pictures in a clearing. With more than seven, two arcs: each work of the back one stands in the gap
+// between two of the front one, the gap wide enough to show it whole from where one arrives, and the
+// front one far enough for the eyes to stand between its works and see one of the back one square on.
+// The sculpture of each place stands at an end of the arc; cards stand by their sculptures.
+const ONE_ROW = 7;
 const GAP = 2.7;
+const ROWS = [9, 13.5];
+// The width of a frame with its border (exhibits.js), and the room kept between two seen side by side.
+const FRAME_WIDTH = FRAME.width + 0.12;
+const APART = 0.08;
+// Where the way to the next path crosses the arcs, the works stand aside from it: half the way's
+// width (land.js), half a frame and a little room, in metres.
+const LANE = 2.1;
+// More works than this cannot stand in front of where one arrives without hiding one another: they
+// stand all round, in a ring.
+const RING = 12;
 function arrange(island) {
+  if (island.zones.flatMap((zone) => zone.works).length > RING) return ring(island);
   const arrive = island.in.curve.getPoint(1).clone().sub(island.centre).setY(0).normalize();
   island.arrival = island.centre.clone().addScaledVector(arrive, island.radius * 0.5);
   const focal = island.arrival;
   const ahead = Math.atan2(-arrive.z, -arrive.x);
   const all = island.zones.flatMap((zone) => zone.works);
-  const rows = all.length > 7 ? 2 : 1;
-  const perRow = Math.ceil(all.length / rows);
+  const two = all.length > ONE_ROW;
+  // Front and back counts; with as many in each, the two arcs are turned a quarter step each way so
+  // that the whole stays centred on the way in.
+  const front = two ? Math.ceil(all.length / 2) : all.length;
+  const back = all.length - front;
+  const step = two ? FRAME_WIDTH / ROWS[0] + FRAME_WIDTH / ROWS[1] + APART : GAP / ONE_ROW;
+  const turn = back === front ? step / 4 : 0;
+  const leave = island.out.curve.getPoint(0);
+  const toLeave = Math.atan2(leave.z - focal.z, leave.x - focal.x);
+  const off = (angle) => Math.atan2(Math.sin(angle - toLeave), Math.cos(angle - toLeave));
+  const angles = all.map((work, index) => {
+    const row = two ? index % 2 : 0;
+    const inRow = two ? Math.floor(index / 2) : index;
+    return row ? ahead + (inRow - (back - 1) / 2) * step + turn : ahead + (inRow - (front - 1) / 2) * step - turn;
+  });
+  // The lane opens only where the way runs through the works or past one of them, the same angle for
+  // both arcs, so that the works of the back one stay in the gaps of the front one.
+  const width = LANE / (two ? ROWS[0] : ONE_ROW);
+  const straddled = all.length && Math.min(...angles.map(off)) < 0 && Math.max(...angles.map(off)) > 0;
+  const lane = straddled || angles.some((angle) => Math.abs(off(angle)) < width) ? width : 0;
   let widest = 0;
   all.forEach((work, index) => {
-    const row = rows === 2 ? index % 2 : 0;
-    const inRow = rows === 2 ? Math.floor(index / 2) : index;
-    const distance = ROWS[row];
-    const step = GAP / distance;
-    const angle = ahead + (inRow - (perRow - 1) / 2) * step + row * step * 0.5;
+    const row = two ? index % 2 : 0;
+    const distance = two ? ROWS[row] : ONE_ROW;
+    const angle = angles[index] + (off(angles[index]) < 0 ? -lane : lane);
     widest = Math.max(widest, Math.abs(angle - ahead));
     let x = focal.x + Math.cos(angle) * distance;
     let z = focal.z + Math.sin(angle) * distance;
     // Kept on the island, clear of its rim.
-    const off = Math.hypot(x - island.centre.x, z - island.centre.z);
+    const out = Math.hypot(x - island.centre.x, z - island.centre.z);
     const room = island.radius - 2.5;
-    if (off > room) {
-      x = island.centre.x + ((x - island.centre.x) / off) * room;
-      z = island.centre.z + ((z - island.centre.z) / off) * room;
+    if (out > room) {
+      x = island.centre.x + ((x - island.centre.x) / out) * room;
+      z = island.centre.z + ((z - island.centre.z) / out) * room;
     }
     const f = v(focal.x - x, 0, focal.z - z).normalize();
     work.place = { x, y: island.centre.y, z, fx: f.x, fz: f.z, cy: island.centre.y + 1.5 };
     Object.assign(work, { x, z });
   });
   // The side of the way in away from the path that leaves: the great cursor stands there, aside.
-  const leave = island.out.curve.getPoint(0);
   const away = Math.sign(Math.cos(ahead) * (leave.z - focal.z) - Math.sin(ahead) * (leave.x - focal.x)) || 1;
   island.zones.forEach((zone, index) => {
     // The sculptures at the ends of the arc, or either side of the way in where there are no works.
@@ -192,6 +221,47 @@ function arrange(island) {
     const turn = zone.id === 'apertura' ? ahead - away * 0.9 : ahead + side * (all.length ? widest + 0.55 : 1.15);
     const distance = zone.id === 'apertura' ? island.radius * 0.95 : all.length ? 6.5 : 9;
     zone.mark = { x: focal.x + Math.cos(turn) * distance, y: island.centre.y, z: focal.z + Math.sin(turn) * distance };
+  });
+}
+
+// Many works: one arrives near the middle of the island, and the works stand all round in two
+// staggered rings, as in the two arcs, with a lane left free where each path comes in or goes out. The
+// sculpture of the place takes a place in the back ring, in the middle of the longer stretch.
+function ring(island) {
+  const arrive = island.in.curve.getPoint(1).clone().sub(island.centre).setY(0).normalize();
+  island.arrival = island.centre.clone().addScaledVector(arrive, 1.5);
+  const focal = island.arrival;
+  const toward = (point) => Math.atan2(point.z - focal.z, point.x - focal.x);
+  const lane = LANE / ROWS[0];
+  const ways = [toward(island.out.curve.getPoint(0)), toward(island.in.curve.getPoint(1))];
+  const turnOf = (a) => ((a % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+  // The two stretches between the lanes, counterclockwise: [start, length].
+  const gap = turnOf(ways[1] - ways[0]);
+  const stretches = [[ways[0] + lane, gap - 2 * lane], [ways[1] + lane, Math.PI * 2 - gap - 2 * lane]];
+  const all = island.zones.flatMap((zone) => zone.works);
+  const count = all.length + island.zones.length;
+  const total = stretches[0][1] + stretches[1][1];
+  const many = Math.round((count * stretches[0][1]) / total);
+  const slots = stretches.flatMap(([start, length], k) => {
+    const n = k ? count - many : many;
+    return Array.from({ length: n }, (_, j) => ({ angle: start + ((j + 0.5) * length) / n, row: j % 2, k, j, n }));
+  });
+  const longer = stretches[0][1] >= stretches[1][1] ? 0 : 1;
+  const free = slots.filter((slot) => !(slot.row && slot.k === longer));
+  const backs = slots.filter((slot) => slot.row && slot.k === longer).sort((a, b) => Math.abs(a.j - (a.n - 1) / 2) - Math.abs(b.j - (b.n - 1) / 2));
+  const at = (slot) => {
+    const distance = ROWS[slot.row];
+    return { x: focal.x + Math.cos(slot.angle) * distance, z: focal.z + Math.sin(slot.angle) * distance };
+  };
+  island.zones.forEach((zone) => {
+    zone.mark = { ...at(backs.shift()), y: island.centre.y };
+  });
+  [...free, ...backs].sort((a, b) => turnOf(a.angle - ways[0]) - turnOf(b.angle - ways[0])).forEach((slot, index) => {
+    const work = all[index];
+    const { x, z } = at(slot);
+    const f = v(focal.x - x, 0, focal.z - z).normalize();
+    work.place = { x, y: island.centre.y, z, fx: f.x, fz: f.z, cy: island.centre.y + 1.5 };
+    Object.assign(work, { x, z });
   });
 }
 

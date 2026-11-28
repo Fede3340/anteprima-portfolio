@@ -38,5 +38,25 @@
   {
     "id": "sito-sara",
     "path": "prove/sito-sara/"
+  },
+  {
+    "id": "negozio-tre-fili",
+    "path": "prove/negozio-tre-fili/"
+  },
+  {
+    "id": "negozio-serra",
+    "path": "prove/negozio-serra/"
+  },
+  {
+    "id": "negozio-scorza",
+    "path": "prove/negozio-scorza/"
+  },
+  {
+    "id": "negozio-cotta",
+    "path": "prove/negozio-cotta/"
+  },
+  {
+    "id": "negozio-spola",
+    "path": "prove/negozio-spola/"
   }
 ]

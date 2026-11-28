@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scorza · Oggetti di sughero di Gallura</title>
+  <meta name="description" content="Oggetti per la casa tagliati da lastre di sughero di Gallura, col peso scritto su ognuno.">
+  <meta name="theme-color" content="#f1e6d3">
+  <link rel="preload" href="fonts/BricolageGrotesque-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="bar">
+    <a class="bar-brand" href="#" aria-label="Scorza, torna all’inizio">
+      <img class="bar-mark" src="img/segno.png" alt="" width="279" height="240">
+      <img class="bar-word" src="img/scritta.png" alt="Scorza" width="386" height="96">
+    </a>
+    <button class="cart-toggle" type="button" aria-controls="cart" aria-expanded="false">Carrello <span class="cart-count" data-cart-count>0</span></button>
+  </header>
+
+  <main data-home>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-text">
+        <h1 id="hero-title">Il sughero si toglie all’albero. L’albero resta.</h1>
+        <p class="lead">La sughera non si taglia: le si toglie la corteccia, e lei continua a vivere e la rifà. Da quelle lastre, in Gallura, tagliamo oggetti per la casa che pesano quasi niente.</p>
+        <a class="button" href="#catalogo">Vedi gli oggetti</a>
+      </div>
+      <figure class="hero-pic">
+        <img src="img/aperto-800.webp" srcset="img/aperto-800.webp 800w, img/aperto-1440.webp 1440w" sizes="(min-width: 960px) 55vw, 100vw" width="1440" height="1080" alt="Una sughera col tronco appena scortecciato, color rosso arancio, e ai suoi piedi le lastre di sughero impilate sull’erba secca" fetchpriority="high">
+      </figure>
+    </section>
+
+    <section class="weight" aria-labelledby="weight-title">
+      <h2 id="weight-title">Pesato su ogni pezzo</h2>
+      <p>Il sughero è fatto in gran parte d’aria. Per questo scriviamo il peso di ogni oggetto, e il carrello ti dice quanto pesa il pacco mentre lo riempi.</p>
+      <ul class="weights" data-weights></ul>
+    </section>
+
+    <section class="shop" id="catalogo" aria-labelledby="shop-title">
+      <div class="shop-head">
+        <h2 id="shop-title">Gli oggetti</h2>
+        <p>Ognuno tiene un po’ di scorza, il lato grezzo della corteccia. Spedizione 6,90 €, gratis da 60 €.</p>
+      </div>
+      <ul class="grid" data-grid></ul>
+    </section>
+  </main>
+
+  <section class="detail" data-detail hidden></section>
+
+  <footer class="foot">
+    <img class="foot-mark" src="img/segno.png" alt="" width="279" height="240" loading="lazy">
+    <div class="foot-notes">
+      <p>Scorza, oggetti di sughero di Gallura.</p>
+      <p>Il pagamento è finto: nessun ordine parte e niente viene addebitato.</p>
+      <p class="foot-concept">Concept: marchio, prodotti e prezzi sono inventati.</p>
+    </div>
+  </footer>
+
+  <div class="scrim" data-scrim hidden></div>
+  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+    <div class="cart-head">
+      <h2 id="cart-title">Carrello</h2>
+      <button class="link" type="button" data-cart-close>Chiudi</button>
+    </div>
+    <div class="cart-body">
+      <p class="cart-empty" data-cart-empty>Il carrello è vuoto, e il pacco pesa zero grammi.</p>
+      <ul class="cart-lines" data-cart-lines></ul>
+    </div>
+    <div class="cart-foot" data-cart-foot>
+      <div class="scale" aria-live="polite">
+        <svg viewBox="0 0 200 112" aria-hidden="true"><path class="scale-arc" d="M16 100a84 84 0 0 1 168 0"/><g class="scale-ticks" data-scale-ticks></g><line class="scale-needle" data-needle x1="100" y1="100" x2="100" y2="26"/><circle cx="100" cy="100" r="7" class="scale-hub"/></svg>
+        <p>Il pacco pesa <strong data-pack-weight>0 g</strong></p>
+      </div>
+      <dl class="totals">
+        <div><dt>Prodotti</dt><dd data-total-items></dd></div>
+        <div><dt>Spedizione</dt><dd data-total-ship></dd></div>
+        <div class="totals-sum"><dt>Totale</dt><dd data-total-sum></dd></div>
+      </dl>
+      <p class="cart-free" data-cart-free></p>
+      <button class="button cart-pay" type="button" data-cart-pay>Vai al pagamento</button>
+      <p class="cart-note" data-cart-note aria-live="polite"></p>
+    </div>
+  </aside>
+  <p class="visually-hidden" aria-live="polite" data-live></p>
+  <script src="js/shop.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Serra · Coltelli a serramanico fatti a mano</title>
+  <meta name="description" content="Coltelli a serramanico fatti a mano in un piccolo laboratorio sardo, con la misura della lama scritta su ogni coltello.">
+  <meta name="theme-color" content="#ece7df">
+  <link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="bar">
+    <a class="bar-brand" href="#" aria-label="Serra, torna all’inizio">
+      <img class="bar-mark" src="img/segno.png" alt="" width="560" height="179">
+      <img class="bar-word" src="img/scritta.png" alt="Serra" width="319" height="96">
+    </a>
+    <button class="cart-toggle" type="button" aria-controls="cart" aria-expanded="false">Carrello <span class="cart-count" data-cart-count>0</span></button>
+  </header>
+
+  <main data-home>
+    <section class="hero" aria-labelledby="hero-title">
+      <img class="hero-pic" src="img/aperto-800.webp" srcset="img/aperto-800.webp 800w, img/aperto-1440.webp 1440w" sizes="100vw" width="1440" height="1080" alt="Un coltello col manico di corno mezzo aperto sul banco di lavoro, tra pezzi di corno da sgrossare, una lima e i trucioli" fetchpriority="high">
+      <div class="hero-text">
+        <p class="kicker">Coltelli a serramanico, Sardegna</p>
+        <h1 id="hero-title">Fatti a mano. Misurati sul righello.</h1>
+        <p class="lead">Lama in acciaio, manico in corno di montone o in olivastro. Su ogni coltello scriviamo quanto è lunga la lama, chiuso e aperto. E quando perde il filo, lo riaffiliamo gratis.</p>
+        <a class="button" href="#catalogo">Vedi i coltelli</a>
+      </div>
+    </section>
+
+    <section class="rule" aria-labelledby="rule-title">
+      <div class="rule-text">
+        <h2 id="rule-title">Il righello sotto ogni coltello</h2>
+        <p>Un coltello da tasca si sceglie con le mani. Online te lo mettiamo sul righello: la riga chiara è il manico, quella color corno è la lama che esce quando lo apri. Tocca una misura e il coltello si apre.</p>
+      </div>
+      <div class="rule-demo">
+        <div class="rule-pick" role="group" aria-label="Lunghezza della lama">
+          <button type="button" data-demo="8" aria-pressed="true">8 cm</button>
+          <button type="button" data-demo="10" aria-pressed="false">10 cm</button>
+          <button type="button" data-demo="11" aria-pressed="false">11 cm</button>
+        </div>
+        <div data-demo-ruler></div>
+        <p class="rule-read" data-demo-read aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="shop" id="catalogo" aria-labelledby="shop-title">
+      <div class="shop-head">
+        <h2 id="shop-title">Coltelli e cose per tenerli</h2>
+        <p>Spedizione tracciata 9,90 €, gratis da 150 €. Vendiamo coltelli solo a chi ha almeno 18 anni.</p>
+      </div>
+      <ul class="grid" data-grid></ul>
+    </section>
+
+    <section class="promise" aria-labelledby="promise-title">
+      <h2 id="promise-title">Riaffilatura per sempre</h2>
+      <p>Quando la lama non taglia più come il primo giorno, ce la mandi. La riaffiliamo a mano e te la rispediamo, senza pagare niente, finché il coltello dura.</p>
+    </section>
+  </main>
+
+  <section class="detail" data-detail hidden></section>
+
+  <footer class="foot">
+    <img class="foot-mark" src="img/segno.png" alt="" width="560" height="179" loading="lazy">
+    <div class="foot-notes">
+      <p>Serra, coltelli a serramanico fatti a mano.</p>
+      <p>Il pagamento è finto: nessun ordine parte e niente viene addebitato.</p>
+      <p class="foot-concept">Concept: marchio, prodotti e prezzi sono inventati.</p>
+    </div>
+  </footer>
+
+  <div class="scrim" data-scrim hidden></div>
+  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+    <div class="cart-head">
+      <h2 id="cart-title">Carrello</h2>
+      <button class="link" type="button" data-cart-close>Chiudi</button>
+    </div>
+    <div class="cart-body">
+      <p class="cart-empty" data-cart-empty>Il carrello è vuoto. Guarda il righello sotto ogni coltello per scegliere la misura.</p>
+      <ul class="cart-lines" data-cart-lines></ul>
+    </div>
+    <div class="cart-foot" data-cart-foot>
+      <label class="age"><input type="checkbox" data-age> Ho almeno 18 anni</label>
+      <dl class="totals">
+        <div><dt>Prodotti</dt><dd data-total-items></dd></div>
+        <div><dt>Spedizione</dt><dd data-total-ship></dd></div>
+        <div class="totals-sum"><dt>Totale</dt><dd data-total-sum></dd></div>
+      </dl>
+      <p class="cart-free" data-cart-free></p>
+      <button class="button cart-pay" type="button" data-cart-pay>Vai al pagamento</button>
+      <p class="cart-note" data-cart-note aria-live="polite"></p>
+    </div>
+  </aside>
+  <p class="visually-hidden" aria-live="polite" data-live></p>
+  <script src="js/shop.js" defer></script>
+</body>
+</html>

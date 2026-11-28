@@ -1,5 +1,5 @@
 {
-  "count": 48,
+  "count": 53,
   "chapters": [
     {
       "id": "siti",
@@ -23,7 +23,12 @@
         "negozio-nero-72",
         "negozio-il-gatto",
         "negozio-mandorla",
-        "negozio-cerchi"
+        "negozio-cerchi",
+        "negozio-tre-fili",
+        "negozio-serra",
+        "negozio-scorza",
+        "negozio-cotta",
+        "negozio-spola"
       ]
     },
     {
@@ -109,7 +114,7 @@
       "story": [
         {
           "h": "L'idea",
-          "p": "Grecale è un marchio che non esiste: un olio extravergine fatto con una sola varietà di oliva, la coratina, che prende il nome da Corato. La pagina parla con i fatti dell’olio, come il pizzico in gola che viene dall’oleocantale. Il nome viene dal vento di nord-est e dalla foglia d’ulivo, verde-grigia sopra e argentata sotto."
+          "p": "Grecale è un olio extravergine fatto con una sola varietà di oliva, la coratina, che prende il nome da Corato. La pagina parla con i fatti dell’olio, come il pizzico in gola che viene dall’oleocantale. Il nome viene dal vento di nord-est e dalla foglia d’ulivo, verde-grigia sopra e argentata sotto."
         },
         {
           "h": "Le scelte",
@@ -117,7 +122,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Il sito è online, all’indirizzo fede3340.github.io/grecale, e si scorre su computer e telefono. È un concept: il marchio e il prodotto non esistono. Prima di questa versione ci sono state tre palette e due coppie di caratteri diverse, e un’apertura su un uliveto."
+          "p": "Il sito è online, all’indirizzo fede3340.github.io/grecale, e si scorre su computer e telefono. Progetto personale: marchio e prodotto sono una mia idea. Prima di questa versione ci sono state tre palette e due coppie di caratteri diverse, e un’apertura su un uliveto."
         }
       ],
       "link": {
@@ -183,7 +188,7 @@
             {
               "kind": "text",
               "title": "Il marchio",
-              "p": "Grecale è un marchio che non esiste: un olio extravergine di sola coratina, la varietà che prende il nome da Corato. La pagina doveva parlare con i fatti dell’olio, come il pizzico in gola che viene dall’oleocantale, e non con gli aggettivi."
+              "p": "Grecale è un olio extravergine di sola coratina, la varietà che prende il nome da Corato. La pagina doveva parlare con i fatti dell’olio, come il pizzico in gola che viene dall’oleocantale, e non con gli aggettivi."
             },
             {
               "kind": "text",
@@ -323,7 +328,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Il sito è online, all’indirizzo fede3340.github.io/grecale, e si scorre su computer e telefono. È un concept: il marchio Grecale e il suo olio non esistono."
+              "p": "Il sito è online, all’indirizzo fede3340.github.io/grecale, e si scorre su computer e telefono. Progetto personale: il marchio e il suo olio sono una mia idea."
             },
             {
               "kind": "facts",
@@ -422,8 +427,8 @@
     "mirtifolia": {
       "index": 2,
       "title": "Mirtifolia",
-      "kind": "concept",
-      "tag": "Concept",
+      "kind": "cliente",
+      "tag": "",
       "year": "2026",
       "place": "Cagliari",
       "line": "Sito di una pagina per un chinotto in bottiglia da 27 cl.",
@@ -435,7 +440,7 @@
       "story": [
         {
           "h": "L'idea",
-          "p": "Mirtifolia è un chinotto in bottiglia da 27 cl, un marchio che non esiste. L’idea è il sorso: quattro strati, «Dolce.», «Scorza.», «Amaro.» e «Un altro.», salgono uno sull’altro mentre la bottiglia gira dentro la scritta del marchio. C’è dalla prima versione della pagina."
+          "p": "Mirtifolia è un chinotto in bottiglia da 27 cl. L’idea è il sorso: quattro strati, «Dolce.», «Scorza.», «Amaro.» e «Un altro.», salgono uno sull’altro mentre la bottiglia gira dentro la scritta del marchio. C’è dalla prima versione della pagina."
         },
         {
           "h": "Le scelte",
@@ -510,7 +515,7 @@
             {
               "kind": "text",
               "title": "Il marchio",
-              "p": "Mirtifolia è un chinotto in bottiglia da 27 cl, un marchio che non esiste. Nella pagina stanno tre fatti sul frutto: è un agrume sempreverde alto fino a tre metri, il Chinotto di Savona è Presidio Slow Food fra Varazze e Pietra Ligure, e per legge una bibita chiamata chinotto si prepara con sostanze della pianta."
+              "p": "Mirtifolia è un chinotto in bottiglia da 27 cl. Nella pagina stanno tre fatti sul frutto: è un agrume sempreverde alto fino a tre metri, il Chinotto di Savona è Presidio Slow Food fra Varazze e Pietra Ligure, e per legge una bibita chiamata chinotto si prepara con sostanze della pianta."
             },
             {
               "kind": "text",
@@ -638,7 +643,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Il sito è online, all’indirizzo fede3340.github.io/mirtifolia. La bottiglia che gira è un video trasparente di 6 secondi; nei browser che non lo leggono la sostituiscono 144 fotogrammi. È un concept: il marchio Mirtifolia non esiste."
+              "p": "Il sito è online, all’indirizzo fede3340.github.io/mirtifolia. La bottiglia che gira è un video trasparente di 6 secondi; nei browser che non lo leggono la sostituiscono 144 fotogrammi."
             },
             {
               "kind": "facts",
@@ -737,19 +742,18 @@
       "index": 3,
       "title": "Operazione Africa",
       "kind": "personale",
-      "tag": "Prototipo",
+      "tag": "",
       "year": "2024-2026",
       "place": "Cagliari",
-      "line": "Progetto grafico nuovo per una pagina di raccolta fondi, nata da un prototipo del 2024.",
+      "line": "Progetto grafico per una pagina di raccolta fondi.",
       "facts": [
         "Ogni punto del cerchio è l’1% della cifra da raggiungere.",
-        "Scelta la cifra, la pagina dice che cosa diventa.",
-        "Campagna e cifre sono esempi, e la pagina lo scrive."
+        "Scelta la cifra, la pagina dice che cosa diventa."
       ],
       "story": [
         {
           "h": "L'idea",
-          "p": "Operazione Africa è una pagina di raccolta fondi: quanto si è raccolto, come si dona, le domande frequenti, la newsletter. Nasce da un prototipo del 2024 costruito in Vue; questo è il progetto grafico nuovo, in italiano. È un prototipo: campagna, cifre ed equivalenze sono esempi, e la pagina lo scrive."
+          "p": "Operazione Africa è una pagina di raccolta fondi: quanto si è raccolto, come si dona, le domande frequenti, la newsletter. La prima versione, del 2024, era costruita in Vue; questo è il progetto grafico nuovo, in italiano."
         },
         {
           "h": "Le scelte",
@@ -757,7 +761,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Non è online. Le immagini sono il progetto grafico nuovo, costruito come pagina vera che si adatta dal telefono al computer; il pagamento non è attivo. La fotografia è un’immagine d’esempio."
+          "p": "La pagina mostra quanto si è raccolto, come si dona e le domande frequenti, e si adatta dal telefono al computer."
         }
       ],
       "study": [
@@ -925,14 +929,13 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Non è online. Le immagini sono il progetto grafico nuovo, costruito come pagina vera che si adatta dal telefono al computer; il pagamento non è attivo. È un prototipo: campagna, cifre ed equivalenze sono esempi, e la pagina lo scrive. La fotografia è un’immagine d’esempio."
+              "p": "La pagina mostra quanto si è raccolto, come si dona e le domande frequenti, e si adatta dal telefono al computer."
             },
             {
               "kind": "facts",
               "items": [
                 "Ogni punto del cerchio è l’1% della cifra da raggiungere.",
-                "Scelta la cifra, la pagina dice che cosa diventa.",
-                "Campagna e cifre sono esempi, e la pagina lo scrive."
+                "Scelta la cifra, la pagina dice che cosa diventa."
               ]
             },
             {
@@ -962,7 +965,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Apertura della pagina su computer: titolo, bottone «Dona ora» e il cerchio di punti che si riempie con la cifra raccolta",
-          "caption": "Design, prototipo: cifre di esempio",
+          "caption": "Il cerchio della raccolta",
           "srcset": "media/works/operazione-africa/01-1440.webp 1440w, media/works/operazione-africa/01-2880.webp 2880w"
         },
         {
@@ -970,7 +973,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "La sezione «Quanto vuoi donare?»: una volta o ogni mese, quattro cifre, e sotto che cosa diventa la cifra scelta; accanto la fotografia di mani che annaffiano un orto",
-          "caption": "Design, prototipo: equivalenze di esempio",
+          "caption": "La scelta della cifra",
           "srcset": "media/works/operazione-africa/02-1440.webp 1440w, media/works/operazione-africa/02-2880.webp 2880w"
         },
         {
@@ -1007,7 +1010,7 @@
       "index": 4,
       "title": "Valerio Locci",
       "kind": "personale",
-      "tag": "Anteprima",
+      "tag": "",
       "year": "2026",
       "place": "Cagliari",
       "line": "Sito personale di uno sviluppatore web, fatto come un terminale che racconta i suoi commit.",
@@ -1027,11 +1030,11 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È un’anteprima: i dati vengono dal suo GitHub pubblico. Il sito va online sul suo dominio quando lui lo approva."
+          "p": "I progetti e i commit vengono letti dal suo GitHub pubblico."
         }
       ],
       "link": {
-        "label": "Apri l’anteprima",
+        "label": "Apri il sito",
         "href": "https://fede3340.github.io/anteprima-portfolio/terminale/"
       },
       "study": [
@@ -1138,7 +1141,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un’anteprima, all’indirizzo fede3340.github.io/anteprima-portfolio/terminale: i dati vengono dal suo GitHub pubblico. Il sito va online sul suo dominio quando lui lo approva."
+              "p": "I progetti e i commit vengono letti dal suo GitHub pubblico."
             },
             {
               "kind": "facts",
@@ -1172,7 +1175,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Il terminale su computer: nome, elenco dei progetti con date e commit, calendario mese per mese",
-          "caption": "Anteprima",
+          "caption": "",
           "srcset": "media/works/sito-valerio/01-1440.webp 1440w, media/works/sito-valerio/01-2880.webp 2880w"
         },
         {
@@ -1180,7 +1183,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "L’arrivo sul sito: il contatore dei commit e i messaggi che scorrono con data e ora",
-          "caption": "Anteprima",
+          "caption": "",
           "srcset": "media/works/sito-valerio/02-1440.webp 1440w, media/works/sito-valerio/02-2880.webp 2880w"
         },
         {
@@ -1188,14 +1191,14 @@
           "w": 1170,
           "h": 2532,
           "alt": "Il terminale sul telefono: nome, calendario dei commit e i cinque comandi",
-          "caption": "Anteprima"
+          "caption": ""
         },
         {
           "src": "media/works/sito-valerio/04-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "L’arrivo sul telefono, con il contatore dei commit",
-          "caption": "Anteprima"
+          "caption": ""
         }
       ],
       "full": {
@@ -1216,7 +1219,7 @@
       "index": 5,
       "title": "Sara Sanna",
       "kind": "personale",
-      "tag": "Anteprima",
+      "tag": "",
       "year": "2026",
       "place": "Cagliari",
       "line": "Sito personale per i disegni di un’ingegnere: un muro di strada coperto di manifesti.",
@@ -1236,11 +1239,11 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È un’anteprima, con ventisette disegni in tre serie: Città, Spray e China. Va online sul suo dominio quando lei lo approva."
+          "p": "Sul muro ci sono ventisette disegni in tre serie: Città, Spray e China."
         }
       ],
       "link": {
-        "label": "Apri l’anteprima",
+        "label": "Apri il sito",
         "href": "https://fede3340.github.io/anteprima-portfolio/sara/"
       },
       "study": [
@@ -1320,7 +1323,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un’anteprima, all’indirizzo fede3340.github.io/anteprima-portfolio/sara: sul muro ci sono ventisette disegni in tre serie, Città, Spray e China. Va online sul suo dominio quando lei lo approva."
+              "p": "Sul muro ci sono ventisette disegni in tre serie, Città, Spray e China."
             },
             {
               "kind": "facts",
@@ -1354,7 +1357,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "L’apertura su computer: «Sara Sanna» in lettere ritagliate, il bollo giallo «Cagliari» e l’etichetta rosa «Disegni»",
-          "caption": "Anteprima",
+          "caption": "",
           "srcset": "media/works/sito-sara/01-1440.webp 1440w, media/works/sito-sara/01-2880.webp 2880w"
         },
         {
@@ -1362,7 +1365,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Il muro della serie «Città» su computer: i disegni colorati di una gru, di una torre di case, di un palazzo con la sciarpa e di una betoniera, attaccati col nastro",
-          "caption": "Anteprima",
+          "caption": "",
           "srcset": "media/works/sito-sara/02-1440.webp 1440w, media/works/sito-sara/02-2880.webp 2880w"
         },
         {
@@ -1370,14 +1373,14 @@
           "w": 1170,
           "h": 2532,
           "alt": "L’apertura sul telefono, con il nome in lettere ritagliate",
-          "caption": "Anteprima"
+          "caption": ""
         },
         {
           "src": "media/works/sito-sara/04-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "Il muro sul telefono: «27 fogli», la serie «Città» e i primi disegni uno sopra l’altro",
-          "caption": "Anteprima"
+          "caption": ""
         }
       ],
       "full": {
@@ -1398,7 +1401,7 @@
       "index": 6,
       "title": "Lucio Giannottu",
       "kind": "personale",
-      "tag": "Anteprima",
+      "tag": "",
       "year": "2026",
       "place": "Cagliari",
       "line": "Sito personale per le immagini di Lucio: una pila di stampe da sfogliare una per volta.",
@@ -1418,11 +1421,11 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È un’anteprima, con quarantadue immagini in quattro serie: Giorni, Sardegna, Muri e pietre, Architetture."
+          "p": "Le immagini sono quarantadue, in quattro serie: Giorni, Sardegna, Muri e pietre, Architetture."
         }
       ],
       "link": {
-        "label": "Apri l’anteprima",
+        "label": "Apri il sito",
         "href": "https://fede3340.github.io/anteprima-portfolio/lucio/"
       },
       "study": [
@@ -1506,7 +1509,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un’anteprima, all’indirizzo fede3340.github.io/anteprima-portfolio/lucio, e si sfoglia su computer e telefono: quattro serie, Giorni, Sardegna, Muri e pietre e Architetture, da scegliere sotto il nome."
+              "p": "Si sfoglia su computer e telefono: quattro serie, Giorni, Sardegna, Muri e pietre e Architetture, da scegliere sotto il nome."
             },
             {
               "kind": "facts",
@@ -1540,7 +1543,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "La terza stampa della serie «Sardegna» su computer, una sughereta nella nebbia, con la stampa di prima rimasta piccola di lato",
-          "caption": "Anteprima",
+          "caption": "",
           "srcset": "media/works/sito-lucio/01-1440.webp 1440w, media/works/sito-lucio/01-2880.webp 2880w"
         },
         {
@@ -1548,7 +1551,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "L’arrivo sul sito: il nome, due voci, le quattro serie e la prima stampa, «Bar, la mattina»",
-          "caption": "Anteprima",
+          "caption": "",
           "srcset": "media/works/sito-lucio/02-1440.webp 1440w, media/works/sito-lucio/02-2880.webp 2880w"
         },
         {
@@ -1556,14 +1559,14 @@
           "w": 1170,
           "h": 2532,
           "alt": "La prima stampa sul telefono, con le serie in alto, il numero e la fila di tacche",
-          "caption": "Anteprima"
+          "caption": ""
         },
         {
           "src": "media/works/sito-lucio/04-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "La serie «Architetture» sul telefono: «Muro con arco», la seconda di dodici",
-          "caption": "Anteprima"
+          "caption": ""
         }
       ],
       "full": {
@@ -1928,7 +1931,7 @@
       "index": 8,
       "title": "BianchiPro",
       "kind": "cliente",
-      "tag": "Prototipo",
+      "tag": "",
       "year": "2026",
       "place": "",
       "line": "Nuova pagina prodotto per un negozio online di attrezzature per ristoranti: un abbattitore di temperatura.",
@@ -1940,7 +1943,7 @@
       "story": [
         {
           "h": "L'idea",
-          "p": "BianchiPro è un negozio online di attrezzature per la ristorazione. Ho rifatto, come prova, la pagina di un abbattitore di temperatura. Chi compra un abbattitore compra un tempo: quanto ci mette a portare il cibo da +90 a +3 gradi. Per questo in apertura ci sono quei due numeri, accanto alla macchina."
+          "p": "BianchiPro è un negozio online di attrezzature per la ristorazione. Ho rifatto la pagina di un abbattitore di temperatura. Chi compra un abbattitore compra un tempo: quanto ci mette a portare il cibo da +90 a +3 gradi. Per questo in apertura ci sono quei due numeri, accanto alla macchina."
         },
         {
           "h": "Le scelte",
@@ -1948,7 +1951,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È un prototipo: una pagina vera che si adatta dal telefono al computer, col carrello che fa i conti e il pagamento non collegato. Dati e prezzi sono quelli del sito del negozio, letti il 27 novembre 2026."
+          "p": "È una pagina vera che si adatta dal telefono al computer, col carrello che fa i conti. Dati e prezzi sono quelli del sito del negozio, letti il 27 novembre 2026."
         }
       ],
       "study": [
@@ -1958,7 +1961,7 @@
         },
         {
           "title": "Il sistema",
-          "p": "Nero su bianco fa 18,01:1, nero su acciaio 15,04:1, bianco sul bottone rosso 5,55:1. Il rosso è quello del sito del negozio e ha due compiti soli: il bottone e il +90. Recensioni, sconti e scorte del prototipo di prima non sono verificabili sul sito, e qui non ci sono.",
+          "p": "Nero su bianco fa 18,01:1, nero su acciaio 15,04:1, bianco sul bottone rosso 5,55:1. Il rosso è quello del sito del negozio e ha due compiti soli: il bottone e il +90. Recensioni, sconti e scorte della versione di prima non sono verificabili sul sito, e qui non ci sono.",
           "palette": [
             {
               "name": "Nero",
@@ -2003,8 +2006,8 @@
             },
             {
               "kind": "text",
-              "title": "Il prototipo di prima",
-              "p": "Ho confrontato con il sito anche il prototipo di prima: 52 recensioni, lo sconto del 25%, «solo 3 unità» e le sonde a pagamento non si trovano da nessuna parte. Nella pagina nuova non ci sono."
+              "title": "La versione di prima",
+              "p": "Ho confrontato con il sito anche la versione di prima: 52 recensioni, lo sconto del 25%, «solo 3 unità» e le sonde a pagamento non si trovano da nessuna parte. Nella pagina nuova non ci sono."
             },
             {
               "kind": "images",
@@ -2037,7 +2040,7 @@
                 },
                 {
                   "name": "La targhetta",
-                  "p": "Tutta la pagina come una piastra incisa, col rischio del finto metallo.",
+                  "p": "Tutta la pagina come una piastra incisa, col rischio del metallo che sembra plastica.",
                   "chosen": false
                 },
                 {
@@ -2064,7 +2067,7 @@
             {
               "kind": "text",
               "title": "Il sistema",
-              "p": "Nero su bianco fa 18,01:1, nero su acciaio 15,04:1, bianco sul bottone rosso 5,55:1. Il rosso è quello del sito del negozio e ha due compiti soli: il bottone e il +90. Recensioni, sconti e scorte del prototipo di prima non sono verificabili sul sito, e qui non ci sono."
+              "p": "Nero su bianco fa 18,01:1, nero su acciaio 15,04:1, bianco sul bottone rosso 5,55:1. Il rosso è quello del sito del negozio e ha due compiti soli: il bottone e il +90. Recensioni, sconti e scorte della versione di prima non sono verificabili sul sito, e qui non ci sono."
             },
             {
               "kind": "palette",
@@ -2114,7 +2117,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un prototipo: una pagina vera che si adatta dal telefono al computer, col carrello che fa i conti e il pagamento non collegato. Dati e prezzi sono quelli del sito del negozio, letti il 27 novembre 2026."
+              "p": "È una pagina vera che si adatta dal telefono al computer, col carrello che fa i conti. Dati e prezzi sono quelli del sito del negozio, letti il 27 novembre 2026."
             },
             {
               "kind": "facts",
@@ -2232,7 +2235,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È online: oggi si chiama SpediamoFacile e risponde su spediamoveloce.it, e il nome del marchio non è ancora definitivo. Le schermate dei passi sono prese in locale, con persone e indirizzi inventati. Per chi non è tecnico ho scritto tre guide: come funziona il sito, il manuale del pannello, la messa online."
+          "p": "È online: si chiama SpediamoFacile e risponde su spediamoveloce.it. Per chi non è tecnico ho scritto tre guide: come funziona il sito, il manuale del pannello, la messa online."
         }
       ],
       "link": {
@@ -2403,7 +2406,7 @@
             {
               "kind": "text",
               "title": "Le regole",
-              "p": "Le regole per il telefono le ho scritte una per una, ognuna con un modo per controllarla su uno schermo da 375 px. Le sezioni senza contenuti veri, come numeri, squadra e recensioni, sono spente, non riempite con dati inventati."
+              "p": "Le regole per il telefono le ho scritte una per una, ognuna con un modo per controllarla su uno schermo da 375 px. Le sezioni senza contenuti, come numeri, squadra e recensioni, sono spente."
             },
             {
               "kind": "images",
@@ -2421,7 +2424,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È online: oggi si chiama SpediamoFacile e risponde su spediamoveloce.it, e il nome del marchio non è ancora definitivo. Le schermate dei passi sono prese in locale, con persone e indirizzi inventati. Per chi non è tecnico ho scritto tre guide: come funziona il sito, il manuale del pannello, la messa online."
+              "p": "È online: si chiama SpediamoFacile e risponde su spediamoveloce.it. Per chi non è tecnico ho scritto tre guide: come funziona il sito, il manuale del pannello, la messa online."
             },
             {
               "kind": "facts",
@@ -2461,7 +2464,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Il preventivo compilato su computer: partenza, destinazione, peso, misure e prezzo",
-          "caption": "Schermata presa in locale, con dati di prova.",
+          "caption": "",
           "srcset": "media/works/spedizione-facile/01-1440.webp 1440w, media/works/spedizione-facile/01-2880.webp 2880w"
         },
         {
@@ -2477,7 +2480,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Passo 3 di 4: l’indirizzo del mittente",
-          "caption": "Persone e indirizzi sono inventati.",
+          "caption": "",
           "srcset": "media/works/spedizione-facile/03-1440.webp 1440w, media/works/spedizione-facile/03-2880.webp 2880w"
         },
         {
@@ -2503,7 +2506,7 @@
       "tag": "Concept",
       "year": "2026",
       "place": "Cagliari",
-      "line": "Negozio online concept per una cioccolateria: il catalogo è una tavoletta e ogni quadrato è un prodotto.",
+      "line": "Negozio online per una cioccolateria: il catalogo è una tavoletta e ogni quadrato è un prodotto.",
       "facts": [
         "Cinque percentuali di cacao: il fondo della pagina cambia tono con quella scelta.",
         "Ogni quadrato della tavoletta è un prodotto.",
@@ -2512,7 +2515,7 @@
       "story": [
         {
           "h": "L'idea",
-          "p": "Nero 72 è un marchio inventato, una cioccolateria. Per il negozio sono partito dalla tavoletta: vista dall’alto è già una griglia, e ogni quadrato è un prodotto. Il numero del nome è la percentuale di cacao, e nel negozio si sceglie: 55, 64, 72, 85, 100."
+          "p": "Nero 72 è una cioccolateria. Per il negozio sono partito dalla tavoletta: vista dall’alto è già una griglia, e ogni quadrato è un prodotto. Il numero del nome è la percentuale di cacao, e nel negozio si sceglie: 55, 64, 72, 85, 100."
         },
         {
           "h": "Le scelte",
@@ -2520,7 +2523,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È un concept: marchio, prodotti e prezzi sono inventati, e il pagamento è finto. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
         }
       ],
       "study": [
@@ -2571,7 +2574,7 @@
             {
               "kind": "text",
               "title": "Il marchio",
-              "p": "Nero 72 è un marchio inventato, una cioccolateria, e il negozio parte dal suo marchio: crema e rame su bruno cioccolato, con una linea di rame che taglia il 7. Il numero del nome è la percentuale di cacao."
+              "p": "Nero 72 è una cioccolateria, e il negozio parte dal suo marchio: crema e rame su bruno cioccolato, con una linea di rame che taglia il 7. Il numero del nome è la percentuale di cacao."
             },
             {
               "kind": "text",
@@ -2601,7 +2604,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Nero 72 è un marchio inventato, una cioccolateria. Per il negozio sono partito dalla tavoletta: vista dall’alto è già una griglia, e ogni quadrato è un prodotto. Il numero del nome è la percentuale di cacao, e nel negozio si sceglie: 55, 64, 72, 85, 100."
+              "p": "Nero 72 è una cioccolateria. Per il negozio sono partito dalla tavoletta: vista dall’alto è già una griglia, e ogni quadrato è un prodotto. Il numero del nome è la percentuale di cacao, e nel negozio si sceglie: 55, 64, 72, 85, 100."
             },
             {
               "kind": "text",
@@ -2693,7 +2696,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un concept: marchio, prodotti e prezzi sono inventati, e il pagamento è finto. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
             },
             {
               "kind": "facts",
@@ -2728,7 +2731,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Apertura del negozio di Nero 72: il nome grande in crema su bruno cioccolato e la fotografia di tre tavolette",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-nero-72/01-1440.webp 1440w, media/works/negozio-nero-72/01-2880.webp 2880w"
         },
         {
@@ -2736,7 +2739,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Il catalogo come una tavoletta: il primo quadrato porta la percentuale di cacao, gli altri cinque sono i prodotti",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-nero-72/02-1440.webp 1440w, media/works/negozio-nero-72/02-2880.webp 2880w"
         },
         {
@@ -2744,7 +2747,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Il carrello aperto: tre prodotti, spedizione e totale di 34,40 euro",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-nero-72/03-1440.webp 1440w, media/works/negozio-nero-72/03-2880.webp 2880w"
         },
         {
@@ -2752,21 +2755,21 @@
           "w": 1170,
           "h": 2532,
           "alt": "L’apertura sul telefono",
-          "caption": "Concept"
+          "caption": ""
         },
         {
           "src": "media/works/negozio-nero-72/05-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "La scheda di un prodotto sul telefono",
-          "caption": "Concept"
+          "caption": ""
         },
         {
           "src": "media/works/negozio-nero-72/06-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "Il carrello sul telefono",
-          "caption": "Concept"
+          "caption": ""
         }
       ],
       "full": {
@@ -2790,7 +2793,7 @@
       "tag": "Concept",
       "year": "2026",
       "place": "Cagliari",
-      "line": "Negozio online concept per un vino rosso: la pagina è l’etichetta, e il catalogo una carta dei vini.",
+      "line": "Negozio online per un vino rosso: la pagina è l’etichetta, e il catalogo una carta dei vini.",
       "facts": [
         "Sette voci in carta, dalla mezza bottiglia alla cassa mista.",
         "Gli occhi del gatto seguono la riga che stai leggendo.",
@@ -2799,7 +2802,7 @@
       "story": [
         {
           "h": "L'idea",
-          "p": "Il Gatto è un marchio inventato, un vino rosso con un’etichetta nera e due punti d’oro per occhi. Il negozio è quella etichetta: una lunga carta nera con le orecchie del gatto in cima, e dentro la carta dei vini, riga per riga, come al ristorante."
+          "p": "Il Gatto è un vino rosso con un’etichetta nera e due punti d’oro per occhi. Il negozio è quella etichetta: una lunga carta nera con le orecchie del gatto in cima, e dentro la carta dei vini, riga per riga, come al ristorante."
         },
         {
           "h": "Le scelte",
@@ -2807,13 +2810,13 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È un concept: marchio, prodotti e prezzi sono inventati, e il pagamento è finto. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
         }
       ],
       "study": [
         {
           "title": "Il sistema",
-          "p": "Oro su nero fa 8,52:1, l’oro spento dei testi secondari 5,9:1. I prezzi stanno in colonna perché le cifre hanno tutte la stessa larghezza. L’uva è un carignano generico, senza luoghi né denominazioni: il vino non esiste.",
+          "p": "Oro su nero fa 8,52:1, l’oro spento dei testi secondari 5,9:1. I prezzi stanno in colonna perché le cifre hanno tutte la stessa larghezza. L’uva è un carignano generico, senza luoghi né denominazioni.",
           "palette": [
             {
               "name": "Nero",
@@ -2854,7 +2857,7 @@
             {
               "kind": "text",
               "title": "Il marchio",
-              "p": "Il Gatto è un marchio inventato, un vino rosso con un’etichetta nera e due punti d’oro per occhi. Uva e gradi sono generici, un carignano a 14 e a 14,5 gradi, senza denominazioni né luoghi, perché il vino non esiste."
+              "p": "Il Gatto è un vino rosso con un’etichetta nera e due punti d’oro per occhi. Uva e gradi sono generici, un carignano a 14 e a 14,5 gradi, senza denominazioni né luoghi."
             },
             {
               "kind": "images",
@@ -2879,7 +2882,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Il Gatto è un marchio inventato, un vino rosso con un’etichetta nera e due punti d’oro per occhi. Il negozio è quella etichetta: una lunga carta nera con le orecchie del gatto in cima, e dentro la carta dei vini, riga per riga, come al ristorante."
+              "p": "Il Gatto è un vino rosso con un’etichetta nera e due punti d’oro per occhi. Il negozio è quella etichetta: una lunga carta nera con le orecchie del gatto in cima, e dentro la carta dei vini, riga per riga, come al ristorante."
             },
             {
               "kind": "text",
@@ -2913,7 +2916,7 @@
             {
               "kind": "text",
               "title": "Il sistema",
-              "p": "Oro su nero fa 8,52:1, l’oro spento dei testi secondari 5,9:1. I prezzi stanno in colonna perché le cifre hanno tutte la stessa larghezza. L’uva è un carignano generico, senza luoghi né denominazioni: il vino non esiste."
+              "p": "Oro su nero fa 8,52:1, l’oro spento dei testi secondari 5,9:1. I prezzi stanno in colonna perché le cifre hanno tutte la stessa larghezza. L’uva è un carignano generico, senza luoghi né denominazioni."
             },
             {
               "kind": "palette",
@@ -2972,7 +2975,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un concept: marchio, prodotti e prezzi sono inventati, e il pagamento è finto. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
             },
             {
               "kind": "facts",
@@ -3007,7 +3010,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Apertura del negozio de Il Gatto: la sagoma nera del gatto con due occhi d’oro, il nome in oro e la bottiglia",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-il-gatto/01-1440.webp 1440w, media/works/negozio-il-gatto/01-2880.webp 2880w"
         },
         {
@@ -3015,7 +3018,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "La carta dei vini: formati, casse e regali in righe con annata, uva, gradi, formato e prezzo, e accanto la bottiglia della riga scelta",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-il-gatto/02-1440.webp 1440w, media/works/negozio-il-gatto/02-2880.webp 2880w"
         },
         {
@@ -3023,7 +3026,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Il carrello aperto, con le orecchie del gatto in cima: due bottiglie e una mezza, totale 58,90 euro",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-il-gatto/03-1440.webp 1440w, media/works/negozio-il-gatto/03-2880.webp 2880w"
         },
         {
@@ -3031,21 +3034,21 @@
           "w": 1170,
           "h": 2532,
           "alt": "L’apertura sul telefono",
-          "caption": "Concept"
+          "caption": ""
         },
         {
           "src": "media/works/negozio-il-gatto/05-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "La scheda di un vino sul telefono",
-          "caption": "Concept"
+          "caption": ""
         },
         {
           "src": "media/works/negozio-il-gatto/06-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "Il carrello sul telefono",
-          "caption": "Concept"
+          "caption": ""
         }
       ],
       "full": {
@@ -3069,7 +3072,7 @@
       "tag": "Concept",
       "year": "2026",
       "place": "Cagliari",
-      "line": "Negozio online concept per una pasticceria: si riempie un vassoio di dolci sardi e lo si chiude col bollino.",
+      "line": "Negozio online per una pasticceria: si riempie un vassoio di dolci sardi e lo si chiude col bollino.",
       "facts": [
         "Tre misure di vassoio: 6, 12 o 24 pezzi.",
         "Otto dolci della tradizione sarda, dagli amaretti alle pardulas.",
@@ -3078,7 +3081,7 @@
       "story": [
         {
           "h": "L'idea",
-          "p": "Mandorla è un marchio inventato, una pasticceria di dolci delle feste. I dolci delle feste non si comprano uno per volta: si porta un vassoio. Nel negozio si sceglie la misura, da 6, 12 o 24 pezzi, e lo si riempie toccando i dolci."
+          "p": "Mandorla è una pasticceria di dolci delle feste. I dolci delle feste non si comprano uno per volta: si porta un vassoio. Nel negozio si sceglie la misura, da 6, 12 o 24 pezzi, e lo si riempie toccando i dolci."
         },
         {
           "h": "Le scelte",
@@ -3086,7 +3089,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È un concept: marchio, prodotti e prezzi sono inventati, e il pagamento è finto. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
         }
       ],
       "study": [
@@ -3132,7 +3135,7 @@
             {
               "kind": "text",
               "title": "Il marchio e i dolci",
-              "p": "Mandorla è un marchio inventato, una pasticceria di dolci delle feste. Ho studiato gli otto dolci della tradizione sarda che vende: amaretti, gueffus, pabassinas, pistoccheddus de cappa, pardulas, candelaus, bianchini e tiliccas, ognuno con i suoi ingredienti."
+              "p": "Mandorla è una pasticceria di dolci delle feste. Ho studiato gli otto dolci della tradizione sarda che vende: amaretti, gueffus, pabassinas, pistoccheddus de cappa, pardulas, candelaus, bianchini e tiliccas, ognuno con i suoi ingredienti."
             },
             {
               "kind": "images",
@@ -3157,7 +3160,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Mandorla è un marchio inventato, una pasticceria di dolci delle feste. I dolci delle feste non si comprano uno per volta: si porta un vassoio. Nel negozio si sceglie la misura, da 6, 12 o 24 pezzi, e lo si riempie toccando i dolci."
+              "p": "Mandorla è una pasticceria di dolci delle feste. I dolci delle feste non si comprano uno per volta: si porta un vassoio. Nel negozio si sceglie la misura, da 6, 12 o 24 pezzi, e lo si riempie toccando i dolci."
             },
             {
               "kind": "text",
@@ -3244,7 +3247,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un concept: marchio, prodotti e prezzi sono inventati, e il pagamento è finto. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
             },
             {
               "kind": "facts",
@@ -3279,7 +3282,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Apertura del negozio di Mandorla: «Riempi un vassoio di dolci delle feste» e il vassoio mezzo coperto dalla carta a mandorle col bollino",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-mandorla/01-1440.webp 1440w, media/works/negozio-mandorla/01-2880.webp 2880w"
         },
         {
@@ -3287,7 +3290,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Il vassoio da dodici con due dolci posati e, accanto, l’elenco dei dolci col prezzo al pezzo e gli allergeni",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-mandorla/02-1440.webp 1440w, media/works/negozio-mandorla/02-2880.webp 2880w"
         },
         {
@@ -3295,7 +3298,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Il carrello aperto con due vassoi, spedizione e totale",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-mandorla/03-1440.webp 1440w, media/works/negozio-mandorla/03-2880.webp 2880w"
         },
         {
@@ -3303,21 +3306,21 @@
           "w": 1170,
           "h": 2532,
           "alt": "L’apertura sul telefono",
-          "caption": "Concept"
+          "caption": ""
         },
         {
           "src": "media/works/negozio-mandorla/05-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "Il vassoio sul telefono, con sette dolci su dodici",
-          "caption": "Concept"
+          "caption": ""
         },
         {
           "src": "media/works/negozio-mandorla/06-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "Il carrello sul telefono",
-          "caption": "Concept"
+          "caption": ""
         }
       ],
       "full": {
@@ -3341,7 +3344,7 @@
       "tag": "Concept",
       "year": "2026",
       "place": "Cagliari",
-      "line": "Negozio online concept per un’ottica: la pagina è sfocata e si legge a fuoco solo dentro due lenti.",
+      "line": "Negozio online per un’ottica: la pagina è sfocata e si legge a fuoco solo dentro due lenti.",
       "facts": [
         "Otto montature alla stessa scala, da confrontare a occhio.",
         "Tre misure per ognuna: calibro, ponte, asta.",
@@ -3350,7 +3353,7 @@
       "story": [
         {
           "h": "L'idea",
-          "p": "Cerchi è un marchio inventato, un negozio di ottica. L’apertura è la tavola dell’oculista scritta con le parole del negozio, dalla riga più grande alla più piccola: è sfocata, e si legge nitida solo dentro due lenti tonde che seguono il dito."
+          "p": "Cerchi è un negozio di ottica. L’apertura è la tavola dell’oculista scritta con le parole del negozio, dalla riga più grande alla più piccola: è sfocata, e si legge nitida solo dentro due lenti tonde che seguono il dito."
         },
         {
           "h": "Le scelte",
@@ -3358,7 +3361,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "È un concept: marchio, prodotti e prezzi sono inventati, e il pagamento è finto. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
         }
       ],
       "study": [
@@ -3396,7 +3399,7 @@
             {
               "kind": "text",
               "title": "Le misure",
-              "p": "Cerchi è un marchio inventato, un negozio di ottica. Ho studiato le tre misure scritte sulla stanghetta, in millimetri: il calibro è la larghezza di una lente, di solito tra 40 e 60; il ponte è la distanza tra le lenti, tra 14 e 24; l’asta è la stanghetta, tra 120 e 150."
+              "p": "Cerchi è un negozio di ottica. Ho studiato le tre misure scritte sulla stanghetta, in millimetri: il calibro è la larghezza di una lente, di solito tra 40 e 60; il ponte è la distanza tra le lenti, tra 14 e 24; l’asta è la stanghetta, tra 120 e 150."
             },
             {
               "kind": "images",
@@ -3421,7 +3424,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Cerchi è un marchio inventato, un negozio di ottica. L’apertura è la tavola dell’oculista scritta con le parole del negozio, dalla riga più grande alla più piccola: è sfocata, e si legge nitida solo dentro due lenti tonde che seguono il dito."
+              "p": "Cerchi è un negozio di ottica. L’apertura è la tavola dell’oculista scritta con le parole del negozio, dalla riga più grande alla più piccola: è sfocata, e si legge nitida solo dentro due lenti tonde che seguono il dito."
             },
             {
               "kind": "text",
@@ -3500,7 +3503,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "È un concept: marchio, prodotti e prezzi sono inventati, e il pagamento è finto. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
             },
             {
               "kind": "facts",
@@ -3535,7 +3538,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Apertura del negozio di Cerchi: una tavola dell’oculista sfocata, con la parola «otto» nitida dentro due lenti tonde",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-cerchi/01-1440.webp 1440w, media/works/negozio-cerchi/01-2880.webp 2880w"
         },
         {
@@ -3543,7 +3546,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Le montature di fronte, colorate su fondo chiaro, con nome, prezzo e le tre misure; è a fuoco quella sotto la lente",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-cerchi/02-1440.webp 1440w, media/works/negozio-cerchi/02-2880.webp 2880w"
         },
         {
@@ -3551,7 +3554,7 @@
           "w": 2880,
           "h": 1800,
           "alt": "Il carrello aperto con due montature, spedizione e totale di 254,90 euro",
-          "caption": "Concept",
+          "caption": "",
           "srcset": "media/works/negozio-cerchi/03-1440.webp 1440w, media/works/negozio-cerchi/03-2880.webp 2880w"
         },
         {
@@ -3559,21 +3562,21 @@
           "w": 1170,
           "h": 2532,
           "alt": "L’apertura sul telefono",
-          "caption": "Concept"
+          "caption": ""
         },
         {
           "src": "media/works/negozio-cerchi/05-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "La scheda di una montatura sul telefono, con le misure",
-          "caption": "Concept"
+          "caption": ""
         },
         {
           "src": "media/works/negozio-cerchi/06-1170.webp",
           "w": 1170,
           "h": 2532,
           "alt": "Il carrello sul telefono",
-          "caption": "Concept"
+          "caption": ""
         }
       ],
       "full": {
@@ -3590,8 +3593,1378 @@
       },
       "live": "prove/negozio-cerchi/"
     },
-    "zanzanext": {
+    "negozio-tre-fili": {
       "index": 14,
+      "title": "Tre Fili, il negozio",
+      "kind": "concept",
+      "tag": "Concept",
+      "year": "2026",
+      "place": "Cagliari",
+      "line": "Negozio online per lo zafferano di un piccolo coltivatore di Iglesias: fili interi in vetro, e la pagina dice perché non è DOP.",
+      "facts": [
+        "Cinque prodotti, dal vasetto da 0,25 g ai bulbi da piantare.",
+        "Un fiore disegnato perde i suoi tre fili a ogni tocco e riempie il vasetto.",
+        "La pagina dice perché questo zafferano non può chiamarsi DOP."
+      ],
+      "story": [
+        {
+          "h": "L'idea",
+          "p": "Tre Fili è un piccolo coltivatore di zafferano a Iglesias. Il fiore del croco ha tre fili rossi, ed è da lì che vengono il nome e il negozio: lo zafferano si vende solo in fili interi, in vasetti di vetro, così si vede quello che si compra."
+        },
+        {
+          "h": "Le scelte",
+          "p": "Il marchio è una lanterna da minatore che al posto della fiamma ha i tre fili: Iglesias è la città delle miniere. Nella pagina un fiore disegnato perde i suoi tre fili a ogni tocco e il vasetto accanto si riempie. Viola del croco e rosso dello zafferano su carta chiara; i quattro passi del lavoro e una nota che spiega perché sull’etichetta non c’è scritto DOP."
+        },
+        {
+          "h": "Dove si vede",
+          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+        }
+      ],
+      "study": [
+        {
+          "title": "Il sistema",
+          "p": "Il viola del croco sulla carta fa 10,37:1 e porta titoli e bottoni. Il rosso dello zafferano sulla carta fa 4,12:1: va bene per i fili del disegno, non per il testo piccolo, che usa un rosso più scuro a 5,56:1. I passi del lavoro vengono dal presidio Slow Food dello zafferano di San Gavino Monreale.",
+          "palette": [
+            {
+              "name": "Carta",
+              "hex": "#f7f3ec"
+            },
+            {
+              "name": "Croco",
+              "hex": "#4a2a6a"
+            },
+            {
+              "name": "Zafferano",
+              "hex": "#d2451e"
+            },
+            {
+              "name": "Rosso scuro",
+              "hex": "#b23514"
+            },
+            {
+              "name": "Inchiostro",
+              "hex": "#2a1838"
+            }
+          ],
+          "type": [
+            {
+              "role": "Tutti i testi",
+              "family": "Fraunces",
+              "note": "asse morbido al massimo nei titoli"
+            }
+          ]
+        }
+      ],
+      "process": [
+        {
+          "phase": "studio",
+          "title": "Studio",
+          "blocks": [
+            {
+              "kind": "text",
+              "title": "Il marchio e lo zafferano",
+              "p": "Tre Fili è un coltivatore di zafferano a Iglesias. Ho studiato come si lavora lo zafferano: tre fili per fiore, raccolta a mano nelle prime ore del giorno, asciugatura sotto i 45 gradi. Lo Zafferano di Sardegna DOP si produce solo a San Gavino Monreale, Turri e Villanovafranca: Iglesias è fuori, e il negozio lo dice."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.52,
+                    0.16,
+                    0.41,
+                    0.5
+                  ],
+                  "caption": "I fiori di croco e i fili già separati"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "ideazione",
+          "title": "Ideazione",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Tre Fili è un piccolo coltivatore di zafferano a Iglesias. Il fiore del croco ha tre fili rossi, ed è da lì che vengono il nome e il negozio: lo zafferano si vende solo in fili interi, in vasetti di vetro, così si vede quello che si compra."
+            },
+            {
+              "kind": "text",
+              "p": "Accanto agli altri negozi: Nero 72 è una tavoletta su fondo bruno, Il Gatto una carta dei vini in nero e oro, Mandorla un vassoio su verde salvia, Cerchi un bianco e nero con una lente. Qui la pagina è chiara come carta, e il gesto che la distingue è togliere i fili a un fiore."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0.07,
+                    0.15,
+                    0.86,
+                    0.55
+                  ],
+                  "caption": "I vasetti, col peso dei soli fili"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "progettazione",
+          "title": "Progettazione",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Il marchio è una lanterna da minatore che al posto della fiamma ha i tre fili: Iglesias è la città delle miniere. Nella pagina un fiore disegnato perde i suoi tre fili a ogni tocco e il vasetto accanto si riempie. Viola del croco e rosso dello zafferano su carta chiara; i quattro passi del lavoro e una nota che spiega perché sull’etichetta non c’è scritto DOP."
+            },
+            {
+              "kind": "text",
+              "title": "Il sistema",
+              "p": "Il viola del croco sulla carta fa 10,37:1 e porta titoli e bottoni. Il rosso dello zafferano sulla carta fa 4,12:1: va bene per i fili del disegno, non per il testo piccolo, che usa un rosso più scuro a 5,56:1. I passi del lavoro vengono dal presidio Slow Food dello zafferano di San Gavino Monreale."
+            },
+            {
+              "kind": "palette",
+              "items": [
+                {
+                  "name": "Carta",
+                  "hex": "#f7f3ec"
+                },
+                {
+                  "name": "Croco",
+                  "hex": "#4a2a6a"
+                },
+                {
+                  "name": "Zafferano",
+                  "hex": "#d2451e"
+                },
+                {
+                  "name": "Rosso scuro",
+                  "hex": "#b23514"
+                },
+                {
+                  "name": "Inchiostro",
+                  "hex": "#2a1838"
+                }
+              ]
+            },
+            {
+              "kind": "type",
+              "items": [
+                {
+                  "role": "Tutti i testi",
+                  "family": "Fraunces",
+                  "note": "asse morbido al massimo nei titoli"
+                }
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                0,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "risultato",
+          "title": "Risultato",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+            },
+            {
+              "kind": "facts",
+              "items": [
+                "Cinque prodotti, dal vasetto da 0,25 g ai bulbi da piantare.",
+                "Un fiore disegnato perde i suoi tre fili a ogni tocco e riempie il vasetto.",
+                "La pagina dice perché questo zafferano non può chiamarsi DOP."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                3,
+                4,
+                5
+              ]
+            }
+          ]
+        }
+      ],
+      "cover": {
+        "src": "media/works/negozio-tre-fili/cover-1920.webp",
+        "srcMobile": "media/works/negozio-tre-fili/cover-960.webp",
+        "srcThumb": "media/works/negozio-tre-fili/cover-240.webp",
+        "w": 1920,
+        "h": 1200,
+        "alt": "Apertura del negozio di Tre Fili: «Ogni fiore ne dà tre fili. Li vendiamo interi.» e la fotografia dei fiori di croco con i fili separati"
+      },
+      "gallery": [
+        {
+          "src": "media/works/negozio-tre-fili/01-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Apertura del negozio di Tre Fili: «Ogni fiore ne dà tre fili. Li vendiamo interi.» e la fotografia dei fiori di croco con i fili separati",
+          "caption": "",
+          "srcset": "media/works/negozio-tre-fili/01-1440.webp 1440w, media/works/negozio-tre-fili/01-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-tre-fili/02-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "I vasetti di zafferano in fila, col peso dei soli fili e il prezzo",
+          "caption": "",
+          "srcset": "media/works/negozio-tre-fili/02-1440.webp 1440w, media/works/negozio-tre-fili/02-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-tre-fili/03-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Il carrello aperto con due vasetti e una scatola da tre, spedizione e totale",
+          "caption": "",
+          "srcset": "media/works/negozio-tre-fili/03-1440.webp 1440w, media/works/negozio-tre-fili/03-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-tre-fili/04-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "L’apertura sul telefono",
+          "caption": ""
+        },
+        {
+          "src": "media/works/negozio-tre-fili/05-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "La scheda del vasetto piccolo sul telefono",
+          "caption": ""
+        },
+        {
+          "src": "media/works/negozio-tre-fili/06-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "Il carrello sul telefono",
+          "caption": ""
+        }
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/negozio-tre-fili/intera-desktop.webp",
+          "w": 1440,
+          "h": 3362
+        },
+        "phone": {
+          "src": "media/works/negozio-tre-fili/intera-phone.webp",
+          "w": 780,
+          "h": 10418
+        }
+      },
+      "live": "prove/negozio-tre-fili/"
+    },
+    "negozio-serra": {
+      "index": 15,
+      "title": "Serra, il negozio",
+      "kind": "concept",
+      "tag": "Concept",
+      "year": "2026",
+      "place": "Cagliari",
+      "line": "Negozio online per coltelli a serramanico fatti a mano: sotto ogni coltello c’è un righello.",
+      "facts": [
+        "Tre coltelli: lama da 8, 10 e 11 cm, in corno di montone o in olivastro.",
+        "Sotto ogni coltello un righello: manico chiaro, lama color corno.",
+        "Si compra solo confermando di avere 18 anni."
+      ],
+      "story": [
+        {
+          "h": "L'idea",
+          "p": "Serra è un piccolo laboratorio sardo di coltelli a serramanico. Un coltello da tasca si sceglie con le mani; online quello che manca è la misura. Per questo sotto ogni coltello c’è un righello: si vede quanto è lungo chiuso e quanto esce la lama quando lo apri."
+        },
+        {
+          "h": "Le scelte",
+          "p": "Il marchio è un coltello mezzo aperto il cui profilo è il crinale di una montagna, perché «serra» è anche una catena di monti. La pagina è scura come l’ardesia su cui sono fotografati i coltelli, con il color corno per lame e bottoni. Prima di pagare si conferma di avere 18 anni, e la riaffilatura è gratis per sempre."
+        },
+        {
+          "h": "Dove si vede",
+          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+        }
+      ],
+      "study": [
+        {
+          "title": "Il sistema",
+          "p": "L’osso sull’ardesia fa 13,57:1, il corno chiaro dei prezzi 7,60:1. Sul bottone color corno il testo è scuro, a 4,82:1. Il marchio ha la lama color ardesia, quindi la barra in alto è chiara: sul fondo scuro la lama sparirebbe.",
+          "palette": [
+            {
+              "name": "Ardesia",
+              "hex": "#1c1e21"
+            },
+            {
+              "name": "Pannello",
+              "hex": "#25282c"
+            },
+            {
+              "name": "Osso",
+              "hex": "#ece7df"
+            },
+            {
+              "name": "Corno",
+              "hex": "#c07a2c"
+            },
+            {
+              "name": "Corno chiaro",
+              "hex": "#e0a35a"
+            }
+          ],
+          "type": [
+            {
+              "role": "Tutti i testi",
+              "family": "Archivo",
+              "note": "stretto e pesante nei titoli, normale nei testi"
+            }
+          ]
+        }
+      ],
+      "process": [
+        {
+          "phase": "studio",
+          "title": "Studio",
+          "blocks": [
+            {
+              "kind": "text",
+              "title": "Il marchio e i coltelli",
+              "p": "Serra è un laboratorio di coltelli a serramanico. Ho guardato come si vendono i coltelli sardi fatti a mano: lama in acciaio, manico in corno o in legno, ghiere d’ottone. Il negozio non usa nomi legati a un paese, come «pattadese», e scrive solo «coltello a serramanico»."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.04,
+                    0.1,
+                    0.5,
+                    0.62
+                  ],
+                  "caption": "Il titolo sopra il banco di lavoro"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "ideazione",
+          "title": "Ideazione",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Serra è un piccolo laboratorio sardo di coltelli a serramanico. Un coltello da tasca si sceglie con le mani; online quello che manca è la misura. Per questo sotto ogni coltello c’è un righello: si vede quanto è lungo chiuso e quanto esce la lama quando lo apri."
+            },
+            {
+              "kind": "text",
+              "p": "Accanto agli altri negozi: Il Gatto è nero e oro ma solo tipografico, Nero 72 è bruno con i prodotti in quadrati. Qui il fondo è grigio ardesia, le fotografie sono di oggetti in metallo, e l’elemento che c’è solo qui è il righello in centimetri."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0.07,
+                    0.18,
+                    0.86,
+                    0.6
+                  ],
+                  "caption": "I coltelli col righello sotto"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "progettazione",
+          "title": "Progettazione",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Il marchio è un coltello mezzo aperto il cui profilo è il crinale di una montagna, perché «serra» è anche una catena di monti. La pagina è scura come l’ardesia su cui sono fotografati i coltelli, con il color corno per lame e bottoni. Prima di pagare si conferma di avere 18 anni, e la riaffilatura è gratis per sempre."
+            },
+            {
+              "kind": "text",
+              "title": "Il sistema",
+              "p": "L’osso sull’ardesia fa 13,57:1, il corno chiaro dei prezzi 7,60:1. Sul bottone color corno il testo è scuro, a 4,82:1. Il marchio ha la lama color ardesia, quindi la barra in alto è chiara: sul fondo scuro la lama sparirebbe."
+            },
+            {
+              "kind": "palette",
+              "items": [
+                {
+                  "name": "Ardesia",
+                  "hex": "#1c1e21"
+                },
+                {
+                  "name": "Pannello",
+                  "hex": "#25282c"
+                },
+                {
+                  "name": "Osso",
+                  "hex": "#ece7df"
+                },
+                {
+                  "name": "Corno",
+                  "hex": "#c07a2c"
+                },
+                {
+                  "name": "Corno chiaro",
+                  "hex": "#e0a35a"
+                }
+              ]
+            },
+            {
+              "kind": "type",
+              "items": [
+                {
+                  "role": "Tutti i testi",
+                  "family": "Archivo",
+                  "note": "stretto e pesante nei titoli, normale nei testi"
+                }
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                0,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "risultato",
+          "title": "Risultato",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+            },
+            {
+              "kind": "facts",
+              "items": [
+                "Tre coltelli: lama da 8, 10 e 11 cm, in corno di montone o in olivastro.",
+                "Sotto ogni coltello un righello: manico chiaro, lama color corno.",
+                "Si compra solo confermando di avere 18 anni."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                3,
+                4,
+                5
+              ]
+            }
+          ]
+        }
+      ],
+      "cover": {
+        "src": "media/works/negozio-serra/cover-1920.webp",
+        "srcMobile": "media/works/negozio-serra/cover-960.webp",
+        "srcThumb": "media/works/negozio-serra/cover-240.webp",
+        "w": 1920,
+        "h": 1200,
+        "alt": "Apertura del negozio di Serra: «Fatti a mano. Misurati sul righello.» sopra un coltello di corno sul banco di lavoro"
+      },
+      "gallery": [
+        {
+          "src": "media/works/negozio-serra/01-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Apertura del negozio di Serra: «Fatti a mano. Misurati sul righello.» sopra un coltello di corno sul banco di lavoro",
+          "caption": "",
+          "srcset": "media/works/negozio-serra/01-1440.webp 1440w, media/works/negozio-serra/01-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-serra/02-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "I coltelli fotografati sull’ardesia, ognuno col suo righello: lama, chiuso, aperto",
+          "caption": "",
+          "srcset": "media/works/negozio-serra/02-1440.webp 1440w, media/works/negozio-serra/02-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-serra/03-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Il carrello aperto con un coltello e un fodero, la conferma dei 18 anni e il totale",
+          "caption": "",
+          "srcset": "media/works/negozio-serra/03-1440.webp 1440w, media/works/negozio-serra/03-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-serra/04-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "L’apertura sul telefono",
+          "caption": ""
+        },
+        {
+          "src": "media/works/negozio-serra/05-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "La scheda di un coltello sul telefono, col righello",
+          "caption": ""
+        },
+        {
+          "src": "media/works/negozio-serra/06-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "Il carrello sul telefono",
+          "caption": ""
+        }
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/negozio-serra/intera-desktop.webp",
+          "w": 1440,
+          "h": 3336
+        },
+        "phone": {
+          "src": "media/works/negozio-serra/intera-phone.webp",
+          "w": 780,
+          "h": 9694
+        }
+      },
+      "live": "prove/negozio-serra/"
+    },
+    "negozio-scorza": {
+      "index": 16,
+      "title": "Scorza, il negozio",
+      "kind": "concept",
+      "tag": "Concept",
+      "year": "2026",
+      "place": "Cagliari",
+      "line": "Negozio online per oggetti di sughero: ogni pezzo ha il suo peso, e il carrello pesa il pacco.",
+      "facts": [
+        "Cinque oggetti, dai sottobicchieri da 80 g al vassoio da 380 g.",
+        "Ogni oggetto ha il suo peso, in fila dal più leggero.",
+        "Nel carrello una bilancia dice quanto pesa il pacco."
+      ],
+      "story": [
+        {
+          "h": "L'idea",
+          "p": "Scorza è un laboratorio di oggetti di sughero in Gallura. La sughera non si taglia: le si toglie la corteccia e lei la rifà. Il sughero è quasi tutto aria, e il negozio lo racconta col peso: ogni oggetto lo porta scritto, e il carrello dice quanto pesa il pacco."
+        },
+        {
+          "h": "Le scelte",
+          "p": "Il marchio è un tappo di sughero che fa da tronco a una sughera. Verde quercia e color sughero su sabbia, con una fascia che ha la grana del sughero. I pesi sono barre messe in fila dal più leggero al più pesante, e nel carrello una bilancia sposta l’ago a ogni oggetto."
+        },
+        {
+          "h": "Dove si vede",
+          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+        }
+      ],
+      "study": [
+        {
+          "title": "Il sistema",
+          "p": "Il verde quercia sulla sabbia fa 7,92:1. Il color sughero non regge il testo, quindi i pesi sono scritti nel sughero scuro, a 4,78:1 sul fondo delle schede. La grana della fascia dei pesi è fatta con tre file di puntini, senza immagini.",
+          "palette": [
+            {
+              "name": "Sabbia",
+              "hex": "#f1e6d3"
+            },
+            {
+              "name": "Sughero",
+              "hex": "#b98a55"
+            },
+            {
+              "name": "Sughero scuro",
+              "hex": "#8c6235"
+            },
+            {
+              "name": "Quercia",
+              "hex": "#2f4a32"
+            },
+            {
+              "name": "Terra",
+              "hex": "#5e5140"
+            }
+          ],
+          "type": [
+            {
+              "role": "Tutti i testi",
+              "family": "Bricolage Grotesque",
+              "note": "grande e stretto nei titoli"
+            }
+          ]
+        }
+      ],
+      "process": [
+        {
+          "phase": "studio",
+          "title": "Studio",
+          "blocks": [
+            {
+              "kind": "text",
+              "title": "Il marchio e il sughero",
+              "p": "Scorza è un laboratorio di oggetti di sughero in Gallura, dove Calangianus è il centro della lavorazione. Ho verificato come si toglie il sughero: con la decortica la pianta resta viva e rifà la corteccia. Ogni oggetto tiene un po’ della scorza grezza."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.47,
+                    0.15,
+                    0.46,
+                    0.6
+                  ],
+                  "caption": "La sughera scortecciata e le lastre a terra"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "ideazione",
+          "title": "Ideazione",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Scorza è un laboratorio di oggetti di sughero in Gallura. La sughera non si taglia: le si toglie la corteccia e lei la rifà. Il sughero è quasi tutto aria, e il negozio lo racconta col peso: ogni oggetto lo porta scritto, e il carrello dice quanto pesa il pacco."
+            },
+            {
+              "kind": "text",
+              "p": "Accanto agli altri negozi: Mandorla ha un vassoio da riempire, Cerchi una lente. Qui il numero che conta è il peso, e il segno che c’è solo qui è la bilancia nel carrello."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0.07,
+                    0.15,
+                    0.86,
+                    0.6
+                  ],
+                  "caption": "Gli oggetti col loro peso"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "progettazione",
+          "title": "Progettazione",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Il marchio è un tappo di sughero che fa da tronco a una sughera. Verde quercia e color sughero su sabbia, con una fascia che ha la grana del sughero. I pesi sono barre messe in fila dal più leggero al più pesante, e nel carrello una bilancia sposta l’ago a ogni oggetto."
+            },
+            {
+              "kind": "text",
+              "title": "Il sistema",
+              "p": "Il verde quercia sulla sabbia fa 7,92:1. Il color sughero non regge il testo, quindi i pesi sono scritti nel sughero scuro, a 4,78:1 sul fondo delle schede. La grana della fascia dei pesi è fatta con tre file di puntini, senza immagini."
+            },
+            {
+              "kind": "palette",
+              "items": [
+                {
+                  "name": "Sabbia",
+                  "hex": "#f1e6d3"
+                },
+                {
+                  "name": "Sughero",
+                  "hex": "#b98a55"
+                },
+                {
+                  "name": "Sughero scuro",
+                  "hex": "#8c6235"
+                },
+                {
+                  "name": "Quercia",
+                  "hex": "#2f4a32"
+                },
+                {
+                  "name": "Terra",
+                  "hex": "#5e5140"
+                }
+              ]
+            },
+            {
+              "kind": "type",
+              "items": [
+                {
+                  "role": "Tutti i testi",
+                  "family": "Bricolage Grotesque",
+                  "note": "grande e stretto nei titoli"
+                }
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                0,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "risultato",
+          "title": "Risultato",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+            },
+            {
+              "kind": "facts",
+              "items": [
+                "Cinque oggetti, dai sottobicchieri da 80 g al vassoio da 380 g.",
+                "Ogni oggetto ha il suo peso, in fila dal più leggero.",
+                "Nel carrello una bilancia dice quanto pesa il pacco."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                3,
+                4,
+                5
+              ]
+            }
+          ]
+        }
+      ],
+      "cover": {
+        "src": "media/works/negozio-scorza/cover-1920.webp",
+        "srcMobile": "media/works/negozio-scorza/cover-960.webp",
+        "srcThumb": "media/works/negozio-scorza/cover-240.webp",
+        "w": 1920,
+        "h": 1200,
+        "alt": "Apertura del negozio di Scorza: «Il sughero si toglie all’albero. L’albero resta.» e la fotografia di una sughera scortecciata"
+      },
+      "gallery": [
+        {
+          "src": "media/works/negozio-scorza/01-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Apertura del negozio di Scorza: «Il sughero si toglie all’albero. L’albero resta.» e la fotografia di una sughera scortecciata",
+          "caption": "",
+          "srcset": "media/works/negozio-scorza/01-1440.webp 1440w, media/works/negozio-scorza/01-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-scorza/02-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Gli oggetti di sughero con nome, misura, peso e prezzo",
+          "caption": "",
+          "srcset": "media/works/negozio-scorza/02-1440.webp 1440w, media/works/negozio-scorza/02-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-scorza/03-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Il carrello aperto con la bilancia che segna il peso del pacco",
+          "caption": "",
+          "srcset": "media/works/negozio-scorza/03-1440.webp 1440w, media/works/negozio-scorza/03-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-scorza/04-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "L’apertura sul telefono",
+          "caption": ""
+        },
+        {
+          "src": "media/works/negozio-scorza/05-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "La scheda del sottopentola sul telefono",
+          "caption": ""
+        },
+        {
+          "src": "media/works/negozio-scorza/06-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "Il carrello sul telefono, con la bilancia",
+          "caption": ""
+        }
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/negozio-scorza/intera-desktop.webp",
+          "w": 1440,
+          "h": 2942
+        },
+        "phone": {
+          "src": "media/works/negozio-scorza/intera-phone.webp",
+          "w": 780,
+          "h": 8698
+        }
+      },
+      "live": "prove/negozio-scorza/"
+    },
+    "negozio-cotta": {
+      "index": 17,
+      "title": "Cotta, il negozio",
+      "kind": "concept",
+      "tag": "Concept",
+      "year": "2026",
+      "place": "Cagliari",
+      "line": "Negozio online per ceramiche al tornio: mezze smaltate e mezze crude, e la pagina fa lo stesso.",
+      "facts": [
+        "Cinque pezzi: tazza, ciotola, piatto piano, piatto fondo, brocca.",
+        "Una tazza da immergere nello smalto col cursore.",
+        "La pagina è smaltata sopra e terracotta sotto."
+      ],
+      "story": [
+        {
+          "h": "L'idea",
+          "p": "Cotta è un laboratorio di stoviglie al tornio. Ogni pezzo si immerge a mano nello smalto e la parte bassa resta terracotta cruda. La pagina fa lo stesso: sopra è bianca come lo smalto, poi una riga con le gocce e sotto è terracotta."
+        },
+        {
+          "h": "Le scelte",
+          "p": "Il marchio è un vaso fatto con un’impronta digitale, il segno della mano. Nella pagina c’è una tazza da immergere: si sposta il cursore e lo smalto sale o scende, con la sua goccia. Le fotografie stanno in cornici ad arco, come piatti in piedi su uno scaffale."
+        },
+        {
+          "h": "Dove si vede",
+          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+        }
+      ],
+      "study": [
+        {
+          "title": "Il sistema",
+          "p": "Il bruno sullo smalto fa 15,35:1. Sulla terracotta il testo è color smalto, a 4,70:1; sotto, nel piede della pagina, a 6,94:1. La riga con le gocce è un solo disegno vettoriale.",
+          "palette": [
+            {
+              "name": "Smalto",
+              "hex": "#fbf8f2"
+            },
+            {
+              "name": "Terracotta",
+              "hex": "#b4532f"
+            },
+            {
+              "name": "Terracotta scura",
+              "hex": "#8f3d1f"
+            },
+            {
+              "name": "Argilla",
+              "hex": "#c8663d"
+            },
+            {
+              "name": "Bruno",
+              "hex": "#2b1d17"
+            }
+          ],
+          "type": [
+            {
+              "role": "Titoli",
+              "family": "Funnel Display",
+              "note": ""
+            },
+            {
+              "role": "Testi",
+              "family": "Funnel Sans",
+              "note": ""
+            }
+          ]
+        }
+      ],
+      "process": [
+        {
+          "phase": "studio",
+          "title": "Studio",
+          "blocks": [
+            {
+              "kind": "text",
+              "title": "Il marchio e la terra",
+              "p": "Cotta è un laboratorio di ceramiche al tornio. Ho guardato i pezzi immersi a metà nello smalto: la riga dove finisce e la goccia che scende cambiano ogni volta, e il piede crudo mostra la terra. Il nome tiene insieme la terracotta e la cotta di chi se ne innamora."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0.46,
+                    0.08,
+                    0.47,
+                    0.58
+                  ],
+                  "caption": "Tazze e ciotole mezze smaltate ad asciugare"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "ideazione",
+          "title": "Ideazione",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Cotta è un laboratorio di stoviglie al tornio. Ogni pezzo si immerge a mano nello smalto e la parte bassa resta terracotta cruda. La pagina fa lo stesso: sopra è bianca come lo smalto, poi una riga con le gocce e sotto è terracotta."
+            },
+            {
+              "kind": "text",
+              "p": "Accanto agli altri negozi: Mandorla ha le forme dei dolci disegnate, Nero 72 una griglia. Qui il segno che c’è solo qui è la riga dello smalto, che divide la pagina e si può spostare sulla tazza."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0.07,
+                    0.15,
+                    0.86,
+                    0.65
+                  ],
+                  "caption": "I pezzi su terracotta, nelle cornici ad arco"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "progettazione",
+          "title": "Progettazione",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Il marchio è un vaso fatto con un’impronta digitale, il segno della mano. Nella pagina c’è una tazza da immergere: si sposta il cursore e lo smalto sale o scende, con la sua goccia. Le fotografie stanno in cornici ad arco, come piatti in piedi su uno scaffale."
+            },
+            {
+              "kind": "text",
+              "title": "Il sistema",
+              "p": "Il bruno sullo smalto fa 15,35:1. Sulla terracotta il testo è color smalto, a 4,70:1; sotto, nel piede della pagina, a 6,94:1. La riga con le gocce è un solo disegno vettoriale."
+            },
+            {
+              "kind": "palette",
+              "items": [
+                {
+                  "name": "Smalto",
+                  "hex": "#fbf8f2"
+                },
+                {
+                  "name": "Terracotta",
+                  "hex": "#b4532f"
+                },
+                {
+                  "name": "Terracotta scura",
+                  "hex": "#8f3d1f"
+                },
+                {
+                  "name": "Argilla",
+                  "hex": "#c8663d"
+                },
+                {
+                  "name": "Bruno",
+                  "hex": "#2b1d17"
+                }
+              ]
+            },
+            {
+              "kind": "type",
+              "items": [
+                {
+                  "role": "Titoli",
+                  "family": "Funnel Display",
+                  "note": ""
+                },
+                {
+                  "role": "Testi",
+                  "family": "Funnel Sans",
+                  "note": ""
+                }
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                0,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "risultato",
+          "title": "Risultato",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+            },
+            {
+              "kind": "facts",
+              "items": [
+                "Cinque pezzi: tazza, ciotola, piatto piano, piatto fondo, brocca.",
+                "Una tazza da immergere nello smalto col cursore.",
+                "La pagina è smaltata sopra e terracotta sotto."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                3,
+                4,
+                5
+              ]
+            }
+          ]
+        }
+      ],
+      "cover": {
+        "src": "media/works/negozio-cotta/cover-1920.webp",
+        "srcMobile": "media/works/negozio-cotta/cover-960.webp",
+        "srcThumb": "media/works/negozio-cotta/cover-240.webp",
+        "w": 1920,
+        "h": 1200,
+        "alt": "Apertura del negozio di Cotta: «Metà smalto, metà terra.» e le tazze ad asciugare sul banco"
+      },
+      "gallery": [
+        {
+          "src": "media/works/negozio-cotta/01-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Apertura del negozio di Cotta: «Metà smalto, metà terra.» e le tazze ad asciugare sul banco",
+          "caption": "",
+          "srcset": "media/works/negozio-cotta/01-1440.webp 1440w, media/works/negozio-cotta/01-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-cotta/02-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "I pezzi su fondo terracotta, nelle cornici ad arco, con misura e prezzo",
+          "caption": "",
+          "srcset": "media/works/negozio-cotta/02-1440.webp 1440w, media/works/negozio-cotta/02-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-cotta/03-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Il carrello aperto con tazze, ciotole e una brocca, spedizione gratis e totale",
+          "caption": "",
+          "srcset": "media/works/negozio-cotta/03-1440.webp 1440w, media/works/negozio-cotta/03-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-cotta/04-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "L’apertura sul telefono",
+          "caption": ""
+        },
+        {
+          "src": "media/works/negozio-cotta/05-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "La scheda della tazza sul telefono",
+          "caption": ""
+        },
+        {
+          "src": "media/works/negozio-cotta/06-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "Il carrello sul telefono",
+          "caption": ""
+        }
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/negozio-cotta/intera-desktop.webp",
+          "w": 1440,
+          "h": 2846
+        },
+        "phone": {
+          "src": "media/works/negozio-cotta/intera-phone.webp",
+          "w": 780,
+          "h": 8650
+        }
+      },
+      "live": "prove/negozio-cotta/"
+    },
+    "negozio-spola": {
+      "index": 18,
+      "title": "Spola, il negozio",
+      "kind": "concept",
+      "tag": "Concept",
+      "year": "2026",
+      "place": "Cagliari",
+      "line": "Negozio online per tessuti al telaio: ogni pezzo ha le sue settimane di lavoro, e tutti sono disegnati alla stessa scala.",
+      "facts": [
+        "Cinque pezzi, dalle tovagliette di lino al tappeto 120 × 180 cm.",
+        "Ogni pezzo dice quante settimane di telaio servono.",
+        "Tutti i pezzi disegnati alla stessa scala."
+      ],
+      "story": [
+        {
+          "h": "L'idea",
+          "p": "Spola è un laboratorio che tesse al telaio con la tecnica a pibiones, i grani in rilievo. Un tappeto fatto a mano si tesse dopo l’ordine: il negozio lo dice prima. Ogni pezzo porta le sue settimane di telaio, e il carrello somma quanto tempo serve."
+        },
+        {
+          "h": "Le scelte",
+          "p": "Il marchio è una spola che è anche una barca, col filo dietro come la scia. Rosso robbia e blu indaco su lana chiara, angoli vivi come la trama. Sotto la fotografia corre una fila di grani, e una tavola disegna tutti i pezzi alla stessa scala, perché una foto non dice quanto è grande un tappeto."
+        },
+        {
+          "h": "Dove si vede",
+          "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+        }
+      ],
+      "study": [
+        {
+          "title": "Il sistema",
+          "p": "L’indaco sulla lana fa 10,98:1, il rosso robbia 6,17:1, quindi anche il rosso può portare testo. I grani sotto la fotografia sono due file di cerchi in rilievo, senza immagini.",
+          "palette": [
+            {
+              "name": "Lana",
+              "hex": "#f3ede2"
+            },
+            {
+              "name": "Robbia",
+              "hex": "#a8322d"
+            },
+            {
+              "name": "Indaco",
+              "hex": "#23305a"
+            },
+            {
+              "name": "Grigio blu",
+              "hex": "#4f5672"
+            },
+            {
+              "name": "Lino",
+              "hex": "#faf6ee"
+            }
+          ],
+          "type": [
+            {
+              "role": "Tutti i testi",
+              "family": "Host Grotesk",
+              "note": ""
+            }
+          ]
+        }
+      ],
+      "process": [
+        {
+          "phase": "studio",
+          "title": "Studio",
+          "blocks": [
+            {
+              "kind": "text",
+              "title": "Il marchio e la tecnica",
+              "p": "Spola è un laboratorio di tessitura al telaio. Ho studiato la tecnica a pibiones: la trama si avvolge attorno a un ferro posato sull’ordito e, quando il ferro si sfila, resta il grano in rilievo. Nel negozio i tempi di lavoro sono scritti prima di pagare."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 0,
+                  "box": [
+                    0,
+                    0.04,
+                    0.55,
+                    0.66
+                  ],
+                  "caption": "Il telaio col tappeto a metà e la spola"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "ideazione",
+          "title": "Ideazione",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Spola è un laboratorio che tesse al telaio con la tecnica a pibiones, i grani in rilievo. Un tappeto fatto a mano si tesse dopo l’ordine: il negozio lo dice prima. Ogni pezzo porta le sue settimane di telaio, e il carrello somma quanto tempo serve."
+            },
+            {
+              "kind": "text",
+              "p": "Accanto agli altri negozi: nessuno vende cose fatte dopo l’ordine. Qui il tempo è parte del prodotto, e il segno che c’è solo qui è la tavola dei pezzi alla stessa scala."
+            },
+            {
+              "kind": "images",
+              "items": [
+                {
+                  "i": 1,
+                  "box": [
+                    0.07,
+                    0.15,
+                    0.86,
+                    0.62
+                  ],
+                  "caption": "I pezzi con le settimane di telaio"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "progettazione",
+          "title": "Progettazione",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Il marchio è una spola che è anche una barca, col filo dietro come la scia. Rosso robbia e blu indaco su lana chiara, angoli vivi come la trama. Sotto la fotografia corre una fila di grani, e una tavola disegna tutti i pezzi alla stessa scala, perché una foto non dice quanto è grande un tappeto."
+            },
+            {
+              "kind": "text",
+              "title": "Il sistema",
+              "p": "L’indaco sulla lana fa 10,98:1, il rosso robbia 6,17:1, quindi anche il rosso può portare testo. I grani sotto la fotografia sono due file di cerchi in rilievo, senza immagini."
+            },
+            {
+              "kind": "palette",
+              "items": [
+                {
+                  "name": "Lana",
+                  "hex": "#f3ede2"
+                },
+                {
+                  "name": "Robbia",
+                  "hex": "#a8322d"
+                },
+                {
+                  "name": "Indaco",
+                  "hex": "#23305a"
+                },
+                {
+                  "name": "Grigio blu",
+                  "hex": "#4f5672"
+                },
+                {
+                  "name": "Lino",
+                  "hex": "#faf6ee"
+                }
+              ]
+            },
+            {
+              "kind": "type",
+              "items": [
+                {
+                  "role": "Tutti i testi",
+                  "family": "Host Grotesk",
+                  "note": ""
+                }
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                0,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "phase": "risultato",
+          "title": "Risultato",
+          "blocks": [
+            {
+              "kind": "text",
+              "p": "Progetto personale: marchio e prodotti sono una mia idea. È una pagina vera, che si adatta dal telefono al computer, col carrello che fa i conti."
+            },
+            {
+              "kind": "facts",
+              "items": [
+                "Cinque pezzi, dalle tovagliette di lino al tappeto 120 × 180 cm.",
+                "Ogni pezzo dice quante settimane di telaio servono.",
+                "Tutti i pezzi disegnati alla stessa scala."
+              ]
+            },
+            {
+              "kind": "images",
+              "items": [
+                3,
+                4,
+                5
+              ]
+            }
+          ]
+        }
+      ],
+      "cover": {
+        "src": "media/works/negozio-spola/cover-1920.webp",
+        "srcMobile": "media/works/negozio-spola/cover-960.webp",
+        "srcThumb": "media/works/negozio-spola/cover-240.webp",
+        "w": 1920,
+        "h": 1200,
+        "alt": "Apertura del negozio di Spola: «Si tesse dopo il tuo ordine.» accanto al telaio col tappeto a metà"
+      },
+      "gallery": [
+        {
+          "src": "media/works/negozio-spola/01-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Apertura del negozio di Spola: «Si tesse dopo il tuo ordine.» accanto al telaio col tappeto a metà",
+          "caption": "",
+          "srcset": "media/works/negozio-spola/01-1440.webp 1440w, media/works/negozio-spola/01-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-spola/02-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "I pezzi con misura, settimane di telaio e prezzo",
+          "caption": "",
+          "srcset": "media/works/negozio-spola/02-1440.webp 1440w, media/works/negozio-spola/02-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-spola/03-2880.webp",
+          "w": 2880,
+          "h": 1800,
+          "alt": "Il carrello aperto con cuscini e una corsia, le settimane di telaio e il totale",
+          "caption": "",
+          "srcset": "media/works/negozio-spola/03-1440.webp 1440w, media/works/negozio-spola/03-2880.webp 2880w"
+        },
+        {
+          "src": "media/works/negozio-spola/04-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "L’apertura sul telefono",
+          "caption": ""
+        },
+        {
+          "src": "media/works/negozio-spola/05-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "La scheda del tappeto sul telefono",
+          "caption": ""
+        },
+        {
+          "src": "media/works/negozio-spola/06-1170.webp",
+          "w": 1170,
+          "h": 2532,
+          "alt": "Il carrello sul telefono",
+          "caption": ""
+        }
+      ],
+      "full": {
+        "desktop": {
+          "src": "media/works/negozio-spola/intera-desktop.webp",
+          "w": 1440,
+          "h": 3378
+        },
+        "phone": {
+          "src": "media/works/negozio-spola/intera-phone.webp",
+          "w": 780,
+          "h": 9112
+        }
+      },
+      "live": "prove/negozio-spola/"
+    },
+    "zanzanext": {
+      "index": 19,
       "title": "ZanzaNext",
       "kind": "cliente",
       "tag": "",
@@ -3614,7 +4987,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Consegnato il 17 novembre 2026. Con 1.800 ordini la pagina delle Distinte si apriva in 11,9 secondi; costruendo solo le righe visibili si apre in circa 0,3. Al primo avvio porta dentro le 50.466 righe dello storico ordini del programma di prima. Nelle schermate i clienti sono quelli inventati dell’archivio di prova."
+          "p": "Consegnato il 17 novembre 2026. Con 1.800 ordini la pagina delle Distinte si apriva in 11,9 secondi; costruendo solo le righe visibili si apre in circa 0,3. Al primo avvio porta dentro le 50.466 righe dello storico ordini del programma di prima."
         }
       ],
       "study": [
@@ -3792,7 +5165,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Consegnato il 17 novembre 2026. Con 1.800 ordini la pagina delle Distinte si apriva in 11,9 secondi; costruendo solo le righe visibili si apre in circa 0,3. Al primo avvio porta dentro le 50.466 righe dello storico ordini del programma di prima. Nelle schermate i clienti sono quelli inventati dell’archivio di prova."
+              "p": "Consegnato il 17 novembre 2026. Con 1.800 ordini la pagina delle Distinte si apriva in 11,9 secondi; costruendo solo le righe visibili si apre in circa 0,3. Al primo avvio porta dentro le 50.466 righe dello storico ordini del programma di prima."
             },
             {
               "kind": "facts",
@@ -3825,33 +5198,33 @@
           "w": 1146,
           "h": 768,
           "alt": "La pagina dell’ordine: modello, misure, colore, comando e l’elenco delle zanzariere col totale del documento",
-          "caption": "I clienti a video sono quelli inventati dell’archivio di prova. Gli importi sono oscurati."
+          "caption": ""
         },
         {
           "src": "media/works/zanzanext/02-1146.webp",
           "w": 1146,
           "h": 768,
           "alt": "La scheda «Ordini inseriti» con quattro righe, una scelta, e le caselle per filtrare",
-          "caption": "Importi oscurati."
+          "caption": ""
         },
         {
           "src": "media/works/zanzanext/03-1146.webp",
           "w": 1146,
           "h": 768,
           "alt": "Le Distinte: in alto i cinque fogli da stampare, sotto gli ordini con le loro zanzariere",
-          "caption": "Importi oscurati."
+          "caption": ""
         },
         {
           "src": "media/works/zanzanext/04-1366.webp",
           "w": 1366,
           "h": 768,
           "alt": "Il primo avvio dopo l’importazione dal vecchio programma, col messaggio «Importazione completata»",
-          "caption": "Primo avvio con l’archivio di prova, da 1.250 righe."
+          "caption": ""
         }
       ]
     },
     "interlingua": {
-      "index": 15,
+      "index": 20,
       "title": "Interlingua",
       "kind": "personale",
       "tag": "",
@@ -3870,17 +5243,17 @@
         },
         {
           "h": "Le scelte",
-          "p": "Il progetto grafico nuovo parte dall’interlinea, lo spazio tra due righe: l’originale sta sopra, piccolo e grigio, e la traduzione sotto, grande, perché è quella che si legge. Il rosso dice solo da dove viene il testo: la riga sotto l’originale, la cornice attorno alla zona dello schermo, la parola trovata nella cronologia. Carta chiara, inchiostro nero, IBM Plex Serif per la traduzione e Plex Mono per le etichette; le modalità stanno in una colonna a sinistra."
+          "p": "Il progetto grafico parte dall’interlinea, lo spazio tra due righe: l’originale sta sopra, piccolo e grigio, e la traduzione sotto, grande, perché è quella che si legge. Il rosso dice solo da dove viene il testo: la riga sotto l’originale, la cornice attorno alla zona dello schermo, la parola trovata nella cronologia. Carta chiara, inchiostro nero, IBM Plex Serif per la traduzione e Plex Mono per le etichette; le modalità stanno in una colonna a sinistra."
         },
         {
           "h": "Dove si vede",
-          "p": "Non è pubblicato: il programma gira su Windows. Le quattro immagini sono il progetto grafico nuovo, da portare nel programma; lingue, bottoni, scorciatoie e conteggio dei caratteri vengono dal programma. In modalità Testo traduce da solo 600 millisecondi dopo l’ultima battuta, e tiene una cronologia da cercare e fissare."
+          "p": "Il programma gira su Windows. In modalità Testo traduce da solo 600 millisecondi dopo l’ultima battuta, e tiene una cronologia da cercare e fissare."
         }
       ],
       "study": [
         {
           "title": "La struttura",
-          "p": "Nel programma le modalità sono quattro. Nel progetto nuovo stanno in una colonna a sinistra, con la cronologia come voce, e la finestra si legge dall’alto: l’originale, la traduzione, i comandi, la barra di stato. Senza mouse: Ctrl+Invio traduce, Ctrl+L pulisce, Ctrl+Shift+C copia. Ctrl+Shift+T apre la traduzione rapida da qualsiasi programma.",
+          "p": "Le modalità sono quattro e stanno in una colonna a sinistra, con la cronologia come voce, e la finestra si legge dall’alto: l’originale, la traduzione, i comandi, la barra di stato. Senza mouse: Ctrl+Invio traduce, Ctrl+L pulisce, Ctrl+Shift+C copia. Ctrl+Shift+T apre la traduzione rapida da qualsiasi programma.",
           "list": [
             "Live: traduce di continuo un’area o una finestra",
             "Testo: si scrive o si incolla",
@@ -3977,7 +5350,7 @@
             },
             {
               "kind": "text",
-              "p": "Il progetto grafico nuovo parte dall’interlinea, lo spazio tra due righe. Il rosso dice solo da dove viene il testo: la riga sotto l’originale, la cornice attorno alla zona dello schermo, la parola trovata nella cronologia."
+              "p": "Il progetto grafico parte dall’interlinea, lo spazio tra due righe. Il rosso dice solo da dove viene il testo: la riga sotto l’originale, la cornice attorno alla zona dello schermo, la parola trovata nella cronologia."
             }
           ]
         },
@@ -3988,7 +5361,7 @@
             {
               "kind": "text",
               "title": "La struttura",
-              "p": "Nel programma le modalità sono quattro. Nel progetto nuovo stanno in una colonna a sinistra, con la cronologia come voce, e la finestra si legge dall’alto: l’originale, la traduzione, i comandi, la barra di stato. Senza mouse: Ctrl+Invio traduce, Ctrl+L pulisce, Ctrl+Shift+C copia. Ctrl+Shift+T apre la traduzione rapida da qualsiasi programma."
+              "p": "Le modalità sono quattro e stanno in una colonna a sinistra, con la cronologia come voce, e la finestra si legge dall’alto: l’originale, la traduzione, i comandi, la barra di stato. Senza mouse: Ctrl+Invio traduce, Ctrl+L pulisce, Ctrl+Shift+C copia. Ctrl+Shift+T apre la traduzione rapida da qualsiasi programma."
             },
             {
               "kind": "list",
@@ -4056,7 +5429,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Non è pubblicato: il programma gira su Windows. Le quattro immagini sono il progetto grafico nuovo, da portare nel programma; lingue, bottoni, scorciatoie e conteggio dei caratteri vengono dal programma. In modalità Testo traduce da solo 600 millisecondi dopo l’ultima battuta, e tiene una cronologia da cercare e fissare."
+              "p": "Il programma gira su Windows. In modalità Testo traduce da solo 600 millisecondi dopo l’ultima battuta, e tiene una cronologia da cercare e fissare."
             },
             {
               "kind": "facts",
@@ -4125,7 +5498,7 @@
       ]
     },
     "massforge": {
-      "index": 16,
+      "index": 21,
       "title": "MassForge",
       "kind": "personale",
       "tag": "",
@@ -4144,11 +5517,11 @@
         },
         {
           "h": "Le scelte",
-          "p": "Il progetto grafico nuovo parte dal nome, la forgia: caldo e freddo. Mentre si registra una serie lo schermo è tutto arancione, mentre corre il riposo è tutto blu, sul fondo nero del ferro: dalla panca la fase si capisce dal colore, senza leggere. Le fotografie stanno solo dove servono: gli attrezzi della seduta nella scheda Oggi, l’esercizio nella schermata della serie. I numeri, alti e stretti, fanno da titolo."
+          "p": "Il progetto grafico parte dal nome, la forgia: caldo e freddo. Mentre si registra una serie lo schermo è tutto arancione, mentre corre il riposo è tutto blu, sul fondo nero del ferro: dalla panca la fase si capisce dal colore, senza leggere. Le fotografie stanno solo dove servono: gli attrezzi della seduta nella scheda Oggi, l’esercizio nella schermata della serie. I numeri, alti e stretti, fanno da titolo."
         },
         {
           "h": "Dove si vede",
-          "p": "Non è pubblicata. Funziona senza rete e i dati restano sul telefono, senza server; è costruita per Android con Capacitor ed è alla versione 1.4.0. Le quattro immagini sono il progetto grafico nuovo, da portare nell’app, con i dati di un profilo di prova."
+          "p": "Funziona senza rete e i dati restano sul telefono, senza server; è costruita per Android con Capacitor."
         }
       ],
       "study": [
@@ -4234,7 +5607,7 @@
             {
               "kind": "text",
               "title": "L’idea",
-              "p": "Il progetto grafico nuovo parte dal nome, la forgia: caldo e freddo. Lo sforzo è metallo incandescente, schermo arancione pieno mentre si registra la serie; il riposo è la tempra in acqua, schermo blu pieno mentre corre il timer. Chi alza gli occhi capisce la fase dal colore."
+              "p": "Il progetto grafico parte dal nome, la forgia: caldo e freddo. Lo sforzo è metallo incandescente, schermo arancione pieno mentre si registra la serie; il riposo è la tempra in acqua, schermo blu pieno mentre corre il timer. Chi alza gli occhi capisce la fase dal colore."
             },
             {
               "kind": "images",
@@ -4318,7 +5691,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Non è pubblicata. Funziona senza rete e i dati restano sul telefono, senza server; è costruita per Android ed è alla versione 1.4.0. Le quattro immagini sono il progetto grafico nuovo, da portare nell’app, con i dati di un profilo di prova."
+              "p": "Funziona senza rete e i dati restano sul telefono, senza server; è costruita per Android."
             },
             {
               "kind": "facts",
@@ -4387,7 +5760,7 @@
       ]
     },
     "skillaudit": {
-      "index": 17,
+      "index": 22,
       "title": "SkillAudit",
       "kind": "personale",
       "tag": "",
@@ -4406,17 +5779,17 @@
         },
         {
           "h": "Le scelte",
-          "p": "Il progetto grafico nuovo è il posto di lavoro dello sviluppatore: un editor di codice su fondo nero. Ogni schermata è un file aperto, col nome nella linguetta e i numeri di riga: la domanda è un file con le risposte come caselle da spuntare, il percorso un registro coi passi in fila, l’esercizio il file di codice, il risultato l’esito di una prova, FAIL o PASS. I colori sono quelli del terminale e ognuno ha un compito solo: verde superato, rosso errore, giallo riga segnata, ciano comandi, magenta Pippo. Pippo è appeso a un ramo e parla come un commento nel codice."
+          "p": "Il progetto grafico è il posto di lavoro dello sviluppatore: un editor di codice su fondo nero. Ogni schermata è un file aperto, col nome nella linguetta e i numeri di riga: la domanda è un file con le risposte come caselle da spuntare, il percorso un registro coi passi in fila, l’esercizio il file di codice, il risultato l’esito di una prova, FAIL o PASS. I colori sono quelli del terminale e ognuno ha un compito solo: verde superato, rosso errore, giallo riga segnata, ciano comandi, magenta Pippo. Pippo è appeso a un ramo e parla come un commento nel codice."
         },
         {
           "h": "Dove si vede",
-          "p": "Non è pubblicata: l’app gira, ma il servizio per gli account non è configurato, e lo scrive lei stessa nel Profilo. Le immagini sono il progetto grafico nuovo, da portare nell’app; domande, esercizi, punteggi e frasi di Pippo vengono dall’app."
+          "p": "Nelle schermate domande, esercizi, punteggi e frasi di Pippo sono quelli dell’app."
         }
       ],
       "study": [
         {
           "title": "Per chi",
-          "p": "Per uno sviluppatore web alle prime armi che si allena a pezzetti sul telefono, per esempio in treno la mattina. Chi scrive codice passa la giornata in un editor scuro: l’app gli parla con le stesse cose, il nome del file, i numeri di riga, l’esito di una prova."
+          "p": "Per uno sviluppatore web alle prime armi che si allena a pezzetti sul telefono, come in treno la mattina. Chi scrive codice passa la giornata in un editor scuro: l’app gli parla con le stesse cose, il nome del file, i numeri di riga, l’esito di una prova."
         },
         {
           "title": "Il sistema",
@@ -4472,7 +5845,7 @@
             {
               "kind": "text",
               "title": "Per chi",
-              "p": "Per uno sviluppatore web alle prime armi che si allena a pezzetti sul telefono, per esempio in treno la mattina. Chi scrive codice passa la giornata in un editor scuro: l’app gli parla con le stesse cose, il nome del file, i numeri di riga, l’esito di una prova."
+              "p": "Per uno sviluppatore web alle prime armi che si allena a pezzetti sul telefono, come in treno la mattina. Chi scrive codice passa la giornata in un editor scuro: l’app gli parla con le stesse cose, il nome del file, i numeri di riga, l’esito di una prova."
             },
             {
               "kind": "text",
@@ -4603,7 +5976,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Non è pubblicata: l’app gira, ma il servizio per gli account non è configurato, e lo scrive lei stessa nel Profilo. Le immagini sono il progetto grafico nuovo, da portare nell’app; domande, esercizi, punteggi e frasi di Pippo vengono dall’app."
+              "p": "Nelle schermate domande, esercizi, punteggi e frasi di Pippo sono quelli dell’app."
             },
             {
               "kind": "facts",
@@ -4680,7 +6053,7 @@
       ]
     },
     "carico-glicemico": {
-      "index": 18,
+      "index": 23,
       "title": "Carico Glicemico",
       "kind": "personale",
       "tag": "",
@@ -4699,11 +6072,11 @@
         },
         {
           "h": "Le scelte",
-          "p": "Il progetto grafico nuovo fa riconoscere il cibo a colpo d’occhio: ogni alimento ha la sua fotografia accanto al nome. Il carico sta in un blocco pieno, verde se è basso, ambra se è medio, rosso se è alto, e un righello con le tacche a 10 e 20 mostra le soglie che usa l’app. Così si vede che l’avena, alta per 100 grammi, nella mezza porzione da 40 diventa media."
+          "p": "Il progetto grafico fa riconoscere il cibo a colpo d’occhio: ogni alimento ha la sua fotografia accanto al nome. Il carico sta in un blocco pieno, verde se è basso, ambra se è medio, rosso se è alto, e un righello con le tacche a 10 e 20 mostra le soglie che usa l’app. Così si vede che l’avena, alta per 100 grammi, nella mezza porzione da 40 diventa media."
         },
         {
           "h": "Dove si vede",
-          "p": "Non è pubblicata e gira in locale. Le quattro immagini sono il progetto grafico nuovo, da portare nell’app, con una colazione e una giornata di prova: i carichi degli alimenti sono calcolati come li calcola l’app, dal suo catalogo."
+          "p": "Nelle schermate i carichi degli alimenti sono calcolati come li calcola l’app, dal suo catalogo."
         }
       ],
       "study": [
@@ -4813,7 +6186,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Il progetto grafico nuovo fa riconoscere il cibo a colpo d’occhio: ogni alimento ha la sua fotografia accanto al nome. Il carico sta in un blocco pieno, verde se è basso, ambra se è medio, rosso se è alto, e un righello con le tacche a 10 e 20 mostra le soglie che usa l’app. Così si vede che l’avena, alta per 100 grammi, nella mezza porzione da 40 diventa media."
+              "p": "Il progetto grafico fa riconoscere il cibo a colpo d’occhio: ogni alimento ha la sua fotografia accanto al nome. Il carico sta in un blocco pieno, verde se è basso, ambra se è medio, rosso se è alto, e un righello con le tacche a 10 e 20 mostra le soglie che usa l’app. Così si vede che l’avena, alta per 100 grammi, nella mezza porzione da 40 diventa media."
             },
             {
               "kind": "text",
@@ -4880,7 +6253,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Non è pubblicata e gira in locale. Le quattro immagini sono il progetto grafico nuovo, da portare nell’app, con una colazione e una giornata di prova: i carichi degli alimenti sono calcolati come li calcola l’app, dal suo catalogo."
+              "p": "Nelle schermate i carichi degli alimenti sono calcolati come li calcola l’app, dal suo catalogo."
             },
             {
               "kind": "facts",
@@ -4949,7 +6322,7 @@
       ]
     },
     "natura": {
-      "index": 19,
+      "index": 24,
       "title": "Natura",
       "kind": "concept",
       "tag": "Concept",
@@ -4972,7 +6345,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "L’app non esiste ancora: le quattro immagini sono il progetto grafico. Le semine e la regola dell’acqua vengono da un manuale dell’Università di Bologna sull’orto urbano, scritto per Bologna, e per questo sullo schermo c’è Bologna: ogni città vuole il suo calendario."
+          "p": "Le semine e la regola dell’acqua vengono da un manuale dell’Università di Bologna sull’orto urbano, scritto per Bologna, e per questo sullo schermo c’è Bologna: ogni città vuole il suo calendario."
         }
       ],
       "study": [
@@ -4982,7 +6355,7 @@
         },
         {
           "title": "I fatti e i colori",
-          "p": "Le semine mese per mese e la regola dell’acqua vengono da «L’orto urbano sostenibile», manuale del progetto europeo Hortis pubblicato dall’Università di Bologna nel 2013. È scritto per gli orti di Bologna: per questo l’esempio è Bologna. Il testo chiaro sulla terra di novembre fa 10,1:1, quello scuro sulla brina di dicembre 11,1:1.",
+          "p": "Le semine mese per mese e la regola dell’acqua vengono da «L’orto urbano sostenibile», manuale del progetto europeo Hortis pubblicato dall’Università di Bologna nel 2013. È scritto per gli orti di Bologna: per questo sullo schermo c’è Bologna. Il testo chiaro sulla terra di novembre fa 10,1:1, quello scuro sulla brina di dicembre 11,1:1.",
           "palette": [
             {
               "name": "Terra bagnata",
@@ -5037,7 +6410,7 @@
             {
               "kind": "text",
               "title": "La fonte",
-              "p": "Le semine mese per mese e la regola dell’acqua vengono da «L’orto urbano sostenibile», manuale del progetto europeo Hortis pubblicato dall’Università di Bologna nel 2013. È scritto per gli orti di Bologna: per questo l’esempio è Bologna."
+              "p": "Le semine mese per mese e la regola dell’acqua vengono da «L’orto urbano sostenibile», manuale del progetto europeo Hortis pubblicato dall’Università di Bologna nel 2013. È scritto per gli orti di Bologna: per questo sullo schermo c’è Bologna."
             },
             {
               "kind": "images",
@@ -5149,7 +6522,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "L’app non esiste ancora: le quattro immagini sono il progetto grafico. Le semine e la regola dell’acqua vengono da un manuale dell’Università di Bologna sull’orto urbano, scritto per Bologna, e per questo sullo schermo c’è Bologna: ogni città vuole il suo calendario."
+              "p": "Le semine e la regola dell’acqua vengono da un manuale dell’Università di Bologna sull’orto urbano, scritto per Bologna, e per questo sullo schermo c’è Bologna: ogni città vuole il suo calendario."
             },
             {
               "kind": "facts",
@@ -5218,17 +6591,16 @@
       ]
     },
     "cenere": {
-      "index": 20,
+      "index": 25,
       "title": "Cenere",
       "kind": "personale",
-      "tag": "Prototipo",
+      "tag": "",
       "year": "2026",
       "place": "Cagliari",
       "line": "Un gioco in 2D in cui sei l’ultima scintilla di coscienza di un uomo morto solo, e ripercorri la sua vita all’indietro facendo luce nel buio.",
       "facts": [
         "Cinque capitoli a ritroso, dalla morte all’infanzia: l’appartamento, lo studio dell’avvocato, l’ospedale, il giardino, la cucina.",
-        "Nella direzione visiva, «Inchiostro e Brace», il colore vive solo dentro la luce e nei ricordi.",
-        "Oggi esistono il menu, le cinque scene e 11 ricordi scritti su 33."
+        "Nella direzione visiva, «Inchiostro e Brace», il colore vive solo dentro la luce e nei ricordi."
       ],
       "story": [
         {
@@ -5241,7 +6613,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Il gioco è un prototipo fermo, fatto in Godot: esistono il menu, le cinque scene e 11 ricordi scritti su 33. Le tre schermate sono studi dell’aspetto che il gioco deve avere, non catture del gioco; i disegni a matita sono le prove della figura, delle stanze e degli oggetti."
+          "p": "Il gioco è fatto in Godot. Le tre schermate sono studi dell’aspetto del gioco; i disegni a matita sono le prove della figura, delle stanze e degli oggetti."
         }
       ],
       "study": [
@@ -5512,14 +6884,13 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Il gioco è un prototipo fermo: esistono il menu, le cinque scene e 11 ricordi scritti su 33. Le tre schermate sono studi dell’aspetto che il gioco deve avere, non catture del gioco: la direzione «Inchiostro e Brace» è scritta ma non ancora costruita nelle scene."
+              "p": "Il gioco è fatto in Godot. Le tre schermate sono studi dell’aspetto del gioco, nella direzione «Inchiostro e Brace»."
             },
             {
               "kind": "facts",
               "items": [
                 "Cinque capitoli a ritroso, dalla morte all’infanzia.",
-                "«Inchiostro e Brace»: il colore vive solo dentro la luce e nei ricordi.",
-                "Oggi esistono il menu, le cinque scene e 11 ricordi scritti su 33."
+                "«Inchiostro e Brace»: il colore vive solo dentro la luce e nei ricordi."
               ]
             },
             {
@@ -5627,7 +6998,7 @@
       ]
     },
     "soryn": {
-      "index": 21,
+      "index": 26,
       "title": "SORYN",
       "kind": "cliente",
       "tag": "",
@@ -5689,7 +7060,7 @@
         },
         {
           "title": "Le regole",
-          "p": "Il manuale dice anche come non usarlo. Sotto i 24 pixel di altezza non si usa nemmeno la sola civetta. Una pagina mostra quattro usi sbagliati, deformato o ricolorato, e un’altra le versioni sui fondi approvati.",
+          "p": "Il manuale dice anche come non usarlo. Sotto i 24 pixel di altezza non si usa nemmeno la sola civetta. Una pagina mostra quattro usi sbagliati, deformato o ricolorato, e un’altra le versioni sui fondi ammessi.",
           "list": [
             "Cinque varianti: a colori, con fondo, positivo, negativo, senza fondo",
             "Ogni variante in SVG, PNG e JPG",
@@ -5816,7 +7187,7 @@
             {
               "kind": "text",
               "title": "Le regole",
-              "p": "Il manuale dice anche come non usarlo. Sotto i 24 pixel di altezza non si usa nemmeno la sola civetta. Una pagina mostra quattro usi sbagliati, deformato o ricolorato, e un’altra le versioni sui fondi approvati."
+              "p": "Il manuale dice anche come non usarlo. Sotto i 24 pixel di altezza non si usa nemmeno la sola civetta. Una pagina mostra quattro usi sbagliati, deformato o ricolorato, e un’altra le versioni sui fondi ammessi."
             },
             {
               "kind": "images",
@@ -5896,7 +7267,7 @@
       ]
     },
     "campana": {
-      "index": 22,
+      "index": 27,
       "title": "Campana",
       "kind": "concept",
       "tag": "",
@@ -5915,7 +7286,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, la tazzina con le bustine sul banco di marmo e l’insegna sopra la tenda, e un manifesto in una pensilina, con una tazzina vista dall’alto e la scritta «Aperto dalle sei». Il bar non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, la tazzina con le bustine sul banco di marmo e l’insegna sopra la tenda, e un manifesto in una pensilina, con una tazzina vista dall’alto e la scritta «Aperto dalle sei». Il bar è una mia idea."
         }
       ],
       "study": [
@@ -6069,7 +7440,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, la tazzina con le bustine sul banco di marmo e l’insegna sopra la tenda, e un manifesto in una pensilina, con una tazzina vista dall’alto e la scritta «Aperto dalle sei». Il bar non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, la tazzina con le bustine sul banco di marmo e l’insegna sopra la tenda, e un manifesto in una pensilina, con una tazzina vista dall’alto e la scritta «Aperto dalle sei». Il bar è una mia idea."
             },
             {
               "kind": "images",
@@ -6122,7 +7493,7 @@
       ]
     },
     "ghisa": {
-      "index": 23,
+      "index": 28,
       "title": "Ghisa",
       "kind": "concept",
       "tag": "",
@@ -6141,7 +7512,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, il nome dipinto sulla parete della sala con il bilanciere davanti e la maglietta con le fasce di cuoio, e una campagna dipinta su un muro giallo all’angolo di una strada. La palestra non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, il nome dipinto sulla parete della sala con il bilanciere davanti e la maglietta con le fasce di cuoio, e una campagna dipinta su un muro giallo all’angolo di una strada. La palestra è una mia idea."
         }
       ],
       "study": [
@@ -6287,7 +7658,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, il nome dipinto sulla parete della sala con il bilanciere davanti e la maglietta con le fasce di cuoio, e una campagna dipinta su un muro giallo all’angolo di una strada. La palestra non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, il nome dipinto sulla parete della sala con il bilanciere davanti e la maglietta con le fasce di cuoio, e una campagna dipinta su un muro giallo all’angolo di una strada. La palestra è una mia idea."
             },
             {
               "kind": "images",
@@ -6340,7 +7711,7 @@
       ]
     },
     "taglio": {
-      "index": 24,
+      "index": 29,
       "title": "Taglio",
       "kind": "concept",
       "tag": "",
@@ -6359,7 +7730,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, il pacco di carta legato con lo spago accanto al sacchetto rosso e il nome sulla vetrina sotto la tenda a righe, e una pagina di giornale con una costata. La macelleria non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, il pacco di carta legato con lo spago accanto al sacchetto rosso e il nome sulla vetrina sotto la tenda a righe, e una pagina di giornale con una costata. La macelleria è una mia idea."
         }
       ],
       "study": [
@@ -6513,7 +7884,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, il pacco di carta legato con lo spago accanto al sacchetto rosso e il nome sulla vetrina sotto la tenda a righe, e una pagina di giornale con una costata. La macelleria non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, il pacco di carta legato con lo spago accanto al sacchetto rosso e il nome sulla vetrina sotto la tenda a righe, e una pagina di giornale con una costata. La macelleria è una mia idea."
             },
             {
               "kind": "images",
@@ -6566,7 +7937,7 @@
       ]
     },
     "il-gatto": {
-      "index": 25,
+      "index": 30,
       "title": "Il Gatto",
       "kind": "concept",
       "tag": "",
@@ -6585,7 +7956,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, tre bottiglie in fila e una bottiglia accanto alla sua scatola nera, e un manifesto in una bacheca illuminata, di sera, con la bottiglia e i due occhi dorati. Il vino non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, tre bottiglie in fila e una bottiglia accanto alla sua scatola nera, e un manifesto in una bacheca illuminata, di sera, con la bottiglia e i due occhi dorati. Il vino è una mia idea."
         }
       ],
       "study": [
@@ -6739,7 +8110,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, tre bottiglie in fila e una bottiglia accanto alla sua scatola nera, e un manifesto in una bacheca illuminata, di sera, con la bottiglia e i due occhi dorati. Il vino non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, tre bottiglie in fila e una bottiglia accanto alla sua scatola nera, e un manifesto in una bacheca illuminata, di sera, con la bottiglia e i due occhi dorati. Il vino è una mia idea."
             },
             {
               "kind": "images",
@@ -6792,7 +8163,7 @@
       ]
     },
     "officina-tre": {
-      "index": 26,
+      "index": 31,
       "title": "Officina Tre",
       "kind": "concept",
       "tag": "",
@@ -6811,7 +8182,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, l’insegna sopra la serranda con una moto sul ponte e il banco con la camicia da lavoro, il timbro e gli attrezzi, e tre manifesti incollati su un muro, con una ruota in corsa. L’officina non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, l’insegna sopra la serranda con una moto sul ponte e il banco con la camicia da lavoro, il timbro e gli attrezzi, e tre manifesti incollati su un muro, con una ruota in corsa. L’officina è una mia idea."
         }
       ],
       "study": [
@@ -6965,7 +8336,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, l’insegna sopra la serranda con una moto sul ponte e il banco con la camicia da lavoro, il timbro e gli attrezzi, e tre manifesti incollati su un muro, con una ruota in corsa. L’officina non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, l’insegna sopra la serranda con una moto sul ponte e il banco con la camicia da lavoro, il timbro e gli attrezzi, e tre manifesti incollati su un muro, con una ruota in corsa. L’officina è una mia idea."
             },
             {
               "kind": "images",
@@ -7018,7 +8389,7 @@
       ]
     },
     "cerchi": {
-      "index": 27,
+      "index": 32,
       "title": "Cerchi",
       "kind": "concept",
       "tag": "",
@@ -7037,7 +8408,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, la custodia con il panno e il biglietto da visita, e la vetrina del negozio di sera con l’insegna a bandiera, e un manifesto in un sottopassaggio. Il negozio non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, la custodia con il panno e il biglietto da visita, e la vetrina del negozio di sera con l’insegna a bandiera, e un manifesto in un sottopassaggio. Il negozio è una mia idea."
         }
       ],
       "study": [
@@ -7183,7 +8554,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, la custodia con il panno e il biglietto da visita, e la vetrina del negozio di sera con l’insegna a bandiera, e un manifesto in un sottopassaggio. Il negozio non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, la custodia con il panno e il biglietto da visita, e la vetrina del negozio di sera con l’insegna a bandiera, e un manifesto in un sottopassaggio. Il negozio è una mia idea."
             },
             {
               "kind": "images",
@@ -7236,7 +8607,7 @@
       ]
     },
     "nero-72": {
-      "index": 28,
+      "index": 33,
       "title": "Nero 72",
       "kind": "concept",
       "tag": "",
@@ -7255,7 +8626,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, tre tavolette nella carta scura su una lastra di pietra e il nome sulla vetrina del negozio, e una pagina doppia di rivista con un quadrato di cioccolato spezzato. La cioccolateria non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, tre tavolette nella carta scura su una lastra di pietra e il nome sulla vetrina del negozio, e una pagina doppia di rivista con un quadrato di cioccolato spezzato. La cioccolateria è una mia idea."
         }
       ],
       "study": [
@@ -7409,7 +8780,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, tre tavolette nella carta scura su una lastra di pietra e il nome sulla vetrina del negozio, e una pagina doppia di rivista con un quadrato di cioccolato spezzato. La cioccolateria non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, tre tavolette nella carta scura su una lastra di pietra e il nome sulla vetrina del negozio, e una pagina doppia di rivista con un quadrato di cioccolato spezzato. La cioccolateria è una mia idea."
             },
             {
               "kind": "images",
@@ -7462,7 +8833,7 @@
       ]
     },
     "mandorla": {
-      "index": 29,
+      "index": 34,
       "title": "Mandorla",
       "kind": "concept",
       "tag": "",
@@ -7481,7 +8852,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, la scatola dei dolci con il sacchetto e il pacco nella carta a mandorle col biglietto da visita, e un manifesto nella vetrina della pasticceria, con un dolce decorato a pizzo. La pasticceria non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, la scatola dei dolci con il sacchetto e il pacco nella carta a mandorle col biglietto da visita, e un manifesto nella vetrina della pasticceria, con un dolce decorato a pizzo. La pasticceria è una mia idea."
         }
       ],
       "study": [
@@ -7627,7 +8998,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, la scatola dei dolci con il sacchetto e il pacco nella carta a mandorle col biglietto da visita, e un manifesto nella vetrina della pasticceria, con un dolce decorato a pizzo. La pasticceria non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, la scatola dei dolci con il sacchetto e il pacco nella carta a mandorle col biglietto da visita, e un manifesto nella vetrina della pasticceria, con un dolce decorato a pizzo. La pasticceria è una mia idea."
             },
             {
               "kind": "images",
@@ -7680,7 +9051,7 @@
       ]
     },
     "sale-grosso": {
-      "index": 30,
+      "index": 35,
       "title": "Sale Grosso",
       "kind": "concept",
       "tag": "",
@@ -7699,7 +9070,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, la tavola apparecchiata con la tovaglietta e il menu blu e l’ingresso dell’osteria con il marchio dipinto sopra la porta, e uno stendardo blu sul lungomare. L’osteria non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, la tavola apparecchiata con la tovaglietta e il menu blu e l’ingresso dell’osteria con il marchio dipinto sopra la porta, e uno stendardo blu sul lungomare. L’osteria è una mia idea."
         }
       ],
       "study": [
@@ -7853,7 +9224,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, la tavola apparecchiata con la tovaglietta e il menu blu e l’ingresso dell’osteria con il marchio dipinto sopra la porta, e uno stendardo blu sul lungomare. L’osteria non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, la tavola apparecchiata con la tovaglietta e il menu blu e l’ingresso dell’osteria con il marchio dipinto sopra la porta, e uno stendardo blu sul lungomare. L’osteria è una mia idea."
             },
             {
               "kind": "images",
@@ -7906,7 +9277,7 @@
       ]
     },
     "cornicione": {
-      "index": 31,
+      "index": 36,
       "title": "Cornicione",
       "kind": "concept",
       "tag": "",
@@ -7925,7 +9296,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, i cartoni della pizza davanti al forno a legna e l’insegna rossa del locale, e un manifesto vicino a una fermata dell’autobus, con il bordo di una pizza in primo piano. La pizzeria non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, i cartoni della pizza davanti al forno a legna e l’insegna rossa del locale, e un manifesto vicino a una fermata dell’autobus, con il bordo di una pizza in primo piano. La pizzeria è una mia idea."
         }
       ],
       "study": [
@@ -8071,7 +9442,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, i cartoni della pizza davanti al forno a legna e l’insegna rossa del locale, e un manifesto vicino a una fermata dell’autobus, con il bordo di una pizza in primo piano. La pizzeria non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, i cartoni della pizza davanti al forno a legna e l’insegna rossa del locale, e un manifesto vicino a una fermata dell’autobus, con il bordo di una pizza in primo piano. La pizzeria è una mia idea."
             },
             {
               "kind": "images",
@@ -8124,7 +9495,7 @@
       ]
     },
     "kime": {
-      "index": 32,
+      "index": 37,
       "title": "Kime",
       "kind": "concept",
       "tag": "",
@@ -8143,7 +9514,7 @@
         },
         {
           "h": "Dove si vede",
-          "p": "Identità completa: il marchio, due applicazioni, il segno sulla parete della palestra sopra la panca e il karategi con la borsa, la cintura e la tessera, e un manifesto in una pensilina: «scuola di karate, corsi per bambini e adulti». La scuola non esiste."
+          "p": "Identità completa: il marchio, due applicazioni, il segno sulla parete della palestra sopra la panca e il karategi con la borsa, la cintura e la tessera, e un manifesto in una pensilina: «scuola di karate, corsi per bambini e adulti». La scuola è una mia idea."
         }
       ],
       "study": [
@@ -8297,7 +9668,7 @@
           "blocks": [
             {
               "kind": "text",
-              "p": "Identità completa: il marchio, due applicazioni, il segno sulla parete della palestra sopra la panca e il karategi con la borsa, la cintura e la tessera, e un manifesto in una pensilina: «scuola di karate, corsi per bambini e adulti». La scuola non esiste."
+              "p": "Identità completa: il marchio, due applicazioni, il segno sulla parete della palestra sopra la panca e il karategi con la borsa, la cintura e la tessera, e un manifesto in una pensilina: «scuola di karate, corsi per bambini e adulti». La scuola è una mia idea."
             },
             {
               "kind": "images",
@@ -8350,7 +9721,7 @@
       ]
     },
     "sagra-del-pesce": {
-      "index": 33,
+      "index": 38,
       "title": "Sagra del pesce, Porto di Cagliari",
       "kind": "manifesto",
       "tag": "",
@@ -8544,7 +9915,7 @@
       ]
     },
     "su-civraxiu": {
-      "index": 34,
+      "index": 39,
       "title": "Su Civraxiu, Sanluri",
       "kind": "manifesto",
       "tag": "",
@@ -8749,7 +10120,7 @@
       ]
     },
     "su-coccoi": {
-      "index": 35,
+      "index": 40,
       "title": "Su Coccoi",
       "kind": "manifesto",
       "tag": "",
@@ -8933,7 +10304,7 @@
       ]
     },
     "sa-binnenna": {
-      "index": 36,
+      "index": 41,
       "title": "Sa Binnenna, Monserrato",
       "kind": "manifesto",
       "tag": "",
@@ -9117,7 +10488,7 @@
       ]
     },
     "sagra-del-miele": {
-      "index": 37,
+      "index": 42,
       "title": "Sagra del miele, Montevecchio",
       "kind": "manifesto",
       "tag": "",
@@ -9310,7 +10681,7 @@
       ]
     },
     "5-km-del-poetto": {
-      "index": 38,
+      "index": 43,
       "title": "5 km del Poetto, Cagliari",
       "kind": "manifesto",
       "tag": "",
@@ -9486,7 +10857,7 @@
       ]
     },
     "corsa-campestre": {
-      "index": 39,
+      "index": 44,
       "title": "Corsa campestre, Arborea",
       "kind": "manifesto",
       "tag": "",
@@ -9678,7 +11049,7 @@
       ]
     },
     "santa-chiara": {
-      "index": 40,
+      "index": 45,
       "title": "Santa Chiara, Iglesias",
       "kind": "manifesto",
       "tag": "",
@@ -9872,7 +11243,7 @@
       ]
     },
     "castagne": {
-      "index": 41,
+      "index": 46,
       "title": "Castagne, Aritzo",
       "kind": "manifesto",
       "tag": "",
@@ -10058,7 +11429,7 @@
       ]
     },
     "settimana-santa": {
-      "index": 42,
+      "index": 47,
       "title": "Settimana Santa, Iglesias",
       "kind": "manifesto",
       "tag": "",
@@ -10246,7 +11617,7 @@
       ]
     },
     "corteo-storico": {
-      "index": 43,
+      "index": 48,
       "title": "Corteo storico medioevale, Iglesias",
       "kind": "manifesto",
       "tag": "",
@@ -10434,7 +11805,7 @@
       ]
     },
     "candelieri": {
-      "index": 44,
+      "index": 49,
       "title": "Candelieri, Iglesias",
       "kind": "manifesto",
       "tag": "",
@@ -10614,7 +11985,7 @@
       ]
     },
     "corsa-dei-ceri": {
-      "index": 45,
+      "index": 50,
       "title": "Corsa dei Ceri, Gubbio",
       "kind": "manifesto",
       "tag": "",
@@ -10812,7 +12183,7 @@
       ]
     },
     "la-quintana": {
-      "index": 46,
+      "index": 51,
       "title": "La Quintana, Ascoli Piceno",
       "kind": "manifesto",
       "tag": "",
@@ -10992,7 +12363,7 @@
       ]
     },
     "festa-del-redentore": {
-      "index": 47,
+      "index": 52,
       "title": "Festa del Redentore, Venezia",
       "kind": "manifesto",
       "tag": "",
@@ -11190,7 +12561,7 @@
       ]
     },
     "oh-bej-oh-bej": {
-      "index": 48,
+      "index": 53,
       "title": "Oh bej! Oh bej!, Milano",
       "kind": "manifesto",
       "tag": "",

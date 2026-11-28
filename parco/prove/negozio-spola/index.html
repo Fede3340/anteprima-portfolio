@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spola · Tessuti al telaio a pibiones</title>
+  <meta name="description" content="Tappeti, cuscini e coperte di lana tessuti al telaio con la tecnica a pibiones, dopo il tuo ordine.">
+  <meta name="theme-color" content="#f3ede2">
+  <link rel="preload" href="fonts/host-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="bar">
+    <a class="bar-brand" href="#" aria-label="Spola, torna all’inizio">
+      <img class="bar-mark" src="img/segno.png" alt="" width="560" height="161">
+      <img class="bar-word" src="img/scritta.png" alt="Spola" width="272" height="96">
+    </a>
+    <button class="cart-toggle" type="button" aria-controls="cart" aria-expanded="false">Carrello <span class="cart-count" data-cart-count>0</span></button>
+  </header>
+
+  <main data-home>
+    <section class="hero" aria-labelledby="hero-title">
+      <figure class="hero-pic">
+        <img src="img/aperto-800.webp" srcset="img/aperto-800.webp 800w, img/aperto-1440.webp 1440w" sizes="100vw" width="1440" height="1080" alt="Un telaio di legno con un tappeto a metà: i grani rossi in rilievo sulla lana chiara e la spola col filo blu appoggiata sopra" fetchpriority="high">
+      </figure>
+      <div class="hero-text">
+        <h1 id="hero-title">Si tesse dopo il tuo ordine.</h1>
+        <p class="lead">Tappeti, cuscini e coperte di lana, fatti al telaio con la tecnica a pibiones. Scegli il pezzo, e prima di pagare sai quante settimane di telaio servono.</p>
+        <a class="button" href="#catalogo">Scegli il pezzo</a>
+      </div>
+    </section>
+
+    <div class="grains" aria-hidden="true"></div>
+
+    <section class="how" aria-labelledby="how-title">
+      <h2 id="how-title">Che cosa sono i pibiones</h2>
+      <p>I grani in rilievo che vedi sulla lana si chiamano pibiones, acini. La tessitrice avvolge il filo della trama attorno a un ferro sottile posato sull’ordito; quando il ferro si sfila, il filo resta sollevato e forma il grano. Un disegno si fa così, grano dopo grano.</p>
+    </section>
+
+    <section class="scale" aria-labelledby="scale-title">
+      <h2 id="scale-title">Tutti alla stessa scala</h2>
+      <p>Una foto non dice quanto è grande un tappeto. Qui ogni pezzo è disegnato con la sua misura vera, accanto agli altri. Tocca un pezzo per aprirlo.</p>
+      <div class="scale-box"><svg class="scale-art" viewBox="0 0 560 270" role="img" aria-label="I cinque pezzi disegnati alla stessa scala, con la misura in centimetri" data-scale></svg></div>
+    </section>
+
+    <section class="shop" id="catalogo" aria-labelledby="shop-title">
+      <div class="shop-head">
+        <h2 id="shop-title">I pezzi</h2>
+        <p>Lana sarda, o lino per le tovagliette. Spedizione 12 €, gratis da 200 €.</p>
+      </div>
+      <ul class="grid" data-grid></ul>
+    </section>
+  </main>
+
+  <section class="detail" data-detail hidden></section>
+
+  <footer class="foot">
+    <img class="foot-mark" src="img/segno.png" alt="" width="560" height="161" loading="lazy">
+    <div class="foot-notes">
+      <p>Spola, tessuti al telaio.</p>
+      <p>Il pagamento è finto: nessun ordine parte e niente viene addebitato.</p>
+      <p class="foot-concept">Concept: marchio, prodotti e prezzi sono inventati.</p>
+    </div>
+  </footer>
+
+  <div class="scrim" data-scrim hidden></div>
+  <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+    <div class="cart-head">
+      <h2 id="cart-title">Carrello</h2>
+      <button class="link" type="button" data-cart-close>Chiudi</button>
+    </div>
+    <div class="cart-body">
+      <p class="cart-empty" data-cart-empty>Il carrello è vuoto. Ogni pezzo si comincia a tessere quando arriva l’ordine.</p>
+      <ul class="cart-lines" data-cart-lines></ul>
+    </div>
+    <div class="cart-foot" data-cart-foot>
+      <p class="weeks" data-weeks></p>
+      <dl class="totals">
+        <div><dt>Prodotti</dt><dd data-total-items></dd></div>
+        <div><dt>Spedizione</dt><dd data-total-ship></dd></div>
+        <div class="totals-sum"><dt>Totale</dt><dd data-total-sum></dd></div>
+      </dl>
+      <p class="cart-free" data-cart-free></p>
+      <button class="button cart-pay" type="button" data-cart-pay>Vai al pagamento</button>
+      <p class="cart-note" data-cart-note aria-live="polite"></p>
+    </div>
+  </aside>
+  <p class="visually-hidden" aria-live="polite" data-live></p>
+  <script src="js/shop.js" defer></script>
+</body>
+</html>
