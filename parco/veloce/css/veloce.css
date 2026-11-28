@@ -21,6 +21,18 @@ html.veloce:has(.story:not([hidden])) {
   overflow: hidden;
 }
 
+/* «Entra nel parco» with the islet of the park's crossroads beside it. */
+.parco {
+  gap: 8px;
+  padding-left: 10px;
+}
+
+.parco__isola {
+  width: 36px;
+  height: 32px;
+  object-fit: contain;
+}
+
 /* The sky stays behind the page: one layer for each place, faded into the next as one scrolls. */
 .cielo {
   position: fixed;
@@ -102,6 +114,11 @@ html.veloce:has(.story:not([hidden])) {
 
 .nuvola:not([src]) {
   visibility: hidden;
+}
+
+.isola:not(.is-here) .nuvola,
+.arrivo:not(.is-here) .nuvola {
+  animation-play-state: paused;
 }
 
 /* At night the clouds of the game sink into the dark. */
@@ -201,8 +218,14 @@ html.veloce:has(.story:not([hidden])) {
   height: var(--h);
   translate: calc(-1 * var(--ax)) var(--ay);
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.6s ease, transform 0.9s var(--ease);
+  transform: translateY(-14px);
+  transition: opacity 0.5s ease, transform 0.8s var(--ease);
+  transition-delay: 0.3s;
+}
+
+.cosa:first-child {
+  transform: translateY(28px);
+  transition-delay: 0s;
 }
 
 .cosa::before {
@@ -233,8 +256,43 @@ html.veloce:has(.story:not([hidden])) {
   transform: none;
 }
 
-.isola__suolo.is-in .cosa + .cosa {
-  transition-delay: 0.12s;
+.isola__suolo.is-in .cosa:nth-child(3) {
+  transition-delay: 0.42s;
+}
+
+.isola__suolo.is-in .cosa:nth-child(4) {
+  transition-delay: 0.54s;
+}
+
+/* At rest, on the island one is on, one thing lives: a crown that breathes from its foot, or a flower
+   or a flag that sways on it. */
+.cosa__sagoma {
+  transform-origin: var(--ax) calc(100% - var(--ay));
+}
+
+.is-here .cosa--respira .cosa__sagoma {
+  animation: respira 4.8s ease-in-out infinite alternate;
+}
+
+.is-here .cosa--ondeggia .cosa__sagoma {
+  animation: ondeggia 3.6s ease-in-out infinite alternate;
+}
+
+@keyframes respira {
+  from { transform: scale(1); }
+  to { transform: scale(1.018); }
+}
+
+@keyframes ondeggia {
+  from { transform: rotate(-1.6deg); }
+  to { transform: rotate(1.6deg); }
+}
+
+/* The planes that move with the scroll (veloce.js, drift). */
+.isola__suolo,
+.isola__pancia,
+.nuvola {
+  will-change: transform;
 }
 
 .isola__pancia {
@@ -280,21 +338,14 @@ html.veloce:has(.story:not([hidden])) {
   flex-direction: column;
   align-items: center;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(28px);
   transition: opacity 0.6s ease, transform 0.9s var(--ease);
+  transition-delay: calc(var(--k, 0) * var(--step, 110ms));
 }
 
-.opera.is-in {
+.isola__opere > .opera.is-in {
   opacity: 1;
   transform: none;
-}
-
-.opera:nth-child(3n + 2) {
-  transition-delay: 0.08s;
-}
-
-.opera:nth-child(3n) {
-  transition-delay: 0.16s;
 }
 
 .opera__quadro {
@@ -321,9 +372,23 @@ html.veloce:has(.story:not([hidden])) {
   transition: transform 0.5s var(--ease);
 }
 
-.opera__quadro:hover .opera__cornice,
-.opera__quadro:focus-visible .opera__cornice {
+.opera__cornice::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 26px 30px -20px rgb(0 23 80 / 0.42);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.opera__quadro:is(:hover, :focus-visible, :active) .opera__cornice {
   transform: translateY(-6px);
+}
+
+.opera__quadro:is(:hover, :focus-visible, :active) .opera__cornice::after {
+  opacity: 1;
 }
 
 .opera__immagine {
@@ -426,6 +491,14 @@ html.veloce:has(.story:not([hidden])) {
   will-change: transform;
 }
 
+.opera--finestra[data-side="start"] {
+  transform: translateX(-56px);
+}
+
+.opera--finestra[data-side="end"] {
+  transform: translateX(56px);
+}
+
 /* Shops: a shop window. Each shop stands on its shelf with its tag in front; the shelves of a row meet,
    and the rows of two and of three (one and two on a phone) sit off each other. */
 .opere--vetrina {
@@ -464,6 +537,11 @@ html.veloce:has(.story:not([hidden])) {
 
 .opera--scaffale .work-label__logo {
   display: none;
+}
+
+.opera--scaffale {
+  --step: 90ms;
+  transform: translateY(16px);
 }
 
 /* Software: two large screens on their stands. */
@@ -526,6 +604,13 @@ html.veloce:has(.story:not([hidden])) {
   background: linear-gradient(var(--light) 0 50%, #d5dbea);
 }
 
+/* The phones stand up: they come up from behind their bases, leaning, and straighten. */
+.opera--telefono {
+  --step: 140ms;
+  transform: translateY(40px) rotate(-6deg);
+  transform-origin: 50% 100%;
+}
+
 /* The game: one large picture at night. */
 .opere--quadro {
   display: flex;
@@ -535,6 +620,7 @@ html.veloce:has(.story:not([hidden])) {
 
 .opera--grande {
   width: 100%;
+  transform: scale(0.96);
 }
 
 /* Marks: a plaster wall of small tiles, close and even, with much white round them. */
@@ -546,6 +632,12 @@ html.veloce:has(.story:not([hidden])) {
   border-radius: 8px;
   background: var(--light);
   box-shadow: 0 20px 30px -24px rgb(0 23 80 / 0.5), inset 0 -5px 0 rgb(0 23 80 / 0.06);
+}
+
+/* The tiles come in a wave. */
+.opera--marchio {
+  --step: 55ms;
+  transform: scale(0.9);
 }
 
 .opera--marchio .opera__cornice {
@@ -586,6 +678,22 @@ html.veloce:has(.story:not([hidden])) {
   width: calc(var(--size) * 100%);
   margin: 0 auto;
   border-radius: 2px;
+  transform-origin: 50% 0;
+}
+
+/* The posters come down onto the line; on the island one is on, the line sways by a degree. */
+.opera--manifesto {
+  transform: translateY(-36px);
+}
+
+.isola--manifesti.is-here .opera--manifesto.is-in .opera__quadro {
+  animation: ondeggia-fune 5s ease-in-out infinite alternate;
+  animation-delay: calc(var(--k, 0) * 110ms + 1s);
+}
+
+@keyframes ondeggia-fune {
+  from { transform: rotate(-0.8deg); }
+  to { transform: rotate(0.8deg); }
 }
 
 .opera--manifesto .opera__cornice {
@@ -593,8 +701,9 @@ html.veloce:has(.story:not([hidden])) {
   border-radius: 2px;
 }
 
+/* The whole poster, in its own proportions (its width and height in the page). */
 .opera--manifesto .opera__immagine {
-  aspect-ratio: 3 / 4;
+  aspect-ratio: auto;
   border-radius: 1px;
 }
 
@@ -610,8 +719,26 @@ html.veloce:has(.story:not([hidden])) {
   transition: transform 0.5s var(--ease);
 }
 
-.opera__quadro:hover .opera__mollette {
+.opera__quadro:is(:hover, :focus-visible, :active) .opera__mollette {
   transform: translateY(-6px);
+}
+
+/* What I do and Contacts: the words come in from the side, one after the other. */
+.parole li,
+.scrivimi > * {
+  opacity: 0;
+  transform: translateX(-28px);
+  transition: opacity 0.6s ease, transform 0.9s var(--ease);
+  transition-delay: calc(var(--k, 0) * 110ms);
+}
+
+.scrivimi > * {
+  transform: translateY(24px);
+}
+
+:is(.parole li, .scrivimi > *).is-in {
+  opacity: 1;
+  transform: none;
 }
 
 /* What I do: the places of the work in large letters, each with the colour of its island. */
@@ -949,15 +1076,20 @@ html.veloce:has(.story:not([hidden])) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nuvola {
-    animation: none;
+  .nuvola,
+  .cosa__sagoma,
+  .opera__quadro {
+    animation: none !important;
   }
 
   .cosa,
+  .cosa:first-child,
   .opera,
   .opera__cornice,
-  .opera__mollette {
-    transform: none;
+  .opera__mollette,
+  .parole li,
+  .scrivimi > * {
+    transform: none !important;
     transition: opacity 0.3s ease;
   }
 }

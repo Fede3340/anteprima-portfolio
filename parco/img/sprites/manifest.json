@@ -879,5 +879,83 @@
    "y": 0.9936
   },
   "larghezza_m": 8
+ },
+ "cipresso": {
+  "file": "cipresso.webp",
+  "larghezza": 484,
+  "altezza": 1692,
+  "file_1024": "cipresso-1024.webp",
+  "larghezza_1024": 242,
+  "altezza_1024": 846,
+  "altezza_m": 5.0,
+  "appoggio": {
+   "x": 0.4969,
+   "y": 0.9953
+  }
+ },
+ "bancarella": {
+  "file": "bancarella.webp",
+  "larghezza": 1256,
+  "altezza": 1357,
+  "file_1024": "bancarella-1024.webp",
+  "larghezza_1024": 628,
+  "altezza_1024": 678,
+  "altezza_m": 2.4,
+  "appoggio": {
+   "x": 0.4654,
+   "y": 0.9941
+  }
+ },
+ "fungo": {
+  "file": "fungo.webp",
+  "larghezza": 1045,
+  "altezza": 1305,
+  "file_1024": "fungo-1024.webp",
+  "larghezza_1024": 522,
+  "altezza_1024": 652,
+  "altezza_m": 2.0,
+  "appoggio": {
+   "x": 0.5722,
+   "y": 0.9939
+  }
+ },
+ "rose": {
+  "file": "rose.webp",
+  "larghezza": 1480,
+  "altezza": 878,
+  "file_1024": "rose-1024.webp",
+  "larghezza_1024": 740,
+  "altezza_1024": 439,
+  "altezza_m": 1.0,
+  "appoggio": {
+   "x": 0.5003,
+   "y": 0.9897
+  }
+ },
+ "megafono": {
+  "file": "megafono.webp",
+  "larghezza": 708,
+  "altezza": 1600,
+  "file_1024": "megafono-1024.webp",
+  "larghezza_1024": 354,
+  "altezza_1024": 800,
+  "altezza_m": 2.8,
+  "appoggio": {
+   "x": 0.3206,
+   "y": 0.9944
+  }
+ },
+ "ulivo": {
+  "file": "ulivo.webp",
+  "larghezza": 768,
+  "altezza": 1704,
+  "file_1024": "ulivo-1024.webp",
+  "larghezza_1024": 384,
+  "altezza_1024": 852,
+  "altezza_m": 4.5,
+  "appoggio": {
+   "x": 0.4902,
+   "y": 0.9953
+  }
  }
 }

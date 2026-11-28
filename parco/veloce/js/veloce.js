@@ -17,14 +17,14 @@ const silent = { play() {}, quiet() {} };
 const MOODS = {
   ingresso: { hour: 0, accent: '#ffa86a' },
   siti: { hour: 0.3, accent: '#f5a98a' },
-  negozi: { hour: 1, accent: '#f2836b' },
-  programmi: { hour: 0.8, accent: '#3298fa' },
-  app: { hour: 1.15, accent: '#5a8fe0' },
-  videogioco: { hour: 3, accent: '#2a4fd6' },
-  marchi: { hour: 1.7, accent: '#f7c35f' },
-  manifesti: { hour: 2, accent: '#e98fb5' },
-  google: { hour: 2, accent: '#8d7bd9' },
-  contatti: { hour: 2.4, accent: '#ffc27a' },
+  negozi: { hour: 1, accent: '#f5a47a' },
+  programmi: { hour: 0.8, accent: '#6fb1ee' },
+  app: { hour: 1.15, accent: '#4f72c4' },
+  videogioco: { hour: 3, accent: '#a99ade' },
+  marchi: { hour: 1.7, accent: '#f0d6a8' },
+  manifesti: { hour: 2, accent: '#c7a8e2' },
+  google: { hour: 2, accent: '#f39a5a' },
+  contatti: { hour: 2.4, accent: '#f5d4a8' },
   // «Che cosa faccio» stands on the island of the arrival in the park; here it comes after the works,
   // so it keeps the accent of the arrival and the hour of the islands round it.
   servizi: { hour: 2, accent: '#ffa86a' },
@@ -68,65 +68,77 @@ const luminance = (colour) => {
 };
 const textOn = (colour) => ((luminance(colour) + 0.05) / (luminance('#001750') + 0.05) >= 4.5 ? '#001750' : '#f6f8fb');
 
-// What stands on each island: its sculpture and its corner of garden, each at a share of the width of
-// the island. The name of the island stands on the other side, so that nothing tall comes near it.
+// What stands on each island: its sculpture and its corner of the park as in js/world/park.js
+// (GARDENS), two or three things at most, each at a share of the width of the island: [pictures, the
+// first that exists is used; place; size where smaller than its own]. The name of the island stands on
+// the other side, so that nothing tall comes near it. idle: the one thing that lives when nobody
+// scrolls (a crown that breathes, a flower that sways); none where the works move already.
 const WORLDS = {
-  siti: { layout: 'finestre', head: 'end', statue: 0.24, things: [['albero-doppio', 0.07], ['cespuglio-2', 0.4]] },
-  negozi: { layout: 'vetrina', head: 'start', statue: 0.72, things: [['cassette', 0.55], ['albero-frutti', 0.93]] },
-  programmi: { layout: 'schermi', head: 'end', statue: 0.12, things: [['siepe-squadrata', 0.36], ['gradini', 0.5]] },
-  app: { layout: 'telefoni', head: 'start', statue: 0.86, things: [['canne', 0.6], ['tifa', 0.67]] },
-  videogioco: { layout: 'quadro', head: 'end', statue: 0.3, things: [['lampione', 0.1], ['scivolo', 0.52]] },
-  marchi: { layout: 'muro', head: 'start', statue: 0.9, things: [['aiuola', 0.66], ['fiore-2', 0.55]] },
-  manifesti: { layout: 'fune', head: 'end', statue: 0.36, things: [['bandiera', 0.08], ['albero-medio', 0.56]] },
-  servizi: { layout: 'parole', head: 'start', statue: 0.94, things: [['albero-grande', 0.78], ['panchina', 0.6]] },
-  google: { layout: 'corto', head: 'end', statue: 0.14, things: [['albero-piccolo', 0.32], ['cespuglio-1', 0.44]] },
-  contatti: { layout: 'scrivimi', head: 'start', statue: 0.66, things: [['cassetta-posta', 0.82], ['lampione', 0.96]] },
+  siti: { layout: 'finestre', head: 'end', statue: 0.26, things: [[['ulivo', 'albero-piccolo'], 0.07], [['siepe-squadrata'], 0.44]], idle: 0 },
+  negozi: { layout: 'vetrina', head: 'start', statue: 0.72, things: [[['bancarella', 'cassette'], 0.54], [['albero-frutti'], 0.94]], idle: 1 },
+  programmi: { layout: 'schermi', head: 'end', statue: 0.12, things: [[['siepe-squadrata'], 0.34], [['aiuola'], 0.5]] },
+  app: { layout: 'telefoni', head: 'start', statue: 0.86, things: [[['fiore-2'], 0.56, 0.55], [['fiore-1'], 0.63, 0.45], [['albero-piccolo'], 0.72]], idle: 0 },
+  videogioco: { layout: 'quadro', head: 'end', statue: 0.36, things: [[['albero-doppio'], 0.06], [['albero-grande'], 0.17], [['fungo', 'cespuglio-2'], 0.56]], idle: 1 },
+  marchi: { layout: 'muro', head: 'start', statue: 0.9, things: [[['aiuola'], 0.62], [['rose', 'fiore-1'], 0.74, 0.6]], idle: 1 },
+  manifesti: { layout: 'fune', head: 'end', statue: 0.36, things: [[['bandiera'], 0.08], [['cipresso', 'albero-piccolo'], 0.54]] },
+  servizi: { layout: 'parole', head: 'start', statue: 0.94, things: [[['albero-grande'], 0.78], [['cespuglio-1'], 0.62]], idle: 0 },
+  google: { layout: 'corto', head: 'end', statue: 0.14, things: [[['tifa'], 0.3], [['erba-alta'], 0.36], [['megafono', 'bandiera'], 0.52]] },
+  contatti: { layout: 'scrivimi', head: 'start', statue: 0.6, things: [[['cassetta-posta'], 0.46], [['panchina'], 0.76], [['albero-medio'], 0.95]], idle: 2 },
 };
 
-// The colours of the garden, put on the white plaster of the cut-outs: soft green crowns over pale
-// wood, green grass, flowers in the colours of the brand. [colour, how much, where it stops from the
-// top]; under that the thing keeps its plaster.
-const LEAF = '#8fc98a';
-const GRASS = '#a6d39a';
-const COLOURS = {
-  'albero-grande': [LEAF, 0.6, 0.62],
-  'albero-medio': [LEAF, 0.6, 0.6],
-  'albero-piccolo': [LEAF, 0.6, 0.58],
-  'albero-doppio': [LEAF, 0.6, 0.56],
-  'albero-frutti': [LEAF, 0.6, 0.6],
-  'cespuglio-1': [LEAF, 0.55, 1],
-  'cespuglio-2': [LEAF, 0.55, 1],
-  'siepe-squadrata': [LEAF, 0.55, 1],
-  canne: [GRASS, 0.5, 1],
-  tifa: [GRASS, 0.5, 1],
-  'fiore-2': ['#f7c35f', 0.75, 0.46],
-  aiuola: ['#e98fb5', 0.6, 0.5],
-  cassette: ['#f2836b', 0.5, 1],
-  'cassetta-posta': ['#ffc27a', 0.7, 0.5],
-  bandiera: ['#e98fb5', 0.75, 0.3],
+// The colours of the living things, the same as in the park (TINTS in js/world/layout.js), and how
+// each kind wears them (ROLES in js/world/light.js): [names, colour, how much, colour of its lower part
+// (trunk, stem, pot), where in the picture's height that part ends, from the foot]. Flowers, beds and
+// flags wear the colour of their island; furniture a neutral tone a little darker than the ground.
+// The newer pictures of the park (cipresso, ulivo, rose, fungo, bancarella, megafono) are drawn in
+// their own colours and keep them. sways: what moves at rest by swaying, not by breathing.
+const TINTS = {
+  crown: '#8aa781', forest: '#7a9a76', hedge: '#7f9c77', bush: '#93ad88', grass: '#a0b88c',
+  stem: '#8ea47c', reedHead: '#b1916f', trunk: '#a98a74', stone: '#b8b2ac', furniture: '#9ba0c8',
 };
-const PLASTER = '#ffffff';
+const ISLAND = 'accent';
+const ROLES = [
+  [/^albero-grande/, TINTS.crown, 0.8, TINTS.trunk, 0.38],
+  [/^albero-medio/, TINTS.crown, 0.8, TINTS.trunk, 0.42],
+  [/^albero-piccolo/, TINTS.crown, 0.8, TINTS.trunk, 0.5],
+  [/^albero-frutti/, TINTS.crown, 0.8, TINTS.trunk, 0.47],
+  [/^(albero-doppio|boschetto)/, TINTS.forest, 0.82, TINTS.trunk, 0.5],
+  [/^siepe/, TINTS.hedge, 0.82],
+  [/^cespugli/, TINTS.bush, 0.78],
+  [/^(ciuffo|erba|ninfea)/, TINTS.grass, 0.8],
+  [/^(canne|tifa)/, TINTS.reedHead, 0.78, TINTS.stem, 0.62],
+  [/^fiore/, ISLAND, 0.8, TINTS.stem, 0.52],
+  [/^aiuola/, ISLAND, 0.7, TINTS.stone, 0.45],
+  [/^bandiera/, ISLAND, 0.75],
+  [/^(panchina|gradini|scivolo|cassette|cassetta-posta)/, TINTS.furniture, 0.3],
+];
+const SWAYS = /^(fiore|rose|bandiera)/;
 const CLOUDS = ['nuvola-1', 'nuvola-2', 'nuvola-3'];
 
 const metre = () => (innerWidth < 768 ? 36 : 54);
 
 let sprites = {};
+const soft = (colour, amount) => rgb(mix([255, 255, 255], hex(colour), amount));
 // A cut-out of the park, its foot on the floor where the top edge of the island is: a plaster picture
-// coloured by multiplying it with its colours, and its soft shadow on the ground.
-function sprite(name, x, colour) {
+// coloured by multiplying it with its colours, and its soft shadow on the ground. role: its colouring
+// where it is not that of its kind (the sculpture, in the colour of its island).
+function sprite(name, x, island, { size = 1, role } = {}) {
   const info = sprites[name];
-  const tall = Math.round(Math.min(info.altezza_m ?? 1, 5.5) * metre());
+  const tall = Math.round(Math.min(info.altezza_m ?? 1, 5.5) * size * metre());
   const wide = Math.round(tall * (info.larghezza_1024 / info.altezza_1024));
-  const [tint, amount, until] = colour ?? COLOURS[name] ?? [PLASTER, 0, 1];
-  const on = rgb(mix([255, 255, 255], hex(tint), amount));
+  const [, colour, amount = 0, lower, split = 0] = role ?? ROLES.find(([pattern]) => pattern.test(name)) ?? [];
+  const on = colour ? soft(colour === ISLAND ? MOODS[island].accent : colour, amount) : '#fff';
+  const under = lower ? soft(lower, amount) : on;
+  const at = (1 - split) * 100;
   const node = element('span', { className: 'cosa' }, [element('span', { className: 'cosa__sagoma' })]);
   node.style.cssText = `--w:${wide}px;--h:${tall}px;--x:${x * 100}%;--u:${x};`
     + `--ax:${(info.appoggio?.x ?? 0.5) * 100}%;--ay:${(1 - (info.appoggio?.y ?? 1)) * 100}%;`
-    + `--tint:linear-gradient(${on} ${Math.max(0, until - 0.04) * 100}%, ${until < 1 ? '#fff' : on} ${until * 100}%)`;
+    + `--tint:linear-gradient(${on} ${at - 3}%, ${under} ${at + 3}%)`;
   // The light picture (a third of the width) where it is enough for the screen.
   const light = Math.round(info.larghezza_1024 / 3);
   node.dataset.sprite = wide * devicePixelRatio <= light ? `img/sprites-light/${name}.webp` : `img/sprites/${info.file_1024}`;
   node.dataset.tall = tall;
+  if (SWAYS.test(name)) node.dataset.sways = '';
   return node;
 }
 
@@ -180,9 +192,11 @@ function island(id, title, body, { note, count } = {}, index = 0) {
     element('h2', { className: 'zone-name', id: `${id}-nome`, textContent: title }),
     count ? element('p', { className: 'isola__conta', textContent: count }) : '',
   ]);
+  const things = world.things.map(([names, x, size]) => sprite(names.find((name) => sprites[name]), x, id, { size }));
+  things[world.idle]?.classList.add(things[world.idle].dataset.sways ? 'cosa--ondeggia' : 'cosa--respira');
   const ground = element('div', { className: 'isola__suolo', ariaHidden: 'true' }, [
-    sprite(id, world.statue, [MOODS[id].accent, 0.5, 1]),
-    ...world.things.map(([name, x]) => sprite(name, x)),
+    sprite(id, world.statue, id, { role: [null, MOODS[id].accent, 0.5] }),
+    ...things,
   ]);
   const room = Math.max(...[...ground.children].map((thing) => Number(thing.dataset.tall)));
   const land = element('div', { className: `isola__terra isola__terra--${world.layout}` }, [ground, note ?? '', ...body, belly()]);
@@ -388,16 +402,19 @@ function wake(sections) {
       near.unobserve(entry.target);
     }
   }, { rootMargin: '0px 0px 35% 0px' });
+  // What comes into sight together arrives one after the other, in the order of the page.
   const arrive = new IntersectionObserver((entries) => {
+    let order = 0;
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
+      entry.target.style.setProperty('--k', order++);
       entry.target.classList.add('is-in');
       arrive.unobserve(entry.target);
     }
   }, { rootMargin: '0px 0px -8% 0px' });
   for (const section of sections) {
     section.querySelectorAll('img[data-src], .cosa, video').forEach((node) => near.observe(node));
-    section.querySelectorAll('.isola__suolo, .opera').forEach((node) => arrive.observe(node));
+    section.querySelectorAll('.isola__suolo, .opera, .parole li, .scrivimi > *').forEach((node) => arrive.observe(node));
   }
 
   // The film plays, without sound, while it is in sight, unless motion is to be kept down.
@@ -410,39 +427,50 @@ function wake(sections) {
   document.querySelectorAll('.corto__video').forEach((video) => films.observe(video));
 }
 
-// What moves with the scroll, and only with it: the sky fading from one place to the next, the pages
-// running inside the windows of the sites, the clouds of the sky a little slower than the page.
+// What moves with the scroll, and only with it, in planes at their own pace: the sky still behind,
+// fading from one place to the next; the clouds of the sky a little slower than the page; the garden
+// sliding a few pixels sideways over its floor, as things at another distance do; the cloud under the
+// island a little slower; the works with the page; the pages running inside the windows of the sites.
 function drift(sections, layers) {
-  const pages = [...document.querySelectorAll('.finestra__pagina')];
-  const clouds = [...document.querySelectorAll('.nuvola')];
+  const planes = sections.map((section) => ({
+    section,
+    clouds: [...section.querySelectorAll('.nuvola')],
+    garden: section.querySelector('.isola__suolo'),
+    belly: section.querySelector('.isola__pancia'),
+    pages: [...section.querySelectorAll('.finestra__pagina')],
+  }));
   let queued = false;
   const frame = () => {
     queued = false;
     const high = innerHeight;
-    const tops = sections.map((section) => section.getBoundingClientRect().top);
+    const side = innerWidth < 768 ? 7 : 14;
+    const boxes = sections.map((section) => section.getBoundingClientRect());
     let at = 0;
-    tops.forEach((top, i) => {
-      if (top < high * 0.9) at = i;
+    boxes.forEach((box, i) => {
+      if (box.top < high * 0.9) at = i;
     });
-    const fade = at ? smooth(high * 0.9 - tops[at], 0, high * 0.6) : 1;
-    const still = reducedMotion.matches;
-    const runs = still ? [] : pages.map((img) => {
-      const box = img.parentElement.getBoundingClientRect();
-      if (box.bottom < 0 || box.top > high) return null;
-      const reach = img.offsetHeight - box.height;
-      const through = Math.min(1, Math.max(0, (high - box.bottom) / Math.max(1, high - box.height)));
-      return [img, -Math.max(0, reach) * smooth(through, 0.1, 0.9)];
-    });
-    const lifts = still ? [] : clouds.map((cloud) => {
-      const box = cloud.parentElement.getBoundingClientRect();
-      if (box.bottom < 0 || box.top > high) return null;
-      return [cloud, box.top * 0.14];
+    const fade = at ? smooth(high * 0.9 - boxes[at].top, 0, high * 0.6) : 1;
+    // Read everything first, then write.
+    const moves = reducedMotion.matches ? [] : planes.flatMap((plane, i) => {
+      const box = boxes[i];
+      if (box.bottom < 0 || box.top > high) return [];
+      const off = (box.top + box.height / 2 - high / 2) / high;
+      return [
+        ...plane.clouds.map((cloud) => [cloud, 'translate', `0 ${(-off * high * 0.16).toFixed(1)}px`]),
+        plane.garden && [plane.garden, 'transform', `translate3d(${(off * side).toFixed(1)}px, 0, 0)`],
+        plane.belly && [plane.belly, 'transform', `translate3d(0, ${(-off * 18).toFixed(1)}px, 0)`],
+        ...plane.pages.map((img) => {
+          const view = img.parentElement.getBoundingClientRect();
+          const reach = Math.max(0, img.offsetHeight - view.height);
+          const through = Math.min(1, Math.max(0, (high - view.bottom) / Math.max(1, high - view.height)));
+          return [img, 'transform', `translate3d(0, ${(-reach * smooth(through, 0.1, 0.9)).toFixed(1)}px, 0)`];
+        }),
+      ].filter(Boolean);
     });
     layers.forEach((layer, i) => {
       layer.style.opacity = i === at ? fade : i === at - 1 ? 1 : 0;
     });
-    for (const [img, y] of runs.filter(Boolean)) img.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
-    for (const [cloud, y] of lifts.filter(Boolean)) cloud.style.translate = `0 ${y.toFixed(1)}px`;
+    for (const [node, property, value] of moves) node.style[property] = value;
   };
   const queue = () => {
     if (queued) return;
@@ -451,7 +479,7 @@ function drift(sections, layers) {
   };
   addEventListener('scroll', queue, { passive: true });
   addEventListener('resize', queue);
-  for (const img of pages) img.addEventListener('load', queue);
+  for (const img of document.querySelectorAll('.finestra__pagina')) img.addEventListener('load', queue);
   frame();
 }
 
@@ -502,6 +530,8 @@ function bar(sections) {
     const before = sections[at - 1];
     const after = sections[at + 1];
     name.textContent = section.dataset.title;
+    // Only the island one is on lives at rest: its clouds and its one moving thing.
+    sections.forEach((each) => each.classList.toggle('is-here', each === section));
     nav.style.setProperty('--mid', section.style.getPropertyValue('--accent'));
     prev.hidden = !before;
     prevTo.textContent = before?.dataset.title ?? '';
