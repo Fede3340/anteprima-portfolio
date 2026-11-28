@@ -55,24 +55,35 @@ const others = (work) => {
   return different.length ? different : gallery;
 };
 
+// Works made of screens: cutting their pictures cuts words.
+const screens = (work) => !['marchi', 'manifesti', 'videogioco'].includes(work.chapter);
+
 // The boards, in order. Each is built round something to look at, a picture of the work, its colours
 // or its letters, with the words of its phase beside it. A phase with nothing to look at borrows a
 // picture of the work not shown anywhere else, then an enlarged part of one.
 const LIMIT = 700;
+const LIMIT_WIDE = 420;
 const PARTS = [[0, 0, 1, 0.55], [0, 0.45, 1, 0.55], [0.2, 0.2, 0.6, 0.6]];
-const length = (blocks) => blocks.reduce((total, block) => total + (block.p?.length ?? 0) + (block.items?.length ?? 0) * 50, 0);
+// The room words take, in characters: a row, a label or a direction costs its words and a little more.
+const length = (blocks) => blocks.reduce((total, block) => total + (block.p?.length ?? 0) + (block.items ?? [])
+  .reduce((sum, item) => sum + (typeof item === 'string' ? 30 : 80) + (typeof item === 'string' ? item.length : (item.name?.length ?? 0) + (item.p?.length ?? 0)), 0), 0);
 // The whole page of the work, to scroll in a window on the board of the result: a capture of the page
 // on the computer or on the phone, or the page on the phone that the work already has.
 const shot = (value) => (typeof value === 'string' ? { src: value } : value);
+// Where the work has a version that can be used, `live`, its address (relative to the site or not).
 function pageOf(work, stacked) {
-  if (work.full?.phone && (stacked || !work.full.desktop)) return { ...shot(work.full.phone), frame: 'phone' };
-  if (work.full?.desktop) return { ...shot(work.full.desktop), frame: 'browser' };
-  if (TALL[work.id]) return { src: `img/work/${work.id}-tall.webp`, w: TALL[work.id], frame: 'phone' };
+  const live = work.live ? new URL(work.live, document.baseURI).href : undefined;
+  const phone = Boolean(work.full?.phone && (stacked || !work.full.desktop));
+  if (work.full) return { ...shot(phone ? work.full.phone : work.full.desktop), frame: phone ? 'phone' : 'browser', live };
+  if (TALL[work.id]) return { src: `img/work/${work.id}-tall.webp`, w: TALL[work.id], frame: 'phone', live };
+  if (live) return { ...coverOf(work), frame: 'browser', live };
   return null;
 }
 const position = (item) => (typeof item === 'number' ? item : item.i);
 
 function plan(work, stacked, row) {
+  // A wide frame has a narrow column for the words beside an upright picture.
+  const limit = stacked ? LIMIT : LIMIT_WIDE;
   const gallery = work.gallery ?? [];
   const sections = phases(work);
   const images = sections.flatMap((section) => section.blocks).filter((block) => block.kind === 'images');
@@ -98,7 +109,18 @@ function plan(work, stacked, row) {
       own.push({ phase: section.phase, words, visual });
       words = [];
     };
-    for (const block of section.blocks) {
+    // A list too long for one board is cut into parts that fit, each going on to the next board.
+    const blocks = section.blocks.flatMap((block) => {
+      if (!['directions', 'list', 'facts'].includes(block.kind) || length([block]) <= limit) return [block];
+      const parts = [];
+      for (const item of block.items) {
+        const last = parts.at(-1);
+        if (last && length([{ ...last, items: [...last.items, item] }]) <= limit) last.items.push(item);
+        else parts.push({ ...block, items: [item] });
+      }
+      return parts;
+    });
+    for (const block of blocks) {
       if (block.kind === 'images') {
         const entries = block.items.filter((item) => gallery[position(item)])
           .map((item) => (typeof item === 'number' ? gallery[item] : { crop: true, image: gallery[item.i], box: item.box, caption: item.caption }));
@@ -131,14 +153,14 @@ function plan(work, stacked, row) {
       }
     }
     const last = own.at(-1);
-    if (words.length && last && length(last.words) + length(words) <= LIMIT) last.words.push(...words);
+    if (words.length && last && length(last.words) + length(words) <= limit) last.words.push(...words);
     else if (words.length) add(borrow());
     // Too many words for one board: the rest go on to a board of their own, with something to look at.
     for (let at = 0; at < own.length; at++) {
       const board = own[at];
-      if (board.words.length < 2 || length(board.words) <= LIMIT) continue;
+      if (board.words.length < 2 || length(board.words) <= limit) continue;
       let cut = 1;
-      while (cut < board.words.length && length(board.words.slice(0, cut + 1)) <= LIMIT) cut += 1;
+      while (cut < board.words.length && length(board.words.slice(0, cut + 1)) <= limit) cut += 1;
       own.splice(at + 1, 0, { phase: section.phase, words: board.words.slice(cut), visual: borrow() });
       board.words = board.words.slice(0, cut);
     }
@@ -166,6 +188,15 @@ function plan(work, stacked, row) {
     }
     boards.push(...own);
   }
+  // On a narrow screen a screenshot of the computer would be cut through its words or drawn small:
+  // where the work has its whole page on the phone, each such board shows a part of that page instead,
+  // one after the other down the page.
+  const page = stacked && work.full?.phone && { ...shot(work.full.phone), alt: `La pagina di ${work.title} sul telefono` };
+  const desk = ({ visual }) => (visual.kind === 'pics' ? visual.items.length === 1 && !portrait(visual.items[0]) : visual.kind === 'crop' && !visual.caption && !portrait(visual.image));
+  const wide = page ? boards.filter((board) => !board.cover && desk(board)) : [];
+  wide.forEach((board, order) => {
+    board.visual = { kind: 'crop', image: page, box: [0, order / wide.length, 1, 1 / wide.length], slice: true };
+  });
   return boards;
 }
 
@@ -347,24 +378,30 @@ function visual(board, work, zoom) {
   if (kind === 'window') {
     const { page, also } = board.visual;
     // The whole page is heavy: it is fetched only when its board comes into view. Never wider than its
-    // own pixels allow.
+    // own pixels allow. Where the work can be used, the working version comes over it once loaded.
     const img = element('img', { alt: `La pagina intera di ${work.title}`, decoding: 'async', draggable: false });
     img.dataset.src = asset(page.src);
     img.addEventListener('load', () => { img.style.maxWidth = `${Math.floor((img.naturalWidth * 1.1) / devicePixelRatio)}px`; }, { once: true });
-    const inside = element('div', { className: 'case-screen__page' }, [img]);
-    const bar = page.frame === 'browser' && work.link ? [element('div', { className: 'case-screen__bar', textContent: new URL(work.link.href).host })] : [];
-    const screen = element('div', { className: `case-screen case-screen--${page.frame}` }, [...bar, inside]);
-    const parts = [screen];
-    // A version that can be used is loaded only when asked for: it weighs.
-    if (work.live) {
-      const trial = element('button', { className: 'case-try', type: 'button', textContent: 'Provalo' });
-      trial.addEventListener('click', () => {
-        inside.replaceChildren(element('iframe', { src: work.live, title: work.title, loading: 'eager' }));
-        trial.remove();
-      });
-      parts.push(trial);
-    }
-    return element('div', { className: 'case-pics case-window-holder' }, [...parts, ...also.map((image) => pic(image, zoom))]);
+    const view = element('div', { className: 'case-screen__view' }, [element('div', { className: 'case-screen__page' }, [img])]);
+    // The address written in the bar is the one people know: the public site, or the working version
+    // where it lives elsewhere; a version kept in this site has none.
+    const address = work.link?.href ?? (page.live && new URL(page.live).origin !== location.origin ? page.live : undefined);
+    const controls = page.live ? [
+      element('button', { className: 'case-screen__full', type: 'button', textContent: 'Schermo intero' }),
+      element('a', { className: 'case-screen__out', href: page.live, target: '_blank', rel: 'noopener' }, [
+        element('span', { className: 'case-screen__long', textContent: 'Apri in una scheda nuova' }),
+        element('span', { className: 'case-screen__short', textContent: 'Nuova scheda' }),
+      ]),
+      element('button', { className: 'case-screen__shut', type: 'button', textContent: '×' }),
+    ] : [];
+    controls.at(-1)?.setAttribute('aria-label', 'Esci dallo schermo intero');
+    const bar = address || controls.length ? [element('div', { className: 'case-screen__bar' }, [
+      ...(address ? [element('span', { className: 'case-screen__host', textContent: new URL(address).host })] : []),
+      ...controls,
+    ])] : [];
+    const screen = element('div', { className: `case-screen case-screen--${page.frame}` }, [...bar, view]);
+    screen.live = page.live;
+    return element('div', { className: 'case-pics case-window-holder' }, [screen, ...also.map((image) => pic(image, zoom))]);
   }
   if (kind === 'palette') {
     const { poster, type, items } = board.visual;
@@ -394,13 +431,15 @@ function draw(box, { w, h, fit = 'contain', focus = [0.5, 0], part }) {
   const { image } = box;
   const most = 1.1 / devicePixelRatio;
   const [px, py, pw, ph] = part ?? [0, 0, 1, 1];
-  const scale = fit === 'contain'
-    ? Math.min(w / image.w, h / image.h, most)
+  // 'whole part': the part is shown entire, the box shaped on it.
+  const entire = fit === 'whole part';
+  const scale = fit === 'contain' || entire
+    ? Math.min(w / (image.w * pw), h / (image.h * ph), most)
     : Math.min(Math.max(w / (image.w * pw), h / (image.h * ph)), most);
   const drawnW = image.w * scale;
   const drawnH = image.h * scale;
-  const boxW = Math.floor(fit === 'contain' ? drawnW : Math.min(w, drawnW));
-  const boxH = Math.floor(fit === 'contain' ? drawnH : Math.min(h, drawnH));
+  const boxW = Math.floor(fit === 'contain' ? drawnW : Math.min(w, entire ? drawnW * pw : drawnW));
+  const boxH = Math.floor(fit === 'contain' ? drawnH : Math.min(h, entire ? drawnH * ph : drawnH));
   box.style.width = `${boxW}px`;
   box.style.height = `${boxH}px`;
   const img = box.querySelector('img');
@@ -449,6 +488,8 @@ export function createStory(root, { works, sound, onClose }) {
     zoomed,
   );
   root.addEventListener('dragstart', (event) => event.preventDefault());
+  // What happens in the frame stays in the frame: no click, press or wheel in it reaches the park.
+  for (const type of ['pointerdown', 'pointerup', 'click', 'wheel']) frame.addEventListener(type, (event) => event.stopPropagation());
 
   let work;
   let boards = [];
@@ -458,6 +499,25 @@ export function createStory(root, { works, sound, onClose }) {
   const passName = (board) => (board.pass.way === 'next' ? 'Prossimo progetto' : 'Progetto prima');
   let at = 0;
   let mode;
+
+  // A working version in its window: scrolled and clicked in place, larger with one click, or in a
+  // tab of its own. Until it has loaded, the capture of its page stays under it.
+  function wake(screen) {
+    if (!screen.live || screen.querySelector('iframe')) return;
+    const frame = element('iframe', { src: screen.live, title: `${work.title}, versione da usare` });
+    frame.addEventListener('load', () => screen.classList.add('is-live'), { once: true });
+    screen.querySelector('.case-screen__view').append(frame);
+  }
+  const unfull = () => {
+    const open = root.querySelector('.case-screen.is-full');
+    open?.classList.remove('is-full');
+    return Boolean(open);
+  };
+  frame.addEventListener('click', (event) => {
+    const screen = event.target.closest('.case-screen');
+    if (event.target.closest('.case-screen__full')) screen.classList.add('is-full');
+    else if (event.target.closest('.case-screen__shut')) unfull();
+  });
 
   // The picture at full size, over everything, until touched again.
   function zoom(image) {
@@ -485,10 +545,10 @@ export function createStory(root, { works, sound, onClose }) {
     unzoom();
   });
   addEventListener('keydown', (event) => {
-    if (zoomed.hidden || event.key !== 'Escape') return;
+    if (event.key !== 'Escape' || (zoomed.hidden && !root.querySelector('.case-screen.is-full'))) return;
     event.stopImmediatePropagation();
     event.preventDefault();
-    unzoom();
+    if (!unfull()) unzoom();
   }, true);
 
   // Sizes every board for the frame at hand. The picture takes most of the board, the words the rest:
@@ -503,9 +563,12 @@ export function createStory(root, { works, sound, onClose }) {
     const { kind, box: part } = board.visual;
     // An upright picture, or a part of one, stands beside the words rather than above them.
     const upright = (kind === 'pics' || kind === 'crop') && portrait(boxes[0].image);
-    const caption = shown.querySelector(':scope > .case-caption') ? 40 : 0;
+    const caption = (shown.querySelector(':scope > .case-caption')?.offsetHeight ?? -20) + 20;
     // A page is cut at its foot; a cover or the next work's cover keeps its middle.
-    const fill = kind === 'crop' ? { fit: 'part', part } : { fit: 'cover', focus: board.cover || board.pass ? [0.5, 0.5] : [0.5, 0] };
+    // A part of a screen chosen in the data is shown entire, so that no word of it is cut; any other
+    // part fills its room.
+    const cut = kind === 'crop' && board.visual.caption && screens(work) ? 'whole part' : 'part';
+    const fill = kind === 'crop' ? { fit: cut, part } : { fit: 'cover', focus: board.cover || board.pass ? [0.5, 0.5] : [0.5, 0] };
     // A close look is kept only where it shows the picture clearly larger than the picture itself.
     const larger = (box) => (1.1 / devicePixelRatio) / (box.offsetWidth / box.image.w) >= 1.4;
     const row = (room, high) => {
@@ -520,7 +583,6 @@ export function createStory(root, { works, sound, onClose }) {
       // The window takes almost all the board; the words of the result stand in a narrow column.
       const screen = shown.querySelector('.case-screen');
       const phone = board.visual.page.frame === 'phone';
-      const trial = shown.querySelector('.case-try') ? 60 : 0;
       node.dataset.layout = mode === 'side' && text ? 'beside' : text ? 'stack' : 'full';
       const room = mode === 'side' && text ? W - 360 : W - 24;
       if (mode === 'side' && text) {
@@ -529,7 +591,7 @@ export function createStory(root, { works, sound, onClose }) {
         shown.style.minHeight = `${H}px`;
       }
       // On a narrow screen the page of the phone is as wide as the screen itself.
-      const high = (mode === 'side' ? H : H * 0.86) - trial;
+      const high = mode === 'side' ? H : H * 0.86;
       const wide = phone && mode === 'side' ? Math.min(room, high * 0.47) : room;
       screen.style.width = `${Math.floor(wide)}px`;
       screen.style.height = `${Math.floor(high)}px`;
@@ -544,30 +606,33 @@ export function createStory(root, { works, sound, onClose }) {
       // The picture across the board, the words in two columns under it.
       node.dataset.layout = text ? 'over' : 'full';
       if (text) text.style.width = `${W}px`;
-      // On the cover and on a board of passage every word stays in sight; elsewhere the words may go on below.
-      const least = board.cover || board.pass ? 0.5 : 0.66;
+      // Every word stays in sight: the picture takes the height the words leave, half the board at least.
+      const least = 0.5;
       const high = Math.max(H * least, H - (text?.offsetHeight ?? 0)) - caption;
       draw(boxes[0], { w: W, h: high, ...fill });
-      // A picture with few pixels, narrower than the board, grows down as far as they allow.
-      if (boxes[0].offsetWidth < W - 1) draw(boxes[0], { w: W, h: Math.min(least === 0.5 ? high : H - caption, (W * H * 0.64) / boxes[0].offsetWidth), ...fill });
     } else if (mode === 'side' && text) {
       // The picture, the colours or the letters on the left, the words in a column on the right.
       node.dataset.layout = 'beside';
-      const room = W - 400;
-      text.style.width = '400px';
-      shown.style.width = `${room}px`;
-      shown.style.minHeight = `${H}px`;
-      if (kind === 'crop') {
-        draw(boxes[0], { w: room, h: H - caption, fit: 'part', part });
-      } else if (kind === 'pics') {
-        const used = row(room, H - caption);
-        const rest = room - used - 12;
-        if (closer && rest > 140 && larger(boxes[0])) {
-          draw(closer, { w: rest, h: boxes[0].offsetHeight, fit: 'part', part: [0.1, 0.05, 0.8, 0.45] });
-          kept = true;
+      // A paragraph longer than the column widens it, so that no word runs past the frame.
+      for (const column of [400, 520, 640]) {
+        const room = W - column;
+        text.style.width = `${column}px`;
+        shown.style.width = `${room}px`;
+        shown.style.minHeight = `${H}px`;
+        kept = false;
+        if (kind === 'crop') {
+          draw(boxes[0], { w: room, h: H - caption, fit: cut, part });
+        } else if (kind === 'pics') {
+          const used = row(room, H - caption);
+          const rest = room - used - 12;
+          if (closer && rest > 140 && larger(boxes[0])) {
+            draw(closer, { w: rest, h: boxes[0].offsetHeight, fit: 'part', part: [0.1, 0.05, 0.8, 0.45] });
+            kept = true;
+          }
+        } else if (kind === 'palette' && board.visual.poster) {
+          draw(shown.querySelector('.case-pic'), { w: room * 0.64, h: H });
         }
-      } else if (kind === 'palette' && board.visual.poster) {
-        draw(shown.querySelector('.case-pic'), { w: room * 0.64, h: H });
+        if (text.offsetHeight <= H) break;
       }
     } else if (mode === 'side') {
       node.dataset.layout = 'full';
@@ -579,14 +644,21 @@ export function createStory(root, { works, sound, onClose }) {
           kept = true;
         }
       }
-      else if (kind === 'crop') draw(boxes[0], { w: W, h: H - caption, fit: 'part', part });
+      else if (kind === 'crop') draw(boxes[0], { w: W, h: H - caption, fit: cut, part });
       else if (kind === 'palette' && board.visual.poster) draw(shown.querySelector('.case-pic'), { w: W * 0.5, h: H });
     } else {
       node.dataset.layout = text ? 'stack' : 'full';
       // On the cover and on a board of passage every word stays in sight.
       const top = Math.round(board.cover || board.pass ? Math.max(H * 0.45, H - text.offsetHeight) : H * 0.62);
-      if (kind === 'crop') {
-        draw(boxes[0], { w: W, h: text ? top : H - 24 - caption, fit: 'part', part });
+      // A screen of a site or of a program is never cut on a narrow screen: whole, across the width.
+      const whole = screens(work) && !portrait(boxes[0]?.image ?? { w: 1, h: 0 }) && !(kind === 'crop' && board.visual.caption);
+      if (whole && (kind === 'pics' || kind === 'crop') && boxes.length === 1) {
+        draw(boxes[0], { w: W, h: H * 0.8 });
+      } else if (kind === 'crop' && board.visual.slice) {
+        // A part of the page on the phone, as wide as the screen allows, from the top of the part.
+        draw(boxes[0], { w: W, h: H * 0.8, fit: 'cover', focus: [0.5, part[1] / Math.max(0.0001, 1 - part[3])] });
+      } else if (kind === 'crop') {
+        draw(boxes[0], { w: W, h: text ? top : H - 24 - caption, fit: cut, part });
       } else if (kind === 'pics' && upright) {
         shown.style.flexDirection = 'row';
         row(W - 24, H * 0.9 - caption);
@@ -643,6 +715,8 @@ export function createStory(root, { works, sound, onClose }) {
       img.src = img.dataset.src;
       delete img.dataset.src;
     });
+    // The working version of the work is on when its board arrives: some weigh megabytes, so not before.
+    strip.children[at].querySelectorAll('.case-screen').forEach(wake);
   }
 
   // Before the cover and after the last board, a board says which work comes before and after: the
@@ -691,7 +765,7 @@ export function createStory(root, { works, sound, onClose }) {
   function fitTypes() {
     for (const list of strip.querySelectorAll('.case-types')) {
       const names = [...list.querySelectorAll('.case-type__name')];
-      const tallest = list.parentElement.classList.contains('case-system') ? 110 : (list.clientHeight - 48) / names.length;
+      const tallest = list.parentElement.classList.contains('case-system') ? 200 / names.length : (list.clientHeight - 48) / names.length;
       names.forEach((name) => fitWord(name, list.clientWidth - 64, Math.min(200, tallest * 0.55), 28));
     }
   }
@@ -778,6 +852,7 @@ export function createStory(root, { works, sound, onClose }) {
     strip.classList.add('is-dragged');
     strip.scrollLeft = drag.left - dx;
   });
+  // Heard on the way down, before the frame keeps the event to itself.
   addEventListener('pointerup', (event) => {
     if (!drag) return;
     const dx = event.clientX - drag.x;
@@ -793,7 +868,7 @@ export function createStory(root, { works, sound, onClose }) {
       onClose();
     }
     drag = undefined;
-  });
+  }, true);
 
   let pull;
   root.addEventListener('touchstart', (event) => {
@@ -849,6 +924,7 @@ export function createStory(root, { works, sound, onClose }) {
       sound.play('whoosh');
       close.focus({ preventScroll: true });
       await grow(point, true);
+      [root, stand, ...root.querySelectorAll('.case-top, .case-foot')].forEach((part) => part.getAnimations().forEach((animation) => animation.cancel()));
     },
     async close(point) {
       if (root.hidden) return;

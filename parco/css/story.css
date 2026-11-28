@@ -19,7 +19,7 @@
   }
 }
 
-body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
+body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   visibility: hidden;
 }
 
@@ -535,7 +535,11 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
 
 .case-system .case-swatches {
   flex: 1;
-  min-height: 240px;
+  min-height: 160px;
+}
+
+.case-system .case-types {
+  gap: 12px;
 }
 
 .case-system .case-types {
@@ -670,14 +674,69 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
 
 .case-screen__bar {
   flex: none;
-  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px 4px 16px;
   background: var(--panel);
   font-size: var(--small);
   font-weight: 700;
 }
 
-.case-screen__page {
+.case-screen__host {
   flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.case-screen__full,
+.case-screen__out,
+.case-screen__shut {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--ink);
+  color: var(--light);
+  font-size: var(--small);
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.case-screen__short,
+.case-screen__shut {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .case-screen__host,
+  .case-screen__long {
+    display: none;
+  }
+
+  .case-screen__short {
+    display: inline;
+  }
+
+  .case-screen__bar {
+    justify-content: flex-end;
+  }
+}
+
+.case-screen__view {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.case-screen__page {
+  position: absolute;
+  inset: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -689,22 +748,45 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
   margin: 0 auto;
 }
 
-.case-screen__page iframe {
+.case-screen__view iframe {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   border: 0;
+  background: #ffffff;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
-.case-try {
-  min-height: 48px;
-  padding: 0 22px;
+.case-screen.is-live iframe {
+  opacity: 1;
+}
+
+/* The window over everything, with a large way back. */
+.case-screen.is-full {
+  position: fixed;
+  z-index: 6;
+  inset: 0;
+  width: 100vw !important;
+  height: 100dvh !important;
   border: 0;
-  border-radius: 24px;
-  background: var(--ink);
-  color: var(--light);
-  font-weight: 700;
-  cursor: pointer;
+  border-radius: 0;
+}
+
+.case-screen.is-full .case-screen__full {
+  display: none;
+}
+
+.case-screen.is-full .case-screen__shut {
+  display: inline-flex;
+  justify-content: center;
+  min-width: 52px;
+  min-height: 52px;
+  padding: 0;
+  border-radius: 26px;
+  font-size: 2rem;
 }
 
 /* The board of passage to the work before or after. */
@@ -713,7 +795,22 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
 }
 
 .case-board--pass[data-layout="over"] .case-words {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: 32px;
   columns: auto;
+  padding-block: 16px;
+}
+
+.case-board--pass[data-layout="over"] .case-words > * {
+  grid-column: 1;
+  margin-top: 0;
+}
+
+.case-board--pass[data-layout="over"] .case-words > .case-actions {
+  grid-column: 2;
+  grid-row: 1 / span 3;
 }
 
 .case-kicker {
@@ -768,7 +865,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint) {
 /* The board that comes in: its parts arrive one after the other, the first time. */
 .case-rise {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(-12px);
 }
 
 .case-board.is-seen .case-rise {
