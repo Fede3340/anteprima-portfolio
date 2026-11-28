@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cerchi ottica, montature da vista</title>
+  <meta name="description" content="Otto montature da vista disegnate di fronte, con calibro, ponte e asta. Negozio concept di cerchi ottica.">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preload" href="fonts/lexend-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <header class="bar">
+    <a class="brand" href="#top" aria-label="cerchi ottica, inizio pagina">
+      <img src="img/cerchi-logo.webp" alt="" width="1777" height="395">
+    </a>
+    <a class="bar-link" href="#montature">Montature</a>
+    <button class="cart-toggle" type="button" aria-haspopup="dialog" aria-controls="cart">
+      Carrello <span class="cart-count" aria-label="prodotti nel carrello">0</span>
+    </button>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="chart">
+        <h1 id="hero-title" class="chart-title"><span class="l1">otto</span> <span class="l2">montature da vista</span></h1>
+        <p class="l3">tonde, a goccia, squadrate, a farfalla</p>
+        <p class="l4">in acetato e in metallo, un colore ciascuna</p>
+        <p class="l5">con le tre misure scritte sulla stanghetta</p>
+        <p class="l6">calibro, ponte, asta</p>
+      </div>
+      <div class="lens" aria-hidden="true"><div class="lens-view"></div></div>
+      <div class="lens" aria-hidden="true"><div class="lens-view"></div></div>
+      <a class="scroll-cue" href="#montature">Scorri</a>
+    </section>
+
+    <section class="rack" id="montature" aria-labelledby="rack-title">
+      <div class="rack-head">
+        <h2 id="rack-title">Le montature</h2>
+        <p>Disegnate di fronte e tutte alla stessa scala, così le misure si confrontano a occhio. I tre numeri sono quelli stampati sulla stanghetta: calibro, ponte e asta, in millimetri.</p>
+        <fieldset class="fit">
+          <legend>Larghezza del viso</legend>
+          <label><input type="radio" name="fit" value="tutte" checked><span>Tutte</span></label>
+          <label><input type="radio" name="fit" value="stretto"><span>Stretto</span></label>
+          <label><input type="radio" name="fit" value="medio"><span>Medio</span></label>
+          <label><input type="radio" name="fit" value="largo"><span>Largo</span></label>
+        </fieldset>
+        <p class="fit-note">La classe viene da una stima della larghezza del frontale: due calibri più il ponte. Per andare sul sicuro, confronta i numeri con quelli stampati sulla stanghetta degli occhiali che porti già.</p>
+      </div>
+      <ol class="frames"></ol>
+      <p class="frames-empty" hidden>Nessuna montatura in questa larghezza.</p>
+      <div class="ring" aria-hidden="true"></div>
+    </section>
+
+    <section class="case" aria-label="La custodia e il negozio">
+      <figure class="case-a">
+        <img src="img/custodia.webp" alt="Custodia rigida nera col nome cerchi, un panno bianco con una montatura tonda e un biglietto da visita" width="1600" height="1195" loading="lazy">
+      </figure>
+      <p class="case-text">Ogni montatura arriva nella custodia rigida nera, con il panno.</p>
+      <figure class="case-b">
+        <img src="img/vetrina.webp" alt="La vetrina di cerchi di sera, con le montature sulle mensole illuminate e l’insegna a bandiera" width="1600" height="1195" loading="lazy">
+      </figure>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <img class="foot-logo" src="img/cerchi-logo.webp" alt="cerchi ottica" width="1777" height="395" loading="lazy">
+    <dl class="foot-facts">
+      <div><dt>Spedizione</dt><dd>6,90&nbsp;€ in Italia, gratuita da 250&nbsp;€.</dd></div>
+      <div><dt>Pagamento</dt><dd>Finto: nessun ordine viene inviato e nessun dato viene raccolto.</dd></div>
+      <div><dt>Prezzi</dt><dd>Della sola montatura, IVA inclusa.</dd></div>
+    </dl>
+    <p class="foot-concept">Concept: marchio, prodotti e prezzi sono inventati.</p>
+  </footer>
+
+  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+    <div class="sheet-body">
+      <button class="close" type="button" data-close>Chiudi</button>
+      <p class="sheet-kind"></p>
+      <h2 id="sheet-title"></h2>
+      <p class="sheet-price"></p>
+      <figure class="drawing"></figure>
+      <dl class="measures"></dl>
+      <p class="sheet-fit"></p>
+      <button class="btn sheet-add" type="button">Aggiungi al carrello</button>
+    </div>
+  </dialog>
+
+  <dialog class="sheet cart" id="cart" aria-labelledby="cart-title">
+    <div class="sheet-body">
+      <button class="close" type="button" data-close>Chiudi</button>
+      <h2 id="cart-title">Carrello</h2>
+      <ul class="cart-lines"></ul>
+      <p class="cart-empty">Il carrello è vuoto.</p>
+      <dl class="sums">
+        <div><dt>Prodotti</dt><dd class="sum-items"></dd></div>
+        <div><dt>Spedizione</dt><dd class="sum-ship"></dd></div>
+        <div class="sum-total"><dt>Totale</dt><dd class="sum-all"></dd></div>
+      </dl>
+      <p class="ship-note"></p>
+      <button class="btn pay" type="button">Paga (pagamento finto)</button>
+      <p class="pay-note" role="status"></p>
+    </div>
+  </dialog>
+</body>
+</html>

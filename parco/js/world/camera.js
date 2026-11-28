@@ -5,7 +5,8 @@ import * as THREE from 'three';
 import { FRAME } from './layout.js';
 
 export const EYE = 1.6;
-const STEP = 0.75;
+// A long, easy stride at 2.8 m/s: the same cadence as 0.75 m at 2 m/s.
+const STEP = 1.05;
 const BOB = 0.025;
 // Share of the screen height the frame of a work takes when the eyes stand in front of it.
 const HELD = 0.42;

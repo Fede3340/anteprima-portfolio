@@ -233,8 +233,6 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
       state.nearest = nearest?.spot;
     },
     targets: [...frames.drawn, ...items.map((item) => item.screen)],
-    // The work in front showing its plate, if any.
-    plated: () => items.find((item) => item.plate)?.spot,
     // The work a hit on one of the targets belongs to.
     spotOf: (hit) => items[hit.object.isInstancedMesh ? frames.spotOf(hit) : hit.object.userData.index].spot,
     // The rectangle of a work's picture on the screen, in CSS pixels.

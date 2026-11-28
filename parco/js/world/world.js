@@ -6,13 +6,13 @@ import { createControls } from './controls.js';
 import { HAZE, createGround, createSky, heightAt } from './land.js';
 import { islandOf, mouth } from './layout.js';
 
-// A walk: 2 m/s, up to 3 holding the screen; at full pace within 0.12 s, and stopped as quickly.
-const WALK = 2;
-const HURRY = 3;
-const ACCEL = 25;
-// A notch of the wheel: 0.8 m, walked at once in about a seventh of a second.
-const NOTCH = 0.8;
-const NOTCH_SPEED = 6;
+// A walk: 2.8 m/s, up to 4.2 holding the screen; at full pace within 0.12 s, and stopped as quickly.
+const WALK = 2.8;
+const HURRY = 4.2;
+const ACCEL = 36;
+// A notch of the wheel: 1.1 m, walked at once in about a sixth of a second.
+const NOTCH = 1.1;
+const NOTCH_SPEED = 7;
 const JUMP_SPEED = 3.4;
 const GRAVITY = 11;
 const PITCH = THREE.MathUtils.degToRad(35);
@@ -52,12 +52,14 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   scene.add(sky, sun, sun.target);
 
   const land = createGround(plan);
-  scene.add(createSky(), land.sea, land.bodies, ...land.floors, ...land.stones);
+  // The sky is the land's too, for whoever sets the light.
+  land.sky = createSky();
+  scene.add(land.sky, land.sea, land.bodies, ...land.floors, ...land.stones);
 
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   // Where the visitor is: on an island, or at t metres along a path. Heading and pitch of the look.
-  const state = { island: plan.landing, path: undefined, t: 0, x: 0, y: 0, z: 0, heading: 0, pitch: -0.1, speed: 0, side: 0, walked: 0, hop: 0, rise: 0, pending: 0, hold: false, route: [], near: [], still: !reducedMotion.matches };
+  const state = { island: plan.landing, path: undefined, t: 0, x: 0, y: 0, z: 0, heading: 0, pitch: -0.1, speed: 0, walked: 0, hop: 0, rise: 0, pending: 0, hold: false, route: [], near: [], still: !reducedMotion.matches };
   const parts = [];
   let running = false;
   let paused = false;
@@ -87,7 +89,6 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     state.island = island;
     state.path = undefined;
     state.speed = 0;
-    state.side = 0;
     state.x = at.x;
     state.z = at.z;
     const works = island.zones.some((zone) => zone.works.length);
@@ -117,7 +118,6 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       listeners.walk?.();
     },
     onTap: (x, y) => listeners.tap?.(x, y),
-    onLock: (locked, wanted) => listeners.lock?.(locked, wanted),
     onJump: jump,
   });
 
@@ -228,18 +228,16 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     if (state.hold) want = HURRY;
     else if (keys.walk) want = keys.walk * WALK;
     else if (step) want = step.speed ?? WALK;
-    if (want || keys.side) state.pending = 0;
+    if (want) state.pending = 0;
     state.speed = ramp(state.speed, want, dt);
-    state.side = ramp(state.side, keys.side * WALK, dt);
     let metres = state.speed * dt;
     // The wheel's notch: walked at once at an even pace, stopped dead at its end.
     if (state.pending) {
       metres = Math.sign(state.pending) * Math.min(Math.abs(state.pending), NOTCH_SPEED * dt);
       state.pending -= metres;
     }
-    const aside = state.side * dt;
-    if (!metres && !aside) return;
-    state.walked += Math.hypot(metres, aside);
+    if (!metres) return;
+    state.walked += Math.abs(metres);
 
     if (state.path) {
       // Along the path, the way the route goes or the look faces.
@@ -248,7 +246,6 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       const bend = Math.atan2(tangent.z, tangent.x);
       if (step?.path === path) sign = Math.sign(step.to - state.t) || 1;
       else sign *= Math.sign(metres);
-      if (!metres) return;
       state.t += sign * Math.abs(metres);
       if (step?.path === path && Math.sign(step.to - state.t) !== sign) {
         state.t = step.to;
@@ -259,7 +256,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       path.curve.getTangentAt(Math.min(1, Math.max(0, state.t / path.length)), tangent);
       const turn = Math.atan2(tangent.z, tangent.x) - bend;
       state.heading += Math.atan2(Math.sin(turn), Math.cos(turn));
-      if (step?.path === path && !controls.locked()) steer(Math.atan2(sign * tangent.z, sign * tangent.x), dt);
+      if (step?.path === path) steer(Math.atan2(sign * tangent.z, sign * tangent.x), dt);
       if (state.t <= 0) leave(path, false);
       else if (state.t >= path.length) leave(path, true);
       else return;
@@ -284,13 +281,13 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       if (left < (step.best ?? Infinity) - 0.05) Object.assign(step, { best: left, since: time });
       if (left < (state.route[1]?.path ? EDGE + 0.3 : 0.1)) state.route.shift();
       else if (time - step.since > 2.5) state.route = [];
-      else if (Math.abs(state.speed) > 0.2 && !controls.locked()) steer(way, dt);
+      else if (Math.abs(state.speed) > 0.2) steer(way, dt);
     } else if (step?.path) {
       enter(step.path, step.to === 0);
       return;
     }
-    const mx = Math.cos(way) * metres - Math.sin(state.heading) * aside;
-    const mz = Math.sin(way) * metres + Math.cos(state.heading) * aside;
+    const mx = Math.cos(way) * metres;
+    const mz = Math.sin(way) * metres;
     // Near a mouth, walking out of the island, one steps onto its path.
     for (const [path, end] of [[island.out, false], [island.in, true]]) {
       const at = mouth(plan, island, path);
@@ -420,6 +417,11 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       return go([...route(end, mouth(plan, end, path)), { path, to: t }]);
     },
     // Walks to an island: to its arrival point, or to a place given by id.
+    // A few steps ahead, the way the look faces: along the path if one is on the stones.
+    ahead(metres) {
+      if (state.path) return go([{ path: state.path, to: Math.min(state.path.length, Math.max(0, state.t + facing() * metres)) }]);
+      return go([{ island: state.island, x: state.x + Math.cos(state.heading) * metres, z: state.z + Math.sin(state.heading) * metres }]);
+    },
     goIsland(id, speed) {
       const island = typeof id === 'string' ? islandOf(plan, id) : id;
       go(route(island, island.arrival).map((step) => ({ ...step, speed })));

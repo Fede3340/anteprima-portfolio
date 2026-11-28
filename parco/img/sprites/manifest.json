@@ -683,5 +683,142 @@
       0
     ],
     "uso": "puntatore del mouse"
+  },
+  "lampione": {
+    "file": "lampione.webp",
+    "larghezza": 398,
+    "altezza": 2048,
+    "file_1024": "lampione-1024.webp",
+    "larghezza_1024": 199,
+    "altezza_1024": 1024,
+    "altezza_m": 3.6,
+    "appoggio": {
+      "x": 0.5038,
+      "y": 0.9966
+    }
+  },
+  "panchina": {
+    "file": "panchina.webp",
+    "larghezza": 1191,
+    "altezza": 818,
+    "file_1024": "panchina-1024.webp",
+    "larghezza_1024": 596,
+    "altezza_1024": 409,
+    "altezza_m": 0.95,
+    "appoggio": {
+      "x": 0.4987,
+      "y": 0.9902
+    }
+  },
+  "altalena-nuvola": {
+    "file": "altalena-nuvola.webp",
+    "larghezza": 950,
+    "altezza": 448,
+    "file_1024": "altalena-nuvola-1024.webp",
+    "larghezza_1024": 475,
+    "altezza_1024": 224,
+    "altezza_m": 1.412,
+    "appoggio": {
+      "x": 0.5039,
+      "y": 0.9955
+    }
+  },
+  "altalena-sedile": {
+    "file": "altalena-sedile.webp",
+    "larghezza": 679,
+    "altezza": 859,
+    "file_1024": "altalena-sedile-1024.webp",
+    "larghezza_1024": 340,
+    "altezza_1024": 430,
+    "altezza_m": 2.708,
+    "perno": {
+      "x": 0.4917,
+      "y": 0.0303,
+      "px": [
+        334,
+        26
+      ]
+    }
+  },
+  "lampione-spento": {
+    "file": "lampione-spento.webp",
+    "larghezza": 398,
+    "altezza": 2048,
+    "file_1024": "lampione-spento-1024.webp",
+    "larghezza_1024": 199,
+    "altezza_1024": 1024,
+    "altezza_m": 3.6,
+    "appoggio": {
+      "x": 0.5038,
+      "y": 0.9966
+    }
+  },
+  "tifa": {
+    "file": "tifa.webp",
+    "larghezza": 859,
+    "altezza": 1458,
+    "file_1024": "tifa-1024.webp",
+    "larghezza_1024": 430,
+    "altezza_1024": 729,
+    "altezza_m": 2.0,
+    "appoggio": {
+      "x": 0.521,
+      "y": 0.9945
+    }
+  },
+  "ninfea": {
+    "file": "ninfea.webp",
+    "larghezza": 1386,
+    "altezza": 846,
+    "file_1024": "ninfea-1024.webp",
+    "larghezza_1024": 693,
+    "altezza_1024": 423,
+    "altezza_m": 0.98,
+    "appoggio": {
+      "x": 0.4996,
+      "y": 0.9905
+    },
+    "larghezza_m": 1.6
+  },
+  "albero-doppio": {
+    "file": "albero-doppio.webp",
+    "larghezza": 1028,
+    "altezza": 1811,
+    "file_1024": "albero-doppio-1024.webp",
+    "larghezza_1024": 514,
+    "altezza_1024": 906,
+    "altezza_m": 5.0,
+    "appoggio": {
+      "x": 0.4932,
+      "y": 0.9956
+    }
+  },
+  "boschetto": {
+    "file": "boschetto.webp",
+    "larghezza": 1557,
+    "altezza": 1122,
+    "file_1024": "boschetto-1024.webp",
+    "larghezza_1024": 778,
+    "altezza_1024": 561,
+    "altezza_m": 5.76,
+    "appoggio": {
+      "x": 0.4997,
+      "y": 0.9848
+    },
+    "larghezza_m": 8.0
+  },
+  "cespugli-gruppo": {
+    "file": "cespugli-gruppo.webp",
+    "larghezza": 1383,
+    "altezza": 969,
+    "file_1024": "cespugli-gruppo-1024.webp",
+    "larghezza_1024": 692,
+    "altezza_1024": 484,
+    "altezza_m": 2.1,
+    "appoggio": {
+      "x": 0.4996,
+      "y": 0.9917
+    },
+    "larghezza_m": 3.0
   }
 }

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grecale | Olio extravergine di coratina</title>
+  <meta name="description" content="Grecale, olio extravergine di oliva da sola coratina, estratto a freddo in Puglia.">
+  <meta name="theme-color" content="#e4e5dc">
+  <script>document.documentElement.className = 'js fonts-pending';</script>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/gambarino-400.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/gambetta-400.woff2" crossorigin>
+  <link rel="preload" as="image" href="assets/img/pour-poster.webp">
+  <link rel="stylesheet" href="css/style.css?v=8">
+  <script>
+    Promise.race([document.fonts.load('1em Gambarino'), new Promise((resolve) => setTimeout(resolve, 1500))])
+      .then(() => document.documentElement.classList.remove('fonts-pending'));
+  </script>
+</head>
+<body>
+  <header class="header">
+    <button class="header__burger js-menu-toggle" type="button" aria-label="Apri il menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    <nav class="header__nav" aria-label="Principale">
+      <a href="#acquista">Shop</a>
+      <a href="#olio">L’olio</a>
+      <a href="#ricette">Ricette</a>
+      <a href="#dove">Dove trovarlo</a>
+    </nav>
+    <a class="logo" href="#top" aria-label="Grecale, torna all’inizio">
+      <img class="logo__mark" src="assets/img/logo.svg" width="120" height="120" alt="">
+      <span class="logo__word">Grecale</span>
+    </a>
+    <div class="header__actions">
+      <a class="header__cart" href="#acquista">Carrello <span class="js-cart-count">0</span></a>
+    </div>
+  </header>
+
+  <div class="menu" id="menu" hidden>
+    <nav class="menu__links" aria-label="Menu">
+      <a href="#acquista">Shop</a>
+      <a href="#olio">L’olio</a>
+      <a href="#ricette">Ricette</a>
+      <a href="#dove">Dove trovarlo</a>
+    </nav>
+    <p class="menu__note">Olio extravergine di coratina. Spedizione in tutta Italia.</p>
+  </div>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero__sticky">
+        <div class="hero__text">
+          <p class="kicker">Olio extravergine di oliva, Puglia</p>
+          <h1 class="hero__title">Il vento<br>da nord-est,<br><em>l’olio</em> nuovo.</h1>
+          <p class="hero__lead">Coratina in purezza, amara e piccante come deve essere, estratta a freddo sotto i 27&nbsp;°C.</p>
+          <a class="button" href="#acquista">Acquista <small>da 18 €</small></a>
+        </div>
+        <figure class="hero__figure">
+          <svg class="wind" viewBox="0 0 400 400" aria-hidden="true"><path d="M20 260 L260 20 M80 340 L340 80 M150 390 L390 150"/></svg>
+          <video class="lens js-pour" src="assets/video/pour.mp4" poster="assets/img/pour-poster.webp" muted playsinline preload="auto" aria-label="Un filo d’olio extravergine riempie una ciotola di ceramica mentre scorri."></video>
+        </figure>
+        <p class="hero__hint">Scorri</p>
+      </div>
+    </section>
+
+    <section class="taste" id="olio">
+      <figure class="taste__figure">
+        <img class="lens" src="assets/img/tasting.webp" srcset="assets/img/tasting-sm.webp 640w, assets/img/tasting.webp 1000w" sizes="(max-width: 900px) 90vw, 50vw" width="1000" height="1000" alt="Olio extravergine in un bicchiere blu da assaggio." loading="lazy" decoding="async">
+      </figure>
+      <div class="taste__text">
+        <p class="kicker">L’olio</p>
+        <h2 class="h2 js-reveal">Amaro,<br>poi pizzica.</h2>
+        <p class="js-reveal">La coratina prende il nome da Corato, in Puglia: dà un olio ricco di polifenoli, con amaro e piccante decisi.</p>
+        <p class="js-reveal">Il pizzico in gola dell’olio appena franto si deve all’oleocantale.</p>
+        <p class="note">Ai panel d’assaggio l’olio si versa in un bicchiere scuro: chi assaggia non deve vederne il colore.</p>
+      </div>
+    </section>
+
+    <section class="leaf">
+      <div class="leaf__text">
+        <p class="kicker kicker--light">Il nome</p>
+        <h2 class="h2 js-reveal">Due facce,<br>un vento.</h2>
+        <p class="js-reveal">Il grecale soffia da nord-est. Sopra, la foglia d’ulivo è verde-grigia; sotto è quasi argentata, coperta di minuscoli peli a forma di scudo che la proteggono dai raggi UV-B.</p>
+      </div>
+      <figure class="leaf__face js-reveal">
+        <img src="assets/img/leaf-top.webp" srcset="assets/img/leaf-top-sm.webp 800w, assets/img/leaf-top.webp 1600w" sizes="(max-width: 900px) 90vw, 50vw" width="1600" height="393" alt="La pagina superiore di una foglia d’ulivo." loading="lazy" decoding="async">
+        <figcaption>Pagina superiore</figcaption>
+      </figure>
+      <figure class="leaf__face leaf__face--under js-reveal">
+        <img src="assets/img/leaf-under.webp" srcset="assets/img/leaf-under-sm.webp 800w, assets/img/leaf-under.webp 1600w" sizes="(max-width: 900px) 90vw, 50vw" width="1600" height="393" alt="La pagina inferiore della stessa foglia, argentata." loading="lazy" decoding="async">
+        <figcaption>Pagina inferiore</figcaption>
+      </figure>
+    </section>
+
+    <section class="shop" id="acquista">
+      <div class="shop__stage">
+        <img class="shop__item is-active" data-format="bottle" src="assets/img/product-bottle.webp" srcset="assets/img/product-bottle-sm.webp 640w, assets/img/product-bottle.webp 1200w" sizes="(max-width: 900px) 90vw, 50vw" width="1200" height="1500" alt="La bottiglia di Grecale da 50 cl su un blocco di pietra." loading="lazy" decoding="async">
+        <img class="shop__item" data-format="tin" src="assets/img/product-tin.webp" srcset="assets/img/product-tin-sm.webp 640w, assets/img/product-tin.webp 1200w" sizes="(max-width: 900px) 90vw, 50vw" width="1200" height="1500" alt="La latta di Grecale da 3 litri su un blocco di pietra." loading="lazy" decoding="async">
+      </div>
+      <div class="shop__info">
+        <p class="kicker">Raccolta 2026</p>
+        <h2 class="shop__name">Grecale</h2>
+        <p>Olio extravergine di oliva da sola coratina. Estratto a freddo, cioè sotto i 27&nbsp;°C.</p>
+        <fieldset class="formats">
+          <legend class="kicker">Formato</legend>
+          <label class="formats__option"><input type="radio" name="format" value="bottle" data-price="18" checked><span>Bottiglia, 50 cl</span><span>18 €</span></label>
+          <label class="formats__option"><input type="radio" name="format" value="tin" data-price="74"><span>Latta, 3 l</span><span>74 €</span></label>
+        </fieldset>
+        <div class="buy">
+          <div class="qty" role="group" aria-label="Quantità">
+            <button type="button" class="js-minus" aria-label="Diminuisci">−</button>
+            <output class="js-qty" aria-live="polite">1</output>
+            <button type="button" class="js-plus" aria-label="Aumenta">+</button>
+          </div>
+          <button type="button" class="button button--wide js-add">Aggiungi al carrello, <span><span class="js-total">18</span> €</span></button>
+        </div>
+        <p class="note">Conservalo al riparo da luce e calore: il vetro scuro e la latta lo proteggono dalla luce.</p>
+      </div>
+    </section>
+
+    <section class="recipes" id="ricette">
+      <div class="recipes__head">
+        <p class="kicker">Ricette</p>
+        <h2 class="h2 js-reveal">A crudo</h2>
+      </div>
+      <ul class="recipes__list">
+        <li class="recipe">
+          <img class="lens" src="assets/img/frisa.webp" srcset="assets/img/frisa-sm.webp 640w, assets/img/frisa.webp 1000w" sizes="(max-width: 900px) 90vw, 50vw" width="1000" height="1250" alt="Una frisa con pomodorini, origano e olio." loading="lazy" decoding="async">
+          <h3>Frisa</h3>
+          <p>Pane biscottato pugliese: si bagna in acqua e si condisce con pomodoro e olio extravergine.</p>
+        </li>
+        <li class="recipe">
+          <img class="lens" src="assets/img/fave.webp" srcset="assets/img/fave-sm.webp 640w, assets/img/fave.webp 1000w" sizes="(max-width: 900px) 90vw, 50vw" width="1000" height="1250" alt="Fave e cicorie con un filo d’olio." loading="lazy" decoding="async">
+          <h3>Fave e cicorie</h3>
+          <p>Purea di fave secche con cicorie selvatiche lessate, e olio extravergine sopra.</p>
+        </li>
+        <li class="recipe">
+          <img class="lens" src="assets/img/bread.webp" srcset="assets/img/bread-sm.webp 800w, assets/img/bread.webp 1800w" sizes="(max-width: 900px) 90vw, 50vw" width="1800" height="1195" alt="Olio versato su una fetta di pane." loading="lazy" decoding="async">
+          <h3>Pane e olio</h3>
+          <p>Una fetta di pane di grano duro e un filo d’olio appena franto.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="where" id="dove">
+      <h2 class="h2 js-reveal">Dove trovarlo</h2>
+      <div class="where__text">
+        <p>Qui sul sito, con spedizione in tutta Italia.</p>
+        <p>Nelle botteghe e nei ristoranti che lo scelgono: se hai un locale e vuoi assaggiarlo, scrivici.</p>
+        <a class="button button--dark" href="#">Scrivici</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <img class="footer__mark" src="assets/img/logo-light.svg" width="120" height="120" alt="" loading="lazy">
+    <p class="footer__word">Grecale</p>
+    <nav class="footer__links" aria-label="Sezioni">
+      <a href="#acquista">Shop</a>
+      <a href="#olio">L’olio</a>
+      <a href="#ricette">Ricette</a>
+      <a href="#dove">Dove trovarlo</a>
+      <a href="#">Spedizioni e resi</a>
+      <a href="#">Contatti</a>
+    </nav>
+    <form class="newsletter js-newsletter">
+      <label for="newsletter-email">Una lettera a ogni raccolta</label>
+      <div class="newsletter__row">
+        <input id="newsletter-email" type="email" placeholder="La tua email" autocomplete="email" required>
+        <button type="submit">Iscriviti</button>
+      </div>
+      <p class="newsletter__done" hidden>Grazie, iscrizione ricevuta.</p>
+    </form>
+    <div class="footer__bottom">
+      <p>© 2026 Grecale. Concept.</p>
+      <p class="footer__legal"><a href="#">Privacy</a><a href="#">Cookie</a><a href="#">Termini</a></p>
+      <p>Design e progettazione <strong>Federico Mascia</strong></p>
+    </div>
+  </footer>
+
+  <script src="js/vendor/gsap.min.js" defer></script>
+  <script src="js/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="js/main.js?v=8" defer></script>
+</body>
+</html>

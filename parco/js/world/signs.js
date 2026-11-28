@@ -27,7 +27,9 @@ function card(zone, texts, works, { onZone, onWork }) {
 
 export function createSigns({ plan, texts, works, anchors, rig, state, camera, onZone, onWork }) {
   const name = (title, id, position, visible, className = 'zone-name') => {
-    const node = element('button', { className, type: 'button', textContent: title, tabIndex: -1 });
+    // A real button, reached with Tab too while it shows.
+    const node = element('button', { className, type: 'button', textContent: title });
+    node.dataset.zone = id;
     node.addEventListener('click', () => onZone(id));
     anchors.add(node, position, { visible, rank: 1 });
   };

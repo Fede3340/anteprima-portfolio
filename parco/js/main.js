@@ -17,7 +17,10 @@ const ZONE = /^#([\w-]+)$/;
 // Closer than this to a work, a tap on it opens it; further, it walks there.
 const NEAR_ENOUGH = 6.5;
 const FLIGHT = 1.4;
-const RESUME = 'Clic per continuare';
+// A click on the sky: this many metres ahead.
+const STEP_AHEAD = 4;
+// Where a click on the name of an island takes one, said in full.
+const TOWARD = { apertura: "all'Apertura", siti: 'ai Siti', negozi: 'ai Negozi online', programmi: 'ai Programmi', app: 'alle App', videogioco: 'al Videogioco', marchi: 'ai Marchi', manifesti: 'ai Manifesti', google: 'a Google', contatti: 'ai Contatti' };
 
 const $ = (selector) => document.querySelector(selector);
 const sound = createSound($('.sound'));
@@ -48,15 +51,12 @@ async function apply({ work }, point) {
   // From the list as a page the park is not there to walk in.
   const park = world && !leaning() ? world : undefined;
   if (story.work && story.work !== work) {
-    // Back to the park, the mouse is taken again (the click on Chiudi allows it).
-    if (!work) park?.controls.lock();
     await story.close(point ?? centre());
     document.dispatchEvent(new CustomEvent('park:work', { detail: { id: undefined } }));
     if (park?.rig.mode === 'hold') await park.rig.go('walk', reducedMotion.matches ? 0 : 0.5);
   }
   if (work && story.work !== work) {
     if (park) {
-      park.controls.unlock();
       park.stop();
       await park.rig.go('hold', reducedMotion.matches ? 0 : 0.6, exhibits.standing(workSpot(work)));
     }
@@ -108,7 +108,6 @@ leanBack.addEventListener('click', () => {
   document.documentElement.classList.remove('is-lean');
   if (!$('.threshold').hidden) return;
   world.pause(false);
-  world.controls.lock();
 });
 
 const covers = () => {
@@ -137,14 +136,25 @@ const above = $('.above');
 let unveil = () => {};
 let here;
 let flying = false;
+// The work a click far away is walking to, to open on arrival.
+let arriving;
+
+// The label next to the mouse that says what a click does there; not on a phone.
+const label = element('div', { className: 'pointer-label', hidden: true });
+document.body.append(label);
+document.addEventListener('pointermove', (event) => {
+  if (event.pointerType === 'mouse') label.style.transform = `translate(${event.clientX + 18}px, ${event.clientY + 24}px)`;
+});
+function say(text) {
+  if (label.textContent === text) return;
+  label.textContent = text;
+  label.hidden = !text;
+}
 
 // From above the whole island and the names of the zones; a zone touched is where the walk goes on.
 async function fly(up, zone) {
   if (flying || !world || up === (world.rig.mode === 'above')) return;
   flying = true;
-  // From above the names are clicked with the pointer; back down, the mouse is taken again.
-  if (up) world.controls.unlock();
-  else world.controls.lock();
   sound.play('whoosh');
   above.setAttribute('aria-pressed', String(up));
   if (zone) world.place(zone);
@@ -185,17 +195,44 @@ function build(texts, pictures, sprites) {
     rig: world.rig,
     state: world.state,
     camera: world.camera,
+    // A name in the sky: the jump there (the travel bar makes it).
     onZone(id) {
       if (world.rig.mode === 'above') fly(false, id);
-      else world.goIsland(id);
+      else document.dispatchEvent(new CustomEvent('travel:jump', { detail: { zone: id } }));
     },
     onWork: (id) => open(id),
   });
+  // What a click does where the mouse rests, written next to the hand: the work it opens, the island
+  // it takes one to; the hand presses over what answers a click. Nothing for the ground and the sky.
+  let frame = 0;
+  const point = () => {
+    const at = world.controls.pointer();
+    // Every other frame is enough for a label that follows the hand.
+    if (!at || world.rig.mode !== 'walk' || frame++ % 2) return;
+    const hit = world.hit(at.x, at.y, [...exhibits.targets, ...park.tappable]);
+    const work = hit && exhibits.targets.includes(hit.object) && works[exhibits.spotOf(hit).id];
+    $('.park').classList.toggle('is-over', Boolean(hit));
+    say(work ? `Apri ${work.title}` : '');
+  };
   world.add({
     update() {
       keep();
       anchors.update();
+      point();
+      // A far work clicked opens once one stands before it.
+      if (arriving && !world.moving()) {
+        const spot = workSpot(arriving);
+        arriving = undefined;
+        if (Math.hypot(world.state.x - spot.x, world.state.z - spot.z) < NEAR_ENOUGH + 2) open(spot.id);
+      }
     },
+  });
+  $('.anchors').addEventListener('pointerover', (event) => {
+    const name = event.pointerType === 'mouse' && event.target.closest('.zone-name');
+    if (name) say(`Vai ${TOWARD[name.dataset.zone] ?? `a ${name.textContent}`}`);
+  });
+  $('.anchors').addEventListener('pointerout', (event) => {
+    if (event.target.closest('.zone-name')) say('');
   });
   // Room kept for the buttons at the top, the invitation under them while it shows, and the travel
   // bar at the foot; read every frame, as the invitation comes and goes.
@@ -211,7 +248,7 @@ function build(texts, pictures, sprites) {
   addEventListener('resize', () => anchors.remeasure());
   const welcome = matchMedia('(pointer: coarse)').matches
     ? 'Tocca dove vuoi andare. Trascina per guardarti attorno.'
-    : 'Muovi il mouse per guardarti attorno, W A S D per camminare.';
+    : 'Muovi il mouse per guardare. Clic per andare avanti.';
   hint.textContent = welcome;
   unveil = () => {
     exhibits.island(here);
@@ -235,34 +272,25 @@ function build(texts, pictures, sprites) {
       exhibits.light(on);
     },
     crawl() {
-      world.controls.unlock();
       world.pause(true);
       showList(true);
     },
-    // The mouse let go with Esc (or refused): a line asks for a click.
-    lock(locked, wanted) {
-      if (locked && hint.textContent === RESUME) hint.classList.add('is-gone');
-      if (locked || !wanted) return;
-      hint.textContent = RESUME;
-      hint.classList.remove('is-gone');
-    },
-    // A tap while walking stops; otherwise a near work opens, a far one is walked to, a thing of the
-    // park answers, and a place of the ground is walked to, with rings where it was touched.
-    tap(x, y) {
+    // One click, one obvious thing: a near work opens, a far one is walked to and opens there, a
+    // thing of the park answers, the ground or a stone is walked to (with rings where it was
+    // touched), the sky takes a few steps ahead. On a phone a tap while walking stops, as before.
+    tap(x, y, kind) {
       if (world.rig.mode !== 'walk') return;
-      // With the mouse captured a click only opens the work in front, near enough to show its plate;
-      // walking is for the keys and the wheel.
-      if (world.controls.locked()) {
-        if (exhibits.plated()) open(exhibits.plated().id);
-        return;
-      }
-      if (world.moving()) {
+      arriving = undefined;
+      if (kind !== 'mouse' && world.moving()) {
         world.stop();
         return;
       }
+      if (hint.textContent === welcome) hint.classList.add('is-gone');
       const hit = world.hit(x, y, [...exhibits.targets, ...park.tappable, ...world.land.floors, ...world.land.stones]);
-      if (!hit) return;
-      if (hint.textContent !== RESUME) hint.classList.add('is-gone');
+      if (!hit) {
+        world.ahead(STEP_AHEAD);
+        return;
+      }
       if (exhibits.targets.includes(hit.object)) {
         const spot = exhibits.spotOf(hit);
         sound.play('tap');
@@ -270,6 +298,7 @@ function build(texts, pictures, sprites) {
         else {
           const { x: wx, z: wz, fx, fz } = exhibits.standing(spot);
           world.goTo(plan.islands[spot.island], wx + fx * 3, wz + fz * 3);
+          arriving = spot.id;
         }
       } else if (park.touch(hit)) sound.play('tap');
       else if (world.land.stones.includes(hit.object)) {
@@ -315,7 +344,8 @@ addEventListener('keydown', (event) => {
   if (world.controls.key(event, true)) {
     event.preventDefault();
     world.stop();
-    if (hint.textContent !== RESUME) hint.classList.add('is-gone');
+    arriving = undefined;
+    hint.classList.add('is-gone');
   }
   else if (event.key === 'Enter' && world.state.nearest) open(world.state.nearest.id);
   else if (event.key === ' ') {
@@ -334,7 +364,6 @@ $('.brand').addEventListener('click', (event) => {
 
 const threshold = createThreshold($('.threshold'), {
   async onEnter(withSound) {
-    world.controls.lock();
     world.start();
     sound.begin(withSound);
     sound.play('drop');

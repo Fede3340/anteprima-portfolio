@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nero 72, cioccolato artigiano</title>
+  <meta name="description" content="Negozio di Nero 72: fondente dal 55 al 100 per cento di cacao. Marchio, prodotti e prezzi sono inventati.">
+  <meta name="theme-color" content="#260a06">
+  <link rel="preload" href="fonts/Oranienbaum-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="bar">
+    <a class="bar__brand" href="#top" aria-label="Nero 72, torna all’inizio">NERO <span class="cut">72</span></a>
+    <button class="bar__cart" type="button" data-open-cart>
+      Carrello <span class="bar__count" data-count>0</span>
+    </button>
+  </header>
+
+  <main id="top">
+    <section class="opening">
+      <div class="opening__text">
+        <h1 class="mark" aria-label="Nero 72">NERO <span class="cut">72</span></h1>
+        <p class="claim">Cioccolato artigiano</p>
+        <p class="opening__intro">Fondente in cinque gradi di cacao, dal 55 al 100. Tavolette, quadratini, bottoni da fondere, scorze e fave ricoperte.</p>
+        <a class="scroll" href="#tavoletta">Scorri</a>
+      </div>
+      <figure class="opening__photo">
+        <img src="img/tavolette.webp" width="1600" height="1194" alt="Tre tavolette Nero 72 nella carta scura su una lastra di pietra, una aperta nella carta color rame">
+      </figure>
+    </section>
+
+    <section class="shop" id="tavoletta" aria-labelledby="shop-title">
+      <div class="shop__side">
+        <h2 id="shop-title">Scegli la percentuale</h2>
+        <fieldset class="scale">
+          <legend class="sr">Percentuale di cacao</legend>
+          <div class="scale__row" data-scale></div>
+        </fieldset>
+        <p class="shop__note" data-note aria-live="polite"></p>
+      </div>
+      <div class="slab" data-slab></div>
+    </section>
+
+    <section class="label" aria-labelledby="label-title">
+      <figure class="label__photo">
+        <img src="img/spaccatura.webp" width="880" height="960" loading="lazy" alt="Un quadrato di cioccolato spezzato in diagonale, su un letto di cacao in polvere">
+      </figure>
+      <div class="label__text">
+        <h2 id="label-title">Il numero sull’etichetta</h2>
+        <p>Su una tavoletta di fondente la percentuale conta insieme le due parti del cacao: la parte solida del seme e il burro di cacao. Il nostro fondente ha tre ingredienti, massa di cacao, zucchero e burro di cacao, quindi tutto quello che non è cacao è zucchero.</p>
+        <p>Al 100 lo zucchero sparisce: resta la sola massa di cacao, che a rigore non si chiama più cioccolato.</p>
+        <p>Il colpo secco quando spezzi un quadrato viene dalla tempera. Il cioccolato si scioglie a 45 gradi, poi si raffredda verso i 26-28 e il burro di cacao si ordina in cristalli di una forma sola, l’unica che dà al fondente lucido e rottura netta.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="foot__mark" aria-hidden="true">NERO <span class="cut">72</span></p>
+    <div class="foot__info">
+      <p>Spedizione in Italia 5,90 €, gratuita da 40 €.</p>
+      <p>Il pagamento è finto: nessun ordine parte e nessun dato viene chiesto.</p>
+      <p class="foot__concept">Concept: marchio, prodotti e prezzi sono inventati.</p>
+      <p>Caratteri Oranienbaum e Newsreader, licenza SIL Open Font.</p>
+    </div>
+    <a class="foot__top" href="#top">Torna su</a>
+  </footer>
+
+  <dialog class="sheet" id="scheda" aria-labelledby="scheda-title">
+    <div class="sheet__body">
+      <button class="sheet__close" type="button" data-close>Chiudi</button>
+      <div class="sheet__art" data-art></div>
+      <h2 class="sheet__title" id="scheda-title" data-title></h2>
+      <p class="sheet__meta" data-meta></p>
+      <p data-desc></p>
+      <p class="sheet__ingredients" data-ingredients></p>
+      <div class="sheet__buy">
+        <p class="sheet__price" data-price></p>
+        <div class="stepper" role="group" aria-label="Quantità">
+          <button type="button" data-step="-1" aria-label="Uno in meno">−</button>
+          <output data-qty>1</output>
+          <button type="button" data-step="1" aria-label="Uno in più">+</button>
+        </div>
+      </div>
+      <button class="primary" type="button" data-add-sheet>Aggiungi al carrello</button>
+    </div>
+  </dialog>
+
+  <dialog class="sheet sheet--cart" id="carrello" aria-labelledby="cart-title">
+    <div class="sheet__body">
+      <button class="sheet__close" type="button" data-close>Chiudi</button>
+      <h2 class="sheet__title" id="cart-title">Carrello</h2>
+      <p class="cart__empty" data-empty>Il carrello è vuoto. Scegli un quadrato della tavoletta.</p>
+      <ul class="cart__lines" data-lines></ul>
+      <dl class="cart__sum" data-sum>
+        <div><dt>Prodotti</dt><dd data-subtotal></dd></div>
+        <div><dt>Spedizione</dt><dd data-shipping></dd></div>
+        <div class="cart__total"><dt>Totale</dt><dd data-total></dd></div>
+      </dl>
+      <p class="cart__free" data-free></p>
+      <button class="primary" type="button" data-pay>Vai al pagamento</button>
+      <p class="cart__fake" data-fake>Il pagamento è finto: è un concept, nessun ordine parte.</p>
+    </div>
+  </dialog>
+</body>
+</html>

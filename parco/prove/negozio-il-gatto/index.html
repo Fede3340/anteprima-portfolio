@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Il Gatto · vino rosso</title>
+  <meta name="description" content="La carta dei vini de Il Gatto, vino rosso: bottiglie, formati e casse, con spedizione in tutta Italia.">
+  <meta name="theme-color" content="#0e0e0e">
+  <link rel="preload" href="fonts/cormorant-garamond-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/eb-garamond-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="bar">
+    <a class="bar-name" href="#top">Il Gatto</a>
+    <button class="bar-cart" type="button" aria-controls="cart" aria-expanded="false">
+      Carrello <span class="bar-count" data-count>0</span>
+    </button>
+  </header>
+
+  <main id="top">
+    <div class="shop">
+      <article class="card">
+        <svg class="card-ears" viewBox="0 0 1000 245" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M0 245V112C0 62 52 16 96 0c32 52 110 188 196 211 20 5 40 7 60 7h296c20 0 40-2 60-7C794 188 872 52 904 0c44 16 96 62 96 112v133Z"/>
+        </svg>
+
+        <section class="hero" aria-label="Il Gatto, vino rosso">
+          <div class="hero-stage">
+            <div class="hero-eyes" aria-hidden="true"><i></i><i></i></div>
+            <div class="hero-shot">
+              <img class="hero-bottle" src="img/bottiglia.webp" width="440" height="1130" alt="Una bottiglia de Il Gatto al buio: sull’etichetta nera brillano due occhi d’oro">
+            </div>
+          </div>
+          <h1 class="hero-name">Il Gatto</h1>
+          <p class="hero-kind">Vino rosso</p>
+          <a class="hero-scroll" href="#carta">Scorri</a>
+        </section>
+
+        <section class="carta" id="carta" aria-labelledby="carta-title">
+          <h2 class="carta-title" id="carta-title">La carta</h2>
+          <p class="carta-note">Spedizione 9,90 €, gratuita da 60 €. Si vende solo a chi ha compiuto 18 anni.</p>
+          <div class="carta-list" data-list>
+            <div class="list-eyes" aria-hidden="true"><i></i><i></i></div>
+          </div>
+        </section>
+      </article>
+
+      <aside class="stage" aria-label="La bottiglia scelta">
+        <div class="stage-pin">
+          <div class="stage-block" data-stage></div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="sera" aria-labelledby="sera-title">
+      <figure class="sera-figure">
+        <img src="img/manifesto-1200.webp" srcset="img/manifesto-1200.webp 1200w, img/manifesto-2200.webp 2200w" sizes="(min-width: 1280px) 56vw, (min-width: 700px) 760px, calc(100vw - 32px)" width="2200" height="1642" alt="Il manifesto de Il Gatto in una bacheca illuminata da un lampione, di sera" loading="lazy">
+      </figure>
+      <div class="sera-text">
+        <h2 class="sera-title" id="sera-title">Come arriva</h2>
+        <dl class="sera-facts">
+          <div><dt>Spedizione</dt><dd>9,90 € in tutta Italia, gratuita da 60 €. Le bottiglie viaggiano in una scatola con gli alveoli di cartone.</dd></div>
+          <div><dt>Maggiore età</dt><dd>Il vino si vende solo a chi ha compiuto 18 anni: al pagamento lo si dichiara.</dd></div>
+          <div><dt>Pagamento</dt><dd>Il pagamento di questa pagina è finto: nessun ordine parte e non si paga niente.</dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-mark">
+      <div class="foot-eyes" aria-hidden="true"><i></i><i></i></div>
+      <p class="foot-name">Il Gatto</p>
+      <p class="foot-kind">Vino rosso</p>
+    </div>
+    <div class="foot-lines">
+      <p>Concept: marchio, prodotti e prezzi sono inventati.</p>
+      <p>Vendita riservata ai maggiorenni. Il pagamento è finto.</p>
+    </div>
+  </footer>
+
+  <div class="scrim" data-scrim hidden></div>
+
+  <section class="cart" id="cart" aria-labelledby="cart-title" aria-hidden="true" inert>
+    <svg class="cart-ears" viewBox="0 0 1000 245" aria-hidden="true" focusable="false">
+      <path d="M0 245V112C0 62 52 16 96 0c32 52 110 188 196 211 20 5 40 7 60 7h296c20 0 40-2 60-7C794 188 872 52 904 0c44 16 96 62 96 112v133Z"/>
+    </svg>
+    <div class="cart-body">
+    <div class="cart-head">
+      <h2 class="cart-title" id="cart-title">Carrello</h2>
+      <button class="cart-close" type="button" data-close-cart>Chiudi</button>
+    </div>
+    <p class="cart-empty" data-empty>Il carrello è vuoto. Scegli una riga della carta.</p>
+    <ul class="cart-lines" data-lines></ul>
+    <div class="cart-sums" data-sums hidden>
+      <dl>
+        <div><dt>Prodotti</dt><dd data-subtotal></dd></div>
+        <div><dt>Spedizione</dt><dd data-shipping></dd></div>
+        <div class="cart-total"><dt>Totale</dt><dd data-total></dd></div>
+      </dl>
+      <p class="cart-free" data-free></p>
+      <form class="cart-pay" data-pay>
+        <label class="cart-age"><input type="checkbox" required data-age> Ho compiuto 18 anni.</label>
+        <button class="btn btn-gold" type="submit">Paga</button>
+        <p class="cart-fake" data-fake role="status"></p>
+      </form>
+    </div>
+    </div>
+  </section>
+
+  <dialog class="scheda" data-sheet aria-labelledby="scheda-title">
+    <div class="scheda-inner" data-sheet-body></div>
+  </dialog>
+</body>
+</html>

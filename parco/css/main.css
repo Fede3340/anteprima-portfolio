@@ -102,11 +102,43 @@ button {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  cursor: grab;
+  /* The pointer is a plaster hand pointing; it presses over what answers a click, and while held.
+     32 px: larger pictures are not shown by every browser (MDN, cursor). */
+  cursor: url("../img/sprites/indice-32.png") 1 0, pointer;
 }
 
-.park:active {
-  cursor: grabbing;
+.park.is-over,
+.park:active,
+.anchor.zone-name.is-on {
+  cursor: url("../img/sprites/indice-preme-32.png") 1 0, pointer;
+}
+
+/* What a click does where the hand is, written beside it. */
+.pointer-label {
+  position: fixed;
+  z-index: 45;
+  top: 0;
+  left: 0;
+  padding: 4px 10px 5px;
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--small);
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 8px 22px -12px rgb(0 23 80 / 0.5);
+  pointer-events: none;
+  animation: label-in 0.18s ease-out;
+}
+
+.pointer-label[hidden] {
+  display: none;
+}
+
+@keyframes label-in {
+  from {
+    opacity: 0;
+  }
 }
 
 .pill,
@@ -406,7 +438,6 @@ body:has(.threshold:not([hidden])) :is(.brand, .hud, .hint) {
 
 .anchor.zone-name.is-on {
   pointer-events: auto;
-  cursor: pointer;
 }
 
 .work-label,

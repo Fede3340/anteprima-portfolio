@@ -417,7 +417,7 @@
           "h": 13900
         }
       },
-      "live": "https://fede3340.github.io/grecale/"
+      "live": "prove/grecale/"
     },
     "mirtifolia": {
       "index": 2,
@@ -731,7 +731,7 @@
           "h": 5292
         }
       },
-      "live": "https://fede3340.github.io/mirtifolia/"
+      "live": "prove/mirtifolia/"
     },
     "operazione-africa": {
       "index": 3,
@@ -1000,7 +1000,8 @@
           "w": 780,
           "h": 8774
         }
-      }
+      },
+      "live": "prove/operazione-africa/"
     },
     "sito-valerio": {
       "index": 4,
@@ -2196,7 +2197,8 @@
           "w": 780,
           "h": 10766
         }
-      }
+      },
+      "live": "prove/bianchipro/"
     },
     "spedizione-facile": {
       "index": 9,
@@ -2770,7 +2772,8 @@
           "w": 780,
           "h": 6612
         }
-      }
+      },
+      "live": "prove/negozio-nero-72/"
     },
     "negozio-il-gatto": {
       "index": 11,
@@ -3048,7 +3051,8 @@
           "w": 780,
           "h": 6394
         }
-      }
+      },
+      "live": "prove/negozio-il-gatto/"
     },
     "negozio-mandorla": {
       "index": 12,
@@ -3319,7 +3323,8 @@
           "w": 780,
           "h": 8956
         }
-      }
+      },
+      "live": "prove/negozio-mandorla/"
     },
     "negozio-cerchi": {
       "index": 13,
@@ -3574,7 +3579,8 @@
           "w": 780,
           "h": 11704
         }
-      }
+      },
+      "live": "prove/negozio-cerchi/"
     },
     "zanzanext": {
       "index": 14,
@@ -8520,12 +8526,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/sagra-del-pesce/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/sagra-del-pesce/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Sagra del pesce, Porto di Cagliari»: un vortice di pesci color crema su fondo blu",
           "caption": "",
-          "srcset": "media/works/sagra-del-pesce/01-600.webp 600w, media/works/sagra-del-pesce/01-1200.webp 1200w"
+          "srcset": "media/works/sagra-del-pesce/01-600.webp 600w, media/works/sagra-del-pesce/01-1200.webp 1200w, media/works/sagra-del-pesce/01-1744.webp 1744w"
         }
       ]
     },
@@ -8725,12 +8731,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/su-civraxiu/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/su-civraxiu/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Su Civraxiu, Sanluri»: una pagnotta tonda su fondo nero, divisa in quattro da due linee bianche",
           "caption": "",
-          "srcset": "media/works/su-civraxiu/01-600.webp 600w, media/works/su-civraxiu/01-1200.webp 1200w"
+          "srcset": "media/works/su-civraxiu/01-600.webp 600w, media/works/su-civraxiu/01-1200.webp 1200w, media/works/su-civraxiu/01-1744.webp 1744w"
         }
       ]
     },
@@ -8909,12 +8915,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/su-coccoi/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/su-coccoi/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Su Coccoi»: una corona bianca intagliata su fondo ocra",
           "caption": "",
-          "srcset": "media/works/su-coccoi/01-600.webp 600w, media/works/su-coccoi/01-1200.webp 1200w"
+          "srcset": "media/works/su-coccoi/01-600.webp 600w, media/works/su-coccoi/01-1200.webp 1200w, media/works/su-coccoi/01-1744.webp 1744w"
         }
       ]
     },
@@ -9093,12 +9099,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/sa-binnenna/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/sa-binnenna/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Sa Binnenna, Monserrato»: un grappolo fatto con le impronte rotonde di un bicchiere di vino",
           "caption": "",
-          "srcset": "media/works/sa-binnenna/01-600.webp 600w, media/works/sa-binnenna/01-1200.webp 1200w"
+          "srcset": "media/works/sa-binnenna/01-600.webp 600w, media/works/sa-binnenna/01-1200.webp 1200w, media/works/sa-binnenna/01-1744.webp 1744w"
         }
       ]
     },
@@ -9286,12 +9292,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/sagra-del-miele/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/sagra-del-miele/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Sagra del miele, Montevecchio»: un favo giallo e una colata di miele",
           "caption": "",
-          "srcset": "media/works/sagra-del-miele/01-600.webp 600w, media/works/sagra-del-miele/01-1200.webp 1200w"
+          "srcset": "media/works/sagra-del-miele/01-600.webp 600w, media/works/sagra-del-miele/01-1200.webp 1200w, media/works/sagra-del-miele/01-1744.webp 1744w"
         }
       ]
     },
@@ -9462,12 +9468,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/5-km-del-poetto/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/5-km-del-poetto/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «5 km del Poetto, Cagliari»: il numero 5 e la scritta KM fatti con le corsie rosse di una pista",
           "caption": "",
-          "srcset": "media/works/5-km-del-poetto/01-600.webp 600w, media/works/5-km-del-poetto/01-1200.webp 1200w"
+          "srcset": "media/works/5-km-del-poetto/01-600.webp 600w, media/works/5-km-del-poetto/01-1200.webp 1200w, media/works/5-km-del-poetto/01-1744.webp 1744w"
         }
       ]
     },
@@ -9654,12 +9660,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/corsa-campestre/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/corsa-campestre/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Corsa campestre, Arborea»: gambe e scarpe in corsa sull’erba, stampate in verde",
           "caption": "",
-          "srcset": "media/works/corsa-campestre/01-600.webp 600w, media/works/corsa-campestre/01-1200.webp 1200w"
+          "srcset": "media/works/corsa-campestre/01-600.webp 600w, media/works/corsa-campestre/01-1200.webp 1200w, media/works/corsa-campestre/01-1744.webp 1744w"
         }
       ]
     },
@@ -9848,12 +9854,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/santa-chiara/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/santa-chiara/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Santa Chiara, Iglesias»: una fila di luci sale di notte verso una chiesa in cima al colle",
           "caption": "",
-          "srcset": "media/works/santa-chiara/01-600.webp 600w, media/works/santa-chiara/01-1200.webp 1200w"
+          "srcset": "media/works/santa-chiara/01-600.webp 600w, media/works/santa-chiara/01-1200.webp 1200w, media/works/santa-chiara/01-1744.webp 1744w"
         }
       ]
     },
@@ -10034,12 +10040,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/castagne/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/castagne/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Castagne, Aritzo»: una padella forata vista dall’alto con una castagna, su fondo arancione",
           "caption": "",
-          "srcset": "media/works/castagne/01-600.webp 600w, media/works/castagne/01-1200.webp 1200w"
+          "srcset": "media/works/castagne/01-600.webp 600w, media/works/castagne/01-1200.webp 1200w, media/works/castagne/01-1744.webp 1744w"
         }
       ]
     },
@@ -10222,12 +10228,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/settimana-santa/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/settimana-santa/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Settimana Santa, Iglesias»: una croce di legno con un drappo bianco su fondo viola scuro",
           "caption": "",
-          "srcset": "media/works/settimana-santa/01-600.webp 600w, media/works/settimana-santa/01-1200.webp 1200w"
+          "srcset": "media/works/settimana-santa/01-600.webp 600w, media/works/settimana-santa/01-1200.webp 1200w, media/works/settimana-santa/01-1744.webp 1744w"
         }
       ]
     },
@@ -10410,12 +10416,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/corteo-storico/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/corteo-storico/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Corteo storico medioevale, Iglesias»: bandiere con stemmi al vento su un cielo azzurro",
           "caption": "",
-          "srcset": "media/works/corteo-storico/01-600.webp 600w, media/works/corteo-storico/01-1200.webp 1200w"
+          "srcset": "media/works/corteo-storico/01-600.webp 600w, media/works/corteo-storico/01-1200.webp 1200w, media/works/corteo-storico/01-1744.webp 1744w"
         }
       ]
     },
@@ -10590,12 +10596,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/candelieri/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/candelieri/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Candelieri, Iglesias»: otto candelieri a strisce colorate, dal più alto al più basso, con i nastri al vento",
           "caption": "",
-          "srcset": "media/works/candelieri/01-600.webp 600w, media/works/candelieri/01-1200.webp 1200w"
+          "srcset": "media/works/candelieri/01-600.webp 600w, media/works/candelieri/01-1200.webp 1200w, media/works/candelieri/01-1744.webp 1744w"
         }
       ]
     },
@@ -10788,12 +10794,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/corsa-dei-ceri/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/corsa-dei-ceri/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Corsa dei Ceri, Gubbio»: i tre ceri portati di corsa sopra la folla in giallo, blu e nero",
           "caption": "",
-          "srcset": "media/works/corsa-dei-ceri/01-600.webp 600w, media/works/corsa-dei-ceri/01-1200.webp 1200w"
+          "srcset": "media/works/corsa-dei-ceri/01-600.webp 600w, media/works/corsa-dei-ceri/01-1200.webp 1200w, media/works/corsa-dei-ceri/01-1744.webp 1744w"
         }
       ]
     },
@@ -10968,12 +10974,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/la-quintana/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/la-quintana/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «La Quintana, Ascoli Piceno»: un cavaliere in armatura al galoppo punta la lancia contro un bersaglio",
           "caption": "",
-          "srcset": "media/works/la-quintana/01-600.webp 600w, media/works/la-quintana/01-1200.webp 1200w"
+          "srcset": "media/works/la-quintana/01-600.webp 600w, media/works/la-quintana/01-1200.webp 1200w, media/works/la-quintana/01-1744.webp 1744w"
         }
       ]
     },
@@ -11166,12 +11172,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/festa-del-redentore/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/festa-del-redentore/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Festa del Redentore, Venezia»: fuochi d’artificio sopra la laguna, con la chiesa e le barche",
           "caption": "",
-          "srcset": "media/works/festa-del-redentore/01-600.webp 600w, media/works/festa-del-redentore/01-1200.webp 1200w"
+          "srcset": "media/works/festa-del-redentore/01-600.webp 600w, media/works/festa-del-redentore/01-1200.webp 1200w, media/works/festa-del-redentore/01-1744.webp 1744w"
         }
       ]
     },
@@ -11372,12 +11378,12 @@
       },
       "gallery": [
         {
-          "src": "media/works/oh-bej-oh-bej/01-1200.webp",
-          "w": 1200,
-          "h": 1608,
+          "src": "media/works/oh-bej-oh-bej/01-1744.webp",
+          "w": 1744,
+          "h": 2336,
           "alt": "Manifesto «Oh bej! Oh bej!, Milano»: la scritta ripetuta quattro volte in rosso, verde, giallo e blu",
           "caption": "",
-          "srcset": "media/works/oh-bej-oh-bej/01-600.webp 600w, media/works/oh-bej-oh-bej/01-1200.webp 1200w"
+          "srcset": "media/works/oh-bej-oh-bej/01-600.webp 600w, media/works/oh-bej-oh-bej/01-1200.webp 1200w, media/works/oh-bej-oh-bej/01-1744.webp 1744w"
         }
       ]
     }
