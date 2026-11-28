@@ -41,17 +41,18 @@
   height: 400%;
 }
 
-/* The name: the flat sign, the name in spaced capitals under it, and who made it. Dark on the
-   light sky of dawn, in the ink of the site (6.8:1 and more on it). Scrolling, it rises and is gone; the name in the corner takes its place. */
+/* The name: the flat sign in its light version, the name in spaced capitals under it, and who made
+   it, in cream on the deep blue of space. Scrolling, it rises and is gone before the sky clears; the
+   name in the corner takes its place. */
 .threshold__name {
   position: absolute;
-  top: 30%;
+  top: 21%;
   left: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5em;
-  color: var(--ink);
+  color: #fff0e4;
   font-size: clamp(1.375rem, 0.9rem + 1.2vw, 2rem);
   line-height: 1;
   white-space: nowrap;
@@ -107,8 +108,8 @@ body:has(.threshold:not([hidden])) .travel {
   visibility: hidden;
 }
 
-/* The words of the fork, held under their things in the sky: plain text in ink, with only the soft
-   light round it that it needs to be read over the park. No plate. */
+/* The words of the fork, held under their things in the sky: plain text in ink on the light peach low
+   down, with only the soft light round it that it needs. No plate. */
 .threshold__targa {
   position: absolute;
   top: 0;
@@ -124,7 +125,7 @@ body:has(.threshold:not([hidden])) .travel {
   line-height: 1.2;
   white-space: nowrap;
   text-decoration: none;
-  text-shadow: 0 0 6px rgb(255 255 255 / 0.9), 0 0 22px rgb(255 255 255 / 0.8);
+  text-shadow: 0 0 8px rgb(255 244 236 / 0.8), 0 0 22px rgb(255 244 236 / 0.6);
   cursor: pointer;
   pointer-events: auto;
   visibility: hidden;

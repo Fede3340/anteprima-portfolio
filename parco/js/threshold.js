@@ -2,11 +2,12 @@
 // and scrolls as any page does; where it is scrolled to is the way down of the eyes (descend, in
 // js/world/camera.js), followed with a short ease. Almost nothing is on the screen: the sky and the
 // sun; two large clouds passing close on the way down; at the fork two things only, the portal of all
-// the works on one page and an islet with a tree and a bench for the park. Until the fork is passed
+// the works on one page and an islet of the park, its tree, path and pond. Until the fork is passed
 // the park is not drawn; then it comes out of the haze, little by little, to where the walk begins.
 // At the bottom the visit begins; «Indietro» from its first stop climbs back to the fork.
 import * as THREE from 'three';
 import { descend } from './world/camera.js';
+import { SPACE } from './world/sky.js';
 import { createSprite } from './world/sprites.js';
 
 // Where the fork is, in shares of the page scrolled; there the eyes slow down.
@@ -21,8 +22,40 @@ const SPOTS = {
   tall: { portal: [21, 0, 1.2], islet: [21, 0, 13] },
 };
 const PORTAL_HEIGHT = 6;
-// The islet: a flat cloud with a tree on it and a bench beside the tree (metres).
-const ISLET = { width: 6, tree: 5, bench: 1.2 };
+// The islet: a cloud, on it a round of ground with the peach path and the blue pond of the park, tilted
+// towards the eyes at the fork, and one full round tree in the blue lilac of the park's trees (metres,
+// radians from level).
+const ISLET = { width: 8, tree: 5.2, ground: 2.6, tilt: 0.28 };
+const PARK_COLOURS = { ground: '#e9e6f6', path: '#f4a982', pond: '#3f7fd6', tree: '#4c57cc' };
+// The far edge of the sea of clouds, as low as it is seen from the eyes (js/world/land.js): its depth and
+// reach in metres.
+const SEA = { y: -95, reach: 1500 };
+// The sky is space at the top, the dawn of the park by the time the park has come out of the haze.
+const SPACE_SPAN = [0.25, 0.85];
+
+// The round of ground of the islet, painted once: plaster, the path crossing it, the pond.
+function groundOf() {
+  const canvas = Object.assign(document.createElement('canvas'), { width: 512, height: 512 });
+  const g = canvas.getContext('2d');
+  g.fillStyle = PARK_COLOURS.ground;
+  g.beginPath();
+  g.arc(256, 256, 254, 0, 2 * Math.PI);
+  g.fill();
+  g.strokeStyle = PARK_COLOURS.path;
+  g.lineWidth = 58;
+  g.lineCap = 'round';
+  g.beginPath();
+  g.moveTo(300, 500);
+  g.bezierCurveTo(250, 400, 380, 330, 330, 230);
+  g.stroke();
+  g.fillStyle = PARK_COLOURS.pond;
+  g.beginPath();
+  g.ellipse(150, 300, 84, 62, -0.3, 0, 2 * Math.PI);
+  g.fill();
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return new THREE.Mesh(new THREE.CircleGeometry(ISLET.ground, 48), new THREE.MeshBasicMaterial({ map: texture, fog: false, alphaTest: 0.5 }));
+}
 // The two clouds passing close on the way down: share of the way, metres to the right and ahead of
 // the way, height.
 const CLOUDS = [[0.24, -13, 4, 13], [0.34, 15, 8, 11]];
@@ -107,11 +140,13 @@ export function createThreshold(root, { onSound, onArrive }) {
     from(FORK, spots.islet, at);
     const base = decor.islet.spots[0];
     Object.assign(base, { x: at.x, y: at.y, z: at.z, height: ISLET.width / decor.islet.aspect });
-    const top = at.y + base.height * 0.55;
-    Object.assign(decor.tree.spots[0], { x: at.x, y: top, z: at.z, height: ISLET.tree });
-    // The bench beside the tree, across the way the eyes come from.
+    // The ground on the cloud, turned up towards where the eyes come from; the tree on its far half.
     const { heading } = world.state;
-    Object.assign(decor.bench.spots[0], { x: at.x - Math.sin(heading) * 1.3, y: top, z: at.z + Math.cos(heading) * 1.3, height: ISLET.bench });
+    const back = { x: Math.cos(heading), z: Math.sin(heading) };
+    const ground = decor.ground;
+    ground.position.set(at.x, at.y + base.height * 0.5, at.z);
+    ground.lookAt(at.x - back.x * Math.sin(ISLET.tilt), ground.position.y + Math.cos(ISLET.tilt), at.z - back.z * Math.sin(ISLET.tilt));
+    Object.assign(decor.tree.spots[0], { x: at.x + back.x * 0.7, y: ground.position.y + 0.5, z: at.z + back.z * 0.7, height: ISLET.tree });
     CLOUDS.forEach(([share, right, ahead, height], index) => {
       from(share, [ahead, right, height * 0.45], at);
       Object.assign(decor.clouds.spots[index], { x: at.x, y: at.y, z: at.z, height });
@@ -199,10 +234,22 @@ export function createThreshold(root, { onSound, onArrive }) {
       planet.layers.enable(1);
       fade(planet.material, park);
     }
-    const gone = 1 - smoothstep(share, ...FADE);
-    for (const key of ['portal', 'islet', 'tree', 'bench']) fade(decor[key].mesh.material, gone);
-    decor.portal.mesh.visible = decor.islet.mesh.visible = gone > 0;
-    decor.tree.mesh.visible = decor.bench.mesh.visible = gone > 0;
+    // The two things come out of the haze on the way to the fork, and fade past it.
+    const gone = smoothstep(share, 0.28, 0.38) * (1 - smoothstep(share, ...FADE));
+    for (const mesh of [decor.portal.mesh, decor.islet.mesh, decor.tree.mesh, decor.ground]) {
+      fade(mesh.material, gone);
+      mesh.visible = gone > 0;
+    }
+    // Space up high, the dawn of the park lower down; the horizon (and the glow's soft end under it)
+    // only as the park comes out of the haze.
+    const sky = world.land.sky.material.uniforms;
+    const space = 1 - smoothstep(share, ...SPACE_SPAN);
+    sky.uSpace.value = space;
+    // The light of the sun is round in space; before the park comes it already fades softly under the
+    // far edge of the sea, where the haze's colour (space low down, while space still shows) meets it.
+    sky.uCut.value = smoothstep(share, 0.4, PARK);
+    sky.uEdge.value = -(world.camera.position.y - SEA.y) / SEA.reach;
+    fog.color.lerp(SPACE.low, space);
     if (shown < 0.95) armed = true;
     if (armed && shown >= 0.999) arrive();
   }
@@ -217,14 +264,18 @@ export function createThreshold(root, { onSound, onArrive }) {
     document.documentElement.classList.toggle('is-named', lift >= 1);
     const seen = smoothstep(share, 0.45, 0.49) * (1 - smoothstep(share, 0.56, FADE[0]));
     const { portal, islet } = decor;
-    hold(works, portal.spots[0].x, portal.spots[0].y, portal.spots[0].z, seen);
-    hold(enter, islet.spots[0].x, islet.spots[0].y, islet.spots[0].z, seen);
+    hold(works, portal.spots[0].x, portal.spots[0].y - 1.4, portal.spots[0].z, seen);
+    hold(enter, islet.spots[0].x, islet.spots[0].y - 1.4, islet.spots[0].z, seen);
   }
 
   function arrive() {
     root.hidden = true;
     decor.group.visible = false;
     world.camera.layers.set(0);
+    const sky = world.land.sky.material.uniforms;
+    sky.uSpace.value = 0;
+    sky.uCut.value = 1;
+    sky.uEdge.value = -0.07;
     document.documentElement.classList.remove('is-named');
     world.rig.go('walk');
     onArrive();
@@ -254,7 +305,7 @@ export function createThreshold(root, { onSound, onArrive }) {
       wave(spot.x, spot.y);
       scrollTo(FORK);
     } else if (!works.inert && world.hit(event.clientX, event.clientY, [decor.portal.mesh])) works.click();
-    else if (!enter.inert && world.hit(event.clientX, event.clientY, [decor.islet.mesh, decor.tree.mesh, decor.bench.mesh])) scrollTo(1);
+    else if (!enter.inert && world.hit(event.clientX, event.clientY, [decor.islet.mesh, decor.tree.mesh, decor.ground])) scrollTo(1);
   });
   root.addEventListener('pointermove', (event) => {
     if (event.pointerType === 'mouse') root.classList.toggle('is-over', Boolean(nearSun(event.clientX, event.clientY)));
@@ -289,12 +340,16 @@ export function createThreshold(root, { onSound, onArrive }) {
     prepare(park, pictures) {
       world = park;
       const make = (entry, count = 1) => createSprite(entry, count, { renderer: world.renderer, fog: false });
-      decor = { portal: make(pictures.portal), islet: make(pictures.islet), tree: make(pictures.tree), bench: make(pictures.bench), clouds: make(pictures.cloud, CLOUDS.length), group: new THREE.Group() };
-      const sprites = [decor.portal, decor.islet, decor.tree, decor.bench, decor.clouds];
-      for (const sprite of sprites) {
-        sprite.mesh.layers.set(1);
-        decor.group.add(sprite.mesh);
+      decor = { portal: make(pictures.portal), islet: make(pictures.islet), tree: make(pictures.tree), ground: groundOf(), clouds: make(pictures.cloud, CLOUDS.length), group: new THREE.Group() };
+      const sprites = [decor.portal, decor.islet, decor.tree, decor.clouds];
+      for (const mesh of [...sprites.map((sprite) => sprite.mesh), decor.ground]) {
+        mesh.layers.set(1);
+        decor.group.add(mesh);
       }
+      // The tree in the blue lilac of the park's trees, full.
+      decor.tree.tone.uAccent.value.set(...new THREE.Color(PARK_COLOURS.tree).toArray(), 0.95);
+      decor.tree.mesh.material.userData.toned = true;
+      decor.tree.mesh.material.needsUpdate = true;
       // The sky, and the lights, so that the light of the park is the same before and after the fork
       // (a change of lights would prepare every program of the park again, in one long frame).
       for (const thing of [world.land.sky, world.sky, world.sun]) thing.layers.enable(1);
