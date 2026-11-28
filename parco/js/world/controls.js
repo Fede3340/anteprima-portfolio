@@ -1,22 +1,34 @@
 // How the visitor moves, with nothing to learn. Mouse: the look follows the pointer without pressing
-// anything (straight ahead in the middle, about 25 degrees halfway to an edge, about 65 at the edge,
-// up to 15 up and down), and in the last 8% towards a side the way one faces turns slowly too; over a
-// work, a name, a portal or a button the look stays still, so that a hand not quite steady can reach
-// it. A click does the obvious thing where it points (main.js). Dragging turns the way one faces.
-// Finger: dragging looks, a tap goes, holding the lower part of the screen walks ahead. Keys: W and S
-// or the up and down arrows walk, A and D or the side arrows turn. The wheel walks a notch.
+// anything, calmly: still in the middle of the screen, up to about 40 degrees at the edge and 8 up and
+// down; over a work, a name, a portal or a button the look stays still, so that a hand not quite steady
+// can reach it. To turn round there are two large arrows at the sides, «Girati a sinistra» and «Girati
+// a destra»: resting the mouse on one, or holding a finger on it, turns; so does the last 8% of the
+// screen towards a side, and so do the side arrow keys. A click does the obvious thing where it points
+// (main.js). Dragging turns the way one faces. Finger: dragging looks, a tap goes, holding the lower
+// part of the screen walks ahead. Keys: W and S or the up and down arrows walk, A and D or the side
+// arrows turn. The wheel walks a notch.
 const LOOK = { mouse: 0.0035, touch: 0.00225 };
-const TURN_SPEED = 1.7;
 const deg = (value) => (value * Math.PI) / 180;
-// The look away from the way one faces, for a pointer at n (-1 to 1) from the middle of the screen:
-// 35|n| + 30n² degrees, so 25 at halfway and 65 at the edge; and up and down.
-const AWAY = (n) => Math.sign(n) * deg(35 * Math.abs(n) + 30 * n * n);
-const UPDOWN = deg(15);
-// The last stretch towards a side, and how fast the way one faces turns at the very edge.
+// The middle of the screen where the look stays still: 12% of its width (and of its height).
+const STILL = 0.12;
+// From the edge of the still middle to the edge of the screen: a soft start over the first 30%, then
+// even, so that no stretch of the screen turns the look faster than another.
+const SOFT = 0.3;
+const curve = (n) => {
+  const m = Math.max(0, Math.abs(n) - STILL / 2) / (1 - STILL / 2);
+  return (Math.sign(n) * (m < SOFT ? (m * m) / (2 * SOFT) : m - SOFT / 2)) / (1 - SOFT / 2);
+};
+const AWAY = (n) => curve(n) * deg(40);
+const UPDOWN = (n) => curve(n) * deg(8);
+// The last stretch towards a side.
 const EDGE = 0.92;
-const EDGE_TURN = deg(40);
-// The look follows in about 150 ms, so that it never trembles.
-const FOLLOW = 0.05;
+// Turning round: slowly at first, up to 45 degrees a second within half a second; stopped at once.
+const TURN = deg(45);
+const TURN_RISE = 0.5;
+// The look follows in about 150 ms and is still within 250: it eases in, and its last stretch is
+// covered at no less than 0.6 radians a second, so that it never creeps on.
+const FOLLOW = 0.04;
+const SETTLE = 0.6;
 const SLOP = 9;
 const TAP_TIME = 350;
 const HOLD_TIME = 260;
@@ -29,8 +41,23 @@ const BACK = new Set(['ArrowDown', 's', 'S']);
 const LEFT = new Set(['ArrowLeft', 'a', 'A']);
 const RIGHT = new Set(['ArrowRight', 'd', 'D']);
 
+// The two arrows at the sides, written with what they do.
+function arrow(side, text) {
+  const node = document.createElement('button');
+  node.type = 'button';
+  node.className = `turn turn--${side}`;
+  node.tabIndex = -1;
+  node.setAttribute('aria-hidden', 'true');
+  node.innerHTML = `<span class="turn__arrow">${side === 'left' ? '‹' : '›'}</span><span class="turn__label">${text}</span>`;
+  document.body.append(node);
+  return node;
+}
+
 export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold }) {
   const keys = { walk: 0, turn: 0 };
+  // The way an arrow at the side asks to turn (-1, 0, 1), and for how long one has been turning.
+  let arrowTurn = 0;
+  let turning = 0;
   // Where the mouse rests over the park itself (not over a button, the bar or a panel), if it does.
   let mouse;
   // The look away from the way one faces, as it is and as the pointer asks; still while held.
@@ -54,7 +81,7 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
     if (press) return;
     if (!mouse || gaze.held || near(mouse.x, mouse.y)) return freeze();
     gaze.wantYaw = AWAY((mouse.x / innerWidth) * 2 - 1);
-    gaze.wantPitch = -((mouse.y / innerHeight) * 2 - 1) * UPDOWN;
+    gaze.wantPitch = -UPDOWN((mouse.y / innerHeight) * 2 - 1);
   };
   document.addEventListener('pointermove', (event) => {
     if (event.pointerType !== 'mouse') return;
@@ -121,11 +148,57 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
   surface.addEventListener('pointerup', release);
   surface.addEventListener('pointercancel', release);
 
-  // In the last stretch towards a side, the way one faces turns, slowly at first.
-  function edge() {
+  // The arrows: the mouse resting on one turns, and a finger or the mouse holding it. They show while
+  // the mouse moves over the park, and stay on a phone.
+  const arrows = [arrow('left', 'Girati a sinistra'), arrow('right', 'Girati a destra')];
+  let shownTimer;
+  const show = () => {
+    for (const node of arrows) node.classList.add('is-shown');
+    clearTimeout(shownTimer);
+    shownTimer = setTimeout(() => {
+      if (!arrowTurn) for (const node of arrows) node.classList.remove('is-shown');
+    }, 3000);
+  };
+  document.addEventListener('pointermove', (event) => {
+    if (event.pointerType === 'mouse' && (event.movementX || event.movementY)) show();
+  });
+  arrows.forEach((node, index) => {
+    const way = index ? 1 : -1;
+    const start = () => {
+      arrowTurn = way;
+      node.classList.add('is-held');
+    };
+    const end = () => {
+      if (arrowTurn === way) arrowTurn = 0;
+      node.classList.remove('is-held');
+      show();
+    };
+    node.addEventListener('pointerenter', (event) => { if (event.pointerType === 'mouse') start(); });
+    node.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
+      node.setPointerCapture(event.pointerId);
+      start();
+    });
+    node.addEventListener('pointerleave', end);
+    node.addEventListener('pointerup', (event) => { if (event.pointerType !== 'mouse') end(); });
+    node.addEventListener('pointercancel', end);
+    node.addEventListener('contextmenu', (event) => event.preventDefault());
+  });
+
+  // Which way one is asked to turn: an arrow at the side, a side key, or the mouse in the last
+  // stretch towards a side.
+  function asked() {
+    if (arrowTurn) return arrowTurn;
+    if (keys.turn) return keys.turn;
     if (!mouse || press || gaze.held) return 0;
     const n = (mouse.x / innerWidth) * 2 - 1;
-    return Math.abs(n) > EDGE ? Math.sign(n) * ((Math.abs(n) - EDGE) / (1 - EDGE)) * EDGE_TURN : 0;
+    return Math.abs(n) > EDGE ? Math.sign(n) : 0;
+  }
+  function turn(dt) {
+    const way = asked();
+    turning = way ? turning + dt : 0;
+    const rise = Math.min(1, turning / TURN_RISE);
+    return way * TURN * rise * rise * (3 - 2 * rise) * dt;
   }
 
   return {
@@ -143,18 +216,21 @@ export function createControls(surface, { onWalk, onLook, onTap, onJump, onHold 
       if (RIGHT.has(event.key)) return set('turn', 1);
       return false;
     },
-    // Held keys and the edge: the walk wanted (-1, 0, 1) and the turn to make this frame, in radians.
-    held: (dt) => ({ walk: keys.walk, turn: (keys.turn * TURN_SPEED + edge()) * dt }),
+    // Held keys, arrows and the edge: the walk wanted (-1, 0, 1) and the turn to make this frame, in radians.
+    held: (dt) => ({ walk: keys.walk, turn: turn(dt) }),
+    arrows,
     // The look away from the way one faces, following the pointer; level: the up and down asked for
     // goes back to the horizon (one is walking).
     gaze(dt, level) {
       const k = 1 - Math.exp(-dt / FOLLOW);
       if (level) gaze.wantPitch = 0;
-      gaze.yaw += (gaze.wantYaw - gaze.yaw) * k;
-      gaze.pitch += (gaze.wantPitch - gaze.pitch) * k;
-      // Settled: exactly where it was asked, so that nothing goes on moving by a hair.
-      if (Math.abs(gaze.wantYaw - gaze.yaw) < 1e-5) gaze.yaw = gaze.wantYaw;
-      if (Math.abs(gaze.wantPitch - gaze.pitch) < 1e-5) gaze.pitch = gaze.wantPitch;
+      const toward = (value, want) => {
+        const left = want - value;
+        const step = Math.sign(left) * Math.max(Math.abs(left) * k, SETTLE * dt);
+        return Math.abs(step) >= Math.abs(left) ? want : value + step;
+      };
+      gaze.yaw = toward(gaze.yaw, gaze.wantYaw);
+      gaze.pitch = toward(gaze.pitch, gaze.wantPitch);
       return gaze;
     },
     // Over something to click the look holds still, until the pointer leaves it.

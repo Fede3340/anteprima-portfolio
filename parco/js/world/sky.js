@@ -7,6 +7,7 @@ export function createSkyMaterial() {
   return new THREE.ShaderMaterial({
     side: THREE.BackSide,
     depthWrite: false,
+    depthFunc: THREE.LessEqualDepth,
     fog: false,
     uniforms: { uTop: colour(), uQuarter: colour(), uHalf: colour(), uHorizon: colour(), uGlow: colour(), uDisc: colour(), uBand: colour(), uSun: { value: new THREE.Vector3(0, 1, 0) }, uBandAmount: { value: 0 }, uStars: { value: 0 } },
     vertexShader: `
@@ -14,6 +15,8 @@ export function createSkyMaterial() {
       void main() {
         vDirection = normalize((modelMatrix * vec4(position, 1.0)).xyz - cameraPosition);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        // On the far plane, drawn after everything else: only where nothing else is.
+        gl_Position.z = gl_Position.w;
       }`,
     fragmentShader: `
       uniform vec3 uTop, uQuarter, uHalf, uHorizon, uGlow, uDisc, uBand, uSun;

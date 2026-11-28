@@ -20,16 +20,21 @@ const NEAR_ENOUGH = 6.5;
 const FLIGHT = 1.4;
 // A click on the sky: this many metres ahead.
 const STEP_AHEAD = 4;
-// Round a work's frame on the screen, a click still opens it rather than walking (pixels).
+// Round a work's frame on the screen, a click still opens it rather than walking (pixels); the look,
+// held still over a work, lets go only this much further out, so that it never comes and goes on the
+// edge.
 const MARGIN = 40;
+const LET_GO = 32;
+// How far the look has to turn, by the arrows, the keys or a drag, for the first step to be done.
+const TURNED = 0.35;
 // Round a name in the sky, the look stops (pixels).
 const NAME_MARGIN = 100;
 // Where «Avanti» goes next, said in full.
 const VERSO = { apertura: "verso l'Apertura", siti: 'verso i Siti', negozi: 'verso i Negozi online', programmi: 'verso i Programmi', app: 'verso le App', videogioco: 'verso il Videogioco', marchi: 'verso i Marchi', manifesti: 'verso i Manifesti', google: 'verso Google', contatti: 'verso i Contatti' };
 // The three steps shown one at a time at the start, each gone once it has been done.
 const COACH = matchMedia('(pointer: coarse)').matches
-  ? { look: 'Trascina col dito: ti guardi attorno', go: 'Tocca dove vuoi andare', open: 'Tocca un quadro per aprirlo, oppure premi Avanti' }
-  : { look: 'Muovi il mouse: ti guardi attorno', go: 'Clicca dove vuoi andare', open: 'Clicca un quadro per aprirlo, oppure premi Avanti' };
+  ? { look: 'Per girarti tieni il dito su una freccia ai lati', go: 'Tocca dove vuoi andare', open: 'Tocca un quadro per aprirlo, oppure premi Avanti' }
+  : { look: 'Per girarti tieni il mouse su una freccia ai lati', go: 'Clicca dove vuoi andare', open: 'Clicca un quadro per aprirlo, oppure premi Avanti' };
 // Where a click on the name of an island takes one, said in full.
 const TOWARD = { apertura: "all'Apertura", siti: 'ai Siti', negozi: 'ai Negozi online', programmi: 'ai Programmi', app: 'alle App', videogioco: 'al Videogioco', marchi: 'ai Marchi', manifesti: 'ai Manifesti', google: 'a Google', contatti: 'ai Contatti' };
 
@@ -168,13 +173,6 @@ function done(step) {
   doneSteps.add(step);
   coach();
 }
-// Moving the mouse over the park a little is the first step done.
-let looked = 0;
-document.addEventListener('pointermove', (event) => {
-  if (event.pointerType !== 'mouse' || event.target !== $('.park')) return;
-  looked += Math.abs(event.movementX) + Math.abs(event.movementY);
-  if (looked > 160) done('look');
-});
 
 // Walks to stand before a work; there the look turns to it and, if asked, it opens.
 function walkTo(spot, opening) {
@@ -261,7 +259,9 @@ function build(texts, pictures, sprites) {
   world.add(park);
   world.block([...exhibits.solid, ...park.solid]);
   const tappable = [...exhibits.targets, ...park.tappable];
-  anchors.avoid(() => exhibits.inSight());
+  // A name never falls on a work, nor under the arrows at the sides.
+  const arrows = world.controls.arrows;
+  anchors.avoid(() => [...exhibits.inSight(), ...arrows.filter((node) => node.classList.contains('is-on')).map((node) => node.getBoundingClientRect())]);
   world.add(createLight({ plan, sky: world.sky, sun: world.sun, fog: world.scene.fog, park }));
   createSigns({
     plan,
@@ -280,11 +280,12 @@ function build(texts, pictures, sprites) {
   });
   // What lies under a point of the screen, for a click and for the hand: a work (it wins over the
   // ground, with a wide margin round its frame), a thing of the park, the ground or a stone.
-  const pick = (x, y) => {
+  // held: the work the look is held still over, whose margin is wider.
+  const pick = (x, y, held) => {
     // The frame the point is in, or else the nearest whose margin it is in.
     const off = (r) => Math.max(r.left - x, x - r.left - r.width, r.top - y, y - r.top - r.height, 0);
     const near = exhibits.inSight()
-      .filter((r) => r.distance < 22 && off(r) < MARGIN)
+      .filter((r) => r.distance < 22 && off(r) < MARGIN + (r.spot === held ? LET_GO : 0))
       .sort((a, b) => off(a) - off(b) || a.distance - b.distance)[0];
     if (near) return { work: near.spot };
     const hit = world.hit(x, y, [...tappable, ...world.land.floors, ...world.land.stones]);
@@ -313,7 +314,7 @@ function build(texts, pictures, sprites) {
       return;
     }
     if (frame++ % 3) return;
-    underHand = pick(at.x, at.y);
+    underHand = pick(at.x, at.y, underHand.work);
     const { work, thing, ground } = underHand;
     world.controls.hold(Boolean(work || thing));
     $('.park').classList.toggle('is-over', Boolean(work || thing));
@@ -343,7 +344,13 @@ function build(texts, pictures, sprites) {
   });
   let tick = 0;
   const lookout = (dt) => {
-    if (world.rig.mode !== 'walk' || story.work || tick++ % 15) return;
+    // A work open over the park, or flying: the button goes, and the count starts again.
+    if (world.rig.mode !== 'walk' || story.work) {
+      lostFor = 0;
+      lost.hidden = true;
+      return;
+    }
+    if (tick++ % 15) return;
     const ground = [[0.5, 0.6], [0.3, 0.75], [0.7, 0.75], [0.5, 0.9], [0.5, 0.45]].some(([fx, fy]) => world.hit(innerWidth * fx, innerHeight * fy, [...world.land.floors, ...world.land.stones]));
     lostFor = ground ? 0 : lostFor + dt * 15;
     lost.hidden = lostFor < 3;
@@ -352,6 +359,10 @@ function build(texts, pictures, sprites) {
   world.add({
     update(dt) {
       keep();
+      // The arrows to turn round, only while walking in the park.
+      const walking = world.rig.mode === 'walk' && !story.work;
+      for (const node of arrows) node.classList.toggle('is-on', walking);
+      if (world.state.turned > TURNED) done('look');
       anchors.update();
       point();
       lookout(dt);
@@ -373,10 +384,10 @@ function build(texts, pictures, sprites) {
   $('.anchors').addEventListener('pointerout', (event) => {
     if (event.target.closest('.zone-name')) say('');
   });
-  // Room kept for the buttons at the top and for the travel bar and the steps at the foot; read every
-  // frame, as they come and go.
+  // Room kept for the buttons at the top and for the travel bar, the steps and «Riportami sul
+  // sentiero» at the foot; read every frame, as they come and go.
   const keep = () => {
-    const low = [$('.travel__bar'), hint].filter((node) => node && !node.hidden && !node.classList.contains('is-gone')).map((node) => node.getBoundingClientRect().top);
+    const low = [$('.travel__bar'), hint, lost].filter((node) => node && !node.hidden && !node.classList.contains('is-gone')).map((node) => node.getBoundingClientRect().top);
     anchors.keep({
       top: $('.hud').getBoundingClientRect().bottom + 8,
       bottom: low.length ? innerHeight - Math.min(...low) + 8 : 8,
@@ -396,7 +407,6 @@ function build(texts, pictures, sprites) {
       if (story.work || !$('.threshold').hidden) return;
       history.replaceState(null, '', island.index === 0 ? location.pathname + location.search : `#${island.zones[0].id}`);
     },
-    walk: () => done('look'),
     // A slow machine: the park goes the light way; too slow even so, the list of the works is the
     // page, with a way back to the park.
     light(on) {

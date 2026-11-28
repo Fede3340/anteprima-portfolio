@@ -32,12 +32,16 @@ const SOFT = 1;
 const SINK = 0.035;
 const LANDING = 1.5;
 // The light on the ground: a strong sky with a pale blue bounce from below and a gentle sun.
-// The sharpness of the drawing follows the machine. It starts at the screen's own density up to 1.5;
-// after half a second of frames slower than 22 ms it goes down a step; on the lowest step, after one
-// more second, the light way comes on. It goes back up a step after five seconds at the screen's full
-// pace (frames under 18 ms: the time between frames cannot be shorter than the screen's own, 16.7 ms
-// at 60 Hz), and a step found too slow is tried again only twenty seconds later.
+// The sharpness of the drawing follows the machine. It starts at the screen's own density, up to 1.5
+// and up to about 2.6 million pixels drawn (a large screen of high density starts a step lower). The
+// time of a frame, 50 ms at most, is averaged over about ten frames, so that a screen dropping every other frame (16
+// and 33 ms in turn) counts as slow: after half a second of that average above 22 ms it goes down a
+// step; on the lowest step, after one more second, the light way comes on. It goes back up a step
+// after five seconds at the screen's full pace (under 18 ms: the time between frames cannot be shorter
+// than the screen's own, 16.7 ms at 60 Hz); a step found too slow is tried again once, twenty seconds
+// later, and after a second failure no more.
 const STEPS = [1.5, 1.25, 1, 0.8, 0.65];
+const PIXELS = 2.6e6;
 const SLOW = 22;
 const QUICK = 18;
 
@@ -45,8 +49,10 @@ export const LIGHT = { sky: '#ffffff', ground: '#b9cde6', skyIntensity: 2.2, sun
 
 export function createWorld(canvas, { plan, reducedMotion }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
-  const top = STEPS.findIndex((ratio) => ratio <= Math.min(devicePixelRatio, 1.5));
-  const quality = { step: top, slow: 0, quick: 0, crawl: 0, failed: {}, light: false, gaveWay: false };
+  const fits = (ratio) => ratio <= Math.min(devicePixelRatio, Math.sqrt(PIXELS / (innerWidth * innerHeight)));
+  const found = STEPS.findIndex(fits);
+  const top = found < 0 ? STEPS.length - 1 : found;
+  const quality = { step: top, average: 1000 / 60, slow: 0, quick: 0, crawl: 0, failed: {}, light: false, gaveWay: false };
   renderer.setPixelRatio(STEPS[top]);
   const scene = new THREE.Scene();
   scene.fog = new THREE.Fog(HAZE, 60, 460);
@@ -65,7 +71,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   // Where the visitor is: on an island, or at t metres along a path. Heading and pitch of the look.
-  const state = { island: plan.landing, path: undefined, t: 0, x: 0, y: 0, z: 0, heading: 0, pitch: -0.1, lookYaw: 0, lookPitch: 0, speed: 0, walked: 0, hop: 0, rise: 0, pending: 0, hold: false, route: [], near: [], still: !reducedMotion.matches };
+  const state = { island: plan.landing, path: undefined, t: 0, x: 0, y: 0, z: 0, heading: 0, pitch: -0.1, lookYaw: 0, lookPitch: 0, speed: 0, walked: 0, turned: 0, hop: 0, rise: 0, pending: 0, hold: false, route: [], near: [], still: !reducedMotion.matches };
   const parts = [];
   let running = false;
   let paused = false;
@@ -110,21 +116,19 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       if (rig.mode !== 'walk') return;
       state.route = [];
       state.pending = way * NOTCH;
-      listeners.walk?.();
     },
     onLook(yaw, pitch) {
       if (rig.mode !== 'walk') return;
       state.heading += yaw;
+      state.turned += Math.abs(yaw);
       state.pitch = Math.max(-PITCH, Math.min(PITCH, state.pitch + pitch));
-      listeners.walk?.();
     },
     onHold(on) {
       if (rig.mode !== 'walk') return;
       state.hold = on;
       if (on) stop();
-      listeners.walk?.();
     },
-    onTap: (x, y) => listeners.tap?.(x, y),
+    onTap: (x, y, kind) => listeners.tap?.(x, y, kind),
     onJump: jump,
   });
 
@@ -169,9 +173,29 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       .sort((a, b) => a.metres - b.metres)[0].steps;
   }
 
+  // A point inside a thing is moved out of it, to just before its side: a walk always has an end
+  // that can be reached, and never circles round it looking for a way in. Where things stand so close
+  // that pushing out of one goes into another (a sculpture by the last work), the point comes back
+  // towards where one stands until it is clear.
+  const inside = (at) => solid.find((each) => Math.hypot(at.x - each.x, at.z - each.z) < each.r + 0.3);
+  function outside(at) {
+    const thing = inside(at);
+    if (!thing) return at;
+    const d = Math.hypot(at.x - thing.x, at.z - thing.z) || 1;
+    const k = (thing.r + 0.3) / d;
+    const out = { ...at, x: thing.x + (at.x - thing.x) * k, z: thing.z + (at.z - thing.z) * k };
+    if (!inside(out) || at.island !== state.island) return out;
+    const back = Math.hypot(state.x - at.x, state.z - at.z);
+    for (let metres = 0.25; metres < back; metres += 0.25) {
+      const near = { ...at, x: at.x + ((state.x - at.x) * metres) / back, z: at.z + ((state.z - at.z) * metres) / back };
+      if (!inside(near)) return near;
+    }
+    return { ...at, x: state.x, z: state.z };
+  }
+
   function go(steps) {
     state.pending = 0;
-    state.route = steps;
+    state.route = steps.map((step) => (step.island ? outside(step) : step));
   }
 
   // Steps onto a path or off it.
@@ -188,8 +212,9 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   // A move from a point of an island: never into a thing, never past the edge. Within a metre of a
   // thing the part of the move that goes into it fades out the nearer one is, and the move turns along
   // it at no less than 60% of its pace, on the side it leans to: one goes round without a jolt, even
-  // walking straight at it.
-  function slide(island, x, z, mx, mz) {
+  // walking straight at it. A walk to a point that comes before the thing (left: the metres to it)
+  // does not go round it: it only never goes in.
+  function slide(island, x, z, mx, mz, left = Infinity) {
     const length = Math.hypot(mx, mz);
     for (const thing of solid) {
       const d = Math.hypot(x - thing.x, z - thing.z) || 1;
@@ -198,6 +223,13 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       const nz = (z - thing.z) / d;
       const inward = mx * nx + mz * nz;
       if (inward >= 0) continue;
+      if (left < d - thing.r) {
+        if (d + inward < thing.r) {
+          mx -= inward * nx;
+          mz -= inward * nz;
+        }
+        continue;
+      }
       const along = mx * -nz + mz * nx;
       // Walking almost straight at it, the side taken first is kept, so as not to waver.
       if (Math.abs(along) > length * 0.2 || !thing.side) thing.side = Math.sign(along) || 1;
@@ -232,6 +264,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
   function move(dt) {
     const keys = controls.held(dt);
     state.heading += keys.turn;
+    state.turned += Math.abs(keys.turn);
     // The look follows the pointer; walking, it comes back level to the horizon.
     const walking = Math.abs(state.speed) > 0.3;
     const gaze = controls.gaze(dt, walking);
@@ -309,6 +342,7 @@ export function createWorld(canvas, { plan, reducedMotion }) {
     }
     const mx = Math.cos(way) * metres;
     const mz = Math.sin(way) * metres;
+    const left = step?.island ? Math.hypot(step.x - state.x, step.z - state.z) : Infinity;
     // Near a mouth, walking out of the island, one steps onto its path.
     for (const [path, end] of [[island.out, false], [island.in, true]]) {
       const at = mouth(plan, island, path);
@@ -318,12 +352,15 @@ export function createWorld(canvas, { plan, reducedMotion }) {
         return;
       }
     }
-    [state.x, state.z] = slide(island, state.x, state.z, mx, mz);
+    [state.x, state.z] = slide(island, state.x, state.z, mx, mz, left);
   }
 
-  function adapt(spent) {
-    quality.slow = spent > SLOW ? quality.slow + spent : 0;
-    quality.quick = spent < QUICK ? quality.quick + spent : 0;
+  function adapt(frame) {
+    // A single long frame (a picture sent to the graphics card) counts as a slow one, no more.
+    const spent = Math.min(frame, 50);
+    quality.average += (spent - quality.average) * 0.1;
+    quality.slow = quality.average > SLOW ? quality.slow + spent : 0;
+    quality.quick = quality.average < QUICK ? quality.quick + spent : 0;
     const go = (step) => {
       quality.step = step;
       quality.slow = 0;
@@ -332,16 +369,20 @@ export function createWorld(canvas, { plan, reducedMotion }) {
       renderer.setSize(innerWidth, innerHeight, false);
     };
     if (quality.slow > 500 && quality.step < STEPS.length - 1) {
-      quality.failed[quality.step] = time;
+      const failed = quality.failed[quality.step];
+      quality.failed[quality.step] = { at: time, times: (failed?.times ?? 0) + 1 };
       go(quality.step + 1);
     } else if (quality.slow > 1000 && !quality.light) {
       quality.light = true;
       quality.slow = 0;
       land.light(true);
       listeners.light?.(true);
-    } else if (quality.quick > 5000 && quality.step > top && !(time - quality.failed[quality.step - 1] < 20)) go(quality.step - 1);
+    } else if (quality.quick > 5000 && quality.step > top) {
+      const failed = quality.failed[quality.step - 1];
+      if (!failed || (failed.times < 2 && time - failed.at > 20)) go(quality.step - 1);
+    }
     // Light, and still under 15 frames a second for five seconds: the park gives way, once.
-    quality.crawl = quality.light && spent > 1000 / 15 ? quality.crawl + spent : 0;
+    quality.crawl = quality.light && frame > 1000 / 15 ? quality.crawl + frame : 0;
     if (quality.crawl > 5000 && !quality.gaveWay) {
       quality.gaveWay = true;
       listeners.crawl?.();

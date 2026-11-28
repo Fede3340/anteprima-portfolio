@@ -66,6 +66,7 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
 }
 
 .case-phases {
+  position: relative;
   display: flex;
   gap: 2px;
   padding: 3px;
@@ -93,26 +94,37 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
   color: var(--light);
 }
 
-.case-phase__short {
-  display: none;
-}
-
+/* On a phone the phases keep their whole words on a row that slides sideways, fading at its ends to
+   say there is more; «Chiudi» stands after it, never over it. */
 @media (max-width: 767px) {
   .case-top {
     justify-content: flex-start;
-    padding-left: calc((100vw - var(--frame-w)) / 2);
+    padding-inline: calc((100vw - var(--frame-w)) / 2);
   }
 
-  .case-phase:not(.is-here) {
-    padding: 0;
+  .case-phases {
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    padding-inline: 24px;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
   }
 
-  .case-phase:not(.is-here) .case-phase__long {
+  .case-phases::-webkit-scrollbar {
     display: none;
   }
 
-  .case-phase:not(.is-here) .case-phase__short {
-    display: inline;
+  .case-phase {
+    flex: none;
+    padding: 0 12px;
+    white-space: nowrap;
+  }
+
+  .case-close {
+    position: static;
+    flex: none;
   }
 }
 
@@ -723,7 +735,9 @@ body:has(.case:not([hidden])) :is(.hud, .brand, .hint, .travel) {
     display: inline;
   }
 
+  /* Narrower than its two buttons, the bar puts the second under the first: none is cut. */
   .case-screen__bar {
+    flex-wrap: wrap;
     justify-content: flex-end;
   }
 }

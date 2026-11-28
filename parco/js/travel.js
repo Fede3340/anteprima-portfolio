@@ -342,11 +342,15 @@ async function start(root) {
     }
   }, true);
 
-  // «Avanti» says where it goes; «Apri» shows before a work. Written only when they change.
+  // «Avanti» says where it goes; «Apri» shows before a work. Written only when they change. On a phone
+  // it says a work's title up to its first comma («Sagra del pesce», not «Sagra del pesce, Porto di
+  // Cagliari»), so that it fits the button; the whole title stays in the label read aloud.
+  const narrow = matchMedia('(max-width: 560px)');
   function tell() {
     const label = main.nextStop().label;
-    if (goTo.textContent !== label) {
-      goTo.textContent = label;
+    const said = narrow.matches ? label.split(',')[0] : label;
+    if (goTo.textContent !== said) {
+      goTo.textContent = said;
       forward.setAttribute('aria-label', `Avanti: ${label}`);
     }
     const work = main.front();

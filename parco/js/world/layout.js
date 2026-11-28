@@ -84,9 +84,9 @@ export function planPark(data, texts) {
   // What is seen from there, by metres ahead and to the right of that look.
   const ahead = leave.clone().sub(first.start).setY(0).normalize();
   const seen = (forward, right, y = first.centre.y) => v(first.start.x + ahead.x * forward - ahead.z * right, y, first.start.z + ahead.z * forward + ahead.x * right);
-  // The great cursor stands ahead on the left, a pond ahead on the right, walked round; the other two
-  // sculptures to either side, found by turning.
-  const marks = { apertura: seen(13, -5), chi: seen(4, 8), servizi: seen(2, -8) };
+  // The great cursor stands well to the left, clear of the way ahead; a pond ahead on the right, walked
+  // round; the other two sculptures to either side, found by turning.
+  const marks = { apertura: seen(11, -10), chi: seen(4, 8), servizi: seen(2, -8) };
   for (const zone of first.zones) zone.mark = marks[zone.id];
   const ponds = [{ island: first, ...pick(seen(9, 3.8)), r: 2.3, level: first.centre.y - 0.05 }];
   // The islets around the first island, out of the way and out of reach, each a little themed

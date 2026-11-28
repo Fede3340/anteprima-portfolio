@@ -46,32 +46,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3em;
+  gap: 0.28em;
   font-size: clamp(1.5rem, 0.9rem + 1.5vw, 2.25rem);
   line-height: 1;
   text-align: center;
   white-space: nowrap;
 }
 
-/* The mark leads; the name under it is small and plain, and says whose studio it is. */
+/* The mark is ink shaped like the plaster around it, lit by the same dawn; its slit is as wide as
+   the stems of the name, which is set like the buttons. */
 .threshold__mark {
   width: auto;
-  height: clamp(104px, 21vh, 190px);
+  height: clamp(88px, 15vh, 136px);
 }
 
 .threshold__word {
-  margin-right: -0.42em;
-  font-family: var(--font-text);
-  font-weight: 800;
-  letter-spacing: 0.42em;
-  text-transform: uppercase;
+  font-size: 1.25em;
 }
 
 .threshold__by {
   font-family: var(--font-text);
   font-size: 0.5em;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
 }
 
 .brand__mark {

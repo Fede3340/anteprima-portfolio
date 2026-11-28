@@ -22,15 +22,17 @@ const POOL_VERTEX = `
   vec2 poolAt = (modelMatrix * vec4(transformed, 1.0)).xz;
   vPool = 0.0;
   for (int i = 0; i < 4; i++) vPool = max(vPool, uPools[i].z * (1.0 - smoothstep(0.4, 3.2, distance(poolAt, uPools[i].xy))));
-  vPool *= 0.42;`;
+  vPool *= 0.3;`;
 
 // Lightness (linear) 0.3 is shade, 0.56 half tone, 0.865 light; darker than shade darkens it. Some
 // cut-outs add a colour of their own (an accent) or a veil.
 const GLSL = `
   uniform vec3 uShade, uHalf, uLit;
   #ifdef GRADE_OWN
-  uniform vec4 uAccent, uVeil;
+  uniform vec4 uAccent, uVeil, uAccentAt;
   uniform float uAccentFrom;
+  // How near the point of the picture given by uAccentAt (1 where none is given).
+  float accentNear = 1.0;
   #endif
   vec3 grade(vec3 c) {
     #ifdef GRADE_FLOOR
@@ -42,7 +44,7 @@ const GLSL = `
     vec3 g = mix(uShade * min(1.0, l * 3.33), uHalf, clamp((l - 0.3) * 3.85, 0.0, 1.0));
     g = mix(g, uLit, clamp((l - 0.56) * 3.28, 0.0, 1.0));
     #ifdef GRADE_OWN
-    g = mix(g, uAccent.rgb * (0.4 + 0.7 * l), uAccent.a * smoothstep(uAccentFrom - 0.12, uAccentFrom, l));
+    g = mix(g, uAccent.rgb * (0.4 + 0.7 * l), uAccent.a * accentNear * smoothstep(uAccentFrom - 0.12, uAccentFrom, l));
     g = mix(g, uVeil.rgb, uVeil.a);
     #endif
     return g;
@@ -50,6 +52,12 @@ const GLSL = `
 
 // own: the accent and veil uniforms of a cut-out; they are worked into its drawing only once
 // material.userData.toned is set. lamps: true for the floor, which carries the pools of the lamps.
+// A cut-out's accent only round a point of its picture, fading from its middle (a lamp's globe).
+const AT = `
+  #if defined(GRADE_OWN) && defined(USE_MAP)
+  if (uAccentAt.z > 0.0) accentNear = 1.0 - smoothstep(0.1, 1.0, length((vMapUv - uAccentAt.xy) / uAccentAt.zw));
+  #endif
+  `;
 export function grade(material, own, lamps = false) {
   const before = material.onBeforeCompile;
   const base = `${material.customProgramCacheKey()}|grade${own ? '-cut' : ''}${lamps ? '-lamps' : ''}`;
@@ -68,7 +76,7 @@ export function grade(material, own, lamps = false) {
     }
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', `#include <common>\n${defines}${GLSL}${lamps ? `${POOLS}\nuniform vec3 uPoolColour;` : ''}`)
-      .replace('#include <opaque_fragment>', `outgoingLight = grade(outgoingLight);${lamps ? '\noutgoingLight = mix(outgoingLight, uPoolColour, vPool);' : ''}\n#include <opaque_fragment>`);
+      .replace('#include <opaque_fragment>', `${AT}outgoingLight = grade(outgoingLight);${lamps ? '\noutgoingLight = mix(outgoingLight, uPoolColour, vPool);' : ''}\n#include <opaque_fragment>`);
     if (lamps) {
       shader.vertexShader = shader.vertexShader
         .replace('#include <common>', `#include <common>${POOLS}`)
@@ -83,5 +91,6 @@ export function grade(material, own, lamps = false) {
 export const ownTones = () => ({
   uAccent: { value: new THREE.Vector4(1, 1, 1, 0) },
   uAccentFrom: { value: 0 },
+  uAccentAt: { value: new THREE.Vector4() },
   uVeil: { value: new THREE.Vector4(1, 1, 1, 0) },
 });

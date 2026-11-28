@@ -83,21 +83,19 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
   object.add(...frames.drawn);
 
   const corner = new THREE.Vector3();
+  // behind: a corner of the frame is behind the eyes, where its projection on the screen means nothing.
   function rectOf(item) {
     const xs = [];
     const ys = [];
+    let behind = false;
     for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
       corner.set((sx * FRAME.width) / 2, (sy * FRAME.height) / 2, 0).applyMatrix4(item.screen.matrix).project(camera);
+      behind ||= corner.z > 1;
       xs.push((corner.x * 0.5 + 0.5) * innerWidth);
       ys.push((-corner.y * 0.5 + 0.5) * innerHeight);
     }
-    return { left: Math.min(...xs), top: Math.min(...ys), width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys) };
+    return { left: Math.min(...xs), top: Math.min(...ys), width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys), behind };
   }
-  const ahead = new THREE.Vector3();
-  const inFront = (item) => {
-    camera.getWorldDirection(ahead);
-    return (item.spot.place.x - camera.position.x) * ahead.x + (item.spot.place.z - camera.position.z) * ahead.z > 0;
-  };
 
   function place(item, index) {
     const { x, y, z } = item.spot.place;
@@ -179,8 +177,9 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
   return {
     object,
     items,
-    // One stops about a metre before a work, its frame in sight.
-    solid: plan.works.map((work) => ({ x: work.x, z: work.z, r: 1.6 })),
+    // One stops about a metre before a work, its frame in sight; narrower than the gap between two
+    // works (layout.js, 2.7 m), so that the space between them is never a wall.
+    solid: plan.works.map((work) => ({ x: work.x, z: work.z, r: 1.1 })),
     // Small covers up to two islands away, large ones (not on the light way) on the island one is on
     // and those beside it; further, everything is let go.
     island(island) {
@@ -238,10 +237,7 @@ export function createExhibits({ plan, works, renderer, anchors, rig, camera }) 
     // The rectangle of a work's picture on the screen, in CSS pixels.
     rect: (id) => rectOf(items.find((each) => each.spot.id === id)),
     // The rectangles of the works in sight, their frames and plates included.
-    inSight: () => items.filter((item) => item.distance < SIGHT && inFront(item)).map((item) => {
-      const r = rectOf(item);
-      return { left: r.left - 12, top: r.top - 12, width: r.width + 24, height: r.height + 90, spot: item.spot, distance: item.distance };
-    }),
+    inSight: () => items.filter((item) => item.distance < SIGHT).map((item) => ({ item, r: rectOf(item) })).filter(({ r }) => !r.behind).map(({ item, r }) => ({ left: r.left - 12, top: r.top - 12, width: r.width + 24, height: r.height + 90, spot: item.spot, distance: item.distance })),
     // Where the eyes stand to look at a work: in front of it, as it faces now.
     standing(spot) {
       const item = items.find((each) => each.spot === spot);

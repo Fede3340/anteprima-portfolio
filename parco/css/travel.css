@@ -86,8 +86,10 @@ body:has(.story:not([hidden])) .travel__bar {
   transform: translateY(-1px);
 }
 
-/* «Avanti» is the way of the walk: the one large, filled button, with where it goes under its name. */
+/* «Avanti» is the way of the walk: the one large, filled button, with where it goes under its name.
+   It may be narrower than its words on a phone: they go on a second line, never out of it. */
 .travel__bar .travel__go {
+  min-width: 0;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
@@ -110,11 +112,16 @@ body:has(.story:not([hidden])) .travel__bar {
 }
 
 .travel__go-to {
-  max-width: 14em;
+  display: -webkit-box;
+  max-width: min(14em, 100%);
   overflow: hidden;
   font-size: var(--small);
   font-weight: 500;
-  text-overflow: ellipsis;
+  line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   opacity: 0.85;
 }
 
@@ -139,8 +146,19 @@ body:has(.story:not([hidden])) .travel__bar {
     display: none;
   }
 
+  /* The bar takes the width of the screen and «Avanti» all the room left; before a work, where «Apri»
+     shows, the step back gives it its place. */
+  .travel__bar {
+    width: calc(100vw - 32px);
+  }
+
   .travel__bar .travel__go {
-    padding-inline: 18px;
+    flex: 1 1 0;
+    padding-inline: 14px;
+  }
+
+  .travel__bar:has(.travel__open:not([hidden])) .travel__step--prev {
+    display: none;
   }
 }
 

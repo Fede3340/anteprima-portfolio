@@ -4,6 +4,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/BufferGeometryUtils.js';
 import { instances } from './instances.js';
+import { mouth } from './layout.js';
 
 // The haze far away, light blue, and the sea of clouds under it.
 export const HAZE = '#cfe3f6';
@@ -39,6 +40,7 @@ export function createSky() {
   const material = new THREE.ShaderMaterial({
     side: THREE.BackSide,
     depthWrite: false,
+    depthFunc: THREE.LessEqualDepth,
     fog: false,
     uniforms: { top: { value: new THREE.Color('#7fbdf1') }, horizon: { value: new THREE.Color(HAZE) } },
     vertexShader: `
@@ -46,6 +48,8 @@ export function createSky() {
       void main() {
         vDirection = normalize(position);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        // On the far plane, drawn after everything else: only where nothing else is.
+        gl_Position.z = gl_Position.w;
       }`,
     fragmentShader: `
       uniform vec3 top;
@@ -57,7 +61,7 @@ export function createSky() {
       }`,
   });
   const sky = new THREE.Mesh(new THREE.SphereGeometry(900, 32, 16), material);
-  sky.renderOrder = -1;
+  sky.renderOrder = 10;
   sky.frustumCulled = false;
   return sky;
 }
@@ -150,8 +154,47 @@ function createFloor(plan, island) {
   return floor;
 }
 
-function floorMaterial(uniforms) {
+// The way on each island, warmer and a little darker than the floor, the clearest line of the place:
+// from where the path comes in to where one arrives, from there to where the next path leaves, and a
+// few steps towards the works. Drawn once into a picture of the whole park seen from above (about
+// 0.3 m a pixel), which the floor reads with one look-up.
+const WAY_WIDTH = 1.5;
+const WAY_COLOUR = new THREE.Color('#f4a982');
+const WAY_PIXELS = 1024;
+function ways(plan) {
+  const segments = [];
+  for (const island of plan.islands) {
+    const here = island.arrival;
+    segments.push([mouth(plan, island, island.in), here], [here, mouth(plan, island, island.out)]);
+    if (island === plan.landing) segments.push([island.start, mouth(plan, island, island.out)]);
+    const works = plan.works.filter((work) => work.island === island.index);
+    if (works.length) {
+      const x = works.reduce((sum, work) => sum + work.x, 0) / works.length;
+      const z = works.reduce((sum, work) => sum + work.z, 0) / works.length;
+      segments.push([here, { x: here.x + (x - here.x) * 0.6, z: here.z + (z - here.z) * 0.6 }]);
+    }
+  }
+  const reach = Math.max(...plan.islands.map((island) => Math.hypot(island.centre.x, island.centre.z) + island.radius)) + 2;
+  const scale = WAY_PIXELS / (2 * reach);
+  const canvas = Object.assign(document.createElement('canvas'), { width: WAY_PIXELS, height: WAY_PIXELS });
+  const pen = canvas.getContext('2d');
+  Object.assign(pen, { strokeStyle: '#fff', lineCap: 'round', lineWidth: WAY_WIDTH * scale });
+  for (const [a, b] of segments) {
+    pen.beginPath();
+    pen.moveTo((a.x + reach) * scale, (a.z + reach) * scale);
+    pen.lineTo((b.x + reach) * scale, (b.z + reach) * scale);
+    pen.stroke();
+  }
+  const map = new THREE.CanvasTexture(canvas);
+  map.flipY = false;
+  return { map, box: new THREE.Vector3(-reach, -reach, 2 * reach) };
+}
+
+// way: 'floor' paints the ways on it, 'all' makes it all way (the stones). plain: without the felt,
+// the billows of light, the shadows of the clouds and the rings, for slow machines.
+function floorMaterial(uniforms, { way, plain = false } = {}) {
   const material = new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#2f3e58' });
+  material.customProgramCacheKey = () => `floor-${way}-${plain}`;
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, uniforms);
     shader.vertexShader = shader.vertexShader
@@ -163,26 +206,50 @@ function floorMaterial(uniforms) {
         uniform float uTime;
         uniform vec3 uLine;
         uniform vec4 uRipples[${RIPPLES}];
+        uniform sampler2D uWayMap;
+        uniform vec3 uWayBox, uWayColour;
+        float onWay;
         ${NOISE}
         float line(float d, float pixels) {
           return 1.0 - smoothstep(pixels * 0.5, pixels * 0.5 + 1.0, abs(d) / max(fwidth(d), 1e-5));
         }`)
       .replace('#include <color_fragment>', `#include <color_fragment>
         vec2 at = vGround.xz;
+        vec3 colour = diffuseColor.rgb;
+        #ifndef PLAIN
         // A very fine felt, only where its grain is larger than a pixel; soft billows of light and shade.
         float felt = noise(at * 16.0) * 0.6 + noise(at * 45.0) * 0.4;
         float grain = 1.0 - smoothstep(0.03, 0.12, fwidth(at.x));
-        vec3 colour = diffuseColor.rgb * (1.0 + (felt - 0.5) * 0.2 * grain) * mix(0.93, 1.04, noise(at * 0.35));
+        colour *= (1.0 + (felt - 0.5) * 0.2 * grain) * mix(0.93, 1.04, noise(at * 0.35));
         // Shadows of the clouds going by.
         float cloud = noise(at * 0.045 + vec2(uTime * 0.015, uTime * 0.007));
         colour *= 1.0 - smoothstep(0.6, 0.74, cloud) * 0.16;
+        #endif
+        onWay = 0.0;
+        #ifdef WAY_ALL
+        onWay = 1.0;
+        #elif defined(WAY_FLOOR)
+        onWay = texture2D(uWayMap, (at - uWayBox.xy) / uWayBox.z).r;
+        #endif
+        #ifndef PLAIN
         // Rings spreading from where the visitor touched.
         float touched = 0.0;
         for (int i = 0; i < ${RIPPLES}; i++) {
           float age = uTime - uRipples[i].z;
           touched += line(distance(at, uRipples[i].xy) - age * 2.6, 2.5) * max(0.0, 1.0 - age / 2.2);
         }
-        diffuseColor.rgb = mix(colour, uLine, clamp(touched, 0.0, 1.0) * 0.8);`);
+        colour = mix(colour, uLine, clamp(touched, 0.0, 1.0) * 0.8);
+        #endif
+        diffuseColor.rgb = colour;`)
+      // The way's warmth after the tones of the hour (grade.js), which would take it back to white.
+      .replace('#include <tonemapping_fragment>', `// The way's colour at the floor's own lightness, a little darker.
+        vec3 wayLuma = vec3(0.2126, 0.7152, 0.0722);
+        vec3 wayColour = min(vec3(1.0), uWayColour * (0.9 * dot(gl_FragColor.rgb, wayLuma) / dot(uWayColour, wayLuma)));
+        gl_FragColor.rgb = mix(gl_FragColor.rgb, wayColour, onWay * 0.85);
+        #include <tonemapping_fragment>`);
+    const defines = { all: ['WAY_ALL'], floor: ['WAY_FLOOR'] }[way] ?? [];
+    if (plain) defines.push('PLAIN');
+    shader.fragmentShader = `${defines.map((name) => `#define ${name}\n`).join('')}${shader.fragmentShader}`;
   };
   return material;
 }
@@ -262,12 +329,16 @@ function createBodies(list, light) {
 }
 
 export function createGround(plan) {
+  const way = ways(plan);
   const uniforms = {
     uTime: { value: 0 },
     uLine: { value: new THREE.Color('#9cb6db') },
     uRipples: { value: Array.from({ length: RIPPLES }, () => new THREE.Vector4(0, 0, -99, 0)) },
+    uWayMap: { value: way.map },
+    uWayBox: { value: way.box },
+    uWayColour: { value: WAY_COLOUR },
   };
-  const material = floorMaterial(uniforms);
+  const material = floorMaterial(uniforms, { way: 'floor' });
   const floors = plan.islands.map((island) => {
     const floor = new THREE.Mesh(createFloor(plan, island), material);
     floor.userData.island = island;
@@ -275,7 +346,7 @@ export function createGround(plan) {
   });
   const sea = createSea();
   // The stones of the paths wear the felt of the floor too.
-  const plaster = floorMaterial(uniforms);
+  const plaster = floorMaterial(uniforms, { way: 'all' });
   plaster.color.set('#edf2f9');
   plaster.emissive.set('#6f82a3');
   const stones = createStones(plan.paths, plaster);
@@ -292,9 +363,8 @@ export function createGround(plan) {
   });
   const bodies = new THREE.Mesh(mergeGeometries([createBodies(plan.islands, false), ...tops]), felt);
   const shapes = { full: bodies.geometry, light: mergeGeometries([createBodies(plan.islands, true), ...tops]) };
-  // The light way: the floor in its plain colour, the sea of clouds as one soft colour, nothing
-  // worked out pixel by pixel.
-  const plain = { floor: new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#2f3e58' }), sea: new THREE.MeshBasicMaterial({ color: '#c9dcf2' }), bodies: new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#7487a8', vertexColors: true }), shape: shapes.light };
+  // The light way: the floor in its plain colour with its way, the sea of clouds as one soft colour.
+  const plain = { floor: floorMaterial(uniforms, { way: 'floor', plain: true }), sea: new THREE.MeshBasicMaterial({ color: '#c9dcf2' }), bodies: new THREE.MeshLambertMaterial({ color: '#f2f6fc', emissive: '#7487a8', vertexColors: true }), shape: shapes.light };
   const full = { floor: material, sea: sea.material, bodies: felt, shape: shapes.full };
   let next = 0;
   return {

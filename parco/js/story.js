@@ -707,6 +707,8 @@ export function createStory(root, { works, sound, onClose }) {
     for (const button of index.children) {
       const here = button.dataset.phase === board.phase;
       button.classList.toggle('is-here', here);
+      // On a phone the row slides: the phase one is in stays in sight.
+      if (here) index.scrollTo({ left: button.offsetLeft - (index.clientWidth - button.offsetWidth) / 2 });
       if (here) button.setAttribute('aria-current', 'step');
       else button.removeAttribute('aria-current');
     }
@@ -736,11 +738,7 @@ export function createStory(root, { works, sound, onClose }) {
     root.dataset.mode = mode;
     const present = ORDER.filter((phase) => boards.some((board) => board.phase === phase));
     index.replaceChildren(...present.map((phase) => {
-      const button = element('button', { className: 'case-phase', type: 'button' }, [
-        element('span', { className: 'case-phase__long', textContent: PHASES[phase] }),
-        element('span', { className: 'case-phase__short', textContent: PHASES[phase][0] }),
-      ]);
-      button.setAttribute('aria-label', PHASES[phase]);
+      const button = element('button', { className: 'case-phase', type: 'button', textContent: PHASES[phase] });
       button.dataset.phase = phase;
       button.addEventListener('click', () => show(boards.findIndex((board) => board.phase === phase)));
       return button;

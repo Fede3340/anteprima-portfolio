@@ -26,12 +26,25 @@ const STAND = 7.5;
 const WATER_DEEP = new THREE.Color('#3f7fd6');
 const WATER_SHALLOW = new THREE.Color('#8fc4f2');
 const LAMP_GLOW = new THREE.Color('#ffb860');
+// The lamp's globe in its picture (lampione.webp): middle and half size, as shares of the picture.
+const GLOBE = [0.5, 0.884, 0.5, 0.12];
+// Every kind of thing has its tint, taken from the colours of the hours, so that a tree is never taken
+// for a cushion of cloud: [names, colour, how much]. The ground and the clouds stay white; furniture
+// and the sculptures of the first island a neutral tone darker than the ground; the sculpture of every
+// other island wears that island's colour, to be seen from far.
+const ROLES = [
+  [/^(albero|tronco|boschetto)/, '#7484e0', 0.55],
+  [/^(cespugli|siepe)/, '#86a8f0', 0.5],
+  [/^(ciuffo|erba|tifa|canne|ninfea)/, '#9a86dc', 0.5],
+  [/^(panchina|altalena-sedile|gradini|pontile|scivolo|cassette|cassetta-posta|bandiera|aquilone|sasso)/, '#9ba0c8', 0.3],
+];
+const NEUTRAL = ['#9ba0c8', 0.32];
 
 export function createLight({ plan, sky, sun, fog, park, renderer }) {
   const scene = sky.parent;
   const meshes = scene.children;
   // The sky's sphere wears the sky of the hour.
-  const dome = meshes.find((mesh) => mesh.renderOrder === -1 && mesh.material.uniforms?.horizon);
+  const dome = meshes.find((mesh) => mesh.material?.uniforms?.horizon);
   const heavens = createSkyMaterial();
   dome.material = heavens;
   const u = heavens.uniforms;
@@ -73,16 +86,22 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
     sprite.mesh.material.userData.toned = true;
     sprite.mesh.material.needsUpdate = true;
   };
+  const tint = (sprite, colour, amount) => {
+    sprite.tone.uAccent.value.set(...new THREE.Color(colour).toArray(), amount);
+    toned(sprite);
+  };
   for (const sprite of drawn) {
+    const zone = plan.zones.find((each) => each.id === sprite.name);
+    const role = ROLES.find(([pattern]) => pattern.test(sprite.name));
+    if (zone) tint(sprite, ...(zone.island === plan.landing ? NEUTRAL : [MOODS[zone.island.id].accent, 0.55]));
+    else if (role) tint(sprite, role[1], role[2]);
     const colour = Object.values(MOODS).find((mood) => mood.on?.[sprite.name])?.on[sprite.name];
-    if (colour) {
-      sprite.tone.uAccent.value.set(...new THREE.Color(colour).toArray(), 0.9);
-      toned(sprite);
-    }
+    if (colour) tint(sprite, colour, 0.9);
+    // A soft warm light round the globe, nothing on the pole.
     if (sprite.name === 'lampione') {
-      sprite.tone.uAccent.value.set(...LAMP_GLOW.toArray(), 1);
-      sprite.tone.uAccentFrom.value = 0.92;
-      toned(sprite);
+      tint(sprite, LAMP_GLOW, 0.55);
+      sprite.tone.uAccentFrom.value = 0.5;
+      sprite.tone.uAccentAt.value.set(...GLOBE);
     }
   }
 
@@ -162,7 +181,9 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
     out.copy(base).lerp(toward, amount);
   };
   let lean = 0;
-  const { near, far } = fog;
+  // The air veils what is far more than world.js does, so that the other islands stand back, paler.
+  const near = fog.near * 0.1;
+  const far = fog.far * 0.5;
 
   return {
     update(dt, time, state, camera) {
