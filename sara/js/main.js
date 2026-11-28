@@ -163,6 +163,7 @@ function sheetMarkup(work, i) {
     img.loading = 'lazy';
     img.decoding = 'async';
     img.alt = '';
+    img.draggable = false; // a native image drag would cancel the pointer and stop the sheet
     if (work.width) img.srcset = [480, 960].filter((w) => w < work.width).map((w) => `${variant(work, w)} ${w}w`).concat(`${work.file} ${work.width}w`).join(', ');
     img.sizes = '30vw';
     img.src = work.file;
@@ -247,7 +248,6 @@ function panStreet(street) {
   };
   street.addEventListener('pointerup', end);
   street.addEventListener('pointercancel', end);
-  street.addEventListener('dragstart', (e) => e.preventDefault());
 }
 
 function place(slot, left, top, w, h, r) {
