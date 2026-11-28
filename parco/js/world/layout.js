@@ -9,19 +9,36 @@ const STONE_EVERY = 1.5;
 export const FRAME = { width: 2, height: 1.25 };
 
 // The mood of each island: its hour on the wheel of the day (hours.js: 0 dawn, 1 day, 2 blue hour) and
-// its own touch of colour, taken from the three pictures of the opening. accent: the colour of the
-// island (the veil of its portal); on: the cut-outs of the island that wear a colour, by name.
+// its own touch of colour, only from the colours of the mark (its blue, orange and peach, lilac,
+// light blue, cream). accent: the colour of the island (its flowers,
+// flags and kites, its stones and its name); on: the things of the island that wear a colour of their
+// own, by name.
 export const MOODS = {
   ingresso: { hour: 0, accent: '#ffa86a' },
   siti: { hour: 0.3, accent: '#f5a98a' },
-  negozi: { hour: 1, accent: '#f2836b', on: { cassette: '#f2836b' } },
-  programmi: { hour: 1, accent: '#3298fa' },
-  app: { hour: 1, accent: '#5a8fe0', on: { canne: '#7fa8e8' } },
-  videogioco: { hour: 1.3, accent: '#2a4fd6', on: { aquilone: '#2a4fd6', scivolo: '#f2836b' } },
-  marchi: { hour: 1.7, accent: '#f7c35f', on: { 'fiore-1': '#f2836b', 'fiore-2': '#f7c35f', aiuola: '#e98fb5' } },
-  manifesti: { hour: 2, accent: '#e98fb5', on: { bandiera: '#e98fb5' } },
-  google: { hour: 2, accent: '#8d7bd9' },
-  contatti: { hour: 2, accent: '#ffc27a', on: { 'cassetta-posta': '#ffc27a' } },
+  negozi: { hour: 1, accent: '#f5a47a', on: { cassette: '#f5a47a' } },
+  programmi: { hour: 1, accent: '#6fb1ee' },
+  app: { hour: 1, accent: '#4f72c4' },
+  videogioco: { hour: 1.3, accent: '#a99ade', on: { scivolo: '#a99ade' } },
+  marchi: { hour: 1.7, accent: '#f0d6a8' },
+  manifesti: { hour: 2, accent: '#c7a8e2' },
+  google: { hour: 2, accent: '#f39a5a' },
+  contatti: { hour: 2, accent: '#f5d4a8', on: { 'cassetta-posta': '#f5d4a8' } },
+};
+
+// The colours of the living things of the park, the same on every island, soft and in the light of the
+// hour (light.js gives them to the pictures; whoever draws the park elsewhere takes them from here).
+export const TINTS = {
+  crown: '#8aa781',
+  forest: '#7a9a76',
+  hedge: '#7f9c77',
+  bush: '#93ad88',
+  grass: '#a0b88c',
+  stem: '#8ea47c',
+  reedHead: '#b1916f',
+  trunk: '#a98a74',
+  stone: '#b8b2ac',
+  furniture: '#9ba0c8',
 };
 
 // The islands in the order of the loop: the places they hold, their size, height and light. The first

@@ -33,10 +33,13 @@ const GLSL = `
   uniform float uFloorLight;
   #endif
   #ifdef GRADE_OWN
-  uniform vec4 uAccent, uVeil, uAccentAt;
-  uniform float uAccentFrom;
-  // How near the point of the picture given by uAccentAt (1 where none is given).
+  uniform vec4 uAccent, uVeil, uAccentAt, uLower;
+  uniform float uAccentFrom, uSplit;
+  // How near the point of the picture given by uAccentAt (1 where none is given); the accent's colour
+  // (each copy's own where copies are coloured); how much the picture is in its lower part.
   float accentNear = 1.0;
+  vec3 accentColour;
+  float lower = 0.0;
   #endif
   vec3 grade(vec3 c) {
     #ifdef GRADE_FLOOR
@@ -53,7 +56,9 @@ const GLSL = `
     g = mix(g, vec3(dot(g, vec3(0.2126, 0.7152, 0.0722))), 0.45);
     #endif
     #ifdef GRADE_OWN
-    g = mix(g, uAccent.rgb * (0.4 + 0.7 * l), uAccent.a * accentNear * smoothstep(uAccentFrom - 0.12, uAccentFrom, l));
+    g = mix(g, accentColour * (0.4 + 0.7 * l), uAccent.a * accentNear * smoothstep(uAccentFrom - 0.12, uAccentFrom, l) * (1.0 - lower));
+    // The lower part of a picture (a trunk, a stem) in a colour of its own.
+    g = mix(g, uLower.rgb * (0.4 + 0.7 * l), uLower.a * lower);
     g = mix(g, uVeil.rgb, uVeil.a);
     #endif
     return g;
@@ -61,10 +66,20 @@ const GLSL = `
 
 // own: the accent and veil uniforms of a cut-out; they are worked into its drawing only once
 // material.userData.toned is set. lamps: true for the floor, which carries the pools of the lamps.
-// A cut-out's accent only round a point of its picture, fading from its middle (a lamp's globe).
+// A cut-out's accent only round a point of its picture, fading from its middle (a lamp's globe); in
+// the colour of each copy where the copies are coloured; and the lower part of the picture, under
+// uSplit, in the colour uLower.
 const AT = `
-  #if defined(GRADE_OWN) && defined(USE_MAP)
+  #ifdef GRADE_OWN
+  accentColour = uAccent.rgb;
+  // A cut-out has no colours of its own: any colour it has is its copies'.
+  #ifdef USE_COLOR
+  accentColour = vColor.rgb;
+  #endif
+  #ifdef USE_MAP
   if (uAccentAt.z > 0.0) accentNear = 1.0 - smoothstep(0.1, 1.0, length((vMapUv - uAccentAt.xy) / uAccentAt.zw));
+  lower = 1.0 - smoothstep(uSplit - 0.03, uSplit + 0.03, vMapUv.y);
+  #endif
   #endif
   `;
 export function grade(material, own, lamps = false) {
@@ -81,6 +96,11 @@ export function grade(material, own, lamps = false) {
         #ifdef USE_MAP
         diffuseColor.rgb /= max(sampledDiffuseColor.a, 0.004);
         diffuseColor.rgb *= diffuseColor.rgb;
+        #endif`)
+        // A copy's colour is its accent, not a shade on its picture.
+        .replace('#include <color_fragment>', `#include <color_fragment>
+        #ifdef USE_COLOR
+        diffuseColor.rgb /= max(vColor.rgb, vec3(0.01));
         #endif`);
     }
     shader.fragmentShader = shader.fragmentShader
@@ -101,5 +121,7 @@ export const ownTones = () => ({
   uAccent: { value: new THREE.Vector4(1, 1, 1, 0) },
   uAccentFrom: { value: 0 },
   uAccentAt: { value: new THREE.Vector4() },
+  uLower: { value: new THREE.Vector4(1, 1, 1, 0) },
+  uSplit: { value: 0 },
   uVeil: { value: new THREE.Vector4(1, 1, 1, 0) },
 });

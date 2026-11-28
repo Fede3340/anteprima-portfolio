@@ -5,27 +5,38 @@
 import * as THREE from 'three';
 import { placed } from './instances.js';
 import { createStones, heightAt, islandAt } from './land.js';
-import { mouth } from './layout.js';
+import { MOODS, mouth } from './layout.js';
 import { createSprite } from './sprites.js';
 import { createWater } from './water.js';
 
-// What grows on each island: a few groups, each a thing and what grows at its foot ([pictures, the
-// first that exists is used]), towards the rim and behind the works, with free ground between them;
-// and single things: [pictures, how many, how far towards the rim, as a share of the radius]. Each
-// island is known from far by one thing: the tall trunks of the wood, the rows of the orchard, the
-// square hedges, the pond, the kites, the flower beds, the flags, the bench at the edge, the letterbox.
+// What grows on each island, its own place: a few groups, each a thing and what grows at its foot
+// ([pictures, the first that exists is used]), towards the rim and behind the works, with free ground
+// between them; single things: [pictures, how many, how far towards the rim, as a share of the radius];
+// size: pictures drawn smaller than their own height there.
 const GARDENS = {
-  ingresso: { groups: 4, of: [['albero-medio'], ['cespuglio-1'], ['ciuffo-2']], also: [[['albero-grande'], 2, 0.5], [['albero-piccolo'], 3, 0.3]] },
-  siti: { groups: 6, of: [['albero-grande'], ['albero-medio'], ['albero-piccolo'], ['cespuglio-1'], ['ciuffo-2']], also: [[['tronco-alto'], 3, 0.6]] },
-  negozi: { groups: 5, of: [['albero-frutti'], ['albero-frutti'], ['cassette'], ['ciuffo-2']] },
-  programmi: { groups: 6, of: [['siepe-squadrata'], ['siepe-squadrata'], ['siepe-squadrata'], ['sasso'], ['ciuffo-1']], also: [[['gradini'], 2, 0.5]] },
-  app: { groups: 3, of: [['albero-medio'], ['cespuglio-1'], ['ciuffo-2']] },
-  videogioco: { groups: 3, of: [['cespuglio-2'], ['nuvola-a-terra'], ['ciuffo-2']], also: [[['scivolo'], 1, 0.3], [['aquilone'], 3, 0.6]] },
-  marchi: { groups: 6, of: [['aiuola'], ['fiore-1'], ['fiore-2'], ['fiore-2']] },
-  manifesti: { groups: 4, of: [['bandiera'], ['erba-alta'], ['erba-alta'], ['erba-alta']], also: [[['erba-alta'], 6, 0.5]] },
-  google: { groups: 2, of: [['albero-piccolo'], ['sasso'], ['ciuffo-1']], also: [[['panchina'], 1, 0.9]] },
-  contatti: { groups: 2, of: [['albero-medio'], ['cespuglio-1'], ['ciuffo-2']], also: [[['cassetta-posta'], 1, 0.4]] },
+  // The entrance: round trees, as in the door's picture.
+  ingresso: { groups: 3, of: [['albero-medio'], ['cespuglio-1'], ['ciuffo-2']], also: [[['albero-grande'], 2, 0.5], [['albero-piccolo'], 2, 0.3]] },
+  // Sites: an ordered garden of square hedges and small round trees.
+  siti: { groups: 5, of: [['siepe-squadrata'], ['albero-piccolo'], ['cespuglio-1']], also: [[['albero-piccolo'], 4, 0.6]] },
+  // Shops: a market among citrus trees, crates of fruit.
+  negozi: { groups: 5, of: [['albero-frutti'], ['cassette'], ['cassette'], ['ciuffo-2']] },
+  // Programs: a vegetable garden in straight lines, hedges and raised beds, steps.
+  programmi: { groups: 5, of: [['siepe-squadrata'], ['aiuola'], ['siepe-squadrata']], also: [[['gradini'], 2, 0.5]] },
+  // App: a low meadow of small flowers.
+  app: { groups: 4, of: [['fiore-2'], ['fiore-1'], ['ciuffo-1']], also: [[['albero-piccolo'], 1, 0.7]], size: { 'fiore-1': 0.45, 'fiore-2': 0.55 } },
+  // Video game: a thicker wood, with kites over it and a slide.
+  videogioco: { groups: 3, of: [['albero-doppio'], ['albero-grande'], ['cespuglio-2']], also: [[['boschetto'], 1, 0.6], [['scivolo'], 1, 0.3], [['aquilone'], 2, 0.6]] },
+  // Brands: a rose garden of flower beds.
+  marchi: { groups: 6, of: [['aiuola'], ['fiore-1'], ['cespugli-gruppo'], ['fiore-2']] },
+  // Posters: small trees along the rim, flags and tall grass.
+  manifesti: { groups: 4, of: [['bandiera'], ['erba-alta'], ['erba-alta']], also: [[['albero-piccolo'], 6, 0.75]] },
+  // Campaigns: a reed bed with flags.
+  google: { groups: 3, of: [['tifa'], ['tifa'], ['erba-alta']], also: [[['bandiera'], 1, 0.6]] },
+  // Contacts: one tree, a bench, the letterbox.
+  contatti: { groups: 1, of: [['cespuglio-1'], ['ciuffo-2']], also: [[['albero-medio'], 1, 0.4], [['panchina'], 1, 0.5], [['cassetta-posta'], 1, 0.4]] },
 };
+// Pictures whose every copy wears the colour of its island (MOODS in layout.js).
+const ACCENTED = /^(fiore|aiuola|bandiera|aquilone)/;
 // Pictures drawn taller than their own height, to be seen from the next island: the square hedges.
 const TALLER = { 'siepe-squadrata': 1.7 };
 // The islets around the first island, each its own little garden; their trees stand close together.
@@ -133,6 +144,7 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
     drawn.islands = everywhere ? undefined : new Set(spots.map((spot) => spot.home ?? nearest(spot)));
     drawn.mesh.userData.rank = everywhere ? 0 : Math.min(...drawn.islands);
     spots.forEach((spot, index) => Object.assign(drawn.spots[index], { x: spot.x, z: spot.z, y: spot.y ?? heightAt(plan, spot.x, spot.z), ...(spot.height ? { height: spot.height } : {}) }));
+    if (ACCENTED.test(name)) spots.forEach((spot, index) => drawn.mesh.setColorAt(index, new THREE.Color(MOODS[plan.islands[spot.home ?? nearest(spot)].id].accent)));
     made.push(drawn);
     object.add(drawn.mesh);
     return drawn;
@@ -240,15 +252,15 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
   }
   // Each island's and islet's garden (GARDENS); spacing: how far apart single things stand, as a share
   // of the width of their picture.
-  const put = (name, spot, home) => (gardens[name] ??= []).push({ ...spot, home, height: (picture(name).metres ?? 1) * (TALLER[name] ?? 1) * (0.8 + roll() * 0.4) });
-  const grow = (island, { groups = 0, of = [], also = [] }, spacing, home) => {
+  const put = (name, spot, home, size = {}) => (gardens[name] ??= []).push({ ...spot, home, height: (picture(name).metres ?? 1) * (TALLER[name] ?? 1) * (size[name] ?? 1) * (0.8 + roll() * 0.4) });
+  const grow = (island, { groups = 0, of = [], also = [], size }, spacing, home) => {
     for (let g = 0; g < groups; g++) {
       const centre = freeSpot(island, 1.2, undefined, 0.45);
       if (!centre) continue;
       of.forEach((names, k) => {
         const name = pick(...names);
         const spot = k ? freeSpot(island, 0.4, { ...centre, heading: 0, spread: Math.PI * 2, from: 0.9, to: 2.4 }) : centre;
-        if (name && spot) put(name, spot, home);
+        if (name && spot) put(name, spot, home, size);
       });
     }
     for (const [names, many, rim = 0] of also) {
@@ -257,7 +269,7 @@ export function createPark({ plan, renderer, pictures, sprites: library = {} }) 
       const entry = picture(name);
       for (let i = 0; i < many; i++) {
         const spot = freeSpot(island, Math.max(0.4, (entry.metres ?? 1) * (entry.w / entry.h) * spacing), undefined, rim);
-        if (spot) put(name, spot, home);
+        if (spot) put(name, spot, home, size);
       }
     }
   };

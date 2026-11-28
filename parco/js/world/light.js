@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { grade, pools, tones } from './grade.js';
 import { LENGTH, hourLight } from './hours.js';
 import { heightAt } from './land.js';
-import { MOODS } from './layout.js';
+import { MOODS, TINTS } from './layout.js';
 import { createShadows } from './shadows.js';
 import { createSkyMaterial } from './sky.js';
 import { createSprite, drawn } from './sprites.js';
@@ -23,23 +23,37 @@ const PLANET_DISTANCE = 650;
 // Before a work: how much each tone leans to the cover's colour, and how soon (seconds).
 const LEAN = { lit: 0.08, half: 0.07, shade: 0.04, time: 0.17 };
 const STAND = 7.5;
+// How much the colour of the island one is on leans into the light and the half tone.
+const MOOD = { lit: 0.08, half: 0.06 };
 // The water of the ponds, deep and at the rim, as in the door's picture.
 const WATER_DEEP = new THREE.Color('#3f7fd6');
 const WATER_SHALLOW = new THREE.Color('#8fc4f2');
 const LAMP_GLOW = new THREE.Color('#ffb860');
 // The lamp's globe in its picture (lampione.webp): middle and half size, as shares of the picture.
 const GLOBE = [0.5, 0.884, 0.5, 0.12];
-// Every kind of thing has its tint, taken from the colours of the hours, so that a tree is never taken
-// for a cushion of cloud: [names, colour, how much]. The ground and the clouds stay white; furniture
-// and the sculptures of the first island a neutral tone darker than the ground; the sculpture of every
-// other island wears that island's colour, to be seen from far.
+// Every kind of thing has its colour, the same on every island (TINTS in layout.js): [names, colour of
+// the picture, how much, colour of its lower part (trunk, stem, pot), where in the picture's height
+// that part ends]. The ground and the clouds stay white; flowers, flags and kites wear the colour of
+// their island (park.js colours each copy); furniture and the sculptures of the first island a neutral
+// tone darker than the ground; the sculpture of every other island wears that island's colour.
 const ROLES = [
-  [/^(albero|tronco|boschetto)/, '#7484e0', 0.55],
-  [/^(cespugli|siepe)/, '#86a8f0', 0.5],
-  [/^(ciuffo|erba|tifa|canne|ninfea)/, '#9a86dc', 0.5],
-  [/^(panchina|altalena-sedile|gradini|pontile|scivolo|cassette|cassetta-posta|bandiera|aquilone|sasso)/, '#9ba0c8', 0.3],
+  [/^albero-grande/, TINTS.crown, 0.8, TINTS.trunk, 0.38],
+  [/^albero-medio/, TINTS.crown, 0.8, TINTS.trunk, 0.42],
+  [/^albero-piccolo/, TINTS.crown, 0.8, TINTS.trunk, 0.5],
+  [/^albero-frutti/, TINTS.crown, 0.8, TINTS.trunk, 0.47],
+  [/^(albero-doppio|boschetto)/, TINTS.forest, 0.82, TINTS.trunk, 0.5],
+  [/^tronco/, TINTS.trunk, 0.75],
+  [/^siepe/, TINTS.hedge, 0.82],
+  [/^cespugli/, TINTS.bush, 0.78],
+  [/^(ciuffo|erba|ninfea)/, TINTS.grass, 0.8],
+  [/^(canne|tifa)/, TINTS.reedHead, 0.78, TINTS.stem, 0.62],
+  [/^fiore/, '#ffffff', 0.8, TINTS.stem, 0.52],
+  [/^aiuola/, '#ffffff', 0.7, TINTS.stone, 0.45],
+  [/^(bandiera|aquilone)/, '#ffffff', 0.75],
+  [/^sasso/, TINTS.stone, 0.4],
+  [/^(panchina|altalena-sedile|gradini|pontile|scivolo|cassette|cassetta-posta)/, TINTS.furniture, 0.3],
 ];
-const NEUTRAL = ['#9ba0c8', 0.32];
+const NEUTRAL = [TINTS.furniture, 0.32];
 
 export function createLight({ plan, sky, sun, fog, park, renderer }) {
   const scene = sky.parent;
@@ -104,7 +118,13 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
     const zone = plan.zones.find((each) => each.id === sprite.name);
     const role = ROLES.find(([pattern]) => pattern.test(sprite.name));
     if (zone) tint(sprite, ...(zone.island === plan.landing ? NEUTRAL : [MOODS[zone.island.id].accent, 0.55]));
-    else if (role) tint(sprite, role[1], role[2]);
+    else if (role) {
+      tint(sprite, role[1], role[2]);
+      if (role[3]) {
+        sprite.tone.uLower.value.set(...new THREE.Color(role[3]).toArray(), role[2]);
+        sprite.tone.uSplit.value = role[4];
+      }
+    }
     const colour = Object.values(MOODS).find((mood) => mood.on?.[sprite.name])?.on[sprite.name];
     if (colour) tint(sprite, colour, 0.9);
     // A soft warm light round the globe, nothing on the pole.
@@ -178,6 +198,9 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
   }
 
   const hourOf = (index) => MOODS[plan.islands[index].id].hour;
+  const accents = plan.islands.map((each) => new THREE.Color(MOODS[each.id].accent));
+  const accentOf = (index) => accents[index];
+  const island = new THREE.Color();
   let hour = hourOf(plan.landing.index);
   const now = hourLight(hour);
   // The colour of the sea of clouds below, worked out from the hour each frame.
@@ -224,6 +247,12 @@ export function createLight({ plan, sky, sun, fog, park, renderer }) {
       leanTo(tones.uShade.value, now.shade, LEAN.shade * lean);
       leanTo(tones.uHalf.value, now.mid, LEAN.half * lean);
       leanTo(tones.uLit.value, now.lit, LEAN.lit * lean);
+      // On an island its own colour is in the light, a little, and changes along the path.
+      const from = accentOf(state.path ? state.path.from : state.island.index);
+      if (state.path) island.lerpColors(from, accentOf(state.path.to), THREE.MathUtils.smoothstep(state.t / state.path.length, 0.2, 0.8));
+      else island.copy(from);
+      tones.uLit.value.lerp(island, MOOD.lit);
+      tones.uHalf.value.lerp(island, MOOD.half);
 
       gradeGround();
 
