@@ -243,21 +243,6 @@ button {
 .tick.is-seen::before { background: var(--ink); }
 .tick.is-current::before { background: var(--mark); transform: scaleY(2.6); }
 
-.preview-note {
-  position: fixed;
-  z-index: 30;
-  left: 50%;
-  bottom: 10px;
-  transform: translateX(-50%);
-  margin: 0;
-  padding: 3px 10px;
-  font-size: 13px;
-  line-height: 1.35;
-  white-space: nowrap;
-  color: var(--ink-soft);
-  background: var(--paper);
-  border-radius: 2px;
-}
 
 .viewer {
   position: fixed;
@@ -354,7 +339,6 @@ body.is-viewing .print.is-current { cursor: zoom-out; }
   .ticks { left: 20px; right: 20px; bottom: 36px; justify-content: space-between; }
   .tick { width: auto; flex: 1; height: 24px; pointer-events: none; }
   .tick::before { height: 7px; }
-  .preview-note { font-size: 12px; bottom: 8px; }
   .viewer { top: 14px; right: 20px; }
   .sheet { padding: 20px; padding-top: 76px; }
   .sheet-close { top: 14px; right: 20px; }
