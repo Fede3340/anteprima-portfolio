@@ -20,10 +20,14 @@ const RANK = { light: 0, small: 1, large: 2 };
 // Every cut-out made, by the name the park gives it, so that the light can give it an accent.
 export const drawn = new Set();
 
-export function createSprite(entry, count, { renderer, fog = true, anchor = entry.anchor ?? [0.5, 0] }) {
+// keep: a picture painted in its own colours, which keeps them in the light of the hour (grade.js),
+// drawn mirrored so that its light falls from the left like that of the plaster pictures.
+export function createSprite(entry, count, { renderer, fog = true, keep = false, anchor = entry.anchor ?? [0.5, 0] }) {
   // Cut out at half alpha and drawn as solid: no pale rim, and pictures in front hide those behind
   // instead of being added on top of them.
   const material = new THREE.MeshBasicMaterial({ alphaTest: 0.5, fog });
+  material.userData.keep = keep;
+  if (keep) anchor = [1 - anchor[0], anchor[1]];
   const tone = ownTones();
   grade(material, tone);
   const mesh = new THREE.InstancedMesh(plane(...anchor), material, count);
@@ -49,6 +53,8 @@ export function createSprite(entry, count, { renderer, fog = true, anchor = entr
       const first = !material.map;
       material.map?.dispose();
       material.map = texture;
+      if (keep) texture.repeat.x = -1;
+      if (keep) texture.offset.x = 1;
       material.needsUpdate = true;
       mesh.visible = true;
       if (first) fadeIn(material, { alphaTest: 0.5 });

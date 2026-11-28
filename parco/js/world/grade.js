@@ -51,6 +51,11 @@ const GLSL = `
     float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
     vec3 g = mix(uShade * min(1.0, l * 3.33), uHalf, clamp((l - 0.3) * 3.85, 0.0, 1.0));
     g = mix(g, uLit, clamp((l - 0.56) * 3.28, 0.0, 1.0));
+    #ifdef GRADE_KEEP
+    // A picture painted in its own colours keeps them, in the light of the hour: as bright as the
+    // tones would make it, and a fifth of their colour.
+    g = mix(c * dot(g, vec3(0.2126, 0.7152, 0.0722)) / max(l, 0.02), g, 0.2);
+    #endif
     #ifdef GRADE_FLOOR
     // Calmer than the things on it: almost half of the hour's colour taken out.
     g = mix(g, vec3(dot(g, vec3(0.2126, 0.7152, 0.0722))), 0.45);
@@ -88,7 +93,7 @@ export function grade(material, own, lamps = false) {
   material.onBeforeCompile = (shader, renderer) => {
     before.call(material, shader, renderer);
     Object.assign(shader.uniforms, tones, own, lamps && pools);
-    const defines = `${material.userData.toned ? '#define GRADE_OWN\n' : ''}${lamps ? '#define GRADE_FLOOR\n' : ''}`;
+    const defines = `${material.userData.toned ? '#define GRADE_OWN\n' : ''}${material.userData.keep ? '#define GRADE_KEEP\n' : ''}${lamps ? '#define GRADE_FLOOR\n' : ''}`;
     // A cut-out's picture is premultiplied and undecoded (textures.js): back to its own colour, edges
     // included, then to light (a square stands for the decoding).
     if (own) {
@@ -112,7 +117,7 @@ export function grade(material, own, lamps = false) {
         .replace('#include <worldpos_vertex>', `#include <worldpos_vertex>${POOL_VERTEX}`);
     }
   };
-  material.customProgramCacheKey = () => `${base}${material.userData.toned ? '-own' : ''}`;
+  material.customProgramCacheKey = () => `${base}${material.userData.toned ? '-own' : ''}${material.userData.keep ? '-keep' : ''}`;
   material.needsUpdate = true;
   return material;
 }
